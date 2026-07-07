@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PlacedOn — Web (Frontend)
 
-## Getting Started
+Marketing site + product surfaces for **PlacedOn** — hire for how people actually think.
+One adaptive interview, real signal instead of résumés.
 
-First, run the development server:
+**Design direction:** "Frost Luxe" — light, airy luxury glassmorphism, brand violet `#6922F5`,
+living gradient-mesh motion, and a single warm signal accent.
+
+## Stack
+
+- **Next.js 16** (App Router) · **React 19** · **TypeScript**
+- **Tailwind CSS 4** with design tokens as the single source of truth (`src/app/globals.css`)
+- **Motion** (Framer Motion) for animation
+- Deployed on **Vercel** → https://placedon-web.vercel.app
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+cp .env.example .env.local   # point NEXT_PUBLIC_API_BASE_URL at the backend
+pnpm dev                     # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build and run production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm build
+pnpm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Routes
 
-## Learn More
+| Route            | Purpose                                         |
+| ---------------- | ----------------------------------------------- |
+| `/`              | Marketing landing (hero, how-it-works, stats, testimonials, CTA) |
+| `/trust`         | Trust & fairness (LL144, EU AI Act, contestable traits) |
+| `/pre-interview` | Readiness, consent, accommodations              |
+| `/interview`     | Live interview room (WebSocket-backed)          |
+| `/employer`      | Candidate discovery (typed to backend contract) |
+| `/candidate`     | Candidate matches (typed to backend contract)   |
 
-To learn more about Next.js, take a look at the following resources:
+## Backend integration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The typed client in `src/lib/api.ts` mirrors the FastAPI backend
+(`PlacedOn/Product-Research → PlacedOn/backend`). It is env-driven:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
+```
 
-## Deploy on Vercel
+Data contracts live in `src/lib/types.ts` (CandidateProfile, JobProfile,
+InterviewState, CandidateMatch, EmployerCandidate) and match the backend's
+`data-contracts.md` so responses map without translation.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/                 # routes (App Router) + globals.css (design tokens)
+├── components/
+│   ├── brand/           # animated logo
+│   ├── background/      # AuroraMesh living-gradient backdrop
+│   ├── ui/              # Button, Reveal, CountUp, TiltCard
+│   ├── demo/            # DemoDialogProvider (Book a demo modal)
+│   ├── layout/          # RouteHeader, RoutePage
+│   └── sections/        # Nav, Hero, HowItWorks, Stats, Testimonials, CTA, Footer
+└── lib/                 # api client, types, cn
+```
+
+## Deploy
+
+```bash
+pnpm exec vercel --prod --yes
+```

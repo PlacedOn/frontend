@@ -8,6 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.23.0",
+    "motion": "^12.42.2",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4"
@@ -17,7 +20,9 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "puppeteer-core": "^25.3.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vercel": "^54.21.1"
   }
 }
