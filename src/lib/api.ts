@@ -155,9 +155,35 @@ export interface DemoHcvResponse {
   embedding_metadata?: { model: string; dimension_count: number; last_updated: string };
 }
 
+export interface DemoApplicationStage {
+  id: string;
+  stage: string;
+  label: string;
+  count: number;
+}
+
+export interface DemoApplication {
+  id: string;
+  company: string;
+  role: string;
+  stage: string;
+  status_label: string;
+  last_updated: string;
+  next_step: string;
+  evidence_used: string[];
+}
+
+export interface DemoApplicationsResponse {
+  candidate_id: string;
+  candidate_name: string;
+  stages: DemoApplicationStage[];
+  applications: DemoApplication[];
+}
+
 export const getDemoDashboard = () => getJson<DemoDashboardResponse>("/demo/dashboard");
 export const getDemoMatches = () => getJson<DemoMatchesResponse>("/demo/matches");
 export const getDemoHcv = () => getJson<DemoHcvResponse>("/demo/hcv");
+export const getDemoApplications = () => getJson<DemoApplicationsResponse>("/demo/applications");
 export const getDemoCandidate = () => getJson<CandidateProfile>("/demo/candidate");
 export const getDemoEmployer = () => getJson<{ candidates: EmployerCandidate[] }>("/demo/employer");
 export const getDemoInterviews = () => getJson<{ interviews: InterviewState[] }>("/demo/interviews");

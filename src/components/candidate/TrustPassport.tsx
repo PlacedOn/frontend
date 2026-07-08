@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Eye, Lock, Quote } from "lucide-react";
+import { ArrowRight, Check, Eye, Lock, Quote } from "lucide-react";
 import { getProfileData, type ProfileTrait, type TraitConfidence } from "@/lib/mock/profile";
 
 const PILL: Record<TraitConfidence, { bg: string; fg: string; label: string }> = {
@@ -16,6 +16,7 @@ export function TrustPassport() {
   const [traits, setTraits] = useState<ProfileTrait[] | null>(null);
   const [strength, setStrength] = useState(72);
   const [live, setLive] = useState(false);
+  const [approved, setApproved] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -32,6 +33,11 @@ export function TrustPassport() {
   }, []);
 
   const pendingReview = traits?.some((t) => t.confidence === "review") ?? false;
+
+  const toggleVisibility = (index: number) =>
+    setTraits((prev) =>
+      prev ? prev.map((t, i) => (i === index ? { ...t, employerVisible: !t.employerVisible } : t)) : prev,
+    );
 
   return (
     <>
@@ -79,8 +85,12 @@ export function TrustPassport() {
                 <Quote size={14} className="mt-0.5 shrink-0 text-[var(--iris-ink)]" />
                 &ldquo;{t.quote}&rdquo;
               </p>
-              <span
-                className="mt-4 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-semibold"
+              <button
+                type="button"
+                onClick={() => toggleVisibility(i)}
+                aria-pressed={t.employerVisible}
+                title={t.employerVisible ? "Hide this trait from employers" : "Make this trait employer-visible"}
+                className="mt-4 inline-flex w-fit cursor-pointer items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-semibold transition-opacity hover:opacity-75"
                 style={
                   t.employerVisible
                     ? { background: "rgba(16,185,129,0.10)", color: "#047857" }
@@ -89,28 +99,49 @@ export function TrustPassport() {
               >
                 {t.employerVisible ? <Eye size={12} /> : <Lock size={12} />}
                 {t.employerVisible ? "Employer-visible" : "Hidden from employers"}
-              </span>
+              </button>
             </li>
           );
         })}
       </ul>
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <Link
-          href="/candidate/matches"
-          className="inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] px-6 py-3.5 text-[15px] font-bold text-white"
-          style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
-        >
-          View matching roles <ArrowRight className="h-4 w-4" />
-        </Link>
-        <Link
-          href="/pre-interview"
-          className="inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] border px-6 py-3.5 text-[15px] font-bold text-[var(--ink)] transition-colors hover:bg-white"
-          style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass)" }}
-        >
-          Add more signal
-        </Link>
-      </div>
+      {approved ? (
+        <div className="mt-8 flex flex-col gap-4">
+          <div className="flex items-center gap-3 rounded-[var(--r-card)] p-4" style={{ background: "rgba(16,185,129,0.10)" }}>
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full" style={{ background: "#059669", color: "#fff" }}>
+              <Check size={18} strokeWidth={3} />
+            </span>
+            <p className="text-[14px] font-semibold" style={{ color: "#047857" }}>
+              Profile approved — matched employers can now see the evidence you left visible.
+            </p>
+          </div>
+          <Link
+            href="/candidate/matches"
+            className="inline-flex w-fit items-center justify-center gap-2 rounded-[var(--r-btn)] px-6 py-3.5 text-[15px] font-bold text-white"
+            style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
+          >
+            View matching roles <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      ) : (
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <button
+            type="button"
+            onClick={() => setApproved(true)}
+            className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-[var(--r-btn)] px-6 py-3.5 text-[15px] font-bold text-white"
+            style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
+          >
+            <Check className="h-4 w-4" /> Approve &amp; publish profile
+          </button>
+          <Link
+            href="/pre-interview"
+            className="inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] border px-6 py-3.5 text-[15px] font-bold text-[var(--ink)] transition-colors hover:bg-white"
+            style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass)" }}
+          >
+            Add more signal
+          </Link>
+        </div>
+      )}
     </>
   );
 }

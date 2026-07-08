@@ -116,7 +116,7 @@ export const NEXT_ACTION: Record<CandidateDashboardMode, NextAction> = {
     title: "A company requested an intro.",
     description: "You stay in control. Review the request and accept only if you want the conversation.",
     label: "Review intro",
-    path: "/candidate/matches",
+    path: "/candidate/applications",
     iconKey: "intro",
   },
 };
