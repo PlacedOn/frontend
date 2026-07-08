@@ -50,7 +50,7 @@ export function DemoForm() {
     setStatus("submitting");
     setError("");
     try {
-      await requestDemo(payload);
+      await requestDemo(payload, String(form.get("company_website") ?? ""));
       setStatus("done");
     } catch (err: unknown) {
       setStatus("error");
@@ -92,6 +92,13 @@ export function DemoForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="glass rounded-[var(--r-card)] p-7">
+      {/* Honeypot: hidden from humans; bots that fill it are dropped server-side. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+        <label>
+          Company website
+          <input type="text" name="company_website" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
       <div
         className="grid grid-cols-2 gap-1.5 rounded-full p-1"
         style={{ background: "var(--mist)" }}

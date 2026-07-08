@@ -1,13 +1,18 @@
 import { NextResponse } from "next/server";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
 
 /**
  * POST /api/demo-requests — persist a "Book a demo" lead to Supabase.
  * Runs server-side: Supabase keys never reach the browser. Input is
  * validated here; the table's RLS allows insert-only for this key.
+ * Abuse controls: per-IP rate limit + a hidden honeypot field.
  */
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY;
+
+const RATE_LIMIT = 5; // submissions
+const RATE_WINDOW_MS = 60_000; // per minute, per IP
 
 type Incoming = {
   name?: unknown;
@@ -17,6 +22,7 @@ type Incoming = {
   hiringVolume?: unknown;
   roleType?: unknown;
   message?: unknown;
+  hp?: unknown; // honeypot — humans never fill this
 };
 
 const isEmail = (s: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
@@ -31,11 +37,25 @@ export async function POST(req: Request) {
     );
   }
 
+  const limit = rateLimit(`demo:${clientIp(req)}`, RATE_LIMIT, RATE_WINDOW_MS);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { ok: false, error: "Too many requests. Please try again in a moment." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } },
+    );
+  }
+
   let body: Incoming;
   try {
     body = (await req.json()) as Incoming;
   } catch {
     return NextResponse.json({ ok: false, error: "Invalid request body." }, { status: 400 });
+  }
+
+  // Honeypot: a bot that fills the hidden field gets a silent success and
+  // nothing is stored. Return 200 so scrapers can't detect the trap.
+  if (clean(body.hp, 200)) {
+    return NextResponse.json({ ok: true });
   }
 
   const name = clean(body.name, 120);

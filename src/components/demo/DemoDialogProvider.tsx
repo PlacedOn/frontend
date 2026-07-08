@@ -74,7 +74,7 @@ export function DemoDialogProvider({ children }: { children: ReactNode }) {
     };
     setStatus("submitting");
     try {
-      await requestDemo(payload);
+      await requestDemo(payload, String(form.get("company_website") ?? ""));
       setStatus("done");
     } catch {
       setStatus("error");
@@ -172,6 +172,13 @@ export function DemoDialogProvider({ children }: { children: ReactNode }) {
                   </div>
 
                   <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-3.5">
+                    {/* Honeypot: hidden from humans; bots that fill it are dropped server-side. */}
+                    <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+                      <label>
+                        Company website
+                        <input type="text" name="company_website" tabIndex={-1} autoComplete="off" />
+                      </label>
+                    </div>
                     <Field label="Full name" name="name" ref={firstFieldRef} required autoComplete="name" />
                     <Field label="Work email" name="workEmail" type="email" required autoComplete="email" />
                     <Field label="Company" name="company" required autoComplete="organization" />

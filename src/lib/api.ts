@@ -89,11 +89,14 @@ export const submitRating = (payload: { interview_id: string; rating: number; co
  * which validates and persists the lead to Supabase server-side (keys
  * never reach the browser).
  */
-export async function requestDemo(payload: DemoRequest): Promise<{ ok: true }> {
+export async function requestDemo(
+  payload: DemoRequest,
+  honeypot?: string,
+): Promise<{ ok: true }> {
   const res = await fetch("/api/demo-requests", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ ...payload, hp: honeypot ?? "" }),
   });
   if (!res.ok) {
     let detail = "Could not submit demo request.";
