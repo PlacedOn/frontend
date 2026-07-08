@@ -8,7 +8,6 @@
 
 import type {
   CandidateProfile,
-  CandidateMatch,
   EmployerCandidate,
   InterviewState,
   DemoRequest,
@@ -16,6 +15,17 @@ import type {
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
+
+/**
+ * True only when a real, non-local FastAPI backend is configured. In
+ * production (no env var) this is false, so features fall back to mock
+ * adapters. Set NEXT_PUBLIC_API_BASE_URL to the deployed Render URL to
+ * flip everything to live data with no UI change.
+ */
+export function isLiveBackend(): boolean {
+  const url = process.env.NEXT_PUBLIC_API_BASE_URL;
+  return Boolean(url) && !url!.includes("127.0.0.1") && !url!.includes("localhost");
+}
 
 export class ApiError extends Error {
   constructor(
@@ -72,11 +82,64 @@ async function postJson<TBody, TResult>(endpoint: string, body: TBody): Promise<
   return (await response.json()) as TResult;
 }
 
-/* ── Demo data (GET /demo/*) ─────────────────────────────── */
+/* ── Demo data (GET /demo/*) ──────────────────────────────
+ * Shapes mirror backend/app/demo_routes.py exactly so responses map
+ * without translation. Keep these in sync with that file. */
+
+export interface DemoNextBestAction {
+  type: string;
+  title: string;
+  label: string;
+  description: string;
+  cta: string;
+  cta_label: string;
+  cta_route: string;
+  priority: string;
+}
+
+export interface DemoProfileSnapshot {
+  headline: string;
+  status: string;
+  visibility: string;
+  selected_role: string;
+  location: string;
+  completion: number;
+  evidence_strength: string;
+  skills_count: number;
+  interviews_completed: number;
+}
+
+export interface DemoDashboardResponse {
+  candidate_id: string;
+  candidate_name: string;
+  next_best_action: DemoNextBestAction;
+  profile_snapshot: DemoProfileSnapshot;
+  matches_summary: { total: number; new_count: number; strong_fits: number; top_match: string };
+  pipeline_summary: { upcoming_interviews: number; pending_responses: number };
+  growth_activity: { recent_improvements: string[]; next_milestones: string[] };
+}
+
+export interface DemoMatch {
+  id: string;
+  company: string;
+  role: string;
+  location: string;
+  match_label: string;
+  match_score: number;
+  evidence_reason: string;
+  action_type: string;
+}
+
+export interface DemoMatchesResponse {
+  candidate_id: string;
+  candidate_name: string;
+  matches: DemoMatch[];
+}
+
+export const getDemoDashboard = () => getJson<DemoDashboardResponse>("/demo/dashboard");
+export const getDemoMatches = () => getJson<DemoMatchesResponse>("/demo/matches");
 export const getDemoCandidate = () => getJson<CandidateProfile>("/demo/candidate");
-export const getDemoMatches = () => getJson<{ matches: CandidateMatch[] }>("/demo/matches");
 export const getDemoEmployer = () => getJson<{ candidates: EmployerCandidate[] }>("/demo/employer");
-export const getDemoDashboard = () => getJson<Record<string, unknown>>("/demo/dashboard");
 export const getDemoInterviews = () => getJson<{ interviews: InterviewState[] }>("/demo/interviews");
 export const getDemoHcv = () => getJson<Record<string, unknown>>("/demo/hcv");
 

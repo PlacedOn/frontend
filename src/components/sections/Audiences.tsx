@@ -1,6 +1,7 @@
 "use client";
 
-import { Check } from "lucide-react";
+import Link from "next/link";
+import { Check, ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
@@ -34,7 +35,7 @@ const PANELS: Panel[] = [
     points: [
       "No timer, no trick questions, no score staring back at you.",
       "See and contest every trait we extract — you stay in control.",
-      "Get matched to roles that want how you think, not your keywords.",
+      "Your dashboard always shows one clear next step, from interview to intro.",
     ],
     cta: "Take an interview",
     action: "interview",
@@ -67,15 +68,24 @@ export function Audiences() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-8">
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
                 {p.action === "demo" ? (
                   <Button onClick={() => open("employer")} variant="primary">
                     {p.cta}
                   </Button>
                 ) : (
-                  <Button href="/pre-interview" variant="ghost">
-                    {p.cta}
-                  </Button>
+                  <>
+                    <Button href="/pre-interview" variant="primary">
+                      {p.cta}
+                    </Button>
+                    <Link
+                      href="/candidate"
+                      className="inline-flex items-center gap-1.5 text-[14px] font-semibold transition-opacity hover:opacity-70"
+                      style={{ color: "var(--iris-ink)" }}
+                    >
+                      Open your dashboard <ArrowRight size={15} />
+                    </Link>
+                  </>
                 )}
               </div>
             </article>

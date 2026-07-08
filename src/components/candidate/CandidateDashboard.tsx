@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import {
@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import {
   getCandidateSnapshot,
+  loadCandidateDashboard,
   NEXT_ACTION,
   DASHBOARD_MODES,
   type CandidateDashboardMode,
@@ -70,8 +71,23 @@ function Pill({ label, tone }: { label: string; tone: Tone }) {
 
 export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
   const reduce = useReducedMotion();
-  const snapshot = useMemo(() => getCandidateSnapshot(mode), [mode]);
-  const action = NEXT_ACTION[mode];
+  // Instant mock first render; upgrade to live backend data if configured.
+  const [snapshot, setSnapshot] = useState(() => getCandidateSnapshot(mode));
+  const [live, setLive] = useState(false);
+  useEffect(() => {
+    let active = true;
+    loadCandidateDashboard(mode).then((r) => {
+      if (active) {
+        setSnapshot(r.snapshot);
+        setLive(r.live);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [mode]);
+
+  const action = NEXT_ACTION[snapshot.mode];
   const NextIcon = ICONS[action.iconKey];
 
   const statusCards = [
@@ -118,27 +134,36 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* State preview switcher */}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
-          Preview state
-        </span>
-        {DASHBOARD_MODES.map((m) => (
-          <Link
-            key={m}
-            href={`/candidate?mode=${m}`}
-            aria-current={m === mode}
-            className="cursor-pointer rounded-full px-3 py-1 text-[12px] font-semibold transition-colors"
-            style={
-              m === mode
-                ? { background: "var(--iris)", color: "#fff" }
-                : { background: "var(--glass)", color: "var(--ink-2)", border: "1px solid var(--glass-line-hi)" }
-            }
-          >
-            {MODE_LABEL[m]}
-          </Link>
-        ))}
-      </div>
+      {/* State preview switcher (mock) / live indicator (backend) */}
+      {live ? (
+        <div className="flex items-center gap-2">
+          <span className="livedot" />
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
+            Live · from backend
+          </span>
+        </div>
+      ) : (
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
+            Preview state
+          </span>
+          {DASHBOARD_MODES.map((m) => (
+            <Link
+              key={m}
+              href={`/candidate?mode=${m}`}
+              aria-current={m === snapshot.mode}
+              className="cursor-pointer rounded-full px-3 py-1 text-[12px] font-semibold transition-colors"
+              style={
+                m === snapshot.mode
+                  ? { background: "var(--iris)", color: "#fff" }
+                  : { background: "var(--glass)", color: "var(--ink-2)", border: "1px solid var(--glass-line-hi)" }
+              }
+            >
+              {MODE_LABEL[m]}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {/* Hero: next action + trust passport */}
       <motion.section

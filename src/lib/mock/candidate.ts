@@ -5,6 +5,14 @@
  * does not change.
  */
 
+import {
+  isLiveBackend,
+  getDemoDashboard,
+  getDemoMatches,
+  type DemoDashboardResponse,
+  type DemoMatchesResponse,
+} from "@/lib/api";
+
 export type CandidateDashboardMode =
   | "new_candidate"
   | "interview_in_progress"
@@ -174,4 +182,65 @@ export function getCandidateSnapshot(
     default:
       return base;
   }
+}
+
+/** Map the real backend /demo/{dashboard,matches} into the dashboard's
+ *  snapshot shape. Backend cta_routes point at the OLD frontend, so we
+ *  derive the mode and use our own NEXT_ACTION routes (no dead links). */
+function mapBackendToSnapshot(
+  dash: DemoDashboardResponse,
+  matchesResp: DemoMatchesResponse,
+): CandidateSnapshot {
+  const completion = dash.profile_snapshot.completion ?? 0;
+  const interviewsDone = dash.profile_snapshot.interviews_completed ?? 0;
+  const mode: CandidateDashboardMode =
+    completion >= 80 && interviewsDone > 0
+      ? "profile_live"
+      : interviewsDone > 0
+        ? "profile_review_required"
+        : "new_candidate";
+
+  const matches: DashboardMatchPreview[] = matchesResp.matches.slice(0, 2).map((m) => ({
+    id: m.id,
+    company: m.company,
+    role: m.role,
+    reason: m.evidence_reason,
+    confidence: m.match_score >= 85 ? "high" : "medium",
+  }));
+
+  return {
+    firstName: dash.candidate_name.split(" ")[0] || dash.candidate_name,
+    mode,
+    lastSaved: "just now",
+    interview: {
+      status: interviewsDone > 0 ? "complete" : "not_started",
+      role: dash.profile_snapshot.selected_role,
+      turnsCompleted: interviewsDone > 0 ? 6 : 0,
+      totalTurns: 6,
+    },
+    profile: {
+      status: completion >= 80 ? "live" : completion > 0 ? "needs_review" : "not_ready",
+      strength: completion,
+      traitsPending: completion >= 80 ? 0 : 3,
+      employerVisible: completion >= 80,
+    },
+    matches,
+    introRequests: [],
+  };
+}
+
+/** Load the dashboard: real backend when configured, else mock.
+ *  Returns whether the data came from the live backend. */
+export async function loadCandidateDashboard(
+  mode: CandidateDashboardMode,
+): Promise<{ snapshot: CandidateSnapshot; live: boolean }> {
+  if (isLiveBackend()) {
+    try {
+      const [dash, matches] = await Promise.all([getDemoDashboard(), getDemoMatches()]);
+      return { snapshot: mapBackendToSnapshot(dash, matches), live: true };
+    } catch {
+      // fall through to mock on any backend/network error
+    }
+  }
+  return { snapshot: getCandidateSnapshot(mode), live: false };
 }
