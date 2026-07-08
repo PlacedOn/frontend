@@ -6,12 +6,7 @@
  *   NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000   (see .env.example)
  */
 
-import type {
-  CandidateProfile,
-  EmployerCandidate,
-  InterviewState,
-  DemoRequest,
-} from "./types";
+import type { CandidateProfile, InterviewState, DemoRequest } from "./types";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
@@ -180,12 +175,40 @@ export interface DemoApplicationsResponse {
   applications: DemoApplication[];
 }
 
+export interface DemoEmployerJob {
+  id: string;
+  title: string;
+  location: string;
+  status: string;
+  candidate_matches: number;
+  applicants_count: number;
+}
+
+export interface DemoDiscoveryCandidate {
+  id: string;
+  name: string;
+  target_role: string;
+  location: string;
+  match_score: number;
+  evidence_strength: string;
+  key_signals: string[];
+  available_from: string;
+}
+
+export interface DemoEmployerResponse {
+  employer: { id: string; company: string; viewer_name: string; active_role: string };
+  jobs: DemoEmployerJob[];
+  discovery_feed: DemoDiscoveryCandidate[];
+  shortlist: { id: string; name: string; role: string; match_score: number; status: string }[];
+  intro_requests: { candidate_id: string; status: string }[];
+}
+
 export const getDemoDashboard = () => getJson<DemoDashboardResponse>("/demo/dashboard");
 export const getDemoMatches = () => getJson<DemoMatchesResponse>("/demo/matches");
 export const getDemoHcv = () => getJson<DemoHcvResponse>("/demo/hcv");
 export const getDemoApplications = () => getJson<DemoApplicationsResponse>("/demo/applications");
+export const getDemoEmployer = () => getJson<DemoEmployerResponse>("/demo/employer");
 export const getDemoCandidate = () => getJson<CandidateProfile>("/demo/candidate");
-export const getDemoEmployer = () => getJson<{ candidates: EmployerCandidate[] }>("/demo/employer");
 export const getDemoInterviews = () => getJson<{ interviews: InterviewState[] }>("/demo/interviews");
 
 /* ── Actions (POST) ──────────────────────────────────────── */

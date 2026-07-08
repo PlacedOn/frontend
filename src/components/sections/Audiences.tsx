@@ -70,9 +70,18 @@ export function Audiences() {
               </ul>
               <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
                 {p.action === "demo" ? (
-                  <Button onClick={() => open("employer")} variant="primary">
-                    {p.cta}
-                  </Button>
+                  <>
+                    <Button onClick={() => open("employer")} variant="primary">
+                      {p.cta}
+                    </Button>
+                    <Link
+                      href="/employer"
+                      className="inline-flex items-center gap-1.5 text-[14px] font-semibold transition-opacity hover:opacity-70"
+                      style={{ color: "var(--iris-ink)" }}
+                    >
+                      See the hiring view <ArrowRight size={15} />
+                    </Link>
+                  </>
                 ) : (
                   <>
                     <Button href="/pre-interview" variant="primary">
