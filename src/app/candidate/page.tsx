@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { MapPin } from "lucide-react";
+import Link from "next/link";
+import { MapPin, ArrowRight } from "lucide-react";
 import { RoutePage } from "@/components/layout/RoutePage";
 import type { CandidateMatch } from "@/lib/types";
 
@@ -55,6 +56,16 @@ export default function CandidatePage() {
       }
       intro="One interview, matched everywhere. Each match shows exactly why — tied to your own answers."
     >
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-[14px] text-[var(--ink-3)]">A preview of your top matches.</p>
+        <Link
+          href="/candidate/matches"
+          className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-2.5 text-[14px] font-semibold text-white"
+          style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))" }}
+        >
+          Open your matches <ArrowRight size={15} />
+        </Link>
+      </div>
       <ul className="grid gap-4 md:grid-cols-3">
         {MATCHES.map((m) => (
           <li key={m.id} className="glass flex h-full flex-col rounded-[var(--r-card)] p-6">

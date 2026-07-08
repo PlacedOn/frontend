@@ -49,8 +49,8 @@ Litmus test: *needs Redis/SBERT/Anthropic/bias-guard?* → FastAPI. *Just needs 
 | `/pre-interview` | L4 | L2 | consent gate → real `POST /api/interviews` |
 | `/interview/:sessionId` | L4 | L1 | WebSocket, reconnect, autosave (needs backend live) |
 | `/candidate` | L4 | L2 | dashboard **state machine** (mock adapter first) |
-| `/candidate/profile/review` | L4 | L0 | build from playbook §15.15 |
-| `/candidate/matches` | L3 | L2 | interest action persists |
+| `/candidate/profile/review` | L4 | L0 | build from playbook §15.16 |
+| `/candidate/matches` | L3 | **L2 (built)** | interactive: interest/dismiss + undo + evidence drawer, mock adapter ✅ |
 | `/employer` | L4 | L2 | role list + create-role dialog |
 | `/employer/jobs/:jobId/candidates` | L4 | L2 | feed + evidence drawer + save/pass/intro |
 
@@ -98,6 +98,15 @@ Ordered by *value now, without blocking on infra I don't control*. Items needing
 - Motion tokens (§7.3) — adopted as the canonical motion scale (see UI/UX plan v2).
 
 ---
+
+## 4a. Folded in from the expanded plan (2026-07-08)
+
+The latest plan added sections my v2 must honor:
+- **§15.13 `/trust` playbook** — includes an **India DPDP** readiness note. Action: when I harden `/trust` (Wave 1), add a DPDP line alongside LL144 / EU AI Act, and make "Contest a trait" route to `/candidate/profile/review` for signed-in users.
+- **§15.18 `/candidate/matches` playbook** — built this round (see below).
+- **§15.25 Deployment Loop** — adopted as the deploy checklist. Frontend: local build → push → Vercel preview → route smoke + console + mobile → promote. Backend (Wave 2): pytest → confirm `requirements.txt` → set Render env (REDIS_URL, ANTHROPIC_API_KEY, CORS, Supabase) → `/health` → WS connect → CORS from Vercel → promote only if a session can be created **and resumed**. Rollback rule: interview start/resume breakage is **P0 → roll back immediately**.
+
+**Built this round:** `/candidate/matches` at L2 — mock adapter (`src/lib/mock/matches.ts`, swap-in boundary for the future `GET /api/candidate/matches` + interest/dismiss), interactive cards with optimistic **interest**/**not-interested** + **undo toast**, an evidence **"why this matches" drawer** (quotes + confidence + amber "signals still light, not a rejection"), plus loading/empty states. Overlays are portaled to `document.body` to escape `RoutePage`'s stacking context.
 
 ## 5. Infra the founder must provision for Wave 2 (blockers)
 

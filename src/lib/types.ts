@@ -68,6 +68,29 @@ export interface EmployerCandidate {
   visibility: Visibility;
 }
 
+export type Confidence = "low" | "medium" | "high";
+
+/** One evidence atom behind a role match (wire shape, plan §15.18). */
+export interface MatchEvidence {
+  trait: string;
+  quote: string;
+  confidence: Confidence;
+}
+
+export type MatchStatus = "new" | "interested" | "dismissed";
+
+/** A role surfaced to a candidate from approved-profile evidence. */
+export interface RoleMatch {
+  job_id: string;
+  title: string;
+  company: string;
+  location: string;
+  match_summary: string;
+  evidence: MatchEvidence[];
+  missing_signals: string[];
+  status: MatchStatus;
+}
+
 /** Payload for the marketing "Book a demo" lead form. */
 export interface DemoRequest {
   name: string;
