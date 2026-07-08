@@ -12,6 +12,18 @@ const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
 
 /**
+ * WebSocket base for the live interview. Falls back to the HTTP base with the
+ * scheme swapped (http→ws, https→wss) when NEXT_PUBLIC_WS_BASE_URL is unset.
+ */
+const WS_BASE_URL =
+  process.env.NEXT_PUBLIC_WS_BASE_URL ?? API_BASE_URL.replace(/^http/, "ws");
+
+/** WebSocket URL for a given interview id — matches backend `WS /ws/{interview_id}`. */
+export function interviewSocketUrl(interviewId: string): string {
+  return `${WS_BASE_URL}/ws/${encodeURIComponent(interviewId)}`;
+}
+
+/**
  * True only when a real, non-local FastAPI backend is configured. In
  * production (no env var) this is false, so features fall back to mock
  * adapters. Set NEXT_PUBLIC_API_BASE_URL to the deployed Render URL to
