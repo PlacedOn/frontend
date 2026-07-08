@@ -26,6 +26,7 @@ const COLS: { title: string; links: FooterLink[] }[] = [
     links: [
       { label: "For candidates", href: "/candidate" },
       { label: "For employers", href: "/employer" },
+      { label: "Book a demo", href: "/demo" },
       { label: "Contact", href: "mailto:hello@placedon.com" },
     ],
   },

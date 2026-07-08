@@ -74,5 +74,8 @@ export interface DemoRequest {
   workEmail: string;
   company: string;
   audience: "employer" | "candidate";
+  /** Optional, collected on the full /demo page (not the compact modal). */
+  hiringVolume?: string;
+  roleType?: string;
   message?: string;
 }

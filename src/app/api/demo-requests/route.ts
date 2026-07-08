@@ -14,6 +14,8 @@ type Incoming = {
   workEmail?: unknown;
   company?: unknown;
   audience?: unknown;
+  hiringVolume?: unknown;
+  roleType?: unknown;
   message?: unknown;
 };
 
@@ -40,6 +42,8 @@ export async function POST(req: Request) {
   const workEmail = clean(body.workEmail, 200);
   const company = clean(body.company, 160);
   const audience = body.audience === "candidate" ? "candidate" : "employer";
+  const hiringVolume = clean(body.hiringVolume, 60) || null;
+  const roleType = clean(body.roleType, 60) || null;
   const message = clean(body.message, 2000) || null;
 
   if (!name || !company || !isEmail(workEmail)) {
@@ -58,7 +62,15 @@ export async function POST(req: Request) {
         "Content-Type": "application/json",
         Prefer: "return=minimal",
       },
-      body: JSON.stringify({ name, work_email: workEmail, company, audience, message }),
+      body: JSON.stringify({
+        name,
+        work_email: workEmail,
+        company,
+        audience,
+        hiring_volume: hiringVolume,
+        role_type: roleType,
+        message,
+      }),
     });
     if (!res.ok) {
       return NextResponse.json({ ok: false, error: "Could not save your request." }, { status: 502 });
