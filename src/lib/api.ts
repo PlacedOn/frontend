@@ -136,12 +136,31 @@ export interface DemoMatchesResponse {
   matches: DemoMatch[];
 }
 
+export interface DemoHcvDimension {
+  id: string;
+  dimension: string;
+  score: number;
+  confidence: number;
+  uncertainty: number;
+  label: string;
+  evidence_snippets: string[];
+}
+
+export interface DemoHcvResponse {
+  candidate_id: string;
+  candidate_name: string;
+  role_context: string;
+  summary: string;
+  dimensions: DemoHcvDimension[];
+  embedding_metadata?: { model: string; dimension_count: number; last_updated: string };
+}
+
 export const getDemoDashboard = () => getJson<DemoDashboardResponse>("/demo/dashboard");
 export const getDemoMatches = () => getJson<DemoMatchesResponse>("/demo/matches");
+export const getDemoHcv = () => getJson<DemoHcvResponse>("/demo/hcv");
 export const getDemoCandidate = () => getJson<CandidateProfile>("/demo/candidate");
 export const getDemoEmployer = () => getJson<{ candidates: EmployerCandidate[] }>("/demo/employer");
 export const getDemoInterviews = () => getJson<{ interviews: InterviewState[] }>("/demo/interviews");
-export const getDemoHcv = () => getJson<Record<string, unknown>>("/demo/hcv");
 
 /* ── Actions (POST) ──────────────────────────────────────── */
 export const submitRating = (payload: { interview_id: string; rating: number; comment?: string }) =>

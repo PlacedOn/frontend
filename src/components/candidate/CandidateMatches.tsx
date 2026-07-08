@@ -334,6 +334,8 @@ function MatchReasonDrawer({ match, onClose }: { match: RoleMatch | null; onClos
 
             <p className="mt-5 text-[14px] leading-relaxed text-[var(--ink-2)]">{match.match_summary}</p>
 
+            {match.evidence.length > 0 && (
+              <>
             <h3 className="mt-7 text-[12px] font-semibold uppercase tracking-wider text-[var(--ink-3)]">
               Evidence from your interview
             </h3>
@@ -350,6 +352,8 @@ function MatchReasonDrawer({ match, onClose }: { match: RoleMatch | null; onClos
                 </li>
               ))}
             </ul>
+              </>
+            )}
 
             {match.missing_signals.length > 0 && (
               <>

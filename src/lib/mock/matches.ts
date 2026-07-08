@@ -1,12 +1,12 @@
 /**
- * Mock adapter for candidate matches (plan Master Loop step 5: mock data
- * behind a clear boundary). The UI imports only these functions, so when
- * the FastAPI endpoints land — GET /api/candidate/matches,
- * POST /api/candidate/matches/{jobId}/interest|dismiss — we swap the bodies
- * here and the components do not change.
+ * Data adapter for candidate matches. Prefers the real backend
+ * (GET /demo/matches) when configured, else falls back to rich mock data.
+ * The UI imports only these functions, so wiring the backend changes
+ * nothing in the components.
  */
 
-import type { RoleMatch } from "@/lib/types";
+import type { Confidence, RoleMatch } from "@/lib/types";
+import { isLiveBackend, getDemoMatches, type DemoMatch } from "@/lib/api";
 
 const MATCHES: RoleMatch[] = [
   {
@@ -74,8 +74,35 @@ const MATCHES: RoleMatch[] = [
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-/** Returns the candidate's current role matches. */
+/** Map the backend's flatter match shape into the UI's richer RoleMatch.
+ *  The backend gives one summary (evidence_reason) rather than per-trait
+ *  quotes, so we present it as a single evidence item + degrade the drawer
+ *  gracefully. */
+function mapDemoMatch(m: DemoMatch): RoleMatch {
+  const confidence: Confidence = m.match_score >= 85 ? "high" : m.match_score >= 70 ? "medium" : "low";
+  const isStretch = /stretch|possible/i.test(m.match_label);
+  return {
+    job_id: m.id,
+    title: m.role,
+    company: m.company,
+    location: m.location,
+    match_summary: m.evidence_reason,
+    evidence: [{ trait: "Role fit", quote: m.evidence_reason, confidence }],
+    missing_signals: isStretch ? ["Larger-scale ownership"] : [],
+    status: "new",
+  };
+}
+
+/** Returns the candidate's current role matches (live backend or mock). */
 export async function getCandidateMatches(): Promise<RoleMatch[]> {
+  if (isLiveBackend()) {
+    try {
+      const resp = await getDemoMatches();
+      if (resp.matches?.length) return resp.matches.map(mapDemoMatch);
+    } catch {
+      // fall through to mock
+    }
+  }
   await delay(500);
   return MATCHES.map((m) => ({ ...m }));
 }
