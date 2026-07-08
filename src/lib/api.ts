@@ -85,18 +85,26 @@ export const submitRating = (payload: { interview_id: string; rating: number; co
   postJson<typeof payload, { ok: boolean }>("/rating", payload);
 
 /**
- * Submit a marketing demo request. The backend lead endpoint is not part
- * of the demo API yet, so this resolves locally until it is wired.
+ * Submit a marketing demo request. Posts to our own Next.js API route,
+ * which validates and persists the lead to Supabase server-side (keys
+ * never reach the browser).
  */
 export async function requestDemo(payload: DemoRequest): Promise<{ ok: true }> {
-  if (process.env.NEXT_PUBLIC_DEMO_LEAD_ENDPOINT) {
-    return postJson<DemoRequest, { ok: true }>(
-      process.env.NEXT_PUBLIC_DEMO_LEAD_ENDPOINT,
-      payload,
-    );
+  const res = await fetch("/api/demo-requests", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    let detail = "Could not submit demo request.";
+    try {
+      const data = (await res.json()) as { error?: string };
+      if (data.error) detail = data.error;
+    } catch {
+      // keep default message
+    }
+    throw new ApiError(detail, res.status, "/api/demo-requests");
   }
-  // Local resolve so the form works end-to-end in the prototype.
-  await new Promise((r) => setTimeout(r, 700));
   return { ok: true };
 }
 
