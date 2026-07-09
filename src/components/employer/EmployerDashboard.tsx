@@ -118,7 +118,7 @@ export function EmployerDashboard() {
 
       {/* Roles */}
       <section>
-        <div className="mb-4 flex items-center justify-between gap-4">
+        <div className="mb-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div>
             <p className="eyebrow">Your roles</p>
             <h2 className="mt-1 text-[22px] font-bold text-[var(--ink)]">{data.company}&rsquo;s open roles</h2>
@@ -126,7 +126,7 @@ export function EmployerDashboard() {
           <button
             type="button"
             onClick={() => setShowCreate(true)}
-            className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-2.5 text-[14px] font-bold text-white"
+            className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-2.5 text-[14px] font-bold text-white"
             style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
           >
             <Plus size={16} /> Add role
