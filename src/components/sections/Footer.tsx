@@ -7,8 +7,8 @@ const COLS: { title: string; links: FooterLink[] }[] = [
     title: "Product",
     links: [
       { label: "How it works", href: "/#how" },
-      { label: "For teams", href: "/#teams" },
-      { label: "For candidates", href: "/#candidates" },
+      { label: "For teams", href: "/companies" },
+      { label: "For candidates", href: "/candidates" },
       { label: "Take an interview", href: "/pre-interview" },
     ],
   },

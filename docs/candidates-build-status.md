@@ -67,12 +67,50 @@ console errors (only dev-only CSP `eval()` note).
 
 ## 5. Next features (in priority order)
 
-1. **`/companies`** — mirror this page for employers (evidence-first, "hire on proof not résumés"). *Next build, frontend-only.*
-2. **Flip §5/§7 to live** — deploy backend (Upstash `REDIS_URL` + Render); set `NEXT_PUBLIC_API_BASE_URL`. Scorecard + matches go real.
+1. ~~**`/companies`** — employer mirror.~~ ✅ **DONE** (see §7).
+2. **Flip live** — deploy backend (Upstash `REDIS_URL` + Render); set `NEXT_PUBLIC_API_BASE_URL`. Scorecard, candidate matches, employer feed go real. *Needs your 20-min infra step.*
 3. **Email magic-link entry** — `/candidate/signup` + `/company/signup` (Supabase Auth), then wire the final CTA email field. *Phase C.*
-4. **Shareable public Trust Passport** — a candidate-approved public evidence page (RemoteStar has shareable profiles; ours is consent-gated). *Phase D.*
+4. **Shareable public Trust Passport** — a candidate-approved public evidence page. *Phase D.*
 5. **Label or replace testimonials** — resolve the honesty flag site-wide.
 6. **`MotionConfig reducedMotion="user"`** — remove the hydration warning across the site.
+
+---
+
+## 7. `/companies` — employer mirror (Step 1 of the loop) ✅
+
+**Route:** `/companies` · same Frost Luxe system, employer-worded. Positioning:
+**"Hire on evidence, not résumés."** North-star kept: *you see approved signal,
+never the raw transcript.*
+
+| # | Section | Component | Interactive |
+|---|---------|-----------|-------------|
+| 1 | Hero | `CompaniesHero` | Book-a-demo (opens dialog) + See-dashboard; sample matched-candidate strip |
+| 2 | Trust strip | inline | — |
+| 3 | The triage problem | `ResumeTriage` | résumé-pile mockup ("312 · unread"), "300 / 20s / 1" stats |
+| 4 | **What you see / never see** | `EvidencePanel` | approved evidence vs **sealed blurred transcript** (the B2B moat) |
+| 5 | How it works for teams | `TeamJourneySteps` | accordion, step 3 "Review approved evidence" highlighted |
+| 6 | Your shortlist | `CandidateMatchCarousel` | carousel, candidate %match + "why they fit" |
+| 7 | Fast to hire, safe to defend | inline `ComplianceBlock` | 3 cards → `/trust#…` |
+| 8 | Proof | reused `Testimonials` | — |
+| 9 | FAQ | `CompaniesFaq` | accordion (6 employer Qs) |
+| 10 | Final CTA | inline `FinalCta` | → `/demo`, `/employer` |
+
+**Verified:** `tsc` clean · `pnpm build` clean (static) · no overflow at 375
+(fixed hero grid: `min-w-0` on both columns + truncate name line) · all
+interactions fire · no runtime errors. Evidence panel confirmed rendering
+(approved traits + sealed transcript). **Nav + Footer "For teams" → `/companies`.**
+
+Files added:
+```
+src/app/companies/page.tsx
+src/components/companies/{CompaniesHero,ResumeTriage,EvidencePanel,TeamJourneySteps,CandidateMatchCarousel,CompaniesFaq}.tsx
+```
+Edited: `Nav.tsx` + `Footer.tsx` ("For teams" → `/companies`, "For candidates" → `/candidates`).
+
+### Loop status
+- ✅ **Step 1 — `/companies`** (frontend-only): DONE, deployed.
+- ⛔ **Step 2 — backend live** (Upstash + Render): blocked on your infra step (~20 min). Recipe in `API-plan-v1.md` / `DEPLOY-backend.md`.
+- ⛔ **Step 3 — email magic-link signup** (Supabase Auth): Phase C, plan in `entry-registration-plan.md`.
 
 ---
 
