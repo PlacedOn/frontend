@@ -18,8 +18,8 @@ export function Hero() {
   });
 
   return (
-    <section id="top" className="relative pt-32 pb-16 md:pt-40 md:pb-24">
-      <div className="shell grid items-center gap-12 lg:grid-cols-[1.02fr_1.1fr]">
+    <section id="top" className="relative flex min-h-[100svh] items-center pt-28 pb-16 md:pt-32">
+      <div className="shell grid w-full items-center gap-12 lg:grid-cols-[1.02fr_1.1fr]">
         <div className="max-w-xl">
           <motion.div {...rise(0.05)}>
             <span className="chip">

@@ -50,6 +50,27 @@ export function TrustPassport() {
         </div>
       )}
 
+      {/* Plain-language explainer — what this page is and how to use it */}
+      <div className="mb-6 rounded-[var(--r-card)] p-5" style={{ background: "var(--iris-ghost)" }}>
+        <p className="text-[14px] font-bold text-[var(--ink)]">
+          This is the only thing employers see — and you control all of it.
+        </p>
+        <ol className="mt-3 grid gap-2.5 sm:grid-cols-3">
+          {[
+            "The skills we heard in your interview, each backed by your own words.",
+            "Green means an employer can see it — tap any tag to hide it.",
+            "Nothing is shared until you tap Approve.",
+          ].map((t, i) => (
+            <li key={i} className="flex gap-2 text-[13px] leading-relaxed text-[var(--ink-2)]">
+              <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full text-[11px] font-bold text-white" style={{ background: "var(--iris)" }}>
+                {i + 1}
+              </span>
+              {t}
+            </li>
+          ))}
+        </ol>
+      </div>
+
       {/* Strength summary */}
       <div className="glass mb-6 rounded-[var(--r-card)] p-6">
         <div className="mb-2.5 flex items-center justify-between text-[14px] font-semibold text-[var(--ink)]">

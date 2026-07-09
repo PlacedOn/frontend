@@ -10,21 +10,25 @@ export const metadata: Metadata = {
 
 const PILLARS = [
   {
+    id: "scoring",
     icon: ShieldCheck,
-    title: "Bias-audited scoring",
-    body: "Every trait model is tested for adverse impact across protected groups before it ships, and re-audited on a fixed cadence. Results are documented, not asserted.",
+    title: "How scoring works",
+    body: "Every trait model is tested for adverse impact across protected groups before it ships, and re-audited on a fixed cadence. Each score links to the exact transcript moment behind it — results are documented, not asserted.",
   },
   {
+    id: "ll144",
     icon: ScrollText,
     title: "NYC Local Law 144",
     body: "PlacedOn maintains an independent bias audit and publishes the summary of results, in line with LL144 requirements for automated employment decision tools.",
   },
   {
+    id: "eu-ai-act",
     icon: Scale,
     title: "EU AI Act aligned",
     body: "Hiring is a high-risk use case. We keep records of logic, data lineage, and human oversight so employers can meet their obligations under the Act.",
   },
   {
+    id: "contest",
     icon: MessageSquareWarning,
     title: "Contest any trait",
     body: "Candidates see every trait we extract, the exact transcript moment behind it, and can flag or contest it. No score is final without a path to challenge it.",
@@ -46,7 +50,7 @@ export default function TrustPage() {
         {PILLARS.map((p) => {
           const Icon = p.icon;
           return (
-            <article key={p.title} className="glass rounded-[var(--r-card)] p-7">
+            <article key={p.title} id={p.id} className="glass scroll-mt-28 rounded-[var(--r-card)] p-7">
               <span
                 className="grid h-11 w-11 place-items-center rounded-2xl"
                 style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}

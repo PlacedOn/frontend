@@ -15,10 +15,10 @@ const COLS: { title: string; links: FooterLink[] }[] = [
   {
     title: "Trust",
     links: [
-      { label: "LL144 compliance", href: "/trust" },
-      { label: "EU AI Act", href: "/trust" },
-      { label: "How scoring works", href: "/trust" },
-      { label: "Contest a trait", href: "/trust" },
+      { label: "How scoring works", href: "/trust#scoring" },
+      { label: "LL144 compliance", href: "/trust#ll144" },
+      { label: "EU AI Act", href: "/trust#eu-ai-act" },
+      { label: "Contest a trait", href: "/trust#contest" },
     ],
   },
   {
@@ -27,7 +27,7 @@ const COLS: { title: string; links: FooterLink[] }[] = [
       { label: "For candidates", href: "/candidate" },
       { label: "For employers", href: "/employer" },
       { label: "Book a demo", href: "/demo" },
-      { label: "Contact", href: "mailto:hello@placedon.com" },
+      { label: "Contact", href: "/contact" },
     ],
   },
 ];
@@ -40,7 +40,10 @@ export function Footer() {
           <div className="grid gap-10 md:grid-cols-[1.4fr_2fr]">
             <div>
               <Logo />
-              <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-[var(--ink-2)]">
+              <p className="mt-4 text-[15.5px] font-semibold text-[var(--ink)]">
+                Defining the future with smart hiring.
+              </p>
+              <p className="mt-2 max-w-xs text-[14px] leading-relaxed text-[var(--ink-2)]">
                 The interview that speaks for you. Hire and get hired on how people
                 actually think.
               </p>

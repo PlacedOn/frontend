@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
+import { Mic } from "lucide-react";
 
 type Turn = { who: "ai" | "you"; text: string };
 
@@ -81,6 +82,40 @@ export function InterviewDemo() {
             </span>
             <span className="text-[11px] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
               adaptive · unscripted
+            </span>
+          </div>
+
+          {/* Live interviewer presence — reads as a real session, not a plain chat */}
+          <div
+            className="mb-3 flex items-center gap-3 rounded-[16px] p-2.5"
+            style={{ background: "rgba(105,34,245,0.06)", border: "1px solid var(--glass-line)" }}
+          >
+            <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-full" style={{ background: "linear-gradient(135deg, var(--iris-soft), var(--iris))" }}>
+              <Mic size={15} color="#fff" />
+              {!reduce && (
+                <motion.span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full"
+                  style={{ border: "2px solid var(--iris)" }}
+                  animate={{ scale: [1, 1.4], opacity: [0.55, 0] }}
+                  transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+                />
+              )}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-[12px] font-semibold text-[var(--ink)]">PlacedOn interviewer</p>
+              <p className="text-[10.5px] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>listening · adaptive</p>
+            </div>
+            <span className="flex h-5 items-center gap-[3px]" aria-hidden>
+              {[0, 1, 2, 3, 4].map((d) => (
+                <motion.span
+                  key={d}
+                  className="w-[3px] rounded-full"
+                  style={{ background: "var(--iris)", height: "70%", originY: 0.5 }}
+                  animate={reduce ? { scaleY: 0.5 } : { scaleY: [0.3, 1, 0.45, 0.85, 0.3] }}
+                  transition={{ duration: 1.1, repeat: Infinity, delay: d * 0.12, ease: "easeInOut" }}
+                />
+              ))}
             </span>
           </div>
 

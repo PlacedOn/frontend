@@ -61,7 +61,7 @@ export function Nav() {
             href="/candidate"
             className="hidden rounded-full px-4 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-colors hover:text-[var(--ink)] sm:block"
           >
-            Sign in
+            Dashboard
           </a>
           <Button onClick={() => open("employer")} className="!px-5 !py-2.5 text-[14px]">
             Book a demo
