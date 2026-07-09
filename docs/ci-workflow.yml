@@ -1,0 +1,36 @@
+name: V1 Closed Loop CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  frontend:
+    name: Typecheck + build (Next.js)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+
+      - name: Build
+        run: pnpm build
+
+# Note: the FastAPI backend lives in a separate repo (PlacedOn/Product-Research).
+# Its tests (`python3 -m pytest -q`) run there, not in this frontend workflow.
+# CI passing means the code is eligible for product QA — not that the loop is complete.

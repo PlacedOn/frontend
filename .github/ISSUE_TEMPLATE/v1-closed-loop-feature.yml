@@ -1,0 +1,77 @@
+name: V1 Closed Loop Feature
+description: A feature that completes part of the PlacedOn end-to-end product loop
+title: "[loop] "
+labels: ["v1"]
+body:
+  - type: input
+    id: outcome
+    attributes:
+      label: User outcome
+      description: One sentence — no double "and".
+      placeholder: "As a candidate, I can approve a trait, so that employers only see what I allow."
+    validations:
+      required: true
+  - type: input
+    id: route
+    attributes:
+      label: Route
+      placeholder: "/candidate/profile"
+    validations:
+      required: true
+  - type: textarea
+    id: components
+    attributes:
+      label: Component list
+      placeholder: "TrustPassport, VisibilityToggle…"
+  - type: textarea
+    id: api
+    attributes:
+      label: API / data + adapter needed
+      description: Backend contract (in PlacedOn/Product-Research) and the src/lib adapter.
+      placeholder: "GET /demo/hcv → src/lib/mock/profile.ts"
+  - type: textarea
+    id: motion
+    attributes:
+      label: Motion needed (and reduced-motion fallback)
+  - type: textarea
+    id: states
+    attributes:
+      label: Empty / loading / error / success states
+    validations:
+      required: true
+  - type: input
+    id: mobile
+    attributes:
+      label: Mobile (375px) acceptance
+    validations:
+      required: true
+  - type: input
+    id: privacy
+    attributes:
+      label: Privacy / safety rule
+      placeholder: "Employer never sees raw transcript; nothing shared before approval."
+    validations:
+      required: true
+  - type: dropdown
+    id: target-level
+    attributes:
+      label: Target completion level
+      options:
+        - L3 Built static
+        - L4 Wired
+        - L5 Persisted
+        - L6 Verified
+        - L7 Learned
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done checklist
+      value: |
+        - [ ] Primary button routes or calls a real adapter
+        - [ ] Loading / empty / error / success states exist
+        - [ ] 375px mobile path works
+        - [ ] Reduced-motion fallback
+        - [ ] `pnpm build` + `tsc --noEmit` pass
+        - [ ] Button audit — no dead ends
