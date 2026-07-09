@@ -6,6 +6,10 @@
  * sends answers as { type: "answer", message_id, content } — mirroring
  * backend/app/websocket_router.py exactly. With no backend it runs an
  * interactive scripted fallback so the room is fully usable in the demo.
+ *
+ * Resilience: on an unexpected socket drop it auto-reconnects with backoff
+ * (the backend resends the current question on reconnect, keyed by turn so the
+ * transcript never duplicates), preserving the candidate's in-flight answer.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -17,6 +21,7 @@ export interface InterviewMessage {
   id: string;
   role: Speaker;
   text: string;
+  turn?: number;
 }
 
 export type InterviewStatus =
@@ -24,6 +29,7 @@ export type InterviewStatus =
   | "asking" // AI question streaming in
   | "awaiting" // waiting for the candidate's answer
   | "thinking" // answer sent, next question forming
+  | "reconnecting" // socket dropped, retrying — answer preserved
   | "ended"
   | "error";
 
@@ -35,6 +41,7 @@ const MOCK_QUESTIONS = [
 ];
 
 const MOCK_STREAM_MS = 42;
+const MAX_RECONNECT = 5;
 
 const newId = (prefix: string): string =>
   typeof crypto !== "undefined" && "randomUUID" in crypto
@@ -55,14 +62,25 @@ export function useInterviewSession(initialId?: string) {
   const streamBufRef = useRef("");
   const mockIdxRef = useRef(0);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const intentionalCloseRef = useRef(false);
+  const reconnectAttemptsRef = useRef(0);
+  const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clearTimers = () => {
     timersRef.current.forEach(clearTimeout);
     timersRef.current = [];
   };
 
-  const finalizeQuestion = useCallback((text: string) => {
-    setMessages((m) => [...m, { id: newId("ai"), role: "ai", text }]);
+  // Finalize a streamed question. On reconnect the backend resends the current
+  // question (same turn) — replace the last AI bubble instead of duplicating it.
+  const finalizeQuestion = useCallback((text: string, questionTurn?: number) => {
+    setMessages((prev) => {
+      const last = prev[prev.length - 1];
+      if (questionTurn != null && last && last.role === "ai" && last.turn === questionTurn) {
+        return prev.map((m, i) => (i === prev.length - 1 ? { ...m, text } : m));
+      }
+      return [...prev, { id: newId("ai"), role: "ai", text, turn: questionTurn }];
+    });
     setStreaming("");
     streamBufRef.current = "";
     setStatus("awaiting");
@@ -89,19 +107,7 @@ export function useInterviewSession(initialId?: string) {
     [finalizeQuestion],
   );
 
-  useEffect(() => {
-    if (!live) {
-      setStatus("thinking");
-      timersRef.current.push(
-        setTimeout(() => {
-          mockIdxRef.current = 0;
-          setTurn(1);
-          streamMock(MOCK_QUESTIONS[0]!);
-        }, 650),
-      );
-      return () => clearTimers();
-    }
-
+  const connectLive = useCallback(() => {
     let ws: WebSocket;
     try {
       ws = new WebSocket(interviewSocketUrl(interviewId));
@@ -111,7 +117,13 @@ export function useInterviewSession(initialId?: string) {
       return;
     }
     wsRef.current = ws;
-    setStatus("thinking");
+
+    ws.onopen = () => {
+      reconnectAttemptsRef.current = 0;
+      // If we were mid-answer the next question streams in; otherwise the
+      // backend resends the current question. Either way, wait for it.
+      setStatus((s) => (s === "reconnecting" ? "thinking" : s));
+    };
 
     ws.onmessage = (ev: MessageEvent) => {
       let msg: { type?: string; content?: string; turn?: number; detail?: unknown };
@@ -128,7 +140,7 @@ export function useInterviewSession(initialId?: string) {
           break;
         case "question":
           if (typeof msg.turn === "number") setTurn(msg.turn + 1);
-          finalizeQuestion(msg.content ?? streamBufRef.current);
+          finalizeQuestion(msg.content ?? streamBufRef.current, msg.turn);
           break;
         case "error":
           setError(
@@ -143,16 +155,52 @@ export function useInterviewSession(initialId?: string) {
           break;
       }
     };
+
     ws.onerror = () => {
-      setError("Lost connection to the interview engine.");
-      setStatus("error");
+      // Let onclose drive the reconnect flow (it fires right after).
     };
 
-    return () => {
-      clearTimers();
-      ws.close();
+    ws.onclose = () => {
+      if (intentionalCloseRef.current) return;
+      const attempts = reconnectAttemptsRef.current;
+      if (attempts >= MAX_RECONNECT) {
+        setError("We couldn't reconnect to the interview. Your progress is saved.");
+        setStatus("error");
+        return;
+      }
+      reconnectAttemptsRef.current = attempts + 1;
+      streamBufRef.current = "";
+      setStreaming("");
+      setStatus("reconnecting");
+      const delay = Math.min(1000 * 2 ** attempts, 8000);
+      reconnectTimerRef.current = setTimeout(connectLive, delay);
     };
-  }, [live, interviewId, streamMock, finalizeQuestion]);
+  }, [interviewId, finalizeQuestion]);
+
+  useEffect(() => {
+    if (!live) {
+      setStatus("thinking");
+      timersRef.current.push(
+        setTimeout(() => {
+          mockIdxRef.current = 0;
+          setTurn(1);
+          streamMock(MOCK_QUESTIONS[0]!);
+        }, 650),
+      );
+      return () => clearTimers();
+    }
+
+    intentionalCloseRef.current = false;
+    setStatus("thinking");
+    connectLive();
+
+    return () => {
+      intentionalCloseRef.current = true;
+      if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
+      clearTimers();
+      wsRef.current?.close();
+    };
+  }, [live, connectLive, streamMock]);
 
   const sendAnswer = useCallback(
     (text: string) => {
@@ -189,6 +237,8 @@ export function useInterviewSession(initialId?: string) {
   );
 
   const end = useCallback(() => {
+    intentionalCloseRef.current = true;
+    if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
     clearTimers();
     wsRef.current?.close();
     setStatus("ended");

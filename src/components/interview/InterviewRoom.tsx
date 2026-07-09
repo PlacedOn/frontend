@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, ShieldCheck, Send, Square, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck, Send, Square, Sparkles, RefreshCw } from "lucide-react";
 import { useInterviewSession, type InterviewMessage } from "@/lib/interview/useInterviewSession";
 
 interface InterviewRoomProps {
@@ -19,6 +19,7 @@ export function InterviewRoom({ initialId }: InterviewRoomProps) {
 
   const canAnswer = status === "awaiting";
   const ended = status === "ended";
+  const reconnecting = status === "reconnecting";
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: reduce ? "auto" : "smooth" });
@@ -101,6 +102,13 @@ export function InterviewRoom({ initialId }: InterviewRoomProps) {
         </p>
       )}
 
+      {reconnecting && (
+        <div role="status" aria-live="polite" className="flex items-center gap-2.5 rounded-[var(--r-card)] px-4 py-3 text-[13px] font-medium" style={{ background: "rgba(245,134,11,0.12)", color: "#B45309" }}>
+          <RefreshCw size={15} className={reduce ? "" : "animate-spin"} />
+          Reconnecting… your answer is saved — nothing is lost.
+        </div>
+      )}
+
       {/* Transcript */}
       <div ref={scrollRef} className="glass flex max-h-[52vh] min-h-[320px] flex-col gap-3.5 overflow-y-auto rounded-[var(--r-card)] p-6">
         {messages.map((m) => (
@@ -136,7 +144,7 @@ export function InterviewRoom({ initialId }: InterviewRoomProps) {
           onKeyDown={onKeyDown}
           disabled={!canAnswer}
           rows={3}
-          placeholder={canAnswer ? "Answer in your own words — take your time." : "Listening…"}
+          placeholder={reconnecting ? "Reconnecting… your answer is safe here." : canAnswer ? "Answer in your own words — take your time." : "Listening…"}
           aria-label="Your answer"
           className="w-full resize-none bg-transparent px-3 py-2 text-[14.5px] leading-relaxed text-[var(--ink)] outline-none placeholder:text-[var(--ink-3)] disabled:opacity-60"
         />
