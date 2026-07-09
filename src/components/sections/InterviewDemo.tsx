@@ -94,7 +94,7 @@ export function InterviewDemo() {
                 className={t.who === "you" ? "self-end" : "self-start"}
                 style={{ maxWidth: "88%" }}
               >
-                <p className="mb-1 text-[10px] uppercase tracking-wider text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
+                <p className="mb-1 text-[11px] font-semibold tracking-wide text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
                   {t.who === "ai" ? "PlacedOn" : "Candidate"}
                 </p>
                 <div

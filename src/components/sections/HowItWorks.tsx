@@ -51,7 +51,7 @@ export function HowItWorks() {
         <Reveal>
           <p className="eyebrow">How it works</p>
           <h2 className="mt-3 max-w-2xl text-[clamp(1.9rem,1.2rem+2.6vw,3.1rem)]">
-            From one conversation to a signal you can hire on.
+            One conversation shows more than a résumé ever could.
           </h2>
         </Reveal>
 

@@ -36,7 +36,7 @@ export default function PreInterviewPage() {
       </div>
       <div className="glass mt-4 flex flex-col items-start justify-between gap-4 rounded-[var(--r-card)] p-7 sm:flex-row sm:items-center">
         <p className="text-[15px] text-[var(--ink-2)]">
-          Ready when you are — the interview adapts to you and takes about 30 minutes.
+          Ready when you are — the interview adapts to you and takes about 30&ndash;40 minutes.
         </p>
         <a
           href="/interview"

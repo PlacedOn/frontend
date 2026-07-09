@@ -57,7 +57,7 @@ export function CTA() {
                 Stop guessing from résumés
               </p>
               <h2 className="mt-4 text-[clamp(2rem,1.3rem+3vw,3.4rem)]" style={{ color: "#fff" }}>
-                See the person, not the paper.
+                See the skill, not the résumé.
               </h2>
               <p
                 className="mt-5 max-w-xl text-[16.5px] leading-relaxed md:mx-0"

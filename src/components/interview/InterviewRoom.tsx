@@ -117,7 +117,7 @@ export function InterviewRoom({ initialId }: InterviewRoomProps) {
 
         {streaming && (
           <div className="self-start" style={{ maxWidth: "88%" }}>
-            <p className="mb-1 text-[10px] uppercase tracking-wider text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>PlacedOn</p>
+            <p className="mb-1 text-[11px] font-semibold tracking-wide text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>PlacedOn</p>
             <div className="rounded-2xl px-4 py-2.5 text-[14px] leading-relaxed" style={{ background: "#fff", color: "var(--ink)", border: "1px solid var(--glass-line)" }}>
               {streaming}
               <span className="ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[2px] animate-pulse" style={{ background: "var(--iris)" }} />
@@ -174,7 +174,7 @@ function Bubble({ message, reduce }: { message: InterviewMessage; reduce: boolea
       className={isYou ? "self-end" : "self-start"}
       style={{ maxWidth: "88%" }}
     >
-      <p className={`mb-1 text-[10px] uppercase tracking-wider text-[var(--ink-3)] ${isYou ? "text-right" : ""}`} style={{ fontFamily: "var(--font-mono)" }}>
+      <p className={`mb-1 text-[11px] font-semibold tracking-wide text-[var(--ink-3)] ${isYou ? "text-right" : ""}`} style={{ fontFamily: "var(--font-mono)" }}>
         {isYou ? "You" : "PlacedOn"}
       </p>
       <div

@@ -212,7 +212,7 @@ export function EmployerDashboard() {
 
                       <div className="flex shrink-0 items-center gap-3">
                         <div className="text-right">
-                          <p className="text-[28px] font-extrabold leading-none" style={{ color: "var(--iris-ink)" }}>{c.matchScore}</p>
+                          <p className="text-[28px] font-extrabold leading-none" style={{ color: "var(--iris-ink)" }}>{c.matchScore}%</p>
                           <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">fit</p>
                         </div>
                       </div>
@@ -291,7 +291,7 @@ function EvidenceDrawer({ candidate, onClose, onRequestIntro, reduce }: { candid
                 <div>
                   <p className="eyebrow">Evidence review</p>
                   <h2 className="mt-1.5 text-[1.35rem]">{candidate.name}</h2>
-                  <p className="text-[14px] text-[var(--ink-2)]">{candidate.roleFit} · {candidate.matchScore} fit</p>
+                  <p className="text-[14px] text-[var(--ink-2)]">{candidate.roleFit} · {candidate.matchScore}% fit</p>
                 </div>
                 <button onClick={onClose} aria-label="Close" className="grid h-8 w-8 cursor-pointer place-items-center rounded-full text-[var(--ink-3)] transition-colors hover:bg-white/70 hover:text-[var(--ink)]"><X size={17} /></button>
               </div>
