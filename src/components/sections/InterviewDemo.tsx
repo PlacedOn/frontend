@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
-import { Circle, User } from "lucide-react";
+import { Circle } from "lucide-react";
 
 type Turn = { who: "ai" | "you"; text: string };
 
@@ -22,10 +22,44 @@ const TRAITS: Trait[] = [
 
 const ease = [0.22, 0.68, 0.31, 1] as const;
 
+// Deterministic organic bar heights (no random → no hydration mismatch).
+const wave = (n: number) =>
+  Array.from({ length: n }, (_, i) =>
+    Math.max(0.22, Math.min(1, 0.4 + 0.42 * Math.abs(Math.sin(i * 0.7)) + 0.2 * Math.abs(Math.sin(i * 1.9 + 1)))),
+  );
+const WAVE = wave(34);
+const MINI = wave(14);
+
+// Ambient floating particles (fixed positions).
+const PARTICLES = [
+  { x: "12%", y: "22%", s: 4, d: 0 },
+  { x: "82%", y: "16%", s: 3, d: 0.6 },
+  { x: "70%", y: "62%", s: 5, d: 1.1 },
+  { x: "22%", y: "70%", s: 3, d: 1.6 },
+  { x: "50%", y: "12%", s: 3, d: 0.3 },
+  { x: "88%", y: "48%", s: 4, d: 0.9 },
+];
+
 function formatClock(total: number): string {
   const m = Math.floor(total / 60);
   const s = total % 60;
   return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+function Waveform({ bars, active, reduce, color = "var(--iris)", h = 26 }: { bars: number[]; active: boolean; reduce: boolean | null; color?: string; h?: number }) {
+  return (
+    <span className="flex items-center justify-center gap-[2px]" style={{ height: h }} aria-hidden>
+      {bars.map((base, i) => (
+        <motion.span
+          key={i}
+          className="w-[2px] rounded-full"
+          style={{ background: color, height: "100%", originY: 0.5 }}
+          animate={reduce ? { scaleY: base * 0.5 } : active ? { scaleY: [base * 0.35, base, base * 0.5, base * 0.82, base * 0.35] } : { scaleY: 0.18 }}
+          transition={{ duration: 1.5, repeat: Infinity, delay: (i % 8) * 0.09, ease: "easeInOut" }}
+        />
+      ))}
+    </span>
+  );
 }
 
 export function InterviewDemo() {
@@ -36,7 +70,6 @@ export function InterviewDemo() {
   const [typing, setTyping] = useState(false);
   const [clock, setClock] = useState(247);
 
-  // reveal the transcript turn by turn
   useEffect(() => {
     if (!inView || reduce) return;
     let alive = true;
@@ -49,18 +82,17 @@ export function InterviewDemo() {
           if (!alive) return;
           setTyping(false);
           setShown(i + 1);
-          timers.push(setTimeout(() => run(i + 1), 620));
-        }, 720),
+          timers.push(setTimeout(() => run(i + 1), 900));
+        }, 900),
       );
     };
-    timers.push(setTimeout(() => run(0), 400));
+    timers.push(setTimeout(() => run(0), 500));
     return () => {
       alive = false;
       timers.forEach(clearTimeout);
     };
   }, [inView, reduce]);
 
-  // ticking session clock
   useEffect(() => {
     if (!inView || reduce) return;
     const id = setInterval(() => setClock((c) => c + 1), 1000);
@@ -68,129 +100,130 @@ export function InterviewDemo() {
   }, [inView, reduce]);
 
   const done = shown >= SCRIPT.length;
-  // the interviewer is "speaking" while asking (last shown turn is AI or nothing yet)
   const lastTurn = shown > 0 ? SCRIPT[shown - 1] : null;
-  const interviewerSpeaking = !lastTurn || lastTurn.who === "ai" || typing;
+  const speaking = !lastTurn || lastTurn.who === "ai" || typing;
 
   return (
     <div
       ref={ref}
-      className="glass relative overflow-hidden rounded-[var(--r-card)] p-2.5"
-      style={{ boxShadow: "var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,.7)" }}
+      className="glass relative overflow-hidden rounded-[calc(var(--r-card)+4px)] p-3"
+      style={{ boxShadow: "var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,.75)" }}
     >
-      {/* orbiting accent beam */}
-      <motion.span
-        aria-hidden
-        className="pointer-events-none absolute -inset-px rounded-[var(--r-card)] opacity-70"
-        style={{ background: "conic-gradient(from 0deg, transparent, var(--iris-ghost) 12%, transparent 26%)" }}
-        animate={reduce ? undefined : { rotate: 360 }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-      />
-
       {/* session header */}
-      <div className="relative mb-2.5 flex items-center justify-between px-1.5 pt-1">
+      <div className="relative z-[1] mb-3 flex items-center justify-between px-1.5 pt-0.5">
         <span className="inline-flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold" style={{ background: "rgba(220,38,38,.1)", color: "#dc2626" }}>
-            <motion.span aria-hidden animate={reduce ? undefined : { opacity: [1, 0.25, 1] }} transition={{ duration: 1.4, repeat: Infinity }}>
-              <Circle size={8} fill="#dc2626" strokeWidth={0} />
+          <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold tracking-wide" style={{ background: "rgba(220,38,38,.1)", color: "#dc2626" }}>
+            <motion.span aria-hidden animate={reduce ? undefined : { opacity: [1, 0.2, 1] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}>
+              <Circle size={7} fill="#dc2626" strokeWidth={0} />
             </motion.span>
             REC
           </span>
-          <span className="text-[11px] font-semibold text-[var(--ink-2)]">Live interview</span>
+          <span className="text-[11.5px] font-semibold text-[var(--ink-2)]">Live interview</span>
         </span>
-        <span className="text-[11px] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
+        <span className="text-[11.5px] tracking-wide text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
           {formatClock(clock)} · adaptive
         </span>
       </div>
 
-      <div className="relative grid gap-2.5 md:grid-cols-[1fr_1.05fr]">
-        {/* LEFT — the live interview stage (call-style) */}
-        <div className="relative flex flex-col overflow-hidden rounded-[18px] p-4" style={{ background: "linear-gradient(160deg, rgba(105,34,245,.12), rgba(105,34,245,.03))", border: "1px solid var(--glass-line)" }}>
-          {/* interviewer presence */}
-          <div className="relative mx-auto mt-1 grid h-[110px] w-[110px] place-items-center">
+      <div className="relative grid gap-3 md:grid-cols-[1fr_1.04fr]">
+        {/* LEFT — live interviewer stage */}
+        <div className="relative flex flex-col items-center overflow-hidden rounded-[20px] px-4 pb-4 pt-6" style={{ background: "radial-gradient(120% 90% at 50% 0%, rgba(105,34,245,.16), rgba(105,34,245,.02) 70%)", border: "1px solid var(--glass-line)" }}>
+          {/* ambient particles */}
+          {!reduce &&
+            PARTICLES.map((p, i) => (
+              <motion.span
+                key={i}
+                aria-hidden
+                className="absolute rounded-full"
+                style={{ left: p.x, top: p.y, width: p.s, height: p.s, background: "var(--iris)", opacity: 0.35 }}
+                animate={{ y: [0, -9, 0], opacity: [0.15, 0.45, 0.15] }}
+                transition={{ duration: 4.5, repeat: Infinity, delay: p.d, ease: "easeInOut" }}
+              />
+            ))}
+
+          {/* orb with soft halo bloom + concentric rings */}
+          <div className="relative grid h-[128px] w-[128px] place-items-center">
+            <span aria-hidden className="absolute h-[120px] w-[120px] rounded-full" style={{ background: "radial-gradient(circle, rgba(105,34,245,.4), transparent 65%)", filter: "blur(14px)" }} />
             {!reduce &&
-              [0, 1].map((r) => (
+              [0, 1, 2].map((r) => (
                 <motion.span
                   key={r}
                   aria-hidden
-                  className="absolute inset-0 rounded-full"
-                  style={{ border: "1.5px solid var(--iris)" }}
-                  animate={{ scale: [1, 1.55], opacity: [0.4, 0] }}
-                  transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut", delay: r * 1.1 }}
+                  className="absolute rounded-full"
+                  style={{ width: 92, height: 92, border: "1.5px solid var(--iris)" }}
+                  animate={{ scale: [1, 1.7], opacity: [0.35, 0] }}
+                  transition={{ duration: 3.4, repeat: Infinity, ease: "easeOut", delay: r * 1.13 }}
                 />
               ))}
-            <span className="relative grid h-[74px] w-[74px] place-items-center rounded-full" style={{ background: "linear-gradient(135deg, var(--iris-soft), var(--iris) 60%, var(--iris-ink))", boxShadow: "var(--shadow-iris)" }}>
-              <svg width="30" height="30" viewBox="133 119 354 400" aria-hidden>
+            <motion.span
+              className="relative grid h-[80px] w-[80px] place-items-center rounded-full"
+              style={{ background: "linear-gradient(140deg, var(--iris-soft), var(--iris) 55%, var(--iris-ink))", boxShadow: "0 12px 34px -8px rgba(105,34,245,.6), inset 0 2px 6px rgba(255,255,255,.4)" }}
+              animate={reduce ? undefined : { scale: speaking ? [1, 1.05, 1] : 1 }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <svg width="34" height="34" viewBox="133 119 354 400" aria-hidden>
                 <path d="M468 140 L152 142 L196 264 L259 264 L259 219 L269 208 L351 208 L361 218 L361 264 L425 264 Z" fill="#fff" />
                 <path d="M152 424 L258 497 L261 425 L468 425 L425 301 L361 301 L360 367 L310 336 L261 368 L259 301 L196 301 Z" fill="#fff" />
               </svg>
-            </span>
+            </motion.span>
           </div>
 
-          <p className="mt-3 text-center text-[12.5px] font-semibold text-[var(--ink)]">Placedon interviewer</p>
-          {/* speaking waveform */}
-          <span className="mt-2 flex h-5 items-center justify-center gap-[3px]" aria-hidden>
-            {[0, 1, 2, 3, 4, 5, 6].map((d) => (
-              <motion.span
-                key={d}
-                className="w-[3px] rounded-full"
-                style={{ background: "var(--iris)", height: "100%", originY: 0.5 }}
-                animate={reduce || !interviewerSpeaking ? { scaleY: 0.25 } : { scaleY: [0.25, 1, 0.4, 0.8, 0.3] }}
-                transition={{ duration: 1, repeat: Infinity, delay: d * 0.08, ease: "easeInOut" }}
-              />
-            ))}
-          </span>
-          <p className="mt-1.5 text-center text-[10.5px] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
-            {interviewerSpeaking ? "speaking…" : "listening…"}
+          <p className="mt-4 text-[13px] font-bold text-[var(--ink)]">Placedon interviewer</p>
+          <div className="mt-3 w-full max-w-[210px]">
+            <Waveform bars={WAVE} active={speaking} reduce={reduce} h={28} />
+          </div>
+          <p className="mt-2 text-[11px] tracking-wide text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
+            {speaking ? "speaking…" : "listening…"}
           </p>
 
-          {/* candidate tile */}
-          <div className="mt-auto flex items-center gap-2.5 rounded-[14px] p-2.5" style={{ background: "rgba(255,255,255,.6)", border: "1px solid var(--glass-line)" }}>
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full" style={{ background: "var(--mist)", color: "var(--ink-2)" }}>
-              <User size={16} />
+          {/* candidate chip */}
+          <div className="mt-5 flex w-full items-center gap-2.5 rounded-[15px] px-3 py-2.5" style={{ background: "rgba(255,255,255,.66)", border: "1px solid var(--glass-line)", backdropFilter: "blur(6px)" }}>
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-[11px] font-bold text-white" style={{ background: "linear-gradient(135deg,#9a6bff,#6922F5)" }}>
+              JS
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-[11.5px] font-semibold text-[var(--ink)]">You</p>
+              <p className="text-[11.5px] font-bold text-[var(--ink)]">You</p>
               <p className="text-[10px] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>mic on · text or voice</p>
             </div>
-            <span className="flex h-4 items-center gap-[2px]" aria-hidden>
-              {[0, 1, 2, 3].map((d) => (
-                <motion.span
-                  key={d}
-                  className="w-[2.5px] rounded-full"
-                  style={{ background: "var(--ink-3)", height: "100%", originY: 0.5 }}
-                  animate={reduce || interviewerSpeaking ? { scaleY: 0.3 } : { scaleY: [0.3, 0.9, 0.4, 0.7, 0.3] }}
-                  transition={{ duration: 0.9, repeat: Infinity, delay: d * 0.1, ease: "easeInOut" }}
-                />
-              ))}
-            </span>
+            <div className="w-[64px]">
+              <Waveform bars={MINI} active={!speaking} reduce={reduce} color="var(--ink-3)" h={16} />
+            </div>
           </div>
         </div>
 
-        {/* RIGHT — the transcript (side chat) */}
-        <div className="flex flex-col rounded-[18px] p-3.5" style={{ background: "rgba(255,255,255,.6)", border: "1px solid var(--glass-line)" }}>
-          <p className="mb-2.5 text-[10.5px] uppercase tracking-wider text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
+        {/* RIGHT — transcript (side chat) */}
+        <div className="flex flex-col rounded-[20px] p-4" style={{ background: "rgba(255,255,255,.62)", border: "1px solid var(--glass-line)" }}>
+          <p className="mb-3 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
             Transcript
           </p>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2.5">
             {SCRIPT.slice(0, shown).map((t, i) => (
               <motion.div
                 key={i}
-                initial={reduce ? false : { opacity: 0, y: 8 }}
+                initial={reduce ? false : { opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.34, ease }}
-                className={t.who === "you" ? "self-end" : "self-start"}
-                style={{ maxWidth: "92%" }}
+                transition={{ duration: 0.45, ease }}
+                className={`flex items-end gap-2 ${t.who === "you" ? "flex-row-reverse" : ""}`}
               >
-                <p className="mb-0.5 text-[10px] font-semibold tracking-wide text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
-                  {t.who === "ai" ? "Placedon" : "You"}
-                </p>
+                <span
+                  className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[9px] font-bold"
+                  style={t.who === "ai" ? { background: "var(--iris-ghost)", color: "var(--iris-ink)" } : { background: "linear-gradient(135deg,#9a6bff,#6922F5)", color: "#fff" }}
+                >
+                  {t.who === "ai" ? (
+                    <svg width="11" height="11" viewBox="133 119 354 400" aria-hidden>
+                      <path d="M468 140 L152 142 L196 264 L259 264 L259 219 L269 208 L351 208 L361 218 L361 264 L425 264 Z" fill="currentColor" />
+                      <path d="M152 424 L258 497 L261 425 L468 425 L425 301 L361 301 L360 367 L310 336 L261 368 L259 301 L196 301 Z" fill="currentColor" />
+                    </svg>
+                  ) : (
+                    "JS"
+                  )}
+                </span>
                 <div
-                  className="rounded-2xl px-3 py-2 text-[12.5px] leading-snug"
+                  className="rounded-2xl px-3.5 py-2.5 text-[12.5px] leading-snug"
                   style={
                     t.who === "you"
-                      ? { background: "linear-gradient(135deg, var(--iris-soft), var(--iris))", color: "#fff" }
-                      : { background: "#fff", color: "var(--ink)", border: "1px solid var(--glass-line)" }
+                      ? { background: "linear-gradient(135deg, var(--iris-soft), var(--iris))", color: "#fff", borderBottomRightRadius: 6, maxWidth: "82%" }
+                      : { background: "#fff", color: "var(--ink)", border: "1px solid var(--glass-line)", borderBottomLeftRadius: 6, maxWidth: "82%" }
                   }
                 >
                   {t.text}
@@ -198,43 +231,51 @@ export function InterviewDemo() {
               </motion.div>
             ))}
             {typing && (
-              <div className="self-start rounded-2xl bg-white px-3 py-2.5" style={{ border: "1px solid var(--glass-line)" }}>
-                <span className="flex gap-1">
-                  {[0, 1, 2].map((d) => (
-                    <motion.span
-                      key={d}
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ background: "var(--ink-3)" }}
-                      animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
-                      transition={{ duration: 0.9, repeat: Infinity, delay: d * 0.15 }}
-                    />
-                  ))}
+              <div className="flex items-end gap-2">
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
+                  <svg width="11" height="11" viewBox="133 119 354 400" aria-hidden>
+                    <path d="M468 140 L152 142 L196 264 L259 264 L259 219 L269 208 L351 208 L361 218 L361 264 L425 264 Z" fill="currentColor" />
+                    <path d="M152 424 L258 497 L261 425 L468 425 L425 301 L361 301 L360 367 L310 336 L261 368 L259 301 L196 301 Z" fill="currentColor" />
+                  </svg>
                 </span>
+                <div className="rounded-2xl bg-white px-3.5 py-3" style={{ border: "1px solid var(--glass-line)", borderBottomLeftRadius: 6 }}>
+                  <span className="flex gap-1">
+                    {[0, 1, 2].map((d) => (
+                      <motion.span
+                        key={d}
+                        className="h-1.5 w-1.5 rounded-full"
+                        style={{ background: "var(--ink-3)" }}
+                        animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
+                        transition={{ duration: 1, repeat: Infinity, delay: d * 0.16 }}
+                      />
+                    ))}
+                  </span>
+                </div>
               </div>
             )}
           </div>
         </div>
       </div>
 
-      {/* signal strip — keeps the value prop without looking like a chat */}
-      <div className="relative mt-2.5 rounded-[16px] p-3" style={{ background: "rgba(255,255,255,.72)", border: "1px solid var(--glass-line)" }}>
-        <div className="mb-2 flex items-center justify-between">
-          <p className="text-[10.5px] uppercase tracking-wider text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
+      {/* signal strip */}
+      <div className="relative mt-3 rounded-[16px] p-3.5" style={{ background: "rgba(255,255,255,.74)", border: "1px solid var(--glass-line)" }}>
+        <div className="mb-2.5 flex items-center justify-between">
+          <p className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
             Signal extracted, live
           </p>
-          <span className="text-[10.5px] text-[var(--ink-3)]">every score → a transcript moment</span>
+          <span className="hidden text-[10.5px] text-[var(--ink-3)] sm:inline">every score → a transcript moment</span>
         </div>
-        <div className="grid grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-3 gap-3">
           {TRAITS.map((tr, i) => (
             <motion.div
               key={tr.label}
-              initial={reduce ? false : { opacity: 0, y: 8 }}
+              initial={reduce ? false : { opacity: 0, y: 10 }}
               animate={done ? { opacity: 1, y: 0 } : reduce ? { opacity: 1 } : {}}
-              transition={{ duration: 0.4, delay: 0.1 + i * 0.1, ease }}
+              transition={{ duration: 0.5, delay: 0.1 + i * 0.12, ease }}
             >
-              <div className="mb-1 flex items-baseline justify-between">
+              <div className="mb-1 flex items-baseline justify-between gap-1">
                 <span className="truncate text-[11px] font-medium text-[var(--ink-2)]">{tr.label}</span>
-                <span className="text-[12px] font-bold" style={{ color: "var(--iris-ink)", fontVariantNumeric: "tabular-nums" }}>{tr.score}</span>
+                <span className="text-[13px] font-bold" style={{ color: "var(--iris-ink)", fontVariantNumeric: "tabular-nums" }}>{tr.score}</span>
               </div>
               <div className="h-1.5 overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
                 <motion.div
@@ -242,7 +283,7 @@ export function InterviewDemo() {
                   style={{ background: "linear-gradient(90deg, var(--iris-soft), var(--iris))" }}
                   initial={{ width: 0 }}
                   animate={done ? { width: `${tr.score}%` } : reduce ? { width: `${tr.score}%` } : {}}
-                  transition={{ duration: 1, delay: 0.2 + i * 0.1, ease }}
+                  transition={{ duration: 1.1, delay: 0.2 + i * 0.12, ease }}
                 />
               </div>
             </motion.div>
