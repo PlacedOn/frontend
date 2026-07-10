@@ -52,12 +52,12 @@ export function TrustPassport() {
       {/* Explainer */}
       <div className="mb-6 rounded-[var(--r-card)] p-5" style={{ background: "var(--iris-ghost)" }}>
         <p className="text-[14px] font-bold text-[var(--ink)]">
-          Your interview, turned into a calibrated fingerprint — and you control what employers see.
+          One interview becomes a clear map of your skills — and you decide what employers see.
         </p>
         <ol className="mt-3 grid gap-2.5 sm:grid-cols-3">
           {[
-            "Each dimension has a score and a confidence band — how sure we are, not just a number.",
-            "Every score links to your own words. Tap a dimension to hide it from employers.",
+            "Each skill gets a score, and how confident we are in it — not just a number.",
+            "Every score comes from your own words. Tap any skill to hide it from employers.",
             "Nothing is shared until you tap Approve.",
           ].map((t, i) => (
             <li key={i} className="flex gap-2 text-[13px] leading-relaxed text-[var(--ink-2)]">
@@ -77,18 +77,18 @@ export function TrustPassport() {
             <BadgeCheck size={14} /> Verified via interview
           </span>
           <h2 className="mt-4 text-[clamp(1.6rem,1.2rem+1.6vw,2.2rem)]">
-            {report ? `${report.candidateName}` : "Your HCV"}
+            {report ? `${report.candidateName}` : "Your skill profile"}
             {report?.roleContext ? <span className="text-[var(--ink-3)]"> · {report.roleContext}</span> : null}
           </h2>
           <p className="mt-3 max-w-md leading-relaxed text-[var(--ink-2)]">{report?.summary}</p>
           <div className="mt-5 flex items-end gap-6">
             <div>
               <p className="font-[var(--font-mono)] text-[34px] font-bold leading-none" style={{ color: "var(--iris-ink)" }}>{overall}</p>
-              <p className="mt-1 text-[12px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">Overall readiness</p>
+              <p className="mt-1 text-[12px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">Overall skill score</p>
             </div>
             <div>
               <p className="font-[var(--font-mono)] text-[34px] font-bold leading-none text-[var(--ink)]">{overallConfidence}%</p>
-              <p className="mt-1 text-[12px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">Calibrated confidence</p>
+              <p className="mt-1 text-[12px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">How confident we are</p>
             </div>
           </div>
         </div>
@@ -145,7 +145,7 @@ export function TrustPassport() {
             className="inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] border px-6 py-3.5 text-[15px] font-bold text-[var(--ink)] transition-colors hover:bg-white"
             style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass)" }}
           >
-            Add more signal
+            Take another interview
           </Link>
         </div>
       )}

@@ -16,7 +16,7 @@ export default function CandidateProfilePage() {
           Your profile, <span className="grad-iris">before</span> employers see it.
         </>
       }
-      intro="Every trait traces to your own words. Employers only ever see the evidence you approve — nothing is shared by default."
+      intro="Every skill here comes straight from your own words. Employers only see what you approve — nothing is shared by default."
     >
       <TrustPassport />
     </RoutePage>

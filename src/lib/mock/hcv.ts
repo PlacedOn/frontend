@@ -70,7 +70,7 @@ const MOCK_DIMENSIONS: HcvDimension[] = [
 const MOCK: HcvReport = {
   candidateName: "Aisha Sharma",
   roleContext: "Frontend Engineer",
-  summary: "Strong evidence-backed frontend and collaboration profile.",
+  summary: "Strong, proven skills in frontend engineering and working with a team.",
   overall: 84,
   overallConfidence: 0.83,
   dimensions: MOCK_DIMENSIONS,

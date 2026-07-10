@@ -32,7 +32,7 @@ export function HcvDimensionRow({ dim, index, onToggle, delay = 0 }: Props) {
       <div className="mt-3">
         <ConfidenceBand score={dim.score} uncertainty={dim.uncertainty} delay={delay} />
         <p className="mt-1.5 text-[11px] text-[var(--ink-3)]">
-          {wide ? "Still forming — one more example would sharpen this." : "Well-evidenced — a tight, confident read."}
+          {wide ? "Still forming — one more example would make this clearer." : "Strong, clear evidence for this skill."}
         </p>
       </div>
 
