@@ -194,5 +194,12 @@ Intro CTA:   Browser → POST /api/intro-request → Supabase (opt-in leads)
 
 ### Loop status
 - ✅ Research done (RemoteStar teardown, backend HCV data, current UI gap).
-- ▶ **This doc = plan v1.** Refine §10 decisions, then Phase 1.
-- Interview WS + `/demo/hcv` already live (tested today) — build is UI-led, low backend risk.
+- ✅ **Decisions:** build order **B → C → A**; viz = **radar + confidence bands**;
+  64-dim = roadmap (ship 4 rich dims now).
+- ✅ **Phase 1 + 2 DONE & deployed** — `ConfidenceBand`, `HcvRadar`,
+  `HcvDimensionRow`, `getHcvReport()`; `/candidate/profile` rewired to the
+  calibrated fingerprint. Verified **live in production** against the real
+  `/demo/hcv` ("LIVE · FROM BACKEND", 4 real dimensions with confidence bands).
+- ▶ **Next: Phase 3 — Surface C** (`/p/[slug]` public shareable report), then
+  **Phase 4 — Surface A** (interview redesign).
+- Interview WS + `/demo/hcv` live (tested) — build is UI-led, low backend risk.
