@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { ShieldCheck, ScrollText, Scale, MessageSquareWarning } from "lucide-react";
+import Link from "next/link";
+import { ShieldCheck, ScrollText, Scale, MessageSquareWarning, ArrowRight } from "lucide-react";
 import { RoutePage } from "@/components/layout/RoutePage";
 
 export const metadata: Metadata = {
@@ -10,28 +11,32 @@ export const metadata: Metadata = {
 
 const PILLARS = [
   {
-    id: "scoring",
+    href: "/trust/scoring",
     icon: ShieldCheck,
     title: "How scoring works",
-    body: "Every trait model is tested for adverse impact across protected groups before it ships, and re-audited on a fixed cadence. Each score links to the exact transcript moment behind it — results are documented, not asserted.",
+    body: "One conversation becomes evidence-linked trait scores with an honest confidence band. Each score points to the exact moment behind it — results are documented, not asserted.",
+    cta: "See the method",
   },
   {
-    id: "ll144",
+    href: "/trust/ll144",
     icon: ScrollText,
     title: "NYC Local Law 144",
-    body: "Placedon maintains an independent bias audit and publishes the summary of results, in line with LL144 requirements for automated employment decision tools.",
+    body: "The bias-audit law for automated hiring tools: an independent annual audit, a public summary, and advance notice to candidates. Here's what it requires and how we support it.",
+    cta: "Read the details",
   },
   {
-    id: "eu-ai-act",
+    href: "/trust/eu-ai-act",
     icon: Scale,
-    title: "EU AI Act aligned",
-    body: "Hiring is a high-risk use case. We keep records of logic, data lineage, and human oversight so employers can meet their obligations under the Act.",
+    title: "EU AI Act",
+    body: "Recruitment AI is high-risk under the Act. We keep records of logic, data lineage, and human oversight so deployers can meet their obligations — with a person always in the loop.",
+    cta: "Read the details",
   },
   {
-    id: "contest",
+    href: "/trust/contest",
     icon: MessageSquareWarning,
-    title: "Contest any trait",
-    body: "Candidates see every trait we extract, the exact transcript moment behind it, and can flag or contest it. No score is final without a path to challenge it.",
+    title: "Contest a trait",
+    body: "Candidates see every trait we extract, the exact moment behind it, and can hide or formally contest it. No score is final without a path to challenge it.",
+    cta: "See your rights",
   },
 ];
 
@@ -50,7 +55,11 @@ export default function TrustPage() {
         {PILLARS.map((p) => {
           const Icon = p.icon;
           return (
-            <article key={p.title} id={p.id} className="glass scroll-mt-28 rounded-[var(--r-card)] p-7">
+            <Link
+              key={p.title}
+              href={p.href}
+              className="glass group flex flex-col rounded-[var(--r-card)] p-7 transition-shadow duration-[var(--d-std)] hover:shadow-[var(--shadow-md)]"
+            >
               <span
                 className="grid h-11 w-11 place-items-center rounded-2xl"
                 style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}
@@ -59,7 +68,17 @@ export default function TrustPage() {
               </span>
               <h2 className="mt-5 text-[1.35rem]">{p.title}</h2>
               <p className="mt-2.5 text-[14.5px] leading-relaxed text-[var(--ink-2)]">{p.body}</p>
-            </article>
+              <span
+                className="mt-5 inline-flex items-center gap-1.5 text-[13.5px] font-semibold"
+                style={{ color: "var(--iris-ink)" }}
+              >
+                {p.cta}
+                <ArrowRight
+                  size={15}
+                  className="transition-transform duration-[var(--d-micro)] group-hover:translate-x-0.5"
+                />
+              </span>
+            </Link>
           );
         })}
       </div>

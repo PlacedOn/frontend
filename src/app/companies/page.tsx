@@ -20,9 +20,9 @@ export const metadata: Metadata = {
 };
 
 const COMPLIANCE = [
-  { icon: ScrollText, title: "NYC Local Law 144", body: "Automated employment decisions are bias-audited, as the law requires.", href: "/trust#ll144" },
-  { icon: Scale, title: "EU AI Act aligned", body: "Built for transparency and human oversight from the ground up.", href: "/trust#eu-ai-act" },
-  { icon: Gavel, title: "Contestable by design", body: "Every score is sourced and challengeable — no black-box decisions.", href: "/trust#contest" },
+  { icon: ScrollText, title: "NYC Local Law 144", body: "Automated employment decisions are bias-audited, as the law requires.", href: "/trust/ll144" },
+  { icon: Scale, title: "EU AI Act aligned", body: "Built for transparency and human oversight from the ground up.", href: "/trust/eu-ai-act" },
+  { icon: Gavel, title: "Contestable by design", body: "Every score is sourced and challengeable — no black-box decisions.", href: "/trust/contest" },
 ];
 
 const STRIP = [

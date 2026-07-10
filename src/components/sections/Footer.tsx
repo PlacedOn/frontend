@@ -15,10 +15,10 @@ const COLS: { title: string; links: FooterLink[] }[] = [
   {
     title: "Trust",
     links: [
-      { label: "How scoring works", href: "/trust#scoring" },
-      { label: "LL144 compliance", href: "/trust#ll144" },
-      { label: "EU AI Act", href: "/trust#eu-ai-act" },
-      { label: "Contest a trait", href: "/trust#contest" },
+      { label: "How scoring works", href: "/trust/scoring" },
+      { label: "LL144 compliance", href: "/trust/ll144" },
+      { label: "EU AI Act", href: "/trust/eu-ai-act" },
+      { label: "Contest a trait", href: "/trust/contest" },
     ],
   },
   {
