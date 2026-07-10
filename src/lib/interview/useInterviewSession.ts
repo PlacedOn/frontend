@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Drives a live PlacedOn interview. When a real backend is configured it opens
+ * Drives a live Placedon interview. When a real backend is configured it opens
  * WS /ws/{interview_id} and streams questions (question_token → question), and
  * sends answers as { type: "answer", message_id, content } — mirroring
  * backend/app/websocket_router.py exactly. With no backend it runs an

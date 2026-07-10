@@ -103,7 +103,7 @@ export function InterviewDemo() {
               )}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-[12px] font-semibold text-[var(--ink)]">PlacedOn interviewer</p>
+              <p className="text-[12px] font-semibold text-[var(--ink)]">Placedon interviewer</p>
               <p className="text-[10.5px] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>listening · adaptive</p>
             </div>
             <span className="flex h-5 items-center gap-[3px]" aria-hidden>
@@ -130,7 +130,7 @@ export function InterviewDemo() {
                 style={{ maxWidth: "88%" }}
               >
                 <p className="mb-1 text-[11px] font-semibold tracking-wide text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
-                  {t.who === "ai" ? "PlacedOn" : "Candidate"}
+                  {t.who === "ai" ? "Placedon" : "Candidate"}
                 </p>
                 <div
                   className="rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-snug"

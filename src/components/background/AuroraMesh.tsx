@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 /*
  * Living gradient-mesh backdrop. Adapted from 21st.dev "Aurora Background"
  * by @dev.yadhakim (Linear/Vercel/Stripe-style morphing blobs), retuned to
- * the PlacedOn Frost Luxe palette and made reduced-motion safe. Fixed,
+ * the Placedon Frost Luxe palette and made reduced-motion safe. Fixed,
  * non-interactive, sits beneath all content with a masked dot grid on top.
  */
 

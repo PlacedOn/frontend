@@ -3,7 +3,7 @@ import { RoutePage } from "@/components/layout/RoutePage";
 import { CandidateMatches } from "@/components/candidate/CandidateMatches";
 
 export const metadata: Metadata = {
-  title: "Your matches — PlacedOn",
+  title: "Your matches — Placedon",
   description: "Roles matched to your evidence — with the exact quotes behind every fit, and full control over your interest.",
 };
 

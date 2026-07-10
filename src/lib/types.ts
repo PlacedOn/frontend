@@ -1,6 +1,6 @@
 /**
- * Domain types mirroring the PlacedOn backend data contracts
- * (PlacedOn/frontend/src/imports/data-contracts.md + backend/app/models.py).
+ * Domain types mirroring the Placedon backend data contracts
+ * (Placedon/frontend/src/imports/data-contracts.md + backend/app/models.py).
  * Field names match the wire format so responses map without translation.
  */
 

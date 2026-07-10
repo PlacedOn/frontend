@@ -39,7 +39,7 @@ export function Nav() {
           scrolled ? undefined : { background: "rgba(255,255,255,.35)", backdropFilter: "blur(8px)" }
         }
       >
-        <a href="#top" aria-label="PlacedOn home">
+        <a href="#top" aria-label="Placedon home">
           <Logo />
         </a>
 

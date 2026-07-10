@@ -6,7 +6,7 @@ import { cn } from "@/lib/cn";
 /*
  * Structure + motion adapted from 21st.dev "Testimonials" by
  * @santiago_f2e051f5 (editorial 3-up, stagger-on-view, hover-lift),
- * restyled to the PlacedOn Frost Luxe glass + iris token system.
+ * restyled to the Placedon Frost Luxe glass + iris token system.
  */
 
 type Testimonial = {
@@ -18,7 +18,7 @@ type Testimonial = {
 const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "We stopped shortlisting on keywords and started reading how people actually reason. Our first two PlacedOn hires were people we'd have filtered out on paper.",
+      "We stopped shortlisting on keywords and started reading how people actually reason. Our first two Placedon hires were people we'd have filtered out on paper.",
     author: "Dana Okafor",
     context: "Head of Talent · Meridian",
   },

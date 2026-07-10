@@ -6,9 +6,9 @@ import { DemoForm } from "@/components/demo/DemoForm";
 import { Quote, ShieldCheck, Gauge } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Book a demo — PlacedOn",
+  title: "Book a demo — Placedon",
   description:
-    "See PlacedOn on your own roles. Evidence-backed candidate signal from one calm interview — no keyword roulette, no black box.",
+    "See Placedon on your own roles. Evidence-backed candidate signal from one calm interview — no keyword roulette, no black box.",
 };
 
 const PROMISES = [
@@ -40,7 +40,7 @@ export default function DemoPage() {
           <div className="md:pt-6">
             <p className="eyebrow">Book a demo</p>
             <h1 className="mt-3 text-[clamp(2.3rem,1.5rem+3vw,3.7rem)] leading-[1.02]">
-              See PlacedOn on
+              See Placedon on
               <br />
               your own roles.
             </h1>

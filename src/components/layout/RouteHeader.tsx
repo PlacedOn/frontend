@@ -15,7 +15,7 @@ export function RouteHeader() {
         aria-label="Main"
         className="glass flex w-full max-w-[var(--max)] items-center justify-between rounded-[var(--r-chip)] px-4 py-2.5"
       >
-        <Link href="/" aria-label="PlacedOn home">
+        <Link href="/" aria-label="Placedon home">
           <Logo />
         </Link>
         <div className="flex items-center gap-2">

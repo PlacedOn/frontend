@@ -6,7 +6,7 @@ import { CandidateDashboard } from "@/components/candidate/CandidateDashboard";
 import { DASHBOARD_MODES, type CandidateDashboardMode } from "@/lib/mock/candidate";
 
 export const metadata: Metadata = {
-  title: "Your PlacedOn — Candidate dashboard",
+  title: "Your Placedon — Candidate dashboard",
   description: "One clear next action. Your interview, your profile, your visibility — always in your control.",
 };
 

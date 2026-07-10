@@ -3,7 +3,7 @@ import { RoutePage } from "@/components/layout/RoutePage";
 import { EmployerDashboard } from "@/components/employer/EmployerDashboard";
 
 export const metadata: Metadata = {
-  title: "Hiring dashboard — PlacedOn",
+  title: "Hiring dashboard — Placedon",
   description: "Review evidence-backed candidates, post roles, and request intros — you never see a raw transcript, only approved evidence.",
 };
 

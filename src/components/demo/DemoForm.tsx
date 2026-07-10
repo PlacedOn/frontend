@@ -77,7 +77,7 @@ export function DemoForm() {
         </motion.span>
         <h2 className="text-[1.5rem]">You&rsquo;re on the list.</h2>
         <p className="mx-auto mt-2 max-w-xs text-[14.5px] leading-relaxed text-[var(--ink-2)]">
-          We&rsquo;ll reach out within one business day to set up your PlacedOn walkthrough.
+          We&rsquo;ll reach out within one business day to set up your Placedon walkthrough.
         </p>
         <Link
           href="/"

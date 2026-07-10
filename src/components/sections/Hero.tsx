@@ -40,9 +40,9 @@ export function Hero() {
             {...rise(0.24)}
             className="mt-6 text-[clamp(1.05rem,1rem+0.4vw,1.25rem)] leading-relaxed text-[var(--ink-2)]"
           >
-            One real conversation shows what a résumé can&rsquo;t — how someone
-            reasons, makes calls, and handles the messy parts of the job. That&rsquo;s
-            the skill you&rsquo;re actually hiring for.
+            A résumé lists claims. One honest conversation proves them — how a
+            person reasons, makes the tough call, and handles the messy middle of
+            real work. Hire for that.
           </motion.p>
 
           <motion.div {...rise(0.34)} className="mt-8 flex flex-wrap items-center gap-3">

@@ -68,7 +68,7 @@ export function Footer() {
             </div>
           </div>
           <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t pt-6 text-[13px] text-[var(--ink-3)] sm:flex-row sm:items-center" style={{ borderColor: "var(--glass-line)" }}>
-            <span>© {new Date().getFullYear()} PlacedOn. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} Placedon. All rights reserved.</span>
             <span>Bias-audited · LL144 &amp; EU AI Act aligned</span>
           </div>
         </div>

@@ -10,7 +10,7 @@ type Props = {
 };
 
 /**
- * PlacedOn brand mark (from placedon_mark.svg) set in an animated
+ * Placedon brand mark (from placedon_mark.svg) set in an animated
  * frosted-glass tile: a slow rotating iris sheen behind the glyph,
  * a gentle float, and a soft glow pulse. Glyph is filled with
  * var(--iris) so it tracks the brand token.
@@ -71,7 +71,7 @@ export function Logo({ size = 34, showWordmark = true, className }: Props) {
           className="text-[19px] font-bold tracking-tight"
           style={{ fontFamily: "var(--font-display)", color: "var(--ink)" }}
         >
-          Placed<span className="grad-iris">On</span>
+          Placed<span className="grad-iris">on</span>
         </span>
       )}
     </span>

@@ -3,7 +3,7 @@ import { RoutePage } from "@/components/layout/RoutePage";
 import { InterviewRoom } from "@/components/interview/InterviewRoom";
 
 export const metadata: Metadata = {
-  title: "Interview room — PlacedOn",
+  title: "Interview room — Placedon",
   description: "A live, adaptive conversation — not a test. Answer in your own words; you review every trait before employers see it.",
 };
 

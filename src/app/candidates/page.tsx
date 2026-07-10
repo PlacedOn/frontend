@@ -14,7 +14,7 @@ import { RoleMatchCarousel } from "@/components/candidates/RoleMatchCarousel";
 import { CandidatesFaq } from "@/components/candidates/CandidatesFaq";
 
 export const metadata: Metadata = {
-  title: "For candidates · PlacedOn",
+  title: "For candidates · Placedon",
   description:
     "Skip the résumé pile. Prove your skill in one honest conversation, then decide exactly what employers see. Free for candidates.",
 };
@@ -104,7 +104,7 @@ function InControl() {
         <span className="eyebrow">You&apos;re in control</span>
         <h2 className="mt-4 text-[clamp(2rem,1.4rem+2.4vw,3.2rem)]">Your interview. Your terms.</h2>
         <p className="mt-5 leading-relaxed text-[var(--ink-2)]">
-          RemoteStar scores you. PlacedOn hands you the mic — and the veto.
+          RemoteStar scores you. Placedon hands you the mic — and the veto.
         </p>
       </div>
       <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">

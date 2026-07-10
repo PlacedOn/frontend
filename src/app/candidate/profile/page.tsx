@@ -3,7 +3,7 @@ import { RoutePage } from "@/components/layout/RoutePage";
 import { TrustPassport } from "@/components/candidate/TrustPassport";
 
 export const metadata: Metadata = {
-  title: "Your profile — PlacedOn",
+  title: "Your profile — Placedon",
   description: "Your evidence-backed Trust Passport. Review every trait and its quote before employers see anything.",
 };
 

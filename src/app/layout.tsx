@@ -17,11 +17,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "PlacedOn — hire for how people actually think",
+  title: "Placedon — hire for how people actually think",
   description:
-    "PlacedOn runs one adaptive interview and extracts the signal — the traits behind the résumé — so teams hire for how people actually think.",
+    "Placedon runs one adaptive interview and extracts the signal — the traits behind the résumé — so teams hire for how people actually think.",
   openGraph: {
-    title: "PlacedOn — hire for how people actually think",
+    title: "Placedon — hire for how people actually think",
     description:
       "One adaptive interview. Real signal, not résumés. See the traits behind every candidate.",
     type: "website",

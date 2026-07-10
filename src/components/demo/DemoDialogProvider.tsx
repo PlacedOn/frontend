@@ -129,7 +129,7 @@ export function DemoDialogProvider({ children }: { children: ReactNode }) {
                   </span>
                   <h2 id="demo-title" className="text-[1.4rem]">You&rsquo;re on the list.</h2>
                   <p className="mt-2 text-[14.5px] text-[var(--ink-2)]">
-                    We&rsquo;ll reach out within one business day to set up your PlacedOn walkthrough.
+                    We&rsquo;ll reach out within one business day to set up your Placedon walkthrough.
                   </p>
                   <button
                     onClick={close}
@@ -143,7 +143,7 @@ export function DemoDialogProvider({ children }: { children: ReactNode }) {
                 <>
                   <p className="eyebrow">Book a demo</p>
                   <h2 id="demo-title" className="mt-2 text-[1.5rem]">
-                    See PlacedOn on your roles.
+                    See Placedon on your roles.
                   </h2>
 
                   <div

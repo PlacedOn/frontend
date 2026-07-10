@@ -3,8 +3,8 @@ import { Mic, ShieldCheck, Accessibility, ArrowRight } from "lucide-react";
 import { RoutePage } from "@/components/layout/RoutePage";
 
 export const metadata: Metadata = {
-  title: "Before you start — PlacedOn",
-  description: "Readiness, consent, and accommodations before your PlacedOn interview.",
+  title: "Before you start — Placedon",
+  description: "Readiness, consent, and accommodations before your Placedon interview.",
 };
 
 const CHECKS = [

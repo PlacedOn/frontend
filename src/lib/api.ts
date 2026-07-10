@@ -1,5 +1,5 @@
 /**
- * Typed client for the PlacedOn FastAPI backend.
+ * Typed client for the Placedon FastAPI backend.
  * Mirrors backend/app/{demo_routes,api_routes}.py. Base URL is env-driven
  * so this drops onto the real backend without code changes.
  *

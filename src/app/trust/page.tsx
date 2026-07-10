@@ -3,9 +3,9 @@ import { ShieldCheck, ScrollText, Scale, MessageSquareWarning } from "lucide-rea
 import { RoutePage } from "@/components/layout/RoutePage";
 
 export const metadata: Metadata = {
-  title: "Trust & fairness — PlacedOn",
+  title: "Trust & fairness — Placedon",
   description:
-    "How PlacedOn stays explainable, contestable, and compliant — LL144, the EU AI Act, and candidate control.",
+    "How Placedon stays explainable, contestable, and compliant — LL144, the EU AI Act, and candidate control.",
 };
 
 const PILLARS = [
@@ -19,7 +19,7 @@ const PILLARS = [
     id: "ll144",
     icon: ScrollText,
     title: "NYC Local Law 144",
-    body: "PlacedOn maintains an independent bias audit and publishes the summary of results, in line with LL144 requirements for automated employment decision tools.",
+    body: "Placedon maintains an independent bias audit and publishes the summary of results, in line with LL144 requirements for automated employment decision tools.",
   },
   {
     id: "eu-ai-act",
@@ -44,7 +44,7 @@ export default function TrustPage() {
           Signal you can <span className="grad-iris">defend</span> in a room.
         </>
       }
-      intro="Assessing people is a responsibility. Here is exactly how PlacedOn stays explainable, contestable, and compliant — for the candidate and the employer."
+      intro="Assessing people is a responsibility. Here is exactly how Placedon stays explainable, contestable, and compliant — for the candidate and the employer."
     >
       <div className="grid gap-4 md:grid-cols-2">
         {PILLARS.map((p) => {

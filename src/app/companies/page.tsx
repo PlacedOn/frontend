@@ -14,7 +14,7 @@ import { CandidateMatchCarousel } from "@/components/companies/CandidateMatchCar
 import { CompaniesFaq } from "@/components/companies/CompaniesFaq";
 
 export const metadata: Metadata = {
-  title: "For hiring teams · PlacedOn",
+  title: "For hiring teams · Placedon",
   description:
     "Hire on evidence, not résumés. Every candidate arrives pre-interviewed — you see approved, verifiable signals, never a raw transcript. Bias-audited and compliant.",
 };
@@ -56,7 +56,7 @@ function ComplianceBlock() {
         </h2>
         <p className="mt-5 leading-relaxed text-[var(--ink-2)]">
           Speed means nothing if a hire can&apos;t survive scrutiny. Every decision on
-          PlacedOn is auditable, sourced, and contestable.
+          Placedon is auditable, sourced, and contestable.
         </p>
       </div>
       <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">

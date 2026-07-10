@@ -78,7 +78,7 @@ export interface NextAction {
 export const NEXT_ACTION: Record<CandidateDashboardMode, NextAction> = {
   new_candidate: {
     eyebrow: "First step",
-    title: "Start your PlacedOn interview.",
+    title: "Start your Placedon interview.",
     description:
       "One calm conversation creates the evidence-backed profile employers can review — after you approve it.",
     label: "Start interview",

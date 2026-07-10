@@ -13,7 +13,7 @@ const MARGIN = 34;
 const ease = [0.22, 0.68, 0.31, 1] as const;
 
 /**
- * The signature PlacedOn viz: a score shown *with* its calibrated confidence
+ * The signature Placedon viz: a score shown *with* its calibrated confidence
  * interval. The point estimate is a marker; the translucent band around it is
  * the uncertainty (tight = sure, wide = still forming). RemoteStar shows a flat
  * number — this shows how sure we are.

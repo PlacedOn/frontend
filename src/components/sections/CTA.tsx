@@ -63,7 +63,7 @@ export function CTA() {
                 className="mt-5 max-w-xl text-[16.5px] leading-relaxed md:mx-0"
                 style={{ color: "rgba(255,255,255,.82)" }}
               >
-                Give one team one week on PlacedOn. Watch how fast “who should we
+                Give one team one week on Placedon. Watch how fast “who should we
                 talk to?” gets an honest answer.
               </p>
 
