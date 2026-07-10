@@ -5,7 +5,8 @@ import type { NextConfig } from "next";
  * - 'unsafe-inline' on script/style is a pragmatic baseline: Next injects
  *   inline bootstrap scripts and the app uses inline style props (Motion).
  *   Tighten to a per-request nonce via middleware when we add auth.
- * - connect-src allows Supabase (leads) and the planned Render backend + WS.
+ * - connect-src allows Supabase (leads) and the FastAPI backend + WS on
+ *   Google Cloud Run (*.run.app). Render origins kept for portability.
  */
 const csp = [
   "default-src 'self'",
@@ -17,7 +18,7 @@ const csp = [
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
   "script-src 'self' 'unsafe-inline'",
-  "connect-src 'self' https://*.supabase.co https://*.onrender.com wss://*.onrender.com",
+  "connect-src 'self' https://*.supabase.co https://*.run.app wss://*.run.app https://*.onrender.com wss://*.onrender.com",
   "upgrade-insecure-requests",
 ].join("; ");
 
