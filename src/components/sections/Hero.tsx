@@ -24,7 +24,7 @@ export function Hero() {
           <motion.div {...rise(0.05)}>
             <span className="chip">
               <Sparkles size={14} style={{ color: "var(--iris)" }} />
-              One interview. The whole signal.
+              Skills speak. Résumés don’t.
             </span>
           </motion.div>
 
