@@ -18,7 +18,7 @@ const csp = [
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
   "script-src 'self' 'unsafe-inline'",
-  "connect-src 'self' https://*.supabase.co https://*.run.app wss://*.run.app https://*.onrender.com wss://*.onrender.com",
+  "connect-src 'self' https://*.supabase.co https://*.run.app wss://*.run.app https://*.trycloudflare.com wss://*.trycloudflare.com https://*.onrender.com wss://*.onrender.com",
   "upgrade-insecure-requests",
 ].join("; ");
 
