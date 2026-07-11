@@ -29,7 +29,7 @@ export default function EuAiActPage() {
         items={[
           { value: "Annex III", label: "Recruitment AI is named a high-risk use case" },
           { value: "Art. 14", label: "Meaningful human oversight is mandatory" },
-          { value: "€15M / 3%", label: "Deployer penalty ceiling — fine or global turnover" },
+          { value: "€15M / 3%", label: "Deployer penalty ceiling (about ₹140 crore) or 3% of global turnover" },
         ]}
       />
 
@@ -71,7 +71,8 @@ export default function EuAiActPage() {
         <p>
           High-risk obligations phase in from August 2026, and timelines may shift as implementation
           guidance (including the proposed Digital Omnibus) is finalised. Deployer penalties for the
-          most serious breaches reach up to €15 million or 3% of worldwide annual turnover.
+          most serious breaches reach up to €15 million (about ₹140 crore) or 3% of worldwide annual
+          turnover.
         </p>
       </DocSection>
 

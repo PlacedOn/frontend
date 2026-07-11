@@ -18,8 +18,8 @@ const MATCHES: Match[] = [
   {
     role: "Senior Backend Engineer",
     company: "Corewave",
-    location: "Remote · EU",
-    salary: "€85k–110k",
+    location: "Remote · India",
+    salary: "₹35–50 LPA",
     tags: ["Go", "Distributed systems"],
     match: 94,
     reason: "structured debugging, ownership under ambiguity",
@@ -27,8 +27,8 @@ const MATCHES: Match[] = [
   {
     role: "Platform Engineer",
     company: "Northwind",
-    location: "Remote · Global",
-    salary: "$120k–150k",
+    location: "Hybrid · Bengaluru",
+    salary: "₹30–45 LPA",
     tags: ["Kubernetes", "Reliability"],
     match: 91,
     reason: "systems thinking, incident ownership",
@@ -36,8 +36,8 @@ const MATCHES: Match[] = [
   {
     role: "Full-stack Engineer",
     company: "Brightloom",
-    location: "Hybrid · Berlin",
-    salary: "€70k–95k",
+    location: "Hybrid · Pune",
+    salary: "₹22–34 LPA",
     tags: ["TypeScript", "React"],
     match: 88,
     reason: "clear communication, handling ambiguity",

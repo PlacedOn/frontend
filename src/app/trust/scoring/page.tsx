@@ -43,7 +43,7 @@ export default function ScoringPage() {
         </p>
         <p>
           We deliberately do not infer protected characteristics, personality &ldquo;types,&rdquo;
-          or anything a résumé keyword could stand in for. If a trait can&apos;t be tied to observed
+          or anything a resume keyword could stand in for. If a trait can&apos;t be tied to observed
           behaviour in the conversation, it doesn&apos;t get a score.
         </p>
       </DocSection>

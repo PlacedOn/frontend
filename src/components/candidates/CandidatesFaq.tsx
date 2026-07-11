@@ -26,7 +26,7 @@ const FAQS = [
     a: "Every trait links to your own words, so you can see exactly where it came from — and contest it. Nothing you disagree with has to be published.",
   },
   {
-    q: "Do I still need a résumé?",
+    q: "Do I still need a resume?",
     a: "No. The whole point is to be judged on how you actually think and work, not on a document that filters get to reject before a human reads it.",
   },
 ];

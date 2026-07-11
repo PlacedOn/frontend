@@ -43,7 +43,7 @@ export function ApplicationInbox() {
             You&apos;re <span className="grad-iris">unread</span>.
           </h2>
           <p className="mt-5 leading-relaxed text-[var(--ink-2)]">
-            The average opening draws hundreds of résumés. Software filters most out
+            The average opening draws hundreds of resumes. Software filters most out
             before a person ever looks. Great candidates vanish into a queue — not
             because they can&apos;t do the work, but because no one saw them do it.
           </p>

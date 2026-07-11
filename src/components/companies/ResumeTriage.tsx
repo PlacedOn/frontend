@@ -7,14 +7,14 @@ type Pile = { title: string; sub: string; fate: "reject" | "maybe" | "buried" };
 
 const PILE: Pile[] = [
   { title: "312 applications", sub: "one open role", fate: "buried" },
-  { title: "~20 seconds", sub: "average résumé scan", fate: "maybe" },
+  { title: "~20 seconds", sub: "average resume scan", fate: "maybe" },
   { title: "Keyword-first", sub: "filters before humans", fate: "reject" },
   { title: "Great people", sub: "screened out on format", fate: "reject" },
   { title: "The one you want", sub: "somewhere in the pile", fate: "buried" },
 ];
 
 const STATS = [
-  { icon: FileText, value: "300+", label: "résumés per role" },
+  { icon: FileText, value: "300+", label: "resumes per role" },
   { icon: Timer, value: "20s", label: "each gets, at best" },
   { icon: Dices, value: "1", label: "hire — mostly on a guess" },
 ];
@@ -37,7 +37,7 @@ export function ResumeTriage() {
             You&apos;re hiring from a <span className="grad-iris">guess</span>.
           </h2>
           <p className="mt-5 leading-relaxed text-[var(--ink-2)]">
-            A résumé tells you what someone claims — in a format a filter can reject
+            A resume tells you what someone claims — in a format a filter can reject
             before anyone reads it. So the best hire is often the one who wrote the
             best document, not the one who does the best work.
           </p>
@@ -55,7 +55,7 @@ export function ResumeTriage() {
           </ul>
         </div>
 
-        {/* Résumé pile mockup */}
+        {/* Resume pile mockup */}
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -64,7 +64,7 @@ export function ResumeTriage() {
           className="glass overflow-hidden rounded-[var(--r-card)]"
         >
           <div className="flex items-center justify-between border-b px-5 py-4" style={{ borderColor: "var(--glass-line)" }}>
-            <p className="font-[var(--font-display)] text-[15px] font-semibold text-[var(--ink)]">Your résumé pile</p>
+            <p className="font-[var(--font-display)] text-[15px] font-semibold text-[var(--ink)]">Your resume pile</p>
             <span className="rounded-full px-3 py-1 text-[12px] font-bold" style={{ background: "rgba(220,38,38,.1)", color: "#b91c1c" }}>
               312 · unread
             </span>

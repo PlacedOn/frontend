@@ -17,7 +17,7 @@ const STEPS: Step[] = [
     icon: PlusCircle,
     title: "Post a role",
     blurb: "Describe the work, not a wishlist of keywords. Setup takes minutes.",
-    bullets: ["No résumé parsing", "Define the signals that matter", "Live in minutes"],
+    bullets: ["No resume parsing", "Define the signals that matter", "Live in minutes"],
   },
   {
     icon: Users,

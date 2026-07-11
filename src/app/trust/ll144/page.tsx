@@ -29,7 +29,7 @@ export default function Ll144Page() {
         items={[
           { value: "Annual", label: "Independent bias audit, not by the employer or vendor" },
           { value: "≥ 10 days", label: "Advance notice to candidates before use" },
-          { value: "$500–$1,500", label: "Per-violation penalties, charged per day" },
+          { value: "$500–$1,500", label: "Per-violation penalty (about ₹42,000–₹1.3 lakh), charged per day" },
         ]}
       />
 
@@ -63,7 +63,8 @@ export default function Ll144Page() {
         />
         <p>
           Enforcement sits with the NYC Department of Consumer and Worker Protection (DCWP). Penalties
-          run from $500 for a first violation up to $1,500 for each subsequent one — and each day a
+          run from $500 (about ₹42,000) for a first violation up to $1,500 (about ₹1.3 lakh) for each
+          subsequent one — and each day a
           tool is used out of compliance can count as a separate violation.
         </p>
       </DocSection>

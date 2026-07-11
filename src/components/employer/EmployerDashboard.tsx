@@ -162,7 +162,7 @@ export function EmployerDashboard() {
 
       {/* Candidate feed */}
       <section id="feed">
-        <p className="eyebrow">Evidence, not résumés</p>
+        <p className="eyebrow">Evidence, not resumes</p>
         <h2 className="mt-1 text-[22px] font-bold text-[var(--ink)]">Candidates for this role</h2>
         {candidates.length === 0 ? (
           <div className="glass mt-4 rounded-[var(--r-card)] p-10 text-center">

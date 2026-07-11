@@ -24,7 +24,7 @@ export function Hero() {
           <motion.div {...rise(0.05)}>
             <span className="chip">
               <Sparkles size={14} style={{ color: "var(--iris)" }} />
-              Skills speak. Résumés don’t.
+              You’re more than your resume.
             </span>
           </motion.div>
 
@@ -40,7 +40,7 @@ export function Hero() {
             {...rise(0.24)}
             className="mt-6 text-[clamp(1.05rem,1rem+0.4vw,1.25rem)] leading-relaxed text-[var(--ink-2)]"
           >
-            A résumé lists claims. One honest conversation proves them — how a
+            A resume lists claims. One honest conversation proves them — how a
             person reasons, makes the tough call, and handles the messy middle of
             real work. Hire for that.
           </motion.p>
@@ -55,7 +55,7 @@ export function Hero() {
           </motion.div>
 
           <motion.p {...rise(0.44)} className="mt-6 text-[13px] text-[var(--ink-3)]">
-            LL144 &amp; EU AI Act aligned · candidate-contestable traits · zero résumé bias
+            LL144 &amp; EU AI Act aligned · candidate-contestable traits · zero resume bias
           </motion.p>
         </div>
 

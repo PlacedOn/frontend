@@ -29,13 +29,13 @@ export function CandidatesHero() {
           </motion.span>
 
           <motion.h1 {...rise(0.14)} className="mt-6 text-[clamp(2.5rem,1.2rem+5vw,4.6rem)]">
-            Skip the résumé pile. Get hired for how you{" "}
+            Skip the resume pile. Get hired for how you{" "}
             <span className="grad-iris">actually work</span>.
           </motion.h1>
 
           <motion.p {...rise(0.24)} className="mt-6 text-[clamp(1.05rem,1rem+0.4vw,1.25rem)] leading-relaxed text-[var(--ink-2)]">
             Prove your skill in one honest conversation — then decide exactly what
-            employers see. No résumé roulette, no ghosting, no black-box score.
+            employers see. No resume roulette, no ghosting, no black-box score.
           </motion.p>
 
           <motion.div {...rise(0.34)} className="mt-8 flex flex-wrap items-center gap-3">

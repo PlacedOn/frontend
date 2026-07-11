@@ -11,9 +11,9 @@ type Stat = {
 
 const STATS: Stat[] = [
   { value: <CountUp to={30} suffix=" min" />, label: "One interview", sub: "replaces the whole screen" },
-  { value: <><span style={{ opacity: 0.5 }}>$</span><CountUp to={500} /></>, label: "Cost to assess", sub: "vs. $4,700 per bad hire" },
+  { value: <><span style={{ opacity: 0.5 }}>₹</span><CountUp to={4} suffix="k" /></>, label: "Cost to assess", sub: "vs. ₹4 lakh per bad hire" },
   { value: <CountUp to={120} suffix="k+" />, label: "Traits mapped", sub: "across the network" },
-  { value: <CountUp to={0} />, label: "Résumés required", sub: "signal, not keywords" },
+  { value: <CountUp to={0} />, label: "Resumes required", sub: "signal, not keywords" },
 ];
 
 export function Stats() {

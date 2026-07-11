@@ -16,7 +16,7 @@ const STEPS: Step[] = [
   {
     icon: Mic,
     title: "Take the interview",
-    blurb: "A 30–40 minute adaptive conversation — no résumé, no whiteboard theater.",
+    blurb: "A 30–40 minute adaptive conversation — no resume, no whiteboard theatre.",
     bullets: ["Works on any device", "Accommodations available", "Free, always"],
   },
   {

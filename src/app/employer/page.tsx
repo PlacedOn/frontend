@@ -13,7 +13,7 @@ export default function EmployerPage() {
       eyebrow="For teams · hiring"
       title={
         <>
-          Hire on <span className="grad-iris">evidence</span>, not résumés.
+          Hire on <span className="grad-iris">evidence</span>, not resumes.
         </>
       }
       intro="Every candidate here has interviewed. You see the signals they approved and the one worth exploring — never the raw transcript."

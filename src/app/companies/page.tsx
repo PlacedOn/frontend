@@ -16,7 +16,7 @@ import { CompaniesFaq } from "@/components/companies/CompaniesFaq";
 export const metadata: Metadata = {
   title: "For hiring teams · Placedon",
   description:
-    "Hire on evidence, not résumés. Every candidate arrives pre-interviewed — you see approved, verifiable signals, never a raw transcript. Bias-audited and compliant.",
+    "Hire on evidence, not resumes. Every candidate arrives pre-interviewed — you see approved, verifiable signals, never a raw transcript. Bias-audited and compliant.",
 };
 
 const COMPLIANCE = [
@@ -102,7 +102,7 @@ function FinalCta() {
               No setup fee · cancel anytime
             </p>
             <h2 className="mt-4 text-[clamp(2rem,1.3rem+3vw,3.4rem)]" style={{ color: "#fff" }}>
-              Stop guessing from résumés.
+              Stop guessing from resumes.
             </h2>
             <p className="mt-5 text-[16.5px] leading-relaxed" style={{ color: "rgba(255,255,255,.82)" }}>
               Give one team one week. Watch how fast &ldquo;who should we talk to?&rdquo; gets an honest answer.

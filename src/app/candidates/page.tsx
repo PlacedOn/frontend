@@ -16,7 +16,7 @@ import { CandidatesFaq } from "@/components/candidates/CandidatesFaq";
 export const metadata: Metadata = {
   title: "For candidates · Placedon",
   description:
-    "Skip the résumé pile. Prove your skill in one honest conversation, then decide exactly what employers see. Free for candidates.",
+    "Skip the resume pile. Prove your skill in one honest conversation, then decide exactly what employers see. Free for candidates.",
 };
 
 const COMPLIANCE = [
@@ -68,12 +68,12 @@ function ResumesVsProven() {
       <div className="mx-auto mb-12 max-w-2xl text-center">
         <span className="eyebrow">The shift</span>
         <h2 className="mt-4 text-[clamp(2rem,1.4rem+2.4vw,3.2rem)]">
-          Résumés list claims. <span className="grad-iris">One conversation proves them.</span>
+          Resumes list claims. <span className="grad-iris">One conversation proves them.</span>
         </h2>
       </div>
       <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-2">
         <div className="rounded-[var(--r-card)] p-6" style={{ background: "var(--mist)", border: "1px solid var(--glass-line)" }}>
-          <p className="mb-4 text-[13px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">A résumé is…</p>
+          <p className="mb-4 text-[13px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">A resume is…</p>
           <ul className="flex flex-col gap-3">
             {CLAIMS.map((c) => (
               <li key={c} className="flex items-start gap-2.5 text-[14.5px] text-[var(--ink-2)]">
@@ -140,7 +140,7 @@ function FinalCta() {
           />
           <div className="relative mx-auto max-w-xl">
             <p className="text-[12px] uppercase tracking-[0.16em]" style={{ fontFamily: "var(--font-mono)", color: "rgba(255,255,255,.7)" }}>
-              Free · 30–40 min · no résumé
+              Free · 30–40 min · no resume
             </p>
             <h2 className="mt-4 text-[clamp(2rem,1.3rem+3vw,3.4rem)]" style={{ color: "#fff" }}>
               Get hired for how you actually work.

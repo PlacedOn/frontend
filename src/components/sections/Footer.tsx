@@ -41,11 +41,11 @@ export function Footer() {
             <div>
               <Logo />
               <p className="mt-4 text-[15.5px] font-semibold text-[var(--ink)]">
-                Skills speak. Résumés don’t.
+                You’re more than your resume.
               </p>
               <p className="mt-2 max-w-xs text-[14px] leading-relaxed text-[var(--ink-2)]">
                 One honest interview, scored on real skill — so people are hired for
-                how they actually think, not for a résumé.
+                how they actually think, not for a resume.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">

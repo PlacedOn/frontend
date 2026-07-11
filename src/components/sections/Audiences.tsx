@@ -23,7 +23,7 @@ const PANELS: Panel[] = [
     points: [
       "Ask in plain language — “someone who can hold ambiguity and still ship.”",
       "Every match opens to the transcript moment behind it.",
-      "Shortlist, compare, and intro without ever opening a résumé.",
+      "Shortlist, compare, and intro without ever opening a resume.",
     ],
     cta: "Book a demo",
     action: "demo",

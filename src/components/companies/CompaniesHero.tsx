@@ -30,12 +30,12 @@ export function CompaniesHero() {
           </motion.span>
 
           <motion.h1 {...rise(0.14)} className="mt-6 text-[clamp(2.5rem,1.2rem+5vw,4.6rem)]">
-            Hire on <span className="grad-iris">evidence</span>, not résumés.
+            Hire on <span className="grad-iris">evidence</span>, not resumes.
           </motion.h1>
 
           <motion.p {...rise(0.24)} className="mt-6 text-[clamp(1.05rem,1rem+0.4vw,1.25rem)] leading-relaxed text-[var(--ink-2)]">
             Every candidate has already interviewed. You see approved, verifiable
-            signals of how they actually work — never a résumé pile, and never their
+            signals of how they actually work — never a resume pile, and never their
             raw transcript.
           </motion.p>
 

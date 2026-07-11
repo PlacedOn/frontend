@@ -54,10 +54,10 @@ export function CTA() {
                 className="text-[12px] uppercase tracking-[0.16em]"
                 style={{ fontFamily: "var(--font-mono)", color: "rgba(255,255,255,.7)" }}
               >
-                Stop guessing from résumés
+                Stop guessing from resumes
               </p>
               <h2 className="mt-4 text-[clamp(2rem,1.3rem+3vw,3.4rem)]" style={{ color: "#fff" }}>
-                See the skill, not the résumé.
+                See the skill, not the resume.
               </h2>
               <p
                 className="mt-5 max-w-xl text-[16.5px] leading-relaxed md:mx-0"
