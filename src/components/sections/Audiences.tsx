@@ -21,9 +21,9 @@ const PANELS: Panel[] = [
     eyebrow: "For teams",
     title: "Search people the way you actually think about them.",
     points: [
-      "Ask in plain language — “someone who can hold ambiguity and still ship.”",
-      "Every match opens to the transcript moment behind it.",
-      "Shortlist, compare, and intro without ever opening a resume.",
+      "Just ask in plain English: “someone who stays calm in chaos and still ships.”",
+      "Tap any match to see the exact moment that earned it.",
+      "Shortlist, compare, and make intros without opening a single resume.",
     ],
     cta: "Book a demo",
     action: "demo",
@@ -34,7 +34,7 @@ const PANELS: Panel[] = [
     title: "One conversation that speaks for you everywhere.",
     points: [
       "No timer, no trick questions, no score staring back at you.",
-      "See and contest every trait we extract — you stay in control.",
+      "See every trait we find, and challenge any of it. You stay in control.",
       "Your dashboard always shows one clear next step, from interview to intro.",
     ],
     cta: "Take an interview",

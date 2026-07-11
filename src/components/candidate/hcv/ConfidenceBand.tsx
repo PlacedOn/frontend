@@ -15,8 +15,8 @@ const ease = [0.22, 0.68, 0.31, 1] as const;
 /**
  * The signature Placedon viz: a score shown *with* its calibrated confidence
  * interval. The point estimate is a marker; the translucent band around it is
- * the uncertainty (tight = sure, wide = still forming). RemoteStar shows a flat
- * number — this shows how sure we are.
+ * the uncertainty (tight = sure, wide = still forming). Most tools show a flat
+ * number; this shows how sure we are.
  */
 export function ConfidenceBand({ score, uncertainty, delay = 0 }: Props) {
   const reduce = useReducedMotion();

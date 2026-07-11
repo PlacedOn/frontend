@@ -24,9 +24,9 @@ export function EvidencePanel() {
           Approved signal. <span className="grad-iris">Never the raw interview.</span>
         </h2>
         <p className="mt-5 leading-relaxed text-[var(--ink-2)]">
-          You get evidence a hiring manager can defend — every trait backed by the
+          You get evidence a hiring manager can defend: every trait backed by the
           candidate&apos;s own words. The full transcript stays sealed, so your process
-          stays fair, compliant, and contestable.
+          stays fair and easy to defend.
         </p>
       </div>
 
@@ -41,7 +41,7 @@ export function EvidencePanel() {
         <div className="glass rounded-[var(--r-card)] p-6">
           <div className="mb-5 flex items-center gap-2">
             <BadgeCheck size={18} style={{ color: "var(--iris-ink)" }} />
-            <p className="font-[var(--font-display)] text-[15px] font-semibold text-[var(--ink)]">Candidate evidence — visible to you</p>
+            <p className="font-[var(--font-display)] text-[15px] font-semibold text-[var(--ink)]">Candidate evidence, visible to you</p>
           </div>
           <div className="flex flex-col gap-3">
             {SIGNALS.map((s) => (
@@ -79,7 +79,7 @@ export function EvidencePanel() {
           </div>
           <p className="mt-4 text-[13px] leading-relaxed text-[var(--ink-3)]">
             Candidates approve what they share. You never handle unfiltered, off-the-record
-            answers — which keeps you out of bias and privacy risk.
+            answers, which keeps you clear of bias and privacy risk.
           </p>
         </div>
       </motion.div>

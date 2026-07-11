@@ -22,13 +22,13 @@ const STEPS: Step[] = [
   {
     icon: Users,
     title: "Candidates arrive pre-interviewed",
-    blurb: "Everyone who matches has already completed an adaptive interview — no screening calls to schedule.",
+    blurb: "Everyone who matches has already done a full interview, so there are no screening calls to schedule.",
     bullets: ["Zero triage backlog", "No first-round scheduling", "Signal on day one"],
   },
   {
     icon: ScanSearch,
     title: "Review approved evidence",
-    blurb: "Read how each candidate actually reasons — traits backed by their own words, ranked by fit. Never a raw transcript.",
+    blurb: "Read how each candidate actually thinks. Traits backed by their own words, ranked by fit. Never a raw transcript.",
     bullets: ["Every score is sourced", "Defensible to hiring managers", "Bias-audited & contestable"],
     highlight: true,
   },

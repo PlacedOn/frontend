@@ -44,8 +44,8 @@ export function Footer() {
                 You’re more than your resume.
               </p>
               <p className="mt-2 max-w-xs text-[14px] leading-relaxed text-[var(--ink-2)]">
-                One honest interview, scored on real skill — so people are hired for
-                how they actually think, not for a resume.
+                One honest interview, scored on real skill. People get hired for how
+                they actually think, not for a resume.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">

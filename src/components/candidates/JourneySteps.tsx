@@ -16,7 +16,7 @@ const STEPS: Step[] = [
   {
     icon: Mic,
     title: "Take the interview",
-    blurb: "A 30–40 minute adaptive conversation — no resume, no whiteboard theatre.",
+    blurb: "A 30–40 minute conversation. No resume, no whiteboard theatre.",
     bullets: ["Works on any device", "Accommodations available", "Free, always"],
   },
   {
@@ -35,7 +35,7 @@ const STEPS: Step[] = [
   {
     icon: Sparkles,
     title: "Get matched",
-    blurb: "Roles come to you with the reason attached — matched on evidence, not keywords.",
+    blurb: "Roles come to you with the reason attached, matched on evidence, not keywords.",
     bullets: ["See why each role fits", "Approve intros one by one", "No cold applications"],
   },
 ];

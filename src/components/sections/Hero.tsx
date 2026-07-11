@@ -40,9 +40,9 @@ export function Hero() {
             {...rise(0.24)}
             className="mt-6 text-[clamp(1.05rem,1rem+0.4vw,1.25rem)] leading-relaxed text-[var(--ink-2)]"
           >
-            A resume lists claims. One honest conversation proves them — how a
-            person reasons, makes the tough call, and handles the messy middle of
-            real work. Hire for that.
+            Anyone can write a good resume. One honest conversation shows how a
+            person really thinks and works when things get hard. That&rsquo;s what
+            you should hire for.
           </motion.p>
 
           <motion.div {...rise(0.34)} className="mt-8 flex flex-wrap items-center gap-3">

@@ -34,16 +34,16 @@ const CLAIMS = [
 ];
 
 const PROVEN = [
-  "How you actually reason through a problem",
-  "Evidence a human can read in your own words",
-  "Depth, shown — not asserted",
-  "What you demonstrably did",
-  "A profile you control and can contest",
+  "How you actually think through a problem",
+  "Proof in your own words, read by a human",
+  "Real depth, not just claims",
+  "What you can genuinely do",
+  "A profile you control and can challenge",
 ];
 
 const CONTROL = [
   { icon: Eye, title: "You approve every trait", body: "Nothing reaches an employer until you publish it. Hide anything, anytime." },
-  { icon: Lock, title: "Your transcript stays private", body: "Employers see approved evidence — never the raw interview. That never changes." },
+  { icon: Lock, title: "Your transcript stays private", body: "Employers see approved evidence, never the raw interview. That never changes." },
   { icon: Undo2, title: "Contest anything", body: "Every score links to your own words, so you can challenge what doesn't feel right." },
 ];
 
@@ -104,7 +104,7 @@ function InControl() {
         <span className="eyebrow">You&apos;re in control</span>
         <h2 className="mt-4 text-[clamp(2rem,1.4rem+2.4vw,3.2rem)]">Your interview. Your terms.</h2>
         <p className="mt-5 leading-relaxed text-[var(--ink-2)]">
-          RemoteStar scores you. Placedon hands you the mic — and the veto.
+          Most tools just score you and move on. Placedon hands you the mic, and the final say.
         </p>
       </div>
       <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">
@@ -154,7 +154,7 @@ function FinalCta() {
                 className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] bg-white px-6 py-3.5 text-[15px] font-semibold transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
                 style={{ color: "var(--iris-ink)", boxShadow: "0 12px 30px -10px rgba(0,0,0,.35)" }}
               >
-                Take your interview — free <ArrowRight size={17} />
+                Take your interview, free <ArrowRight size={17} />
               </a>
               <a
                 href="#sample"

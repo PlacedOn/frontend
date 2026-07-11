@@ -37,8 +37,8 @@ export function ResumeTriage() {
             You&apos;re hiring from a <span className="grad-iris">guess</span>.
           </h2>
           <p className="mt-5 leading-relaxed text-[var(--ink-2)]">
-            A resume tells you what someone claims — in a format a filter can reject
-            before anyone reads it. So the best hire is often the one who wrote the
+            A resume only tells you what someone claims, in a format a filter can reject
+            before anyone reads it. So the person you hire is often the one who wrote the
             best document, not the one who does the best work.
           </p>
           <ul className="mt-7 flex flex-col gap-3">

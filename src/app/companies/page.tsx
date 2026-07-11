@@ -55,8 +55,8 @@ function ComplianceBlock() {
           Fast to hire. <span className="grad-iris">Safe to defend.</span>
         </h2>
         <p className="mt-5 leading-relaxed text-[var(--ink-2)]">
-          Speed means nothing if a hire can&apos;t survive scrutiny. Every decision on
-          Placedon is auditable, sourced, and contestable.
+          Speed means nothing if you can&apos;t defend the hire later. On Placedon, every
+          decision is backed by evidence you can point to, and a candidate can challenge.
         </p>
       </div>
       <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">

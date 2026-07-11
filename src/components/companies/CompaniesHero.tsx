@@ -34,9 +34,8 @@ export function CompaniesHero() {
           </motion.h1>
 
           <motion.p {...rise(0.24)} className="mt-6 text-[clamp(1.05rem,1rem+0.4vw,1.25rem)] leading-relaxed text-[var(--ink-2)]">
-            Every candidate has already interviewed. You see approved, verifiable
-            signals of how they actually work — never a resume pile, and never their
-            raw transcript.
+            Every candidate has already interviewed. You see clear, approved proof of
+            how they actually work. Never a resume pile, never their raw transcript.
           </motion.p>
 
           <motion.div {...rise(0.34)} className="mt-8 flex flex-wrap items-center gap-3">

@@ -18,28 +18,28 @@ const CELLS: Cell[] = [
     icon: MessageSquareText,
     step: "01",
     title: "Talk once",
-    body: "A 30-minute adaptive interview that follows the candidate's reasoning instead of a fixed script. Voice or text.",
+    body: "A 30-minute chat that follows how the candidate thinks, not a fixed script. Voice or text, their choice.",
     className: "md:col-span-3 md:row-span-2",
   },
   {
     icon: ScanSearch,
     step: "02",
-    title: "Signal extracted",
-    body: "We surface the traits behind the answers — each one anchored to the exact moment it appeared.",
+    title: "See the real strengths",
+    body: "We pull out the strengths behind each answer, and show you the exact moment each one showed up.",
     className: "md:col-span-3",
   },
   {
     icon: Share2,
     step: "03",
-    title: "Matched everywhere",
-    body: "One profile, searchable in plain language across every role you're hiring for.",
+    title: "Match to any role",
+    body: "One profile you can search in plain English, across every role you're hiring for.",
     className: "md:col-span-3",
   },
   {
     icon: ShieldCheck,
     step: "04",
-    title: "Auditable by design",
-    body: "Every trait is explainable, contestable, and compliant with LL144 and the EU AI Act.",
+    title: "Fair, and easy to defend",
+    body: "Every score can be explained, questioned, and holds up under LL144 and the EU AI Act.",
     className: "md:col-span-6",
   },
 ];
@@ -51,7 +51,7 @@ export function HowItWorks() {
         <Reveal>
           <p className="eyebrow">How it works</p>
           <h2 className="mt-3 max-w-2xl text-[clamp(1.9rem,1.2rem+2.6vw,3.1rem)]">
-            One conversation shows more than a resume ever could.
+            One honest conversation tells you more than any resume.
           </h2>
         </Reveal>
 

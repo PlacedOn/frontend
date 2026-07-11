@@ -43,9 +43,9 @@ export function ApplicationInbox() {
             You&apos;re <span className="grad-iris">unread</span>.
           </h2>
           <p className="mt-5 leading-relaxed text-[var(--ink-2)]">
-            The average opening draws hundreds of resumes. Software filters most out
-            before a person ever looks. Great candidates vanish into a queue — not
-            because they can&apos;t do the work, but because no one saw them do it.
+            The average opening draws hundreds of resumes, and software throws most out
+            before a person even looks. Good people disappear into the queue, not because
+            they can&apos;t do the work, but because no one ever got to see them do it.
           </p>
           <ul className="mt-7 flex flex-col gap-3">
             {STATS.map(({ icon: Icon, value, label }) => (
