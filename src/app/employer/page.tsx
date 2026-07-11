@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { RoutePage } from "@/components/layout/RoutePage";
 import { EmployerDashboard } from "@/components/employer/EmployerDashboard";
+import { SignedInBar } from "@/components/auth/SignedInBar";
 
 export const metadata: Metadata = {
   title: "Hiring dashboard — Placedon",
@@ -18,6 +19,7 @@ export default function EmployerPage() {
       }
       intro="Every candidate here has interviewed. You see the signals they approved and the one worth exploring — never the raw transcript."
     >
+      <SignedInBar />
       <EmployerDashboard />
     </RoutePage>
   );

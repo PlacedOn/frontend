@@ -58,10 +58,10 @@ export function Nav() {
 
         <div className="flex items-center gap-2">
           <a
-            href="/candidate"
+            href="/login"
             className="hidden rounded-full px-4 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-colors hover:text-[var(--ink)] sm:block"
           >
-            Dashboard
+            Log in
           </a>
           <Button onClick={() => open("employer")} className="!px-5 !py-2.5 text-[14px]">
             Book a demo
