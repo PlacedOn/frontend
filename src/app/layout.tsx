@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Sora, Inter } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 import { DemoDialogProvider } from "@/components/demo/DemoDialogProvider";
 
 const sora = Sora({
@@ -34,7 +35,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sora.variable} ${inter.variable}`}>
       <body>
-        <DemoDialogProvider>{children}</DemoDialogProvider>
+        <AuthProvider>
+          <DemoDialogProvider>{children}</DemoDialogProvider>
+        </AuthProvider>
       </body>
     </html>
   );

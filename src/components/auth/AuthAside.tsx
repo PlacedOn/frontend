@@ -62,19 +62,18 @@ export function AuthAside() {
         ))}
       </ul>
 
-      <figure
+      <div
         className="glass hidden max-w-md rounded-[var(--r-card)] p-5 lg:block"
         style={{ boxShadow: "var(--shadow-md)" }}
       >
-        <blockquote className="text-[14.5px] leading-relaxed text-[var(--ink-2)]">
-          &ldquo;The first interview where I felt seen for how I think, not how my resume
-          reads.&rdquo;
-        </blockquote>
-        <figcaption className="mt-3 flex items-center gap-2 text-[13px] font-medium text-[var(--ink-3)]">
-          <span className="livedot" aria-hidden="true" />
-          Priya, product engineer &middot; placed via Placedon
-        </figcaption>
-      </figure>
+        <p className="text-[12px] font-semibold uppercase tracking-wide text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
+          What happens next
+        </p>
+        <p className="mt-2.5 text-[14.5px] leading-relaxed text-[var(--ink-2)]">
+          Create an account, take one honest interview, then decide exactly what employers see.
+          Free for candidates, and nothing is shared without your say-so.
+        </p>
+      </div>
     </aside>
   );
 }

@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/Button";
+import { AccountMenu } from "@/components/auth/AccountMenu";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
 import { cn } from "@/lib/cn";
 
 const LINKS = [
-  { label: "How it works", href: "#how" },
+  { label: "How it works", href: "/#how" },
   { label: "For teams", href: "/companies" },
   { label: "For candidates", href: "/candidates" },
   { label: "Trust", href: "/trust" },
@@ -16,6 +19,7 @@ const LINKS = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const { open } = useDemoDialog();
+  const { user, role, loading } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -23,6 +27,8 @@ export function Nav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const dashboard = role === "employer" ? "/employer" : "/candidate";
 
   return (
     <header
@@ -39,9 +45,9 @@ export function Nav() {
           scrolled ? undefined : { background: "rgba(255,255,255,.35)", backdropFilter: "blur(8px)" }
         }
       >
-        <a href="#top" aria-label="Placedon home">
+        <Link href="/" aria-label="Placedon home">
           <Logo />
-        </a>
+        </Link>
 
         <ul className="hidden items-center gap-1 md:flex">
           {LINKS.map((l) => (
@@ -57,15 +63,34 @@ export function Nav() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <a
-            href="/login"
-            className="hidden rounded-full px-4 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-colors hover:text-[var(--ink)] sm:block"
-          >
-            Log in
-          </a>
-          <Button onClick={() => open("employer")} className="!px-5 !py-2.5 text-[14px]">
-            Book a demo
-          </Button>
+          {user ? (
+            <>
+              <Link
+                href={dashboard}
+                className="hidden rounded-full px-4 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-colors hover:text-[var(--ink)] sm:block"
+              >
+                Dashboard
+              </Link>
+              <AccountMenu />
+            </>
+          ) : (
+            <div
+              className={cn(
+                "flex items-center gap-2 transition-opacity duration-[var(--d-micro)]",
+                loading ? "opacity-0" : "opacity-100",
+              )}
+            >
+              <Link
+                href="/login"
+                className="hidden rounded-full px-4 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-colors hover:text-[var(--ink)] sm:block"
+              >
+                Log in
+              </Link>
+              <Button onClick={() => open("employer")} className="!px-5 !py-2.5 text-[14px]">
+                Book a demo
+              </Button>
+            </div>
+          )}
         </div>
       </nav>
     </header>
