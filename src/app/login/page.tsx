@@ -30,7 +30,7 @@ export default async function LoginPage() {
     <>
       <AuroraMesh />
       <main className="relative min-h-[100svh]" style={{ zIndex: "var(--z-base)" }}>
-        <div className="shell grid min-h-[100svh] content-center items-center gap-10 py-10 md:py-14 lg:grid-cols-[1.05fr_minmax(0,460px)] lg:gap-16">
+        <div className="shell grid min-h-[100svh] content-center items-center gap-10 py-10 md:py-14 lg:grid-cols-[1.05fr_minmax(0,470px)] lg:gap-16">
           <AuthAside />
           <AuthPanel />
         </div>

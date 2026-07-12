@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useTransition, type FormEvent } from "react";
+import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { AlertCircle, ArrowRight, Loader2, MailCheck } from "lucide-react";
+import { AlertCircle, ArrowRight, Loader2, Lock, Mail, MailCheck, UserRound } from "lucide-react";
 import { signIn, signUp, type Role } from "@/app/login/actions";
 import { AuthField } from "./AuthField";
+import { BeamRing } from "./BeamRing";
 import { RolePicker } from "./RolePicker";
 import { cn } from "@/lib/cn";
 
@@ -78,11 +80,15 @@ export function AuthPanel() {
     return (
       <section
         aria-labelledby="auth-confirm-heading"
-        className="glass w-full min-w-0 rounded-[var(--r-card)] p-7 sm:p-9"
+        className="glass relative w-full min-w-0 overflow-hidden rounded-[var(--r-card)] p-7 sm:p-9"
       >
+        <BeamRing />
         <span
-          className="grid h-12 w-12 place-items-center rounded-2xl"
-          style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}
+          className="grid h-12 w-12 place-items-center rounded-2xl text-white"
+          style={{
+            background: "linear-gradient(135deg, var(--iris-soft), var(--iris))",
+            boxShadow: "var(--shadow-iris)",
+          }}
         >
           <MailCheck size={22} />
         </span>
@@ -118,13 +124,18 @@ export function AuthPanel() {
   return (
     <section
       aria-labelledby="auth-heading"
-      className="glass w-full min-w-0 rounded-[var(--r-card)] p-6 sm:p-9"
+      className="glass relative w-full min-w-0 overflow-hidden rounded-[var(--r-card)] p-6 sm:p-9"
     >
+      <BeamRing />
+
       {/* mode toggle */}
       <div
         aria-label="Sign in or create account"
-        className="grid grid-cols-2 rounded-[var(--r-chip)] p-1"
-        style={{ background: "var(--mist)" }}
+        className="relative grid grid-cols-2 rounded-[var(--r-chip)] p-1"
+        style={{
+          background: "var(--mist)",
+          boxShadow: "inset 0 1px 3px rgba(14, 16, 32, 0.07)",
+        }}
       >
         {MODES.map(({ id, label }) => {
           const active = mode === id;
@@ -135,7 +146,7 @@ export function AuthPanel() {
               aria-pressed={active}
               onClick={() => switchMode(id)}
               className={cn(
-                "relative min-h-[44px] rounded-[var(--r-chip)] px-3 text-[14px] font-semibold transition-colors duration-[var(--d-micro)]",
+                "relative min-h-[44px] rounded-[var(--r-chip)] px-3 text-[13.5px] font-semibold tracking-[0.01em] transition-colors duration-[var(--d-micro)]",
                 active ? "text-[var(--ink)]" : "text-[var(--ink-3)] hover:text-[var(--ink-2)]",
               )}
             >
@@ -145,8 +156,12 @@ export function AuthPanel() {
                   transition={
                     reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 34 }
                   }
-                  className="absolute inset-0 rounded-[var(--r-chip)] bg-white"
-                  style={{ boxShadow: "var(--shadow-sm)" }}
+                  className="absolute inset-0 rounded-[var(--r-chip)]"
+                  style={{
+                    background: "linear-gradient(180deg, #FFFFFF, rgba(255,255,255,0.92))",
+                    border: "1px solid var(--glass-line)",
+                    boxShadow: "var(--shadow-sm)",
+                  }}
                   aria-hidden="true"
                 />
               )}
@@ -180,6 +195,7 @@ export function AuthPanel() {
                 id="auth-name"
                 name="fullName"
                 label="Full name"
+                icon={UserRound}
                 autoComplete="name"
                 placeholder="Priya Sharma"
                 error={fieldErrors.fullName}
@@ -192,6 +208,7 @@ export function AuthPanel() {
             id="auth-email"
             name="email"
             label="Email"
+            icon={Mail}
             type="email"
             autoComplete="email"
             placeholder="you@work.com"
@@ -202,6 +219,7 @@ export function AuthPanel() {
             id="auth-password"
             name="password"
             label="Password"
+            icon={Lock}
             type="password"
             autoComplete={isSignup ? "new-password" : "current-password"}
             placeholder={isSignup ? "At least 8 characters" : "Your password"}
@@ -228,15 +246,24 @@ export function AuthPanel() {
             type="submit"
             disabled={pending}
             className={cn(
-              "inline-flex h-12 w-full items-center justify-center gap-2 rounded-[var(--r-btn)] text-[15px] font-semibold text-white transition-opacity duration-[var(--d-micro)]",
-              pending ? "cursor-wait opacity-80" : "cursor-pointer",
+              "group relative inline-flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-[var(--r-btn)] text-[15px] font-semibold text-white transition-[opacity,transform,box-shadow] duration-[var(--d-micro)]",
+              pending ? "cursor-wait opacity-80" : "cursor-pointer hover:-translate-y-px",
             )}
             style={{
               background:
                 "linear-gradient(135deg, var(--iris-soft) 0%, var(--iris) 60%, var(--iris-ink) 130%)",
-              boxShadow: "var(--shadow-iris)",
+              boxShadow: "var(--shadow-iris), inset 0 1px 0 rgba(255,255,255,0.25)",
             }}
           >
+            {/* hover sheen — transform-only */}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -translate-x-full transition-transform duration-500 ease-out group-hover:translate-x-full motion-reduce:hidden"
+              style={{
+                background:
+                  "linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.35) 50%, transparent 65%)",
+              }}
+            />
             {pending ? (
               <>
                 <Loader2 size={17} className="animate-spin" aria-hidden="true" />
@@ -261,6 +288,19 @@ export function AuthPanel() {
             {isSignup ? "Sign in" : "Create an account"}
           </button>
         </p>
+
+        <div className="mt-5 border-t pt-4" style={{ borderColor: "var(--glass-line)" }}>
+          <p className="text-center text-[12.5px] leading-relaxed text-[var(--ink-3)]">
+            Free for candidates. You control what employers see.{" "}
+            <Link
+              href="/trust"
+              className="font-medium underline decoration-[var(--iris-line)] underline-offset-2 transition-colors duration-[var(--d-micro)] hover:text-[var(--iris-ink)]"
+            >
+              Read how we handle your data
+            </Link>
+            .
+          </p>
+        </div>
       </motion.div>
     </section>
   );

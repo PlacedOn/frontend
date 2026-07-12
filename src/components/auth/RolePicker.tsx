@@ -35,10 +35,14 @@ export function RolePicker({ value, onChange }: Props) {
 
   return (
     <fieldset className="min-w-0 border-0 p-0" style={{ margin: 0 }}>
-      <legend className="mb-2 p-0 text-[13px] font-semibold text-[var(--ink-2)]">
+      <legend className="mb-2 p-0 text-[13px] font-semibold tracking-[0.01em] text-[var(--ink-2)]">
         Who are you joining as?
       </legend>
-      <div role="radiogroup" aria-label="Account type" className="grid min-w-0 gap-2.5 min-[420px]:grid-cols-2">
+      <div
+        role="radiogroup"
+        aria-label="Account type"
+        className="grid min-w-0 gap-2.5 min-[420px]:grid-cols-2"
+      >
         {OPTIONS.map(({ role, icon: Icon, title, sub }) => {
           const selected = value === role;
           return (
@@ -48,21 +52,29 @@ export function RolePicker({ value, onChange }: Props) {
               role="radio"
               aria-checked={selected}
               onClick={() => onChange(role)}
-              whileTap={reduce ? undefined : { scale: 0.975 }}
-              className="relative flex min-h-[44px] min-w-0 flex-col items-start gap-2.5 rounded-2xl border p-4 text-left transition-colors duration-[var(--d-micro)]"
+              animate={reduce ? undefined : { y: selected ? -2 : 0, scale: selected ? 1.01 : 1 }}
+              whileHover={reduce || selected ? undefined : { y: -2 }}
+              whileTap={reduce ? undefined : { scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 420, damping: 30 }}
+              className="relative flex min-h-[44px] min-w-0 cursor-pointer flex-col items-start gap-2.5 rounded-2xl border p-4 text-left transition-[border-color,background-color,box-shadow] duration-[var(--d-micro)]"
               style={{
                 borderColor: selected ? "var(--iris)" : "var(--glass-line-hi)",
-                background: selected ? "var(--iris-ghost)" : "rgba(255,255,255,0.6)",
+                background: selected
+                  ? "linear-gradient(150deg, rgba(105,34,245,0.11) 0%, rgba(139,84,255,0.05) 55%, rgba(255,255,255,0.65) 100%)"
+                  : "rgba(255,255,255,0.62)",
                 boxShadow: selected
-                  ? "0 0 0 1px var(--iris), var(--shadow-sm)"
+                  ? "0 0 0 1px var(--iris), 0 14px 30px -14px rgba(105, 34, 245, 0.42)"
                   : "var(--shadow-sm)",
               }}
             >
               <span
-                className="grid h-9 w-9 place-items-center rounded-xl transition-colors duration-[var(--d-micro)]"
+                className="grid h-9 w-9 place-items-center rounded-xl transition-[background-color,color,box-shadow] duration-[var(--d-micro)]"
                 style={{
-                  background: selected ? "var(--iris)" : "var(--mist)",
+                  background: selected
+                    ? "linear-gradient(135deg, var(--iris-soft), var(--iris))"
+                    : "var(--mist)",
                   color: selected ? "#fff" : "var(--ink-2)",
+                  boxShadow: selected ? "0 6px 14px -6px rgba(105, 34, 245, 0.55)" : "none",
                 }}
               >
                 <Icon size={17} />
@@ -81,7 +93,10 @@ export function RolePicker({ value, onChange }: Props) {
                     exit={reduce ? { scale: 1, opacity: 0 } : { scale: 0 }}
                     transition={{ type: "spring", stiffness: 500, damping: 26 }}
                     className="absolute right-3 top-3 grid h-5 w-5 place-items-center rounded-full text-white"
-                    style={{ background: "var(--iris)" }}
+                    style={{
+                      background: "linear-gradient(135deg, var(--iris-soft), var(--iris))",
+                      boxShadow: "0 0 0 2px rgba(255,255,255,0.8), 0 4px 10px -3px rgba(105,34,245,0.5)",
+                    }}
                     aria-hidden="true"
                   >
                     <Check size={12} strokeWidth={3} />
