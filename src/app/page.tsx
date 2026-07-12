@@ -1,4 +1,4 @@
-import { AuroraMesh } from "@/components/background/AuroraMesh";
+import { AuroraFlow } from "@/components/background/AuroraFlow";
 import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { KineticMarquee } from "@/components/motion/KineticMarquee";
@@ -13,7 +13,7 @@ import { Footer } from "@/components/sections/Footer";
 export default function Home() {
   return (
     <>
-      <AuroraMesh />
+      <AuroraFlow />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <Hero />
