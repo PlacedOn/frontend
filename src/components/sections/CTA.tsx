@@ -3,6 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "@/components/ui/Reveal";
+import { Magnetic } from "@/components/motion/Magnetic";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
 
 export function CTA() {
@@ -68,13 +69,15 @@ export function CTA() {
               </p>
 
               <div className="mt-9 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-                <button
-                  onClick={() => open("employer")}
-                  className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] bg-white px-6 py-3.5 text-[15px] font-semibold transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
-                  style={{ color: "var(--iris-ink)", boxShadow: "0 12px 30px -10px rgba(0,0,0,.35)" }}
-                >
-                  Book a demo <ArrowRight size={17} />
-                </button>
+                <Magnetic strength={0.35}>
+                  <button
+                    onClick={() => open("employer")}
+                    className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] bg-white px-6 py-3.5 text-[15px] font-semibold transition-transform duration-[var(--d-micro)]"
+                    style={{ color: "var(--iris-ink)", boxShadow: "0 12px 30px -10px rgba(0,0,0,.35)" }}
+                  >
+                    Book a demo <ArrowRight size={17} />
+                  </button>
+                </Magnetic>
                 <a
                   href="/pre-interview"
                   className="inline-flex cursor-pointer items-center rounded-[var(--r-btn)] px-6 py-3.5 text-[15px] font-semibold text-white transition-colors duration-[var(--d-micro)]"
