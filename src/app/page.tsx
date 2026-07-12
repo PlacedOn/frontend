@@ -4,6 +4,7 @@ import { Hero } from "@/components/sections/Hero";
 import { KineticMarquee } from "@/components/motion/KineticMarquee";
 import { ScrollStatement } from "@/components/motion/ScrollStatement";
 import { HowItWorks } from "@/components/sections/HowItWorks";
+import { GlobalReach } from "@/components/sections/GlobalReach";
 import { Stats } from "@/components/sections/Stats";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Audiences } from "@/components/sections/Audiences";
@@ -20,6 +21,7 @@ export default function Home() {
         <KineticMarquee />
         <ScrollStatement />
         <HowItWorks />
+        <GlobalReach />
         <Stats />
         <Testimonials />
         <Audiences />
