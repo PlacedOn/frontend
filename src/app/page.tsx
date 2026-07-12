@@ -1,4 +1,4 @@
-import { AuroraFlow } from "@/components/background/AuroraFlow";
+import { MotionBackground } from "@/components/background/MotionBackground";
 import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { KineticMarquee } from "@/components/motion/KineticMarquee";
@@ -13,7 +13,7 @@ import { Footer } from "@/components/sections/Footer";
 export default function Home() {
   return (
     <>
-      <AuroraFlow />
+      <MotionBackground />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <Hero />
