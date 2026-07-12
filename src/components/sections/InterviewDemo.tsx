@@ -62,6 +62,78 @@ function Waveform({ bars, active, reduce, color = "var(--iris)", h = 26 }: { bar
   );
 }
 
+// Mouth frames (0=neutral, 1=closed, 2=mid, 3=open wide, 4=neutral) cycled to
+// simulate natural speech; a single closed frame when idle / reduced motion.
+const TALK_SEQUENCE = [1, 3, 2, 4, 2, 3, 1, 2, 3, 0, 2, 4];
+const FRAME_COUNT = 5;
+
+function SpeakingAvatar({ speaking, reduce }: { speaking: boolean; reduce: boolean | null }) {
+  const [frame, setFrame] = useState(1);
+
+  useEffect(() => {
+    if (reduce || !speaking) {
+      setFrame(1);
+      return;
+    }
+    let i = 0;
+    const id = setInterval(() => {
+      i = (i + 1) % TALK_SEQUENCE.length;
+      setFrame(TALK_SEQUENCE[i]);
+    }, 120);
+    return () => clearInterval(id);
+  }, [speaking, reduce]);
+
+  return (
+    <div className="relative grid place-items-center">
+      <span
+        aria-hidden
+        className="absolute h-[164px] w-[164px] rounded-full"
+        style={{ background: "radial-gradient(circle, rgba(105,34,245,.32), transparent 66%)", filter: "blur(18px)" }}
+      />
+      {!reduce &&
+        speaking &&
+        [0, 1].map((r) => (
+          <motion.span
+            key={r}
+            aria-hidden
+            className="absolute rounded-[28px]"
+            style={{ width: 150, height: 180, border: "1.5px solid var(--iris)" }}
+            animate={{ scale: [1, 1.16], opacity: [0.28, 0] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: "easeOut", delay: r * 1.4 }}
+          />
+        ))}
+      <div
+        className="relative overflow-hidden rounded-[24px]"
+        style={{
+          width: 148,
+          height: 178,
+          background: "linear-gradient(160deg, rgba(139,84,255,.24), rgba(105,34,245,.05))",
+          border: "1px solid var(--glass-line)",
+          boxShadow: "0 16px 40px -12px rgba(105,34,245,.45), inset 0 1px 0 rgba(255,255,255,.5)",
+        }}
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: "url(/interviewer.webp)",
+            backgroundSize: `${FRAME_COUNT * 100}% auto`,
+            backgroundPositionX: `${frame * (100 / (FRAME_COUNT - 1))}%`,
+            backgroundPositionY: "13%",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+        <span
+          className="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[8.5px] font-bold tracking-wide"
+          style={{ background: "rgba(255,255,255,.82)", color: "#dc2626", backdropFilter: "blur(4px)" }}
+        >
+          <span style={{ width: 5, height: 5, borderRadius: 999, background: "#dc2626" }} />
+          LIVE
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function InterviewDemo() {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
@@ -141,32 +213,8 @@ export function InterviewDemo() {
               />
             ))}
 
-          {/* orb with soft halo bloom + concentric rings */}
-          <div className="relative grid h-[128px] w-[128px] place-items-center">
-            <span aria-hidden className="absolute h-[120px] w-[120px] rounded-full" style={{ background: "radial-gradient(circle, rgba(105,34,245,.4), transparent 65%)", filter: "blur(14px)" }} />
-            {!reduce &&
-              [0, 1, 2].map((r) => (
-                <motion.span
-                  key={r}
-                  aria-hidden
-                  className="absolute rounded-full"
-                  style={{ width: 92, height: 92, border: "1.5px solid var(--iris)" }}
-                  animate={{ scale: [1, 1.7], opacity: [0.35, 0] }}
-                  transition={{ duration: 3.4, repeat: Infinity, ease: "easeOut", delay: r * 1.13 }}
-                />
-              ))}
-            <motion.span
-              className="relative grid h-[80px] w-[80px] place-items-center rounded-full"
-              style={{ background: "linear-gradient(140deg, var(--iris-soft), var(--iris) 55%, var(--iris-ink))", boxShadow: "0 12px 34px -8px rgba(105,34,245,.6), inset 0 2px 6px rgba(255,255,255,.4)" }}
-              animate={reduce ? undefined : { scale: speaking ? [1, 1.05, 1] : 1 }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <svg width="34" height="34" viewBox="133 119 354 400" aria-hidden>
-                <path d="M468 140 L152 142 L196 264 L259 264 L259 219 L269 208 L351 208 L361 218 L361 264 L425 264 Z" fill="#fff" />
-                <path d="M152 424 L258 497 L261 425 L468 425 L425 301 L361 301 L360 367 L310 336 L261 368 L259 301 L196 301 Z" fill="#fff" />
-              </svg>
-            </motion.span>
-          </div>
+          {/* live video portrait of the interviewer, lip-syncing while speaking */}
+          <SpeakingAvatar speaking={speaking} reduce={reduce} />
 
           <p className="mt-4 text-[13px] font-bold text-[var(--ink)]">Placedon interviewer</p>
           <div className="mt-3 w-full max-w-[210px]">
