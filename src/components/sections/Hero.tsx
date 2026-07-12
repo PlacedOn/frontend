@@ -1,9 +1,12 @@
 "use client";
 
+import { useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { useGSAP } from "@gsap/react";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
+import { gsap } from "@/lib/motion/gsap";
 import { InterviewDemo } from "./InterviewDemo";
 
 const ease = [0.22, 0.68, 0.31, 1] as const;
@@ -11,6 +14,38 @@ const ease = [0.22, 0.68, 0.31, 1] as const;
 export function Hero() {
   const reduce = useReducedMotion();
   const { open } = useDemoDialog();
+  const root = useRef<HTMLElement>(null);
+  const visual = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // Scroll parallax: the visual drifts up relative to the copy for depth.
+        gsap.to(visual.current, {
+          yPercent: -14,
+          ease: "none",
+          scrollTrigger: {
+            trigger: root.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+        // Perpetual micro-float once the entrance settles.
+        gsap.to(visual.current, {
+          y: 12,
+          duration: 3.6,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          delay: 1.2,
+        });
+      });
+      return () => mm.revert();
+    },
+    { scope: root },
+  );
   const rise = (delay: number) => ({
     initial: reduce ? false : { opacity: 0, y: 26 },
     animate: { opacity: 1, y: 0 },
@@ -18,7 +53,11 @@ export function Hero() {
   });
 
   return (
-    <section id="top" className="relative flex min-h-[100svh] items-center pt-28 pb-16 md:pt-32">
+    <section
+      id="top"
+      ref={root}
+      className="relative flex min-h-[100svh] items-center pt-28 pb-16 md:pt-32"
+    >
       <div className="shell grid w-full items-center gap-12 lg:grid-cols-[1.02fr_1.1fr]">
         <div className="max-w-xl">
           <motion.div {...rise(0.05)}>
@@ -59,14 +98,16 @@ export function Hero() {
           </motion.p>
         </div>
 
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 34, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.4, ease }}
-          style={{ perspective: 1200 }}
-        >
-          <InterviewDemo />
-        </motion.div>
+        <div ref={visual} className="will-change-transform">
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 34, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4, ease }}
+            style={{ perspective: 1200 }}
+          >
+            <InterviewDemo />
+          </motion.div>
+        </div>
       </div>
     </section>
   );
