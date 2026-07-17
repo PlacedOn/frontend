@@ -28,6 +28,13 @@ export interface RoleDnaIn {
   human_follow_up?: string | null;
   signals: RoleDnaSignal[];
 }
+// Role DNA generated from a plain-language description (firewall-cleaned).
+export interface RoleDnaGenResult {
+  signals: RoleDnaSignal[]; // firewall-clean; the employer edits + approves
+  stripped: string[]; // signals removed for referencing pedigree/protected traits
+  source: "model" | "fallback";
+  note: string;
+}
 export interface RealityCard {
   work_mode?: WorkMode | null;
   location?: string | null;
@@ -576,6 +583,11 @@ export const v1 = {
     authFetch<JobSummary>("/v1/jobs", { method: "POST", body: JSON.stringify(payload) }),
   employerDashboard: () => authFetch<JobSummary[]>("/v1/employer/dashboard", { method: "GET" }),
   getJob: (id: string) => authFetch<JobDetail>(`/v1/jobs/${id}`, { method: "GET" }),
+  generateRoleDna: (id: string, description: string) =>
+    authFetch<RoleDnaGenResult>(`/v1/jobs/${id}/role-dna/generate`, {
+      method: "POST",
+      body: JSON.stringify({ description }),
+    }),
   setRoleDna: (id: string, payload: RoleDnaIn) =>
     authFetch<JobDetail>(`/v1/jobs/${id}/role-dna`, { method: "POST", body: JSON.stringify(payload) }),
   setRealityCard: (id: string, payload: RealityCard) =>

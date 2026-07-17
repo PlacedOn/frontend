@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Check, Plus, Trash2, Rocket } from "lucide-react";
+import { Check, Plus, Trash2, Rocket, Sparkles, Loader2 } from "lucide-react";
 import {
   v1,
   V1Error,
@@ -45,6 +45,11 @@ export function JobSetup({ jobId }: { jobId: string }) {
   ]);
   const [reality, setReality] = useState<RealityCard>({});
 
+  // Generate-from-description (firewalled)
+  const [genDesc, setGenDesc] = useState("");
+  const [generating, setGenerating] = useState(false);
+  const [genInfo, setGenInfo] = useState<{ note: string; stripped: string[] } | null>(null);
+
   const [savingDna, setSavingDna] = useState(false);
   const [savingReality, setSavingReality] = useState(false);
   const [activating, setActivating] = useState(false);
@@ -74,6 +79,22 @@ export function JobSetup({ jobId }: { jobId: string }) {
 
   const setSignal = (i: number, patch: Partial<RoleDnaSignal>) =>
     setSignals((prev) => prev.map((s, idx) => (idx === i ? { ...s, ...patch } : s)));
+
+  const generateSignals = async () => {
+    if (!genDesc.trim()) return;
+    setGenerating(true);
+    setGenInfo(null);
+    try {
+      const res = await v1.generateRoleDna(jobId, genDesc.trim());
+      // Drop empty placeholder rows, append the firewall-clean proposals to edit.
+      setSignals((prev) => [...prev.filter((s) => s.signal.trim()), ...res.signals]);
+      setGenInfo({ note: res.note, stripped: res.stripped });
+    } catch (e) {
+      setGenInfo({ note: e instanceof V1Error ? e.message : "Could not generate signals.", stripped: [] });
+    } finally {
+      setGenerating(false);
+    }
+  };
 
   const saveDna = async () => {
     setSavingDna(true);
@@ -141,6 +162,50 @@ export function JobSetup({ jobId }: { jobId: string }) {
         <section className="glass rounded-[var(--r-card)] p-6">
           <h2 className="text-[19px] font-bold">Role DNA</h2>
           <p className="mt-1 text-[13.5px] text-[var(--ink-2)]">The observable signals a candidate is assessed against — never vague traits.</p>
+
+          {/* Generate from a plain-language description — firewalled */}
+          <div className="mt-5 rounded-[var(--r-card)] p-4" style={{ background: "var(--iris-ghost)", border: "1px solid var(--iris-line)" }}>
+            <div className="flex items-center gap-2">
+              <Sparkles size={15} className="text-[var(--iris-ink)]" />
+              <span className="text-[13px] font-semibold text-[var(--ink)]">Generate signals from a description</span>
+            </div>
+            <p className="mt-1 text-[12.5px] leading-relaxed text-[var(--ink-2)]">
+              Paste the role in plain words. We propose observable signals — and never pedigree or protected traits. You edit and approve everything below.
+            </p>
+            <textarea
+              rows={3}
+              value={genDesc}
+              onChange={(e) => setGenDesc(e.target.value)}
+              placeholder="Senior backend engineer to keep our payments service reliable — debugging under load, clear tradeoffs, ships weekly."
+              className={FIELD}
+              style={FIELD_STYLE}
+            />
+            <button
+              type="button"
+              onClick={generateSignals}
+              disabled={generating || !genDesc.trim() || !live}
+              className="mt-3 inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--r-btn)] px-4 py-2 text-[13px] font-bold text-white disabled:opacity-50"
+              style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))" }}
+            >
+              {generating ? <><Loader2 size={14} className="animate-spin" /> Generating…</> : <><Sparkles size={14} /> Generate signals</>}
+            </button>
+            {!live && <p className="mt-2 text-[12px] text-[var(--ink-3)]">Connect the backend to generate.</p>}
+            {genInfo && (
+              <div className="mt-3 text-[12.5px]">
+                <p className="text-[var(--ink-2)]">{genInfo.note}</p>
+                {genInfo.stripped.length > 0 && (
+                  <div className="mt-2 rounded-[var(--r-btn)] px-3 py-2" style={{ background: "rgba(180,120,10,0.12)" }}>
+                    <p className="font-semibold" style={{ color: "#B45309" }}>Removed — pedigree / protected, never assessed:</p>
+                    <ul className="mt-1 list-disc pl-4 text-[var(--ink-2)]">
+                      {genInfo.stripped.map((s, i) => (
+                        <li key={i}>{s}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
           <label className="mt-5 block">
             <span className="text-[13px] font-semibold text-[var(--ink-2)]">Business problem to solve</span>
