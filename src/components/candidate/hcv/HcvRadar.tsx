@@ -2,10 +2,18 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import type { HcvDimension } from "@/lib/mock/hcv";
+import { BAND_META, bandOf } from "@/lib/mock/candidateReport";
 
 type Props = {
   dimensions: HcvDimension[];
   size?: number;
+  /**
+   * Employer view: snap each axis to its evidence band (Supported / Emerging /
+   * Needs-more) instead of a continuous score, so the shape reads as banded
+   * evidence — never an implied precise per-trait number. Candidate view leaves
+   * this off and keeps the calibrated continuous fingerprint.
+   */
+  quantize?: boolean;
 };
 
 const ease = [0.22, 0.68, 0.31, 1] as const;
@@ -24,7 +32,7 @@ const toPath = (pts: Pt[]): string =>
  * The HCV "fingerprint" — the whole calibrated vector as one recognizable shape.
  * Solid polygon = point estimates; faint outer polygon = the uncertainty envelope.
  */
-export function HcvRadar({ dimensions, size = 280 }: Props) {
+export function HcvRadar({ dimensions, size = 280, quantize = false }: Props) {
   const reduce = useReducedMotion();
   const n = dimensions.length;
   const cx = size / 2;
@@ -38,9 +46,12 @@ export function HcvRadar({ dimensions, size = 280 }: Props) {
 
   const angleAt = (i: number) => -90 + (360 / n) * i;
 
-  const scorePts = dimensions.map((d, i) => polar(cx, cy, R * (d.score / 100), angleAt(i)));
+  // Employer (quantize): radius is the band's fill tier — no implied precise
+  // per-axis score. Candidate: continuous calibrated estimate + uncertainty halo.
+  const frac = (d: HcvDimension) => (quantize ? BAND_META[bandOf(d.score)].fill : d.score / 100);
+  const scorePts = dimensions.map((d, i) => polar(cx, cy, R * frac(d), angleAt(i)));
   const envPts = dimensions.map((d, i) =>
-    polar(cx, cy, R * Math.min(1, d.score / 100 + d.uncertainty * 0.28), angleAt(i)),
+    polar(cx, cy, R * (quantize ? frac(d) : Math.min(1, d.score / 100 + d.uncertainty * 0.28)), angleAt(i)),
   );
 
   return (

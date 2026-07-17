@@ -29,7 +29,7 @@ candidates" sections). We add a clear **role gateway** and role-specific signup:
 ```
 
 **Why split, not one generic form:** a candidate wants reassurance ("this won't
-expose me"); an employer wants proof ("this saves me résumé triage"). Different
+expose me"); an employer wants proof ("this saves me resume triage"). Different
 copy, different next step, same 1-field email start.
 
 ---
@@ -72,7 +72,7 @@ making them feel safe.
 
 **What they see first (above the fold):**
 - Headline: *"Your interview. Your terms."*
-- One line of trust: *"No résumé. You review and approve everything before any employer sees it."*
+- One line of trust: *"No resume. You review and approve everything before any employer sees it."*
 - **One field: email → "Continue with email"** (magic link)
 - Small print: takes 30–40 min, works on mobile, accommodations available.
 
@@ -80,7 +80,7 @@ making them feel safe.
 1. Optional: first name (one field) — skippable.
 2. Straight to `/pre-interview` (the consent screen that already exists) → interview.
 
-**Principle:** never ask a candidate for anything you don't need yet. No résumé
+**Principle:** never ask a candidate for anything you don't need yet. No resume
 upload, no long form. Email → interview.
 
 ---
@@ -90,7 +90,7 @@ upload, no long form. Email → interview.
 **Goal:** self-serve start with a work email, land them on a role.
 
 **What they see first:**
-- Headline: *"Hire on evidence, not résumés."*
+- Headline: *"Hire on evidence, not resumes."*
 - Proof line: *"Every candidate has interviewed. You see approved signals — never a raw transcript."*
 - **One field: work email → "Get started"** (magic link)
 - Secondary: *"Prefer a walkthrough? Book a demo"* → existing `/demo`.

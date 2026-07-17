@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Mail, MessageSquare, MapPin, ArrowRight } from "lucide-react";
+import { Mail, MessageSquare, MapPin, ArrowRight } from "@/components/ui/icons";
 
 /** Official brand marks (Simple Icons) — lucide dropped brand glyphs. */
 function LinkedInIcon({ size = 17 }: { size?: number }) {
@@ -43,7 +43,7 @@ export default function ContactPage() {
           className="glass group flex flex-col rounded-[var(--r-card)] p-7 transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
         >
           <span className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
-            <Mail size={20} />
+            <Mail size={20} animateOnView animateOnHover />
           </span>
           <h2 className="mt-5 text-[1.2rem]">Email us</h2>
           <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--ink-2)]">
@@ -60,7 +60,7 @@ export default function ContactPage() {
           className="glass group flex flex-col rounded-[var(--r-card)] p-7 transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
         >
           <span className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
-            <MessageSquare size={20} />
+            <MessageSquare size={20} animateOnView animateOnHover />
           </span>
           <h2 className="mt-5 text-[1.2rem]">Book a demo</h2>
           <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--ink-2)]">
@@ -75,7 +75,7 @@ export default function ContactPage() {
       {/* Company details */}
       <div className="glass mt-4 flex items-start gap-3 rounded-[var(--r-card)] p-7">
         <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
-          <MapPin size={20} />
+          <MapPin size={20} animateOnView animateOnHover />
         </span>
         <div>
           <h2 className="text-[1.2rem]">Placedon</h2>

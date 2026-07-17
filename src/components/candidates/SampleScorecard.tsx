@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { BadgeCheck, Eye, EyeOff } from "lucide-react";
+import { BadgeCheck, Eye, EyeOff } from "@/components/ui/icons";
 
 type Trait = { label: string; score: number; quote: string };
 
@@ -56,7 +56,7 @@ export function SampleScorecard() {
             </div>
           </div>
           <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-            <BadgeCheck size={15} /> Verified via interview
+            <BadgeCheck size={15} animateOnView /> Verified via interview
           </span>
         </div>
 

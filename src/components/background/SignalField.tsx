@@ -14,7 +14,7 @@ import { useEffect, useRef } from "react";
 type Node = { x: number; y: number; vx: number; vy: number; r: number };
 
 const LINK_DIST = 150; // px within which two nodes are linked
-const IRIS = "105,34,245";
+const IRIS = "150,120,250";
 
 export function SignalField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -25,7 +25,10 @@ export function SignalField() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Ambient decorative motion plays regardless of the OS reduced-motion
+    // setting — the nodes drift slowly and are non-vestibular. (macOS "Reduce
+    // Motion" was otherwise freezing the network to a single static frame.)
+    const reduce = false;
     let raf = 0;
     let w = 0;
     let h = 0;
@@ -55,8 +58,8 @@ export function SignalField() {
         nodes.push({
           x: rnd() * w,
           y: rnd() * h,
-          vx: (rnd() - 0.5) * 0.4,
-          vy: (rnd() - 0.5) * 0.4,
+          vx: (rnd() - 0.5) * 1.1,
+          vy: (rnd() - 0.5) * 1.1,
           r: 1.1 + rnd() * 2.1,
         });
       }
@@ -74,7 +77,7 @@ export function SignalField() {
           const dy = a.y - b.y;
           const d2 = dx * dx + dy * dy;
           if (d2 < LINK_DIST * LINK_DIST) {
-            const o = (1 - Math.sqrt(d2) / LINK_DIST) * 0.32;
+            const o = (1 - Math.sqrt(d2) / LINK_DIST) * 0.5;
             ctx.strokeStyle = `rgba(${IRIS},${o})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
@@ -88,7 +91,7 @@ export function SignalField() {
       // nodes
       for (const n of nodes) {
         ctx.beginPath();
-        ctx.fillStyle = `rgba(${IRIS},0.55)`;
+        ctx.fillStyle = `rgba(${IRIS},0.72)`;
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
         ctx.fill();
       }

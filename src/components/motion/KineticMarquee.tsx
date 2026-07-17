@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { Asterisk } from "lucide-react";
+import { Asterisk } from "@/components/ui/icons";
 import { gsap } from "@/lib/motion/gsap";
 
 /** Our own principles — not fabricated customer logos. */
@@ -59,10 +59,17 @@ export function KineticMarquee() {
       <div ref={track} className="flex w-max items-center">
         {[...ITEMS, ...ITEMS].map((item, i) => (
           <div key={i} className="flex shrink-0 items-center gap-8 pr-8 md:gap-12 md:pr-12">
-            <span className="text-[clamp(1.5rem,0.8rem+2.6vw,3rem)] font-semibold tracking-[-0.02em] text-[var(--ink)]">
+            <span
+              className={`text-[clamp(1.5rem,0.8rem+2.6vw,3rem)] font-semibold tracking-[-0.02em] ${
+                i % 2 === 1 ? "grad-iris" : "text-[var(--ink)]"
+              }`}
+            >
               {item}
             </span>
             <Asterisk
+              animateOnView
+              loop
+              loopDelay={900}
               className="shrink-0 text-[var(--iris)]"
               style={{ width: "clamp(1.1rem,0.6rem+1.4vw,1.9rem)", height: "auto" }}
               aria-hidden="true"

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, Lock } from "lucide-react";
+import { AnimateIcon, ArrowRight, Lock } from "@/components/ui/icons";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
 
 const ease = [0.22, 0.68, 0.31, 1] as const;
@@ -39,13 +39,15 @@ export function CompaniesHero() {
           </motion.p>
 
           <motion.div {...rise(0.34)} className="mt-8 flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => open("employer")}
-              className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-6 py-3 text-[15px] font-semibold text-white transition-shadow"
-              style={{ background: "linear-gradient(135deg, var(--iris-soft) 0%, var(--iris) 60%, var(--iris-ink) 130%)", boxShadow: "var(--shadow-iris)" }}
-            >
-              Book a demo <ArrowRight size={17} />
-            </button>
+            <AnimateIcon animateOnHover>
+              <button
+                onClick={() => open("employer")}
+                className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-6 py-3 text-[15px] font-semibold text-white transition-shadow"
+                style={{ background: "linear-gradient(135deg, var(--iris-soft) 0%, var(--iris) 60%, var(--iris-ink) 130%)", boxShadow: "var(--shadow-iris)" }}
+              >
+                Book a demo <ArrowRight size={17} />
+              </button>
+            </AnimateIcon>
             <a
               href="/employer"
               className="inline-flex cursor-pointer items-center rounded-[var(--r-btn)] px-6 py-3 text-[15px] font-semibold text-[var(--ink)]"
@@ -56,7 +58,7 @@ export function CompaniesHero() {
           </motion.div>
 
           <motion.p {...rise(0.44)} className="mt-6 flex items-center gap-2 text-[13px] text-[var(--ink-3)]">
-            <Lock size={15} /> Bias-audited &amp; contestable · LL144 and EU AI Act aligned.
+            <Lock size={15} animateOnView /> Bias-audited &amp; contestable · LL144 and EU AI Act aligned.
           </motion.p>
         </div>
 

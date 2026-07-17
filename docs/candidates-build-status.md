@@ -17,7 +17,7 @@ console errors (only dev-only CSP `eval()` note).
 | 1 | Hero | `CandidatesHero` | dual CTA, magnetic buttons | ✅ |
 | 2 | Trust strip | inline `TrustStrip` | — | ✅ |
 | 3 | The invisible problem | `ApplicationInbox` | **tabs** (All/Auto-rejected/No reply) | ✅ |
-| 4 | Résumés vs proven | inline `ResumesVsProven` | — | ✅ |
+| 4 | Resumes vs proven | inline `ResumesVsProven` | — | ✅ |
 | 5 | Sample Trust Passport | `SampleScorecard` | **per-trait visibility toggle**, animated bars | ✅ |
 | 6 | Your 4 steps | `JourneySteps` | **accordion**, step 3 highlighted (our edge) | ✅ |
 | 7 | Roles that fit | `RoleMatchCarousel` | **carousel** (prev/next/dots), match% + reason | ✅ |
@@ -79,14 +79,14 @@ console errors (only dev-only CSP `eval()` note).
 ## 7. `/companies` — employer mirror (Step 1 of the loop) ✅
 
 **Route:** `/companies` · same Frost Luxe system, employer-worded. Positioning:
-**"Hire on evidence, not résumés."** North-star kept: *you see approved signal,
+**"Hire on evidence, not resumes."** North-star kept: *you see approved signal,
 never the raw transcript.*
 
 | # | Section | Component | Interactive |
 |---|---------|-----------|-------------|
 | 1 | Hero | `CompaniesHero` | Book-a-demo (opens dialog) + See-dashboard; sample matched-candidate strip |
 | 2 | Trust strip | inline | — |
-| 3 | The triage problem | `ResumeTriage` | résumé-pile mockup ("312 · unread"), "300 / 20s / 1" stats |
+| 3 | The triage problem | `ResumeTriage` | resume-pile mockup ("312 · unread"), "300 / 20s / 1" stats |
 | 4 | **What you see / never see** | `EvidencePanel` | approved evidence vs **sealed blurred transcript** (the B2B moat) |
 | 5 | How it works for teams | `TeamJourneySteps` | accordion, step 3 "Review approved evidence" highlighted |
 | 6 | Your shortlist | `CandidateMatchCarousel` | carousel, candidate %match + "why they fit" |

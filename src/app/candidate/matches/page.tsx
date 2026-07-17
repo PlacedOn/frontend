@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { RoutePage } from "@/components/layout/RoutePage";
-import { CandidateMatches } from "@/components/candidate/CandidateMatches";
+import { PageHeading } from "@/components/dashboard/PageHeading";
+import { CandidateMatchesSurface } from "@/components/candidate/CandidateMatchesSurface";
 
 export const metadata: Metadata = {
   title: "Your matches — Placedon",
@@ -9,16 +9,17 @@ export const metadata: Metadata = {
 
 export default function CandidateMatchesPage() {
   return (
-    <RoutePage
-      eyebrow="Your matches"
-      title={
-        <>
-          Roles that fit <span className="grad-iris">your evidence</span>.
-        </>
-      }
-      intro="Each match traces to your own words. Open the evidence, then decide — your interest is never shared without you."
-    >
-      <CandidateMatches />
-    </RoutePage>
+    <>
+      <PageHeading
+        eyebrow="Your matches"
+        title={
+          <>
+            Roles that fit <span className="grad-iris">your evidence</span>.
+          </>
+        }
+        intro="Each match traces to your own words. Open the evidence, then decide — your interest is never shared without you."
+      />
+      <CandidateMatchesSurface />
+    </>
   );
 }

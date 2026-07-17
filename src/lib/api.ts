@@ -24,6 +24,16 @@ export function interviewSocketUrl(interviewId: string): string {
 }
 
 /**
+ * Authenticated live-interview WebSocket URL — matches backend
+ * `WS /v1/interviews/{session_id}/live`. The JWT rides as a query param because
+ * browsers can't set WebSocket headers; the backend validates it before the
+ * answer loop. Never log this URL — it carries the access token.
+ */
+export function liveInterviewSocketUrl(sessionId: string, token: string): string {
+  return `${WS_BASE_URL}/v1/interviews/${encodeURIComponent(sessionId)}/live?token=${encodeURIComponent(token)}`;
+}
+
+/**
  * True only when a real, non-local FastAPI backend is configured. In
  * production (no env var) this is false, so features fall back to mock
  * adapters. Set NEXT_PUBLIC_API_BASE_URL to the deployed Render URL to

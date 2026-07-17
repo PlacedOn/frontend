@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { ArrowRight, ShieldCheck, ScrollText, Scale, Gavel, Eye, Lock, Undo2, X, Check } from "lucide-react";
+import { AnimateIcon, ArrowRight, ShieldCheck, ScrollText, Scale, Gavel, Eye, Lock, Undo2, X, Check } from "@/components/ui/icons";
 
-import { AuroraMesh } from "@/components/background/AuroraMesh";
+import { BeamsField } from "@/components/background/BeamsField";
 import { Nav } from "@/components/sections/Nav";
 import { Footer } from "@/components/sections/Footer";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -54,7 +54,7 @@ function TrustStrip() {
         <span className="text-[12.5px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">Built to be trusted</span>
         {COMPLIANCE.map(({ icon: Icon, label }) => (
           <span key={label} className="inline-flex items-center gap-2 text-[13.5px] font-medium text-[var(--ink-2)]">
-            <Icon size={16} style={{ color: "var(--iris-ink)" }} /> {label}
+            <Icon size={16} animateOnView style={{ color: "var(--iris-ink)" }} /> {label}
           </span>
         ))}
       </div>
@@ -87,7 +87,7 @@ function ResumesVsProven() {
           <ul className="flex flex-col gap-3">
             {PROVEN.map((p) => (
               <li key={p} className="flex items-start gap-2.5 text-[14.5px] font-medium text-[var(--ink)]">
-                <Check size={17} className="mt-0.5 shrink-0" style={{ color: "var(--iris-ink)" }} /> {p}
+                <Check size={17} animateOnView className="mt-0.5 shrink-0" style={{ color: "var(--iris-ink)" }} /> {p}
               </li>
             ))}
           </ul>
@@ -111,7 +111,7 @@ function InControl() {
         {CONTROL.map(({ icon: Icon, title, body }) => (
           <div key={title} className="glass rounded-[var(--r-card)] p-6">
             <span className="mb-4 inline-grid h-11 w-11 place-items-center rounded-[0.85rem]" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-              <Icon size={20} />
+              <Icon size={20} animateOnView animateOnHover />
             </span>
             <h3 className="font-[var(--font-display)] text-[16.5px] font-semibold text-[var(--ink)]">{title}</h3>
             <p className="mt-2 text-[14px] leading-relaxed text-[var(--ink-2)]">{body}</p>
@@ -129,8 +129,8 @@ function FinalCta() {
         <div
           className="relative overflow-hidden rounded-[calc(var(--r-card)+10px)] px-8 py-14 text-center md:px-16 md:py-20"
           style={{
-            background: "linear-gradient(120deg, var(--iris-soft) 0%, var(--iris) 46%, var(--iris-ink) 108%)",
-            boxShadow: "0 40px 90px -30px rgba(58,20,150,.6)",
+            background: "linear-gradient(118deg, #8f61f7 0%, #7c48f1 46%, #6b38e6 108%)",
+            boxShadow: "0 34px 80px -34px rgba(110,60,230,0.55)",
           }}
         >
           <span
@@ -140,7 +140,7 @@ function FinalCta() {
           />
           <div className="relative mx-auto max-w-xl">
             <p className="text-[12px] uppercase tracking-[0.16em]" style={{ fontFamily: "var(--font-mono)", color: "rgba(255,255,255,.7)" }}>
-              Free · 30–40 min · no resume
+              Free · 25–30 min · no resume
             </p>
             <h2 className="mt-4 text-[clamp(2rem,1.3rem+3vw,3.4rem)]" style={{ color: "#fff" }}>
               Get hired for how you actually work.
@@ -149,13 +149,15 @@ function FinalCta() {
               Take one honest conversation. Decide exactly what employers see. Skip the pile.
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href="/pre-interview"
-                className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] bg-white px-6 py-3.5 text-[15px] font-semibold transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
-                style={{ color: "var(--iris-ink)", boxShadow: "0 12px 30px -10px rgba(0,0,0,.35)" }}
-              >
-                Take your interview, free <ArrowRight size={17} />
-              </a>
+              <AnimateIcon animateOnHover>
+                <a
+                  href="/pre-interview"
+                  className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] bg-white px-6 py-3.5 text-[15px] font-semibold transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
+                  style={{ color: "var(--iris-ink)", boxShadow: "0 12px 30px -10px rgba(0,0,0,.35)" }}
+                >
+                  Take your interview, free <ArrowRight size={17} />
+                </a>
+              </AnimateIcon>
               <a
                 href="#sample"
                 className="inline-flex cursor-pointer items-center rounded-[var(--r-btn)] px-6 py-3.5 text-[15px] font-semibold text-white transition-colors duration-[var(--d-micro)]"
@@ -165,7 +167,7 @@ function FinalCta() {
               </a>
             </div>
             <p className="mt-6 flex items-center justify-center gap-2 text-[13px]" style={{ color: "rgba(255,255,255,.6)" }}>
-              <ShieldCheck size={14} /> You approve everything before any employer sees it.
+              <ShieldCheck size={14} animateOnView /> You approve everything before any employer sees it.
             </p>
           </div>
         </div>
@@ -177,7 +179,7 @@ function FinalCta() {
 export default function CandidatesPage() {
   return (
     <>
-      <AuroraMesh />
+      <BeamsField />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <CandidatesHero />

@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
-import { AuroraMesh } from "@/components/background/AuroraMesh";
-import { RouteHeader } from "@/components/layout/RouteHeader";
-import { Footer } from "@/components/sections/Footer";
 import { CandidateDashboard } from "@/components/candidate/CandidateDashboard";
-import { SignedInBar } from "@/components/auth/SignedInBar";
 import { DASHBOARD_MODES, type CandidateDashboardMode } from "@/lib/mock/candidate";
 
 export const metadata: Metadata = {
@@ -24,18 +20,5 @@ export default async function CandidatePage({
   searchParams: Promise<{ mode?: string | string[] }>;
 }) {
   const { mode } = await searchParams;
-
-  return (
-    <>
-      <AuroraMesh />
-      <RouteHeader />
-      <main className="relative" style={{ zIndex: "var(--z-base)" }}>
-        <section className="shell pt-32 pb-24 md:pt-36">
-          <SignedInBar />
-          <CandidateDashboard mode={resolveMode(mode)} />
-        </section>
-      </main>
-      <Footer />
-    </>
-  );
+  return <CandidateDashboard mode={resolveMode(mode)} />;
 }

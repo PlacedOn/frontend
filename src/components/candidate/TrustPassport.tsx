@@ -34,9 +34,11 @@ export function TrustPassport() {
     );
 
   const dims = report?.dimensions ?? [];
-  const overall = report?.overall ?? 0;
-  const overallConfidence = Math.round((report?.overallConfidence ?? 0) * 100);
   const hiddenCount = dims.filter((d) => !d.employerVisible).length;
+  const visibleCount = dims.length - hiddenCount;
+  // No universal "overall score" — evidence is shown per skill with a
+  // confidence band (see the dimension rows). A single employability number
+  // is banned by the product thesis and by LL144 / EU AI Act.
 
   return (
     <>
@@ -56,7 +58,7 @@ export function TrustPassport() {
         </p>
         <ol className="mt-3 grid gap-2.5 sm:grid-cols-3">
           {[
-            "Each skill gets a score, and how confident we are in it — not just a number.",
+            "Each skill shows what your evidence supports and how confident we are — never one overall score.",
             "Every score comes from your own words. Tap any skill to hide it from employers.",
             "Nothing is shared until you tap Approve.",
           ].map((t, i) => (
@@ -83,12 +85,12 @@ export function TrustPassport() {
           <p className="mt-3 max-w-md leading-relaxed text-[var(--ink-2)]">{report?.summary}</p>
           <div className="mt-5 flex items-end gap-6">
             <div>
-              <p className="font-[var(--font-mono)] text-[34px] font-bold leading-none" style={{ color: "var(--iris-ink)" }}>{overall}</p>
-              <p className="mt-1 text-[12px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">Overall skill score</p>
+              <p className="font-[var(--font-mono)] text-[34px] font-bold leading-none" style={{ color: "var(--iris-ink)" }}>{dims.length}</p>
+              <p className="mt-1 text-[12px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">Skills evidenced from your interview</p>
             </div>
             <div>
-              <p className="font-[var(--font-mono)] text-[34px] font-bold leading-none text-[var(--ink)]">{overallConfidence}%</p>
-              <p className="mt-1 text-[12px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">How confident we are</p>
+              <p className="font-[var(--font-mono)] text-[34px] font-bold leading-none text-[var(--ink)]">{visibleCount}</p>
+              <p className="mt-1 text-[12px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">Shared with employers — you decide</p>
             </div>
           </div>
         </div>

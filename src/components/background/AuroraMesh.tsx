@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 
 /*
  * Living gradient-mesh backdrop. Adapted from 21st.dev "Aurora Background"
@@ -19,18 +19,21 @@ type Blob = {
 };
 
 const BLOBS: Blob[] = [
-  { color: "rgba(139,84,255,0.34)", size: "60%", x: ["6%", "40%", "22%", "56%", "6%"], y: ["-16%", "8%", "34%", "-8%", "-16%"], scale: [1, 1.18, 0.92, 1.1, 1], duration: 26 },
-  { color: "rgba(105,34,245,0.24)", size: "54%", x: ["58%", "24%", "74%", "40%", "58%"], y: ["54%", "22%", "48%", "72%", "54%"], scale: [1.1, 0.85, 1.25, 0.95, 1.1], duration: 31 },
-  { color: "rgba(120,178,255,0.24)", size: "48%", x: ["78%", "36%", "60%", "16%", "78%"], y: ["-8%", "26%", "60%", "38%", "-8%"], scale: [0.9, 1.25, 1, 1.15, 0.9], duration: 28 },
-  { color: "rgba(184,155,255,0.22)", size: "44%", x: ["28%", "64%", "12%", "48%", "28%"], y: ["66%", "12%", "30%", "58%", "66%"], scale: [1, 1.1, 0.85, 1.2, 1], duration: 34 },
-  { color: "rgba(255,196,132,0.16)", size: "62%", x: ["48%", "14%", "66%", "30%", "48%"], y: ["30%", "56%", "-8%", "48%", "30%"], scale: [1.2, 0.9, 1.1, 0.88, 1.2], duration: 23 },
+  { color: "rgba(166,140,250,0.34)", size: "60%", x: ["6%", "44%", "18%", "58%", "6%"], y: ["-16%", "12%", "40%", "-12%", "-16%"], scale: [1, 1.24, 0.88, 1.14, 1], duration: 13 },
+  { color: "rgba(139,110,246,0.26)", size: "54%", x: ["58%", "20%", "78%", "38%", "58%"], y: ["54%", "18%", "52%", "76%", "54%"], scale: [1.1, 0.82, 1.3, 0.92, 1.1], duration: 15 },
+  { color: "rgba(150,190,255,0.24)", size: "48%", x: ["78%", "32%", "64%", "12%", "78%"], y: ["-8%", "30%", "66%", "40%", "-8%"], scale: [0.9, 1.3, 1, 1.18, 0.9], duration: 14 },
+  { color: "rgba(196,175,255,0.24)", size: "44%", x: ["28%", "68%", "8%", "50%", "28%"], y: ["66%", "8%", "28%", "60%", "66%"], scale: [1, 1.14, 0.82, 1.24, 1], duration: 16 },
+  { color: "rgba(255,205,150,0.15)", size: "62%", x: ["48%", "10%", "70%", "28%", "48%"], y: ["30%", "60%", "-10%", "50%", "30%"], scale: [1.24, 0.88, 1.14, 0.86, 1.24], duration: 11 },
 ];
 
 const NOISE =
   "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
 export function AuroraMesh() {
-  const reduce = useReducedMotion();
+  // Ambient decorative motion plays regardless of the OS reduced-motion
+  // setting — the blobs morph slowly and are non-vestibular. (macOS "Reduce
+  // Motion" was otherwise freezing the mesh to a single static frame.)
+  const reduce = false;
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0" style={{ zIndex: 0 }}>

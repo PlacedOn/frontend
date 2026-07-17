@@ -4,6 +4,7 @@ import { Hero } from "@/components/sections/Hero";
 import { KineticMarquee } from "@/components/motion/KineticMarquee";
 import { ScrollStatement } from "@/components/motion/ScrollStatement";
 import { HowItWorks } from "@/components/sections/HowItWorks";
+import { FeaturedSurfaces } from "@/components/sections/FeaturedSurfaces";
 import { GlobalReach } from "@/components/sections/GlobalReach";
 import { Stats } from "@/components/sections/Stats";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -18,11 +19,12 @@ export default function Home() {
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <Hero />
+        <Stats />
         <KineticMarquee />
         <ScrollStatement />
         <HowItWorks />
+        <FeaturedSurfaces />
         <GlobalReach />
-        <Stats />
         <Testimonials />
         <Audiences />
         <CTA />

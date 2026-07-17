@@ -65,6 +65,11 @@ export function useInterviewSession(initialId?: string) {
   const intentionalCloseRef = useRef(false);
   const reconnectAttemptsRef = useRef(0);
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Whether the live socket ever opened, and whether we've handed the room to
+  // the scripted demo (either because we started mock, or the backend never
+  // came up). Once mock is active, answers drive the scripted flow.
+  const everOpenRef = useRef(false);
+  const mockActiveRef = useRef(false);
 
   const clearTimers = () => {
     timersRef.current.forEach(clearTimeout);
@@ -107,6 +112,25 @@ export function useInterviewSession(initialId?: string) {
     [finalizeQuestion],
   );
 
+  // Hand the room to the scripted interview. Used both when no backend is
+  // configured and as a graceful fallback when a configured backend can't be
+  // reached — so the interview room is always usable for testing/demos.
+  const startMock = useCallback(() => {
+    mockActiveRef.current = true;
+    clearTimers();
+    setError(null);
+    setStreaming("");
+    streamBufRef.current = "";
+    setStatus("thinking");
+    timersRef.current.push(
+      setTimeout(() => {
+        mockIdxRef.current = 0;
+        setTurn(1);
+        streamMock(MOCK_QUESTIONS[0]!);
+      }, 650),
+    );
+  }, [streamMock]);
+
   const connectLive = useCallback(() => {
     let ws: WebSocket;
     try {
@@ -119,6 +143,7 @@ export function useInterviewSession(initialId?: string) {
     wsRef.current = ws;
 
     ws.onopen = () => {
+      everOpenRef.current = true;
       reconnectAttemptsRef.current = 0;
       // If we were mid-answer the next question streams in; otherwise the
       // backend resends the current question. Either way, wait for it.
@@ -162,10 +187,17 @@ export function useInterviewSession(initialId?: string) {
 
     ws.onclose = () => {
       if (intentionalCloseRef.current) return;
+      // Backend was configured but never reachable → seamlessly run the
+      // scripted interview instead of stranding the candidate.
+      if (!everOpenRef.current) {
+        startMock();
+        return;
+      }
       const attempts = reconnectAttemptsRef.current;
       if (attempts >= MAX_RECONNECT) {
-        setError("We couldn't reconnect to the interview. Your progress is saved.");
-        setStatus("error");
+        // Exhausted reconnects on a real drop → continue in scripted mode so
+        // the room stays usable rather than dead-ending on an error.
+        startMock();
         return;
       }
       reconnectAttemptsRef.current = attempts + 1;
@@ -175,18 +207,11 @@ export function useInterviewSession(initialId?: string) {
       const delay = Math.min(1000 * 2 ** attempts, 8000);
       reconnectTimerRef.current = setTimeout(connectLive, delay);
     };
-  }, [interviewId, finalizeQuestion]);
+  }, [interviewId, finalizeQuestion, startMock]);
 
   useEffect(() => {
     if (!live) {
-      setStatus("thinking");
-      timersRef.current.push(
-        setTimeout(() => {
-          mockIdxRef.current = 0;
-          setTurn(1);
-          streamMock(MOCK_QUESTIONS[0]!);
-        }, 650),
-      );
+      startMock();
       return () => clearTimers();
     }
 
@@ -200,7 +225,7 @@ export function useInterviewSession(initialId?: string) {
       clearTimers();
       wsRef.current?.close();
     };
-  }, [live, connectLive, streamMock]);
+  }, [live, connectLive, streamMock, startMock]);
 
   const sendAnswer = useCallback(
     (text: string) => {
@@ -212,7 +237,7 @@ export function useInterviewSession(initialId?: string) {
       setStreaming("");
       streamBufRef.current = "";
 
-      if (live) {
+      if (!mockActiveRef.current) {
         const ws = wsRef.current;
         if (ws && ws.readyState === WebSocket.OPEN) {
           ws.send(JSON.stringify({ type: "answer", message_id: newId("msg"), content: trimmed }));

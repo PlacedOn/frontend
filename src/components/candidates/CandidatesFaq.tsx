@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus } from "@/components/ui/icons";
 
 const FAQS = [
   {
@@ -11,7 +11,7 @@ const FAQS = [
   },
   {
     q: "How long does the interview take?",
-    a: "About 30–40 minutes. It adapts to your answers, works on any device, and you can request accommodations before you start.",
+    a: "About 25–30 minutes. It adapts to your answers, works on any device, and you can request accommodations before you start.",
   },
   {
     q: "Who sees my results?",
@@ -55,7 +55,7 @@ export function CandidatesFaq() {
                 aria-expanded={isOpen}
               >
                 <span className="font-[var(--font-display)] text-[15.5px] font-semibold text-[var(--ink)]">{f.q}</span>
-                <span className="shrink-0 text-[var(--ink-3)]">{isOpen ? <Minus size={18} /> : <Plus size={18} />}</span>
+                <span className="shrink-0 text-[var(--ink-3)]">{isOpen ? <Minus size={18} animateOnView /> : <Plus size={18} animateOnView />}</span>
               </button>
               <AnimatePresence initial={false}>
                 {isOpen && (

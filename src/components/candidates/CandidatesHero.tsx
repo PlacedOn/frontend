@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, ShieldCheck } from "lucide-react";
+import { AnimateIcon, ArrowRight, ShieldCheck } from "@/components/ui/icons";
 import { Button } from "@/components/ui/Button";
 
 const ease = [0.22, 0.68, 0.31, 1] as const;
@@ -39,16 +39,18 @@ export function CandidatesHero() {
           </motion.p>
 
           <motion.div {...rise(0.34)} className="mt-8 flex flex-wrap items-center gap-3">
-            <Button href="/pre-interview">
-              Take your interview, free <ArrowRight size={17} />
-            </Button>
+            <AnimateIcon animateOnHover>
+              <Button href="/pre-interview">
+                Take your interview, free <ArrowRight size={17} />
+              </Button>
+            </AnimateIcon>
             <Button href="#sample" variant="ghost">
               See a sample profile
             </Button>
           </motion.div>
 
           <motion.p {...rise(0.44)} className="mt-6 flex items-center gap-2 text-[13px] text-[var(--ink-3)]">
-            <ShieldCheck size={15} /> You approve everything before any employer sees it.
+            <ShieldCheck size={15} animateOnView /> You approve everything before any employer sees it.
           </motion.p>
         </div>
 

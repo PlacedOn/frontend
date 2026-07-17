@@ -52,15 +52,23 @@ export function Button({
   const inline: React.CSSProperties =
     variant === "primary"
       ? {
+          // Vibrant appealing violet with a glossy glass sheen — clean and
+          // saturated, not muddy. Bright inset top highlight reads as glass.
           background:
-            "linear-gradient(135deg, var(--iris-soft) 0%, var(--iris) 60%, var(--iris-ink) 130%)",
-          boxShadow: "var(--shadow-iris)",
+            "linear-gradient(135deg, #9a6bff 0%, #7d47f0 55%, #6b36e6 120%)",
+          border: "1px solid rgba(255,255,255,0.26)",
+          boxShadow:
+            "0 16px 36px -12px rgba(123,69,240,0.62), inset 0 1.5px 0 rgba(255,255,255,0.55), inset 0 -12px 24px -14px rgba(70,30,160,0.55)",
         }
       : {
-          background: "var(--glass-hi)",
-          border: "1px solid var(--glass-line-hi)",
-          backdropFilter: "blur(12px)",
-          boxShadow: "var(--shadow-sm)",
+          // Frosted clear glass for secondary actions.
+          background:
+            "linear-gradient(158deg, rgba(255,255,255,0.80), rgba(244,242,255,0.56) 72%)",
+          border: "1px solid rgba(255,255,255,0.72)",
+          backdropFilter: "blur(16px) saturate(1.3)",
+          WebkitBackdropFilter: "blur(16px) saturate(1.3)",
+          boxShadow:
+            "0 10px 26px -14px rgba(30,24,70,0.28), inset 0 1px 0 rgba(255,255,255,0.85)",
         };
 
   const Tag = (href ? motion.a : motion.button) as typeof motion.a;

@@ -27,6 +27,7 @@ import {
   type CandidateDashboardMode,
   type IconKey,
 } from "@/lib/mock/candidate";
+import { JourneyStrip } from "@/components/candidate/profile/JourneyStrip";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -267,6 +268,9 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
         })}
       </div>
 
+      {/* Profile → interview → report → fit bridge */}
+      <JourneyStrip />
+
       {/* Matches + trust control */}
       <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <motion.section {...reveal(0.24)} className="glass rounded-[2rem] p-6">
@@ -320,7 +324,7 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
             Your dashboard keeps the next action visible because the product depends on candidate control: approve evidence, choose visibility, then unlock matches.
           </p>
           <Link
-            href="/candidate/profile"
+            href="/candidate/profile#evidence"
             className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-3 text-[14px] font-bold text-white transition-colors"
             style={{ background: "var(--ink)" }}
           >

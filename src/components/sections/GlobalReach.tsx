@@ -1,9 +1,10 @@
-import { Globe, Mic, Scale } from "lucide-react";
+import { Globe as GlobeIcon, Mic, Scale } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/Reveal";
-import { GlobeLive } from "@/components/ui/GlobeLive";
+import { Globe } from "@/components/ui/globe";
+import { SectionAurora } from "@/components/background/SectionAurora";
 
 const POINTS = [
-  { icon: Globe, text: "Runs in the browser, in any timezone — no travel, no scheduling roulette." },
+  { icon: GlobeIcon, text: "Runs in the browser, in any timezone — no travel, no scheduling roulette." },
   { icon: Mic, text: "Voice or text, whichever the candidate is comfortable with." },
   { icon: Scale, text: "The same fair, bias-audited scoring wherever they are." },
 ];
@@ -11,8 +12,9 @@ const POINTS = [
 /** Remote-first capability, shown with an interactive globe (drag to spin). */
 export function GlobalReach() {
   return (
-    <section className="relative py-20 md:py-28">
-      <div className="shell grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
+    <section className="relative overflow-hidden py-20 md:py-28">
+      <SectionAurora />
+      <div className="shell relative z-[1] grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
         <Reveal>
           <p className="eyebrow">Remote-first by design</p>
           <h2 className="mt-3 max-w-xl text-[clamp(1.9rem,1.2rem+2.6vw,3.1rem)]">
@@ -30,7 +32,7 @@ export function GlobalReach() {
                   className="grid h-9 w-9 shrink-0 place-items-center rounded-xl"
                   style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}
                 >
-                  <Icon size={17} />
+                  <Icon size={17} animateOnView animateOnHover />
                 </span>
                 <span className="pt-1.5 text-[15px] leading-relaxed text-[var(--ink-2)]">{text}</span>
               </li>
@@ -46,11 +48,13 @@ export function GlobalReach() {
               className="pointer-events-none absolute inset-0 -z-10"
               style={{
                 background:
-                  "radial-gradient(circle at 50% 45%, rgba(105,34,245,0.18), transparent 62%)",
-                filter: "blur(30px)",
+                  "radial-gradient(circle at 50% 45%, rgba(154,107,255,0.20), transparent 62%)",
+                filter: "blur(34px)",
               }}
             />
-            <GlobeLive />
+            <div className="relative mx-auto aspect-square w-full">
+              <Globe />
+            </div>
             <p className="mt-4 text-center text-[12.5px] text-[var(--ink-3)]">
               Drag to spin · cities shown are illustrative
             </p>

@@ -10,7 +10,7 @@ and compliance. Reference: https://remotestar.io/candidates.
 
 ## 1. What RemoteStar does well (what we steal)
 
-Same thesis as us (skills > résumés, AI interview, verified profile, job match),
+Same thesis as us (skills > resumes, AI interview, verified profile, job match),
 but they win on **story and conversion**:
 
 1. **Pain-point hero** — "You're not unqualified. You're just invisible."
@@ -53,9 +53,9 @@ Modeled on RemoteStar, executed better. (New route `/candidates`; homepage stays
 
 | # | Section | Copy direction | Why it beats RemoteStar |
 |---|---------|----------------|-------------------------|
-| 1 | **Hero** | "Skip the résumé pile. Get hired for how you actually work." · CTA: *Take your interview — free* + *See a sample profile* | control + evidence framing, premium look |
+| 1 | **Hero** | "Skip the resume pile. Get hired for how you actually work." · CTA: *Take your interview — free* + *See a sample profile* | control + evidence framing, premium look |
 | 2 | **The invisible problem** | "You're not unqualified. You're unread." + an **application-inbox visual** (sent / no reply / auto-rejected) | same gut-punch, our brand |
-| 3 | **The shift** | "Résumés list claims. One conversation proves them." | ties to our thesis |
+| 3 | **The shift** | "Resumes list claims. One conversation proves them." | ties to our thesis |
 | 4 | **Sample Trust Passport** | a real evidence-backed profile: traits + the candidate's own quote + "employer-visible" toggles | **shows candidate control** — RemoteStar can't |
 | 5 | **Your 4 steps** | Interview → Review your evidence → **Approve what employers see** → Get matched | step 3 (approve) is our differentiator |
 | 6 | **Roles that fit your evidence** | %-match cards with the *reason* ("matched on: structured debugging") | evidence-linked, not opaque |

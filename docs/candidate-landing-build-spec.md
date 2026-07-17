@@ -23,7 +23,7 @@ no framework friction, no rewrite. We just execute it more premium.
 | 2 | Hero "Skip the Screening, Get Hired 10x Faster" + avatar cards | **adapt** | pain+promise, our control angle, avatar proof strip |
 | 3 | "As Featured In" press logos | **replace** | compliance strip (LL144 · EU AI Act · bias-audited) until real press |
 | 4 | Problem + **inbox mockup** (127 sent / 0 read, tabs) | **steal** | our inbox mockup — the gut-punch |
-| 5 | Recruiter problem "300 vs 1" stat cards | **steal** | "300 résumés, 20s each" |
+| 5 | Recruiter problem "300 vs 1" stat cards | **steal** | "300 resumes, 20s each" |
 | 6 | Candidate example card (Maya, 94%) | merge into §7 | — |
 | 7 | Belief "Resumes don't prove skills" comparison | **steal** | claims vs proven, 2-col |
 | 8 | The Shift + **interview scorecard mockup** | **steal + upgrade** | our **Trust Passport scorecard** with control |
@@ -47,7 +47,7 @@ no framework friction, no rewrite. We just execute it more premium.
 | 2 | Trust strip | compliance badges | row | static | fade | — |
 | 3 | The invisible problem | **inbox mockup** (tabbed) + 3 stat cards | 2-col | static/mock | tab-switch, scroll-reveal | — |
 | 4 | Recruiter reality | 3 stat cards + avatar cluster | 3-col | static | count-up | — |
-| 5 | Résumés vs proven | 2-col comparison | 2-col | static | reveal | — |
+| 5 | Resumes vs proven | 2-col comparison | 2-col | static | reveal | — |
 | 6 | **Sample Trust Passport** | scorecard w/ traits+evidence+visibility toggles | card | reuse `/demo/hcv` shape | bar-fill, toggle | — |
 | 7 | **Your 4 steps** | accordion stepper | vertical | static | expand | — |
 | 8 | **Roles that fit** | match-card carousel (%, salary, reason) | carousel | `/demo/matches` shape | auto-rotate | **JobCard #7085** |
@@ -100,9 +100,9 @@ Card fields (port JobCard #7085 → Frost Luxe): LIVE badge · role · salary ba
 
 ## 6. Copy bank (PlacedOn — honest, differentiated)
 
-- Hero: **"Skip the résumé pile. Get hired for how you actually work."** / *"Prove your skill in one conversation. Then decide exactly what employers see."*
+- Hero: **"Skip the resume pile. Get hired for how you actually work."** / *"Prove your skill in one conversation. Then decide exactly what employers see."*
 - Problem: **"You're not unqualified. You're unread."**
-- Belief: **"Résumés list claims. One conversation proves them."**
+- Belief: **"Resumes list claims. One conversation proves them."**
 - Control: **"You approve every trait. Employers never see your raw interview."**
 - Positioning north-star: **"RemoteStar scores you. PlacedOn hands you the mic — and the veto."**
 

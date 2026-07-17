@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { Plus, Minus, PlusCircle, Users, ScanSearch, Handshake } from "lucide-react";
+import { Plus, Minus, PlusCircle, Users, ScanSearch, Handshake } from "@/components/ui/icons";
 
 type Step = {
   icon: typeof Users;
@@ -72,7 +72,7 @@ export function TeamJourneySteps() {
                   className="grid h-11 w-11 shrink-0 place-items-center rounded-[0.85rem]"
                   style={{ background: step.highlight ? "linear-gradient(135deg,var(--iris-soft),var(--iris))" : "var(--iris-ghost)", color: step.highlight ? "#fff" : "var(--iris-ink)" }}
                 >
-                  <Icon size={20} />
+                  <Icon size={20} animateOnView animateOnHover />
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
@@ -85,7 +85,7 @@ export function TeamJourneySteps() {
                   </div>
                   <p className="font-[var(--font-display)] text-[16px] font-semibold text-[var(--ink)]">{step.title}</p>
                 </div>
-                <span className="shrink-0 text-[var(--ink-3)]">{isOpen ? <Minus size={18} /> : <Plus size={18} />}</span>
+                <span className="shrink-0 text-[var(--ink-3)]">{isOpen ? <Minus size={18} animateOnView /> : <Plus size={18} animateOnView />}</span>
               </button>
 
               <AnimatePresence initial={false}>

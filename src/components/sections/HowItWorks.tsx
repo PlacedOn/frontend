@@ -1,14 +1,20 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type ComponentType } from "react";
 import { useGSAP } from "@gsap/react";
-import { MessageSquareText, ScanSearch, Share2, ShieldCheck } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import {
+  AnimateIcon,
+  MessageSquareText,
+  ScanSearch,
+  Share2,
+  ShieldCheck,
+} from "@/components/ui/icons";
 import { TiltCard } from "@/components/ui/TiltCard";
+import { SectionAurora } from "@/components/background/SectionAurora";
 import { gsap, ScrollTrigger } from "@/lib/motion/gsap";
 
 type Step = {
-  icon: LucideIcon;
+  icon: ComponentType<{ size?: number }>;
   step: string;
   title: string;
   body: string;
@@ -19,7 +25,7 @@ const STEPS: Step[] = [
     icon: MessageSquareText,
     step: "01",
     title: "Talk once",
-    body: "A 30-minute chat that follows how the candidate thinks, not a fixed script. Voice or text, their choice.",
+    body: "A 25–30 minute chat that follows how the candidate thinks, not a fixed script. Voice or text, their choice.",
   },
   {
     icon: ScanSearch,
@@ -90,10 +96,11 @@ export function HowItWorks() {
   );
 
   return (
-    <section id="how" className="relative py-20 md:py-28">
+    <section id="how" className="relative overflow-hidden py-20 md:py-28">
+      <SectionAurora />
       <div
         ref={root}
-        className="shell grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16"
+        className="shell relative z-[1] grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16"
       >
         {/* Sticky rail */}
         <div className="lg:sticky lg:top-[16vh] lg:self-start">
@@ -141,28 +148,30 @@ export function HowItWorks() {
           {STEPS.map((s) => {
             const Icon = s.icon;
             return (
-              <TiltCard key={s.step} className="hiw-card rounded-[var(--r-card)]">
-                <div className="glass flex flex-col rounded-[var(--r-card)] p-6 md:p-8">
-                  <div className="flex items-center justify-between">
-                    <span
-                      className="grid h-12 w-12 place-items-center rounded-2xl"
-                      style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}
-                    >
-                      <Icon size={22} />
-                    </span>
-                    <span
-                      className="text-[13px] font-semibold text-[var(--ink-3)]"
-                      style={{ fontFamily: "var(--font-mono)" }}
-                    >
-                      {s.step}
-                    </span>
+              <AnimateIcon key={s.step} animateOnView animateOnHover style={{ display: "block" }}>
+                <TiltCard className="hiw-card rounded-[var(--r-card)]">
+                  <div className="glass flex flex-col rounded-[var(--r-card)] p-6 md:p-8">
+                    <div className="flex items-center justify-between">
+                      <span
+                        className="grid h-12 w-12 place-items-center rounded-2xl"
+                        style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}
+                      >
+                        <Icon size={22} />
+                      </span>
+                      <span
+                        className="text-[13px] font-semibold text-[var(--ink-3)]"
+                        style={{ fontFamily: "var(--font-mono)" }}
+                      >
+                        {s.step}
+                      </span>
+                    </div>
+                    <h3 className="mt-5 text-[1.5rem]">{s.title}</h3>
+                    <p className="mt-2.5 text-[15px] leading-relaxed text-[var(--ink-2)]">
+                      {s.body}
+                    </p>
                   </div>
-                  <h3 className="mt-5 text-[1.5rem]">{s.title}</h3>
-                  <p className="mt-2.5 text-[15px] leading-relaxed text-[var(--ink-2)]">
-                    {s.body}
-                  </p>
-                </div>
-              </TiltCard>
+                </TiltCard>
+              </AnimateIcon>
             );
           })}
         </div>

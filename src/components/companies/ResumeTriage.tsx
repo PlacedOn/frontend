@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { FileText, Timer, Dices } from "lucide-react";
+import { FileText, Timer, Dices } from "@/components/ui/icons";
 
 type Pile = { title: string; sub: string; fate: "reject" | "maybe" | "buried" };
 
@@ -45,7 +45,7 @@ export function ResumeTriage() {
             {STATS.map(({ icon: Icon, value, label }) => (
               <li key={label} className="flex items-center gap-3">
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[0.85rem]" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-                  <Icon size={18} />
+                  <Icon size={18} animateOnView animateOnHover />
                 </span>
                 <p className="text-[var(--ink-2)]">
                   <span className="text-[1.35rem] font-bold text-[var(--ink)]">{value}</span> {label}

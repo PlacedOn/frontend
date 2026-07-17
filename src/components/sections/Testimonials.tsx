@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
+import { SectionAurora } from "@/components/background/SectionAurora";
 
 /*
  * Structure + motion adapted from 21st.dev "Testimonials" by
@@ -40,8 +41,9 @@ const ease = [0.22, 0.68, 0.31, 1] as const;
 
 export function Testimonials({ className }: { className?: string }) {
   return (
-    <section aria-label="Testimonials" className={cn("relative py-20 md:py-28", className)}>
-      <div className="shell">
+    <section aria-label="Testimonials" className={cn("relative overflow-hidden py-20 md:py-28", className)}>
+      <SectionAurora />
+      <div className="shell relative z-[1]">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}

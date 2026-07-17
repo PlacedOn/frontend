@@ -10,10 +10,11 @@ export const metadata: Metadata = {
 export default async function InterviewPage({
   searchParams,
 }: {
-  searchParams: Promise<{ id?: string }>;
+  searchParams: Promise<{ id?: string; session?: string }>;
 }) {
   const sp = await searchParams;
   const id = typeof sp.id === "string" ? sp.id : undefined;
+  const sessionId = typeof sp.session === "string" ? sp.session : undefined;
 
   return (
     <RoutePage
@@ -25,7 +26,7 @@ export default async function InterviewPage({
       }
       intro="Answer in your own words. No timer, no trick questions — just a few questions that adapt to what you say."
     >
-      <InterviewRoom initialId={id} />
+      <InterviewRoom initialId={id} sessionId={sessionId} />
     </RoutePage>
   );
 }

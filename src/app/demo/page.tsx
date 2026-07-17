@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { AuroraMesh } from "@/components/background/AuroraMesh";
+import { PlasmaVeil } from "@/components/background/PlasmaVeil";
 import { RouteHeader } from "@/components/layout/RouteHeader";
 import { Footer } from "@/components/sections/Footer";
 import { DemoForm } from "@/components/demo/DemoForm";
-import { Quote, ShieldCheck, Gauge } from "lucide-react";
+import { Quote, ShieldCheck, Gauge } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
   title: "Book a demo — Placedon",
@@ -32,7 +32,7 @@ const PROMISES = [
 export default function DemoPage() {
   return (
     <>
-      <AuroraMesh />
+      <PlasmaVeil />
       <RouteHeader />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <section className="shell grid grid-cols-1 gap-12 pt-36 pb-24 md:grid-cols-[1.05fr_0.95fr] md:items-start md:gap-16 md:pt-40">
@@ -56,7 +56,7 @@ export default function DemoPage() {
                     className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl"
                     style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}
                   >
-                    <Icon size={19} />
+                    <Icon size={19} animateOnView animateOnHover />
                   </span>
                   <div>
                     <h3 className="text-[15.5px] font-semibold text-[var(--ink)]">{title}</h3>

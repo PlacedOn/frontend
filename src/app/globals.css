@@ -113,6 +113,9 @@ h1, h2, h3, h4 {
 
 .shell { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: clamp(20px, 5vw, 40px); }
 
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -159,6 +162,48 @@ h1, h2, h3, h4 {
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
 }
+
+/* animated shimmer accent — a live sheen travels across the gradient text */
+.grad-iris-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--iris) 0%,
+    var(--iris-soft) 34%,
+    #E7DBFF 50%,
+    var(--iris-soft) 66%,
+    var(--iris) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: irisShimmer 6.5s linear infinite;
+}
+@keyframes irisShimmer {
+  0%   { background-position: 140% 0; }
+  100% { background-position: -40% 0; }
+}
+
+/* editorial highlighter marker (statement section) */
+.hl-marker {
+  position: relative;
+  display: inline-block;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.hl-marker > span { position: relative; z-index: 1; }
+.hl-marker::before {
+  content: "";
+  position: absolute;
+  left: -0.12em; right: -0.12em;
+  top: 0.06em; bottom: 0.02em;
+  z-index: 0;
+  border-radius: 0.28em;
+  background: linear-gradient(100deg, rgba(154,107,255,0.42), rgba(120,74,240,0.5));
+  transform: scaleX(var(--hl, 0));
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hl-marker.lit::before { --hl: 1; }
 
 /* focus ring — accessible, consistent */
 :where(a, button, input, [tabindex]):focus-visible {

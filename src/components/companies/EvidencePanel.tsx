@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { BadgeCheck, Quote, Lock, EyeOff } from "lucide-react";
+import { BadgeCheck, Quote, Lock, EyeOff } from "@/components/ui/icons";
 
 type Signal = { trait: string; score: number; quote: string };
 
@@ -40,7 +40,7 @@ export function EvidencePanel() {
         {/* What you see */}
         <div className="glass rounded-[var(--r-card)] p-6">
           <div className="mb-5 flex items-center gap-2">
-            <BadgeCheck size={18} style={{ color: "var(--iris-ink)" }} />
+            <BadgeCheck size={18} animateOnView style={{ color: "var(--iris-ink)" }} />
             <p className="font-[var(--font-display)] text-[15px] font-semibold text-[var(--ink)]">Candidate evidence, visible to you</p>
           </div>
           <div className="flex flex-col gap-3">
@@ -62,7 +62,7 @@ export function EvidencePanel() {
         {/* What you never see */}
         <div className="rounded-[var(--r-card)] p-6" style={{ background: "var(--mist)", border: "1px solid var(--glass-line)" }}>
           <div className="mb-5 flex items-center gap-2">
-            <EyeOff size={18} className="text-[var(--ink-3)]" />
+            <EyeOff size={18} animateOnView className="text-[var(--ink-3)]" />
             <p className="font-[var(--font-display)] text-[15px] font-semibold text-[var(--ink-2)]">What you never see</p>
           </div>
           <div className="relative overflow-hidden rounded-[1rem] p-5" style={{ border: "1px dashed var(--glass-line)" }}>
@@ -73,7 +73,7 @@ export function EvidencePanel() {
             </div>
             <div className="absolute inset-0 grid place-items-center">
               <span className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold" style={{ background: "var(--ink)", color: "#fff" }}>
-                <Lock size={15} /> Raw transcript · sealed
+                <Lock size={15} animateOnView /> Raw transcript · sealed
               </span>
             </div>
           </div>
