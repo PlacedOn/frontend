@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ShieldCheck, ScrollText, Scale, MessageSquareWarning, ArrowRight } from "lucide-react";
+import { ShieldCheck, ScrollText, Scale, MessageSquareWarning, ArrowRight, Gauge } from "@/components/ui/icons";
 import { RoutePage } from "@/components/layout/RoutePage";
 
 export const metadata: Metadata = {
@@ -16,6 +16,13 @@ const PILLARS = [
     title: "How scoring works",
     body: "One conversation becomes evidence-linked trait scores with an honest confidence band. Each score points to the exact moment behind it — results are documented, not asserted.",
     cta: "See the method",
+  },
+  {
+    href: "/trust/model-health",
+    icon: Gauge,
+    title: "How we measure the model",
+    body: "The AI is graded against real human review — for accuracy, grounding, fairness, and calibration — and no version ships unless it clears the bar and isn't worse than the last. We measure the measurer.",
+    cta: "See how",
   },
   {
     href: "/trust/ll144",
@@ -64,7 +71,7 @@ export default function TrustPage() {
                 className="grid h-11 w-11 place-items-center rounded-2xl"
                 style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}
               >
-                <Icon size={20} />
+                <Icon size={20} animateOnView animateOnHover />
               </span>
               <h2 className="mt-5 text-[1.35rem]">{p.title}</h2>
               <p className="mt-2.5 text-[14.5px] leading-relaxed text-[var(--ink-2)]">{p.body}</p>

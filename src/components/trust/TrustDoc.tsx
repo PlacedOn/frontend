@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Check, ArrowRight, ExternalLink } from "lucide-react";
+import { Check, ArrowRight, ExternalLink } from "@/components/ui/icons";
 
 /** Key-facts strip at the top of a trust document. */
 export function KeyFacts({ items }: { items: { value: string; label: string }[] }) {
@@ -34,7 +34,7 @@ export function CheckList({ items }: { items: ReactNode[] }) {
     <ul className="flex flex-col gap-2.5">
       {items.map((item, i) => (
         <li key={i} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-[var(--ink-2)]">
-          <Check size={17} className="mt-0.5 shrink-0" style={{ color: "var(--iris-ink)" }} />
+          <Check size={17} animateOnView className="mt-0.5 shrink-0" style={{ color: "var(--iris-ink)" }} />
           <span>{item}</span>
         </li>
       ))}
@@ -54,6 +54,7 @@ export function PlacedonPanel({ title, children }: { title: string; children: Re
 
 const TRUST_PAGES = [
   { href: "/trust/scoring", label: "How scoring works" },
+  { href: "/trust/model-health", label: "How we measure the model" },
   { href: "/trust/ll144", label: "NYC Local Law 144" },
   { href: "/trust/eu-ai-act", label: "EU AI Act" },
   { href: "/trust/contest", label: "Contest a trait" },
