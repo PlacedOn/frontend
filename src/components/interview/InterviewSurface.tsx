@@ -3,8 +3,10 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, ShieldCheck, Send, Square, Sparkles, RefreshCw } from "lucide-react";
+import { ArrowRight, ShieldCheck, Send, Square, Sparkles, RefreshCw, PenTool } from "lucide-react";
 import type { InterviewMessage, InterviewStatus } from "@/lib/interview/useInterviewSession";
+import { Whiteboard } from "./Whiteboard";
+import { emptyEvidence, type WhiteboardEvidence } from "@/lib/interview";
 
 /**
  * Presentational interview shell — pure props, no transport. Both the demo hook
@@ -39,6 +41,8 @@ export function InterviewSurface({
 }: InterviewSurfaceProps) {
   const reduce = useReducedMotion();
   const [draft, setDraft] = useState("");
+  const [showBoard, setShowBoard] = useState(false);
+  const [, setBoardEvidence] = useState<WhiteboardEvidence>(emptyEvidence);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const canAnswer = status === "awaiting";
@@ -180,6 +184,24 @@ export function InterviewSurface({
             Send <Send size={15} />
           </button>
         </div>
+      </div>
+
+      {/* Optional whiteboard — solve visibly; we capture only what you produce, never your face. */}
+      <div>
+        <button
+          type="button"
+          onClick={() => setShowBoard((v) => !v)}
+          className="inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--r-btn)] px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
+          style={{ background: showBoard ? "var(--iris-ghost)" : "var(--glass-hi)", border: "1px solid var(--glass-line-hi)", color: "var(--iris-ink)" }}
+          aria-expanded={showBoard}
+        >
+          <PenTool size={14} /> {showBoard ? "Hide whiteboard" : "Show your work on a whiteboard"}
+        </button>
+        {showBoard && (
+          <div className="mt-2">
+            <Whiteboard onEvidence={setBoardEvidence} />
+          </div>
+        )}
       </div>
 
       <p className="flex items-start gap-2 px-1 text-[12.5px] leading-relaxed text-[var(--ink-3)]">
