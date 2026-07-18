@@ -260,6 +260,33 @@ export interface CandidateOpeningRec {
   readiness: CoverageVector; // coverage of the role's public must-haves, cited
 }
 
+// Evidence Passport — candidate-owned, tamper-evident, verifiable. No person-score.
+export interface PassportEvidence {
+  signal: string;
+  band: Band;
+  quote: string | null;
+}
+export interface Passport {
+  candidate_ref: string;
+  role_family: string;
+  evidence: PassportEvidence[];
+  issued_at: string;
+  issuer: string;
+  version: number;
+}
+export interface IssuedPassport {
+  passport: Passport;
+  signature: string;
+}
+export interface PassportVerifyResult {
+  valid: boolean;
+  issuer: string | null;
+  issued_at: string | null;
+  role_family: string | null;
+  evidence_count: number;
+  reason: string;
+}
+
 // ── Slice 6: HR Copilot search (policy-gated, citation-backed) ──
 export type CopilotOutcome = "allowed" | "rewritten" | "refused";
 
@@ -643,6 +670,9 @@ export const v1 = {
     authFetch<JobRecommendation[]>(`/v1/jobs/${jobId}/recommendations`, { method: "GET" }),
   candidateRecommendations: () =>
     authFetch<CandidateOpeningRec[]>("/v1/candidate/recommendations", { method: "GET" }),
+  // Candidate mints a signed passport from their own approved evidence.
+  issuePassport: (roleFamily = "general") =>
+    authFetch<IssuedPassport>("/v1/passport/issue", { method: "POST", body: JSON.stringify({ role_family: roleFamily }) }),
 
   // Slice 6 — HR Copilot search
   copilotSearch: (prompt: string) =>
@@ -706,6 +736,25 @@ export const v1 = {
   acceptInvite: (token: string) =>
     authFetch<OrgSummary>("/v1/org/invites/accept", { method: "POST", body: JSON.stringify({ token }) }),
 };
+
+/**
+ * Public passport verification — no account required, no candidate data exposed.
+ * Anyone with a shared passport + signature can confirm it's authentic + unaltered.
+ */
+export async function verifyPassport(passport: Passport, signature: string): Promise<PassportVerifyResult> {
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE_URL}/v1/passport/verify`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ passport, signature }),
+    });
+  } catch {
+    throw new V1Error("Could not reach the verifier. Set NEXT_PUBLIC_API_BASE_URL to the live API.", 0);
+  }
+  if (!res.ok) throw new V1Error(`Verification failed (${res.status})`, res.status);
+  return (await res.json()) as PassportVerifyResult;
+}
 
 /**
  * Fire-and-forget product telemetry. Deliberately swallows failures: analytics

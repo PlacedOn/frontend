@@ -9,6 +9,7 @@ import {
   Users,
   MessagesSquare,
   Plus,
+  BadgeCheck,
   type LucideIcon,
 } from "lucide-react";
 
@@ -36,6 +37,7 @@ const CANDIDATE_NAV: NavItem[] = [
   { label: "Home", href: "/candidate", icon: LayoutDashboard },
   { label: "Profile", href: "/candidate/profile", icon: UserRound },
   { label: "Growth", href: "/candidate/growth", icon: Sparkles },
+  { label: "Passport", href: "/candidate/passport", icon: BadgeCheck },
   { label: "Matches", href: "/candidate/matches", icon: BriefcaseBusiness },
   { label: "Applications", href: "/candidate/applications", icon: Send },
   { label: "Preferences", href: "/candidate/preferences", icon: SlidersHorizontal },
