@@ -10,7 +10,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ShieldCheck, ArrowRight, Sparkles, CircleCheck, CircleDot, CircleDashed } from "lucide-react";
+import { ShieldCheck, ArrowRight, Sparkles } from "lucide-react";
 import { v1, V1Error, type CandidateOpeningRec, type MutualFitTier } from "@/lib/v1";
 
 const TIER: Record<MutualFitTier, { label: string; bg: string; fg: string }> = {
@@ -95,45 +95,50 @@ export function LiveCandidateRecs() {
           const t = TIER[rec.tier];
           const ms = mustHaveSummary(rec);
           return (
-            <li key={rec.job_id} className="glass flex h-full flex-col rounded-[var(--r-card)] p-5">
+            <li key={rec.job_id} className="glass relative flex h-full flex-col overflow-hidden rounded-[var(--r-card)] p-5 transition-transform duration-[var(--d-std)] hover:-translate-y-1">
+              {/* tier accent */}
+              <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: `linear-gradient(90deg, ${t.fg}, transparent)` }} />
+
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <h3 className="text-[16px] font-bold leading-tight text-[var(--ink)]">{rec.title}</h3>
-                  {rec.level && <p className="mt-0.5 text-[12.5px] text-[var(--ink-3)]">{rec.level}</p>}
+                  <div className="mt-1 flex flex-wrap items-center gap-2">
+                    {rec.level && <span className="text-[12.5px] text-[var(--ink-3)]">{rec.level}</span>}
+                    {rec.company_verified && (
+                      <span className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-[var(--iris-ink)]">
+                        <ShieldCheck size={12} /> Verified company
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold" style={{ background: t.bg, color: t.fg }}>
                   {t.label}
                 </span>
               </div>
 
-              {rec.company_verified && (
-                <span className="mt-2 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-semibold" style={{ background: "var(--glass-hi)", border: "1px solid var(--glass-line)", color: "var(--iris-ink)" }}>
-                  <ShieldCheck size={12} /> Verified company
-                </span>
-              )}
-
-              {/* must-have coverage — bands, never a number */}
-              <div className="mt-4 flex items-center gap-3 text-[12.5px] font-semibold">
-                <span className="inline-flex items-center gap-1" style={{ color: "#047857" }}>
-                  <CircleCheck size={13} /> {ms.supported} supported
-                </span>
-                <span className="inline-flex items-center gap-1" style={{ color: "var(--iris-ink)" }}>
-                  <CircleDot size={13} /> {ms.partial} emerging
-                </span>
-                <span className="inline-flex items-center gap-1 text-[var(--ink-3)]">
-                  <CircleDashed size={13} /> of {ms.total} must-haves
-                </span>
+              {/* segmented must-have coverage meter — bands, never a number */}
+              <div className="mt-4">
+                <div className="flex h-1.5 overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
+                  {ms.supported > 0 && <span style={{ flexGrow: ms.supported, background: "#047857" }} />}
+                  {ms.partial > 0 && <span style={{ flexGrow: ms.partial, background: "var(--iris)" }} />}
+                  {ms.total - ms.supported - ms.partial > 0 && (
+                    <span style={{ flexGrow: ms.total - ms.supported - ms.partial, background: "var(--glass-line-hi)" }} />
+                  )}
+                </div>
+                <p className="mt-1.5 text-[11.5px] font-semibold text-[var(--ink-3)]">
+                  <span style={{ color: "#047857" }}>{ms.supported} supported</span> ·{" "}
+                  <span style={{ color: "var(--iris-ink)" }}>{ms.partial} emerging</span> · of {ms.total} must-haves
+                </p>
               </div>
 
               {rec.reasons.length > 0 && (
-                <ul className="mt-3 flex flex-1 flex-col gap-1.5 text-[13px] leading-relaxed text-[var(--ink-2)]">
-                  {rec.reasons.slice(0, 4).map((reason, i) => (
-                    <li key={i} className="flex gap-2">
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--iris)" }} />
+                <div className="mt-3 flex flex-1 flex-wrap content-start gap-1.5">
+                  {rec.reasons.slice(0, 3).map((reason, i) => (
+                    <span key={i} className="rounded-full px-2.5 py-1 text-[12px] leading-snug text-[var(--ink-2)]" style={{ background: "var(--glass-hi)", border: "1px solid var(--glass-line)" }}>
                       {reason}
-                    </li>
+                    </span>
                   ))}
-                </ul>
+                </div>
               )}
             </li>
           );
