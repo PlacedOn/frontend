@@ -16,6 +16,7 @@ import { Menu, X, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { AuroraMesh } from "@/components/background/AuroraMesh";
+import { NotificationsBell } from "./NotificationsBell";
 import { NAV, ROLE_LABEL, isNavActive, type DashboardRole, type NavItem } from "@/lib/dashboardNav";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -101,6 +102,11 @@ function SidebarInner({
         <Link href="/" aria-label="Placedon home">
           <Logo size={30} showWordmark={!collapsed} />
         </Link>
+        {!collapsed && (
+          <div className="ml-auto">
+            <NotificationsBell />
+          </div>
+        )}
       </div>
 
       {!collapsed && (

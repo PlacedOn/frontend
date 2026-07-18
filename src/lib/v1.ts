@@ -287,6 +287,16 @@ export interface PassportVerifyResult {
   reason: string;
 }
 
+// Notifications feed.
+export type NotificationKind = "intro" | "evidence" | "system";
+export interface Notification {
+  kind: NotificationKind;
+  title: string;
+  detail: string | null;
+  href: string;
+  created_at: string;
+}
+
 // Employer candidate pipeline board.
 export type PipelineStage = "new" | "reviewing" | "intro" | "hired" | "passed";
 export interface PipelineCard {
@@ -713,6 +723,7 @@ export const v1 = {
     authFetch<IssuedPassport>("/v1/passport/issue", { method: "POST", body: JSON.stringify({ role_family: roleFamily }) }),
   candidateReadiness: () =>
     authFetch<ReadinessProfile>("/v1/candidate/readiness", { method: "GET" }),
+  notifications: () => authFetch<Notification[]>("/v1/notifications", { method: "GET" }),
 
   // Slice 6 — HR Copilot search
   copilotSearch: (prompt: string) =>
