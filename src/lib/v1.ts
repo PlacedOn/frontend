@@ -287,6 +287,22 @@ export interface PassportVerifyResult {
   reason: string;
 }
 
+// Candidate readiness — completeness of the candidate's own setup, not a score.
+export interface ReadinessStep {
+  key: string;
+  label: string;
+  weight: number;
+  done: boolean;
+  hint: string;
+  href: string;
+}
+export interface ReadinessProfile {
+  pct: number;
+  complete: boolean;
+  steps: ReadinessStep[];
+  next_action: ReadinessStep | null;
+}
+
 // ── Slice 6: HR Copilot search (policy-gated, citation-backed) ──
 export type CopilotOutcome = "allowed" | "rewritten" | "refused";
 
@@ -673,6 +689,8 @@ export const v1 = {
   // Candidate mints a signed passport from their own approved evidence.
   issuePassport: (roleFamily = "general") =>
     authFetch<IssuedPassport>("/v1/passport/issue", { method: "POST", body: JSON.stringify({ role_family: roleFamily }) }),
+  candidateReadiness: () =>
+    authFetch<ReadinessProfile>("/v1/candidate/readiness", { method: "GET" }),
 
   // Slice 6 — HR Copilot search
   copilotSearch: (prompt: string) =>

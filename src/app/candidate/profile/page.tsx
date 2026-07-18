@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeading } from "@/components/dashboard/PageHeading";
+import { CandidateReadiness } from "@/components/candidate/CandidateReadiness";
 import { ProfileBuilder } from "@/components/candidate/profile/ProfileBuilder";
 import { TrustPassport } from "@/components/candidate/TrustPassport";
 
@@ -21,6 +22,9 @@ export default function CandidateProfilePage() {
         }
         intro="Your profile is claims + intent — what you say about yourself and what you're looking for. Flag a skill and the interview probes exactly that. It never asks about college, background, or anything that isn't your work."
       />
+      <div className="mb-8">
+        <CandidateReadiness />
+      </div>
       <ProfileBuilder />
 
       {/* Said vs shown: the builder above is claims; this is verified evidence. */}
