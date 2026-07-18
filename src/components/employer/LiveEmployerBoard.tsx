@@ -138,13 +138,22 @@ export function LiveEmployerBoard() {
                       <Wand2 size={14} /> Role DNA &amp; reality
                     </Link>
                     {job.is_search_ready && (
-                      <Link
-                        href={`/employer/jobs/${job.id}/matches`}
-                        className="inline-flex cursor-pointer items-center gap-1.5 text-[13px] font-semibold transition-opacity hover:opacity-70"
-                        style={{ color: "var(--iris-ink)" }}
-                      >
-                        Explained matches <ArrowRight size={14} />
-                      </Link>
+                      <>
+                        <Link
+                          href={`/employer/jobs/${job.id}/matches`}
+                          className="inline-flex cursor-pointer items-center gap-1.5 text-[13px] font-semibold transition-opacity hover:opacity-70"
+                          style={{ color: "var(--iris-ink)" }}
+                        >
+                          Explained matches <ArrowRight size={14} />
+                        </Link>
+                        <Link
+                          href={`/employer/jobs/${job.id}/pipeline`}
+                          className="inline-flex cursor-pointer items-center gap-1.5 text-[13px] font-semibold transition-opacity hover:opacity-70"
+                          style={{ color: "var(--iris-ink)" }}
+                        >
+                          Pipeline <ArrowRight size={14} />
+                        </Link>
+                      </>
                     )}
                   </div>
                 </li>

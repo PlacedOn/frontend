@@ -287,6 +287,21 @@ export interface PassportVerifyResult {
   reason: string;
 }
 
+// Employer candidate pipeline board.
+export type PipelineStage = "new" | "reviewing" | "intro" | "hired" | "passed";
+export interface PipelineCard {
+  candidate_id: string;
+  stage: PipelineStage;
+  tier: string; // strong / worth_a_look / gaps
+  supported: number;
+  emerging: number;
+  missing: number;
+  role_family: string | null;
+}
+export interface PipelineBoard {
+  columns: Record<PipelineStage, PipelineCard[]>;
+}
+
 // Candidate readiness — completeness of the candidate's own setup, not a score.
 export interface ReadinessStep {
   key: string;
@@ -684,6 +699,13 @@ export const v1 = {
     authFetch<Match[]>(`/v1/jobs/${jobId}/matches`, { method: "GET" }),
   jobRecommendations: (jobId: string) =>
     authFetch<JobRecommendation[]>(`/v1/jobs/${jobId}/recommendations`, { method: "GET" }),
+  jobPipeline: (jobId: string) =>
+    authFetch<PipelineBoard>(`/v1/jobs/${jobId}/pipeline`, { method: "GET" }),
+  moveCandidate: (jobId: string, candidateId: string, stage: PipelineStage) =>
+    authFetch<PipelineBoard>(`/v1/jobs/${jobId}/pipeline/${candidateId}/stage`, {
+      method: "POST",
+      body: JSON.stringify({ stage }),
+    }),
   candidateRecommendations: () =>
     authFetch<CandidateOpeningRec[]>("/v1/candidate/recommendations", { method: "GET" }),
   // Candidate mints a signed passport from their own approved evidence.
