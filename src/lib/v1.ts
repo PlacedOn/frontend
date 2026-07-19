@@ -238,10 +238,23 @@ export interface CoverageVector {
   tier: CoverageTier;
 }
 
+// Fit Check — role-evidence coverage %, scoped to one role, with the strict contract.
+export type FitBucket = "strong" | "worth_discussing" | "clarify" | "not_enough";
+export interface FitCheck {
+  coverage_percent: number; // must-have rubric coverage, evidence-only — NOT a prediction/person-score
+  bucket: FitBucket;
+  bucket_label: string;
+  role_requirements_clear: number;
+  role_requirements_total: number;
+  work_reality: "aligned" | "conflict" | "not_shared";
+  evidence_confidence: "sufficient" | "limited";
+}
+
 export interface JobRecommendation {
   candidate_id: string;
   job_id: string;
   tier: CoverageTier;
+  fit: FitCheck;
   coverage: CoverageVector;
   salary: SalaryFit;
   counts: MatchCounts;

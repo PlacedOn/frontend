@@ -22,6 +22,7 @@ import {
   type CoverageTier,
 } from "@/lib/v1";
 import { RequestIntroButton } from "@/components/intros/RequestIntroButton";
+import { FitCheckCard } from "@/components/employer/FitCheckCard";
 
 const DIM_STYLE: Record<DimensionStatus, { label: string; bg: string; fg: string; icon: typeof CircleCheck }> = {
   supported: { label: "Supported", bg: "rgba(5,150,105,0.12)", fg: "#047857", icon: CircleCheck },
@@ -188,6 +189,12 @@ function MatchCard({ match, jobId, rec }: { match: Match; jobId: string; rec?: J
           <CountChip n={match.counts.missing} style={DIM_STYLE.missing} />
         </div>
       </div>
+
+      {rec?.fit && (
+        <div className="mt-4">
+          <FitCheckCard fit={rec.fit} />
+        </div>
+      )}
 
       {(gaps.length > 0 || clarify.length > 0) && (
         <div className="mt-3 flex flex-col gap-1.5 rounded-[var(--r-btn)] px-3.5 py-2.5" style={{ background: "var(--glass)" }}>
