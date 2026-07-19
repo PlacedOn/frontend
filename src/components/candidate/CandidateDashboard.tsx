@@ -254,7 +254,12 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
         {statusCards.map((item, i) => {
           const Icon = item.icon;
           return (
-            <motion.div key={item.label} {...reveal(0.06 * (i + 1))} className="glass rounded-[1.5rem] p-5">
+            <motion.div
+              key={item.label}
+              {...reveal(0.06 * (i + 1))}
+              className="glass relative overflow-hidden rounded-[1.5rem] p-5 transition-transform duration-[var(--d-std)] hover:-translate-y-1"
+            >
+              <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: `linear-gradient(90deg, ${TONE[item.tone].fg}, transparent)` }} />
               <div className="mb-5 flex items-center justify-between">
                 <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-[var(--iris)]" style={{ boxShadow: "var(--shadow-sm)" }}>
                   <Icon className="h-5 w-5" />
@@ -305,6 +310,17 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
                       </div>
                       <p className="mt-1 text-[13.5px] font-semibold text-[var(--ink-3)]">{m.company}</p>
                       <p className="mt-2.5 text-[14px] leading-6 text-[var(--ink-2)]">{m.reason}</p>
+                      {/* how strongly your evidence backs this role — form, not odds */}
+                      <div className="mt-3 h-1.5 w-full max-w-[220px] overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
+                        <div
+                          className="h-full rounded-full"
+                          style={
+                            m.confidence === "high"
+                              ? { width: "100%", background: "linear-gradient(90deg,#10b981,#047857)" }
+                              : { width: "62%", background: "#B45309" }
+                          }
+                        />
+                      </div>
                     </div>
                     <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-[var(--ink-3)] transition-transform group-hover:translate-x-1 group-hover:text-[var(--iris)]" />
                   </div>
