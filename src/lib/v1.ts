@@ -287,6 +287,15 @@ export interface PassportVerifyResult {
   reason: string;
 }
 
+// Employer overview KPIs.
+export interface EmployerOverview {
+  active_roles: number;
+  total_roles: number;
+  candidates_in_pipeline: number;
+  intros_open: number;
+  hires: number;
+}
+
 // Role analytics — evidence-alignment + funnel.
 export interface TierSelection {
   tier: string;
@@ -679,6 +688,7 @@ export const v1 = {
   createJob: (payload: JobCreate) =>
     authFetch<JobSummary>("/v1/jobs", { method: "POST", body: JSON.stringify(payload) }),
   employerDashboard: () => authFetch<JobSummary[]>("/v1/employer/dashboard", { method: "GET" }),
+  employerOverview: () => authFetch<EmployerOverview>("/v1/employer/overview", { method: "GET" }),
   getJob: (id: string) => authFetch<JobDetail>(`/v1/jobs/${id}`, { method: "GET" }),
   generateRoleDna: (id: string, description: string) =>
     authFetch<RoleDnaGenResult>(`/v1/jobs/${id}/role-dna/generate`, {
