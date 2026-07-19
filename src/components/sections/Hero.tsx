@@ -1,12 +1,16 @@
 "use client";
 
 import { useRef } from "react";
+import dynamic from "next/dynamic";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { AnimateIcon, ArrowRight } from "@/components/ui/icons";
 import { Button } from "@/components/ui/Button";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
 import { HeroAurora } from "@/components/background/HeroAurora";
 import { FloatingOrbs } from "@/components/background/FloatingOrbs";
+
+// Code-split so three.js stays out of the critical bundle.
+const HeroObject3D = dynamic(() => import("@/components/background/HeroObject3D"), { ssr: false });
 
 const ease = [0.22, 0.68, 0.31, 1] as const;
 
@@ -40,6 +44,7 @@ export function Hero() {
     >
       <motion.div aria-hidden className="absolute inset-0" style={reduce ? undefined : { y: bgY }}>
         <HeroAurora />
+        <HeroObject3D />
         <FloatingOrbs />
       </motion.div>
 
