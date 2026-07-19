@@ -45,7 +45,6 @@ const CANDIDATE_NAV: NavItem[] = [
 
 const EMPLOYER_NAV: NavItem[] = [
   { label: "Overview", href: "/employer", icon: LayoutDashboard },
-  { label: "Post a role", href: "/employer/jobs/new", icon: Plus },
   { label: "Search", href: "/employer/search", icon: Search },
   { label: "Team", href: "/employer/team", icon: Users },
   { label: "Introductions", href: "/intros", icon: MessagesSquare },
@@ -54,6 +53,13 @@ const EMPLOYER_NAV: NavItem[] = [
 export const NAV: Record<DashboardRole, NavItem[]> = {
   candidate: CANDIDATE_NAV,
   employer: EMPLOYER_NAV,
+};
+
+/** The one persistent primary action per role — pinned above the nav, the way a
+ * command-center rail always keeps its main verb one tap away. */
+export const PRIMARY_CTA: Record<DashboardRole, NavItem> = {
+  candidate: { label: "Take interview", href: "/pre-interview", icon: Sparkles },
+  employer: { label: "Post a role", href: "/employer/jobs/new", icon: Plus },
 };
 
 /** Active when the path is the item exactly, or (for non-home items) nested under it. */

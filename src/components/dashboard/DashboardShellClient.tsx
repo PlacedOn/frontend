@@ -17,9 +17,27 @@ import { Logo } from "@/components/brand/Logo";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { AuroraMesh } from "@/components/background/AuroraMesh";
 import { NotificationsBell } from "./NotificationsBell";
-import { NAV, ROLE_LABEL, isNavActive, type DashboardRole, type NavItem } from "@/lib/dashboardNav";
+import { NAV, PRIMARY_CTA, ROLE_LABEL, isNavActive, type DashboardRole, type NavItem } from "@/lib/dashboardNav";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
+
+/** The pinned primary action — full-width when expanded, icon-only when collapsed. */
+function PrimaryCta({ role, collapsed, onNavigate }: { role: DashboardRole; collapsed: boolean; onNavigate?: () => void }) {
+  const cta = PRIMARY_CTA[role];
+  const Icon = cta.icon;
+  return (
+    <Link
+      href={cta.href}
+      onClick={onNavigate}
+      title={collapsed ? cta.label : undefined}
+      className="group flex items-center justify-center gap-2 rounded-[14px] px-3 py-2.5 text-[14px] font-bold text-white transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
+      style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
+    >
+      <Icon size={17} className="shrink-0 transition-transform group-hover:scale-110" />
+      {!collapsed && <span className="truncate">{cta.label}</span>}
+    </Link>
+  );
+}
 
 function NavList({
   role,
@@ -118,7 +136,11 @@ function SidebarInner({
         </span>
       )}
 
-      <div className="relative mt-1 flex-1 px-1">
+      <div className="relative mt-1 px-1">
+        <PrimaryCta role={role} collapsed={collapsed} onNavigate={onNavigate} />
+      </div>
+
+      <div className="relative mt-3 flex-1 px-1">
         <NavList role={role} pathname={pathname} collapsed={collapsed} onNavigate={onNavigate} />
       </div>
 

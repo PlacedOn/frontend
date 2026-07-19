@@ -116,7 +116,11 @@ export function CandidateSummaryCard({ c, status, busy, onSave, onPass }: Props)
           return (
             <div key={s.label} className="text-center">
               <p className="text-[10.5px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">{s.label}</p>
-              <p className="mt-1 text-[12.5px] font-bold leading-tight" style={{ color: meta.fg }}>
+              {/* how well this area is backed — form, not a number */}
+              <div className="mx-auto mt-1.5 h-1.5 w-10 overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
+                <div className="h-full rounded-full" style={{ width: `${Math.round(meta.fill * 100)}%`, background: meta.fg }} />
+              </div>
+              <p className="mt-1.5 text-[12px] font-bold leading-tight" style={{ color: meta.fg }}>
                 {meta.label}
               </p>
             </div>
