@@ -111,7 +111,11 @@ export function LiveEmployerBoard() {
             {jobs.map((job) => {
               const badge = STATUS_STYLE[job.status] ?? STATUS_STYLE.draft;
               return (
-                <li key={job.id} className="glass flex flex-col rounded-[var(--r-card)] p-5">
+                <li
+                  key={job.id}
+                  className="glass relative flex flex-col overflow-hidden rounded-[var(--r-card)] p-5 transition-transform duration-[var(--d-std)] hover:-translate-y-1"
+                >
+                  <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: `linear-gradient(90deg, ${badge.fg}, transparent)` }} />
                   <div className="flex items-center justify-between">
                     <span
                       className="rounded-full px-2.5 py-1 text-[11.5px] font-semibold capitalize"

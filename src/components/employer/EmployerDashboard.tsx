@@ -124,8 +124,11 @@ function MockEmployerBoard() {
           </button>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
-          {jobs.map((j) => (
-            <div key={j.id} className="glass flex flex-col rounded-[var(--r-card)] p-5">
+          {jobs.map((j) => {
+            const accent = j.status === "Active" ? "#047857" : "var(--ink-3)";
+            return (
+            <div key={j.id} className="glass relative flex flex-col overflow-hidden rounded-[var(--r-card)] p-5 transition-transform duration-[var(--d-std)] hover:-translate-y-1">
+              <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: `linear-gradient(90deg, ${accent}, transparent)` }} />
               <div className="flex items-center justify-between">
                 <span
                   className="rounded-full px-2.5 py-1 text-[11.5px] font-semibold"
@@ -147,7 +150,8 @@ function MockEmployerBoard() {
                 Review candidates <ArrowRight size={14} />
               </a>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
