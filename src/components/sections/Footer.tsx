@@ -1,4 +1,5 @@
 import { Logo } from "@/components/brand/Logo";
+import { GradientSocialMenu } from "@/components/brand/GradientSocialMenu";
 
 type FooterLink = { label: string; href: string };
 
@@ -47,6 +48,9 @@ export function Footer() {
                 One honest interview, scored on real skill. People get hired for how
                 they actually think, not for a resume.
               </p>
+              <div className="mt-7">
+                <GradientSocialMenu />
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
               {COLS.map((col) => (
