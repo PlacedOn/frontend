@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { AnimateIcon, ArrowRight } from "@/components/ui/icons";
 import { Button } from "@/components/ui/Button";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
@@ -17,6 +18,13 @@ const ease = [0.22, 0.68, 0.31, 1] as const;
 export function Hero() {
   const reduce = useReducedMotion();
   const { open } = useDemoDialog();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Scroll parallax: copy and atmosphere drift at different rates for real z-depth.
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, 96]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.72], [1, 0]);
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, -56]);
 
   const rise = (delay: number) => ({
     initial: reduce ? false : { opacity: 0, y: 22 },
@@ -26,11 +34,14 @@ export function Hero() {
 
   return (
     <section
+      ref={sectionRef}
       id="top"
       className="relative flex min-h-[100svh] items-center justify-center overflow-hidden"
     >
-      <HeroAurora />
-      <FloatingOrbs />
+      <motion.div aria-hidden className="absolute inset-0" style={reduce ? undefined : { y: bgY }}>
+        <HeroAurora />
+        <FloatingOrbs />
+      </motion.div>
 
       {/* soft legibility scrim behind the copy */}
       <div
@@ -42,7 +53,10 @@ export function Hero() {
         }}
       />
 
-      <div className="shell relative z-[1] flex flex-col items-center pt-32 pb-24 text-center md:pt-36">
+      <motion.div
+        className="shell relative z-[1] flex flex-col items-center pt-32 pb-24 text-center md:pt-36"
+        style={reduce ? undefined : { y: copyY, opacity: copyOpacity }}
+      >
         <motion.a
           {...rise(0.05)}
           href="/trust"
@@ -86,7 +100,7 @@ export function Hero() {
         <motion.p {...rise(0.5)} className="mt-7 text-[13px] text-[var(--ink-3)]">
           Candidate-contestable traits · every score tied to a transcript moment · zero resume bias
         </motion.p>
-      </div>
+      </motion.div>
 
       {/* scroll cue */}
       <motion.div
