@@ -14,15 +14,76 @@ import { useState } from "react";
 import Link from "next/link";
 import { Mic, Quote, Scale, ShieldCheck, Sparkles, ArrowRight, type LucideIcon } from "lucide-react";
 
-type Panel = { icon: LucideIcon; title: string; stat: string; body: string; grad: string };
+type Art = "wave" | "quote" | "fair" | "control" | "skill";
+type Panel = { icon: LucideIcon; art: Art; title: string; stat: string; body: string; grad: string };
 
 const PANELS: Panel[] = [
-  { icon: Mic, title: "One honest interview", stat: "30 min", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,#8B54FF,#6922F5)" },
-  { icon: Quote, title: "Evidence, not keywords", stat: "Every trait", body: "Each signal is tied to a real transcript moment — and the candidate can contest it.", grad: "linear-gradient(155deg,#6922F5,#4311a8)" },
-  { icon: Scale, title: "Fair by design", stat: "Bias-audited", body: "No caste, college-tier, gender or name — ever. Audited for disparate impact.", grad: "linear-gradient(155deg,#7C3AED,#9333EA)" },
-  { icon: ShieldCheck, title: "Candidate in control", stat: "You approve", body: "Nothing reaches an employer until the candidate approves the evidence and visibility.", grad: "linear-gradient(155deg,#5B21B6,#7C3AED)" },
-  { icon: Sparkles, title: "Real skill over resumes", stat: "0 resumes", body: "Signal, not keywords. People get hired for how they actually think.", grad: "linear-gradient(155deg,#6D28D9,#8B54FF)" },
+  { icon: Mic, art: "wave", title: "One honest interview", stat: "30 min", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,#8B54FF,#6922F5)" },
+  { icon: Quote, art: "quote", title: "Evidence, not keywords", stat: "1 quote / trait", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,#6922F5,#4311a8)" },
+  { icon: Scale, art: "fair", title: "Fair by design", stat: "9 never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,#7C3AED,#9333EA)" },
+  { icon: ShieldCheck, art: "control", title: "You stay in control", stat: "0 shared", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,#5B21B6,#7C3AED)" },
+  { icon: Sparkles, art: "skill", title: "Real skill over resumes", stat: "0 resumes", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#6D28D9,#8B54FF)" },
 ];
+
+/** Honest, on-brand mini-illustrations — white-on-gradient SVG, no stock imagery. */
+function PanelArt({ art }: { art: Art }) {
+  const w = "rgba(255,255,255,0.92)";
+  const f = "rgba(255,255,255,0.16)";
+  if (art === "wave")
+    return (
+      <svg viewBox="0 0 132 52" className="h-14 w-auto" fill="none" aria-hidden>
+        {[10, 26, 40, 20, 46, 30, 14, 38, 24, 44, 18, 32].map((h, i) => (
+          <rect key={i} x={4 + i * 11} y={(52 - h) / 2} width="5" height={h} rx="2.5" fill={i % 3 === 0 ? w : "rgba(255,255,255,0.5)"} />
+        ))}
+      </svg>
+    );
+  if (art === "quote")
+    return (
+      <svg viewBox="0 0 150 72" className="h-16 w-auto" fill="none" aria-hidden>
+        <rect x="1" y="1" width="148" height="70" rx="12" fill={f} stroke="rgba(255,255,255,0.22)" />
+        <text x="14" y="30" fontSize="24" fontWeight="800" fill={w}>&ldquo;</text>
+        <rect x="34" y="18" width="98" height="6" rx="3" fill="rgba(255,255,255,0.55)" />
+        <rect x="14" y="38" width="118" height="6" rx="3" fill="rgba(255,255,255,0.30)" />
+        <rect x="14" y="52" width="70" height="6" rx="3" fill="rgba(255,255,255,0.30)" />
+        <rect x="92" y="50" width="42" height="12" rx="6" fill="rgba(255,255,255,0.28)" />
+      </svg>
+    );
+  if (art === "fair")
+    return (
+      <svg viewBox="0 0 150 64" className="h-16 w-auto" fill="none" aria-hidden>
+        {[
+          [6, 8, 60],
+          [74, 8, 66],
+          [6, 30, 48],
+          [60, 30, 42],
+          [6, 52, 74],
+        ].map(([x, y, ww], i) => (
+          <g key={i}>
+            <rect x={x} y={y} width={ww} height="15" rx="7.5" fill={f} stroke="rgba(255,255,255,0.25)" />
+            <line x1={x + 6} y1={y + 7.5} x2={x + ww - 6} y2={y + 7.5} stroke="rgba(255,255,255,0.7)" strokeWidth="1.6" />
+          </g>
+        ))}
+      </svg>
+    );
+  if (art === "control")
+    return (
+      <svg viewBox="0 0 120 56" className="h-14 w-auto" fill="none" aria-hidden>
+        <rect x="2" y="14" width="64" height="28" rx="14" fill={f} stroke="rgba(255,255,255,0.3)" />
+        <circle cx="50" cy="28" r="10" fill={w} />
+        <rect x="86" y="20" width="28" height="24" rx="5" fill={f} stroke="rgba(255,255,255,0.4)" />
+        <path d="M92 20v-5a8 8 0 0116 0v5" stroke={w} strokeWidth="2.4" fill="none" />
+        <circle cx="100" cy="31" r="2.6" fill={w} />
+      </svg>
+    );
+  // skill
+  return (
+    <svg viewBox="0 0 132 56" className="h-14 w-auto" fill="none" aria-hidden>
+      {[16, 26, 22, 38, 30, 48].map((h, i) => (
+        <rect key={i} x={6 + i * 21} y={54 - h} width="13" height={h} rx="4" fill={i === 5 ? w : "rgba(255,255,255,0.42)"} />
+      ))}
+    </svg>
+  );
+}
 
 export function SignalAccordion() {
   const [active, setActive] = useState(0);
@@ -90,13 +151,16 @@ export function SignalAccordion() {
                   className="absolute inset-0 flex flex-col justify-between p-6 transition-opacity duration-300"
                   style={{ opacity: isActive ? 1 : 0 }}
                 >
-                  <span className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "rgba(255,255,255,0.16)", backdropFilter: "blur(6px)" }}>
-                    <Icon size={20} className="text-white" />
+                  <span className="flex items-start justify-between">
+                    <span className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "rgba(255,255,255,0.16)", backdropFilter: "blur(6px)" }}>
+                      <Icon size={20} className="text-white" />
+                    </span>
+                    {isActive && <PanelArt art={p.art} />}
                   </span>
                   <span className="flex flex-col">
                     <span className="text-[30px] font-extrabold leading-none text-white" style={{ fontFamily: "var(--font-mono)" }}>{p.stat}</span>
                     <span className="mt-2 text-[18px] font-bold leading-tight text-white">{p.title}</span>
-                    <span className="mt-2 max-w-[300px] text-[13.5px] leading-relaxed text-white/80">{p.body}</span>
+                    <span className="mt-2 max-w-[320px] text-[13.5px] leading-relaxed text-white/80">{p.body}</span>
                   </span>
                 </span>
               </button>
