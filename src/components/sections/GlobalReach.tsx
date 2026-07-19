@@ -66,7 +66,10 @@ export function GlobalReach() {
           <p className="text-[12px] font-semibold uppercase tracking-[0.2em]" style={{ fontFamily: "var(--font-mono)", color: "rgba(179,163,255,0.9)" }}>
             Remote-first by design
           </p>
-          <h2 className="mx-auto mt-4 max-w-2xl text-[clamp(2rem,1.2rem+3vw,3.4rem)] leading-[1.06] tracking-[-0.03em] text-white">
+          <h2
+            className="mx-auto mt-4 max-w-2xl text-balance text-[clamp(2rem,1.2rem+3vw,3.4rem)] leading-[1.06] tracking-[-0.03em]"
+            style={{ color: "#fff" }}
+          >
             Interview anyone,{" "}
             <span style={{ background: "linear-gradient(90deg,#b3a3ff,#8b54ff)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
               anywhere

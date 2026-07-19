@@ -68,12 +68,12 @@ export function Hero() {
 
         <motion.h1
           {...rise(0.14)}
-          className="mt-7 max-w-[16ch] text-[clamp(2.8rem,1.1rem+6.4vw,6.2rem)] leading-[1.02] tracking-[-0.035em]"
+          className="mt-7 max-w-[15ch] text-balance text-[clamp(2.8rem,1.1rem+6.4vw,6.2rem)] leading-[1.02] tracking-[-0.035em]"
           style={{ fontWeight: 300 }}
         >
-          Hire for how people{" "}
+          Defining the future with{" "}
           <span className="grad-iris-shimmer" style={{ fontWeight: 500 }}>
-            actually think
+            smart hiring
           </span>
           .
         </motion.h1>

@@ -40,12 +40,6 @@ export function Footer() {
           <div className="grid gap-10 md:grid-cols-[1.4fr_2fr]">
             <div>
               <Logo />
-              <p
-                className="mt-3 text-[11.5px] uppercase tracking-[0.18em] text-[var(--iris-ink)]"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                Defining the future with smart hiring
-              </p>
               <p className="mt-4 text-[15.5px] font-semibold text-[var(--ink)]">
                 You’re more than your resume.
               </p>
