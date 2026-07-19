@@ -268,6 +268,7 @@ export interface CandidateOpeningRec {
   title: string;
   level: string | null;
   tier: MutualFitTier;
+  company_name?: string | null; // visible before intro unless the role is confidential
   company_verified: boolean;
   reasons: string[];
   readiness: CoverageVector; // coverage of the role's public must-haves, cited

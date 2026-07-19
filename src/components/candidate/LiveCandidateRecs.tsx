@@ -80,8 +80,8 @@ export function LiveCandidateRecs() {
     <div className="flex flex-col gap-4">
       <p className="flex items-start gap-2 text-[13px] leading-relaxed text-[var(--ink-2)]">
         <ShieldCheck size={15} className="mt-0.5 shrink-0 text-[var(--iris-ink)]" />
-        Ranked by how much of each role your evidence covers — readiness, not a chance of selection. The company stays anonymous
-        until you both consent to an intro.
+        Ranked by how much of each role your evidence covers — readiness, not a chance of selection. You can see who&rsquo;s hiring;
+        <em> your</em> identity stays private until you both consent to an intro.
       </p>
 
       <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -93,16 +93,17 @@ export function LiveCandidateRecs() {
               <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: `linear-gradient(90deg, ${t.fg}, transparent)` }} />
 
               <div className="flex items-start justify-between gap-2">
-                <div>
-                  <h3 className="text-[16px] font-bold leading-tight text-[var(--ink)]">{rec.title}</h3>
-                  <div className="mt-1 flex flex-wrap items-center gap-2">
-                    {rec.level && <span className="text-[12.5px] text-[var(--ink-3)]">{rec.level}</span>}
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="truncate text-[12.5px] font-semibold text-[var(--ink-2)]">
+                      {rec.company_name ?? "Confidential company"}
+                    </span>
                     {rec.company_verified && (
-                      <span className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-[var(--iris-ink)]">
-                        <ShieldCheck size={12} /> Verified company
-                      </span>
+                      <ShieldCheck size={13} className="shrink-0 text-[var(--iris-ink)]" aria-label="Verified company" />
                     )}
                   </div>
+                  <h3 className="mt-0.5 text-[16px] font-bold leading-tight text-[var(--ink)]">{rec.title}</h3>
+                  {rec.level && <span className="mt-1 block text-[12.5px] text-[var(--ink-3)]">{rec.level}</span>}
                 </div>
                 <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold" style={{ background: t.bg, color: t.fg }}>
                   {t.label}
