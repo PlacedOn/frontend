@@ -22,7 +22,7 @@ import {
   type CoverageTier,
 } from "@/lib/v1";
 import { RequestIntroButton } from "@/components/intros/RequestIntroButton";
-import { FitCheckCard } from "@/components/employer/FitCheckCard";
+import { FitCheckCard } from "@/components/fit/FitCheckCard";
 
 const DIM_STYLE: Record<DimensionStatus, { label: string; bg: string; fg: string; icon: typeof CircleCheck }> = {
   supported: { label: "Supported", bg: "rgba(5,150,105,0.12)", fg: "#047857", icon: CircleCheck },

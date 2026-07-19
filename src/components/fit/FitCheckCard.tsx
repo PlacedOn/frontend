@@ -4,7 +4,7 @@
  * Fit Check card — the role-evidence coverage %, scoped to ONE named role, shown
  * with the strict four-row contract so it can never read as a person-score. The
  * percent is evidence-only coverage of this role's rubric; the four rows are kept
- * separate and never blended into it.
+ * separate and never blended into it. Shared by the employer and candidate sides.
  */
 
 import type { FitCheck } from "@/lib/v1";

@@ -12,19 +12,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ShieldCheck, ArrowRight, Sparkles } from "lucide-react";
 import { v1, V1Error, type CandidateOpeningRec, type MutualFitTier } from "@/lib/v1";
+import { FitCheckCard } from "@/components/fit/FitCheckCard";
 
 const TIER: Record<MutualFitTier, { label: string; bg: string; fg: string }> = {
   strong_fit: { label: "Strong fit", bg: "rgba(5,150,105,0.12)", fg: "#047857" },
   worth_a_look: { label: "Worth a look", bg: "var(--iris-ghost)", fg: "var(--iris-ink)" },
   stretch: { label: "Stretch", bg: "rgba(180,120,10,0.12)", fg: "#B45309" },
 };
-
-function mustHaveSummary(rec: CandidateOpeningRec) {
-  const musts = rec.readiness.requirements.filter((r) => r.kind === "must_have");
-  const supported = musts.filter((r) => r.status === "supported").length;
-  const partial = musts.filter((r) => r.status === "partial").length;
-  return { total: musts.length, supported, partial };
-}
 
 export function LiveCandidateRecs() {
   const [recs, setRecs] = useState<CandidateOpeningRec[] | null>(null);
@@ -93,7 +87,6 @@ export function LiveCandidateRecs() {
       <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {recs.map((rec) => {
           const t = TIER[rec.tier];
-          const ms = mustHaveSummary(rec);
           return (
             <li key={rec.job_id} className="glass relative flex h-full flex-col overflow-hidden rounded-[var(--r-card)] p-5 transition-transform duration-[var(--d-std)] hover:-translate-y-1">
               {/* tier accent */}
@@ -116,19 +109,9 @@ export function LiveCandidateRecs() {
                 </span>
               </div>
 
-              {/* segmented must-have coverage meter — bands, never a number */}
+              {/* Fit Check — role-evidence coverage %, with the strict contract */}
               <div className="mt-4">
-                <div className="flex h-1.5 overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
-                  {ms.supported > 0 && <span style={{ flexGrow: ms.supported, background: "#047857" }} />}
-                  {ms.partial > 0 && <span style={{ flexGrow: ms.partial, background: "var(--iris)" }} />}
-                  {ms.total - ms.supported - ms.partial > 0 && (
-                    <span style={{ flexGrow: ms.total - ms.supported - ms.partial, background: "var(--glass-line-hi)" }} />
-                  )}
-                </div>
-                <p className="mt-1.5 text-[11.5px] font-semibold text-[var(--ink-3)]">
-                  <span style={{ color: "#047857" }}>{ms.supported} supported</span> ·{" "}
-                  <span style={{ color: "var(--iris-ink)" }}>{ms.partial} emerging</span> · of {ms.total} must-haves
-                </p>
+                <FitCheckCard fit={rec.fit} />
               </div>
 
               {rec.reasons.length > 0 && (

@@ -271,6 +271,7 @@ export interface CandidateOpeningRec {
   company_verified: boolean;
   reasons: string[];
   readiness: CoverageVector; // coverage of the role's public must-haves, cited
+  fit: FitCheck; // the Fit Check % (role-evidence coverage) with the strict contract
 }
 
 // Evidence Passport — candidate-owned, tamper-evident, verifiable. No person-score.
