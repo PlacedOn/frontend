@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { AccountMenu } from "@/components/auth/AccountMenu";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
+import { MobileMenu } from "@/components/sections/MobileMenu";
 import { cn } from "@/lib/cn";
 
 const LINKS = [
@@ -86,11 +87,20 @@ export function Nav() {
               >
                 Log in
               </Link>
-              <Button onClick={() => open("employer")} className="!px-5 !py-2.5 text-[14px]">
-                Book a demo
-              </Button>
+              <span className="hidden sm:inline-flex">
+                <Button onClick={() => open("employer")} className="!px-5 !py-2.5 text-[14px]">
+                  Book a demo
+                </Button>
+              </span>
             </div>
           )}
+
+          <MobileMenu
+            links={LINKS}
+            isSignedIn={!!user}
+            dashboardHref={dashboard}
+            onBookDemo={() => open("employer")}
+          />
         </div>
       </nav>
     </header>
