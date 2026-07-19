@@ -7,7 +7,7 @@ import { VerifiedCompanies } from "@/components/sections/VerifiedCompanies";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FeaturedSurfaces } from "@/components/sections/FeaturedSurfaces";
 import { GlobalReach } from "@/components/sections/GlobalReach";
-import { Stats } from "@/components/sections/Stats";
+import { SignalAccordion } from "@/components/sections/SignalAccordion";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Audiences } from "@/components/sections/Audiences";
 import { CTA } from "@/components/sections/CTA";
@@ -21,7 +21,7 @@ export default function Home() {
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <Hero />
         <VerifiedCompanies />
-        <Stats />
+        <SignalAccordion />
         <KineticMarquee />
         <ScrollStatement />
         <HowItWorks />
