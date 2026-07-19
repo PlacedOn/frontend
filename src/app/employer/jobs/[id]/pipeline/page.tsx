@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeading } from "@/components/dashboard/PageHeading";
 import { PipelineBoardView } from "@/components/employer/pipeline/PipelineBoardView";
+import { RoleAnalyticsPanel } from "@/components/employer/pipeline/RoleAnalyticsPanel";
 
 export const metadata: Metadata = {
   title: "Candidate pipeline — Placedon",
@@ -21,6 +22,9 @@ export default async function PipelinePage({ params }: { params: Promise<{ id: s
         intro="Move candidates from New to Reviewing to a consented intro. Each card shows how much of the role their evidence covers — the tier and the counts, never a single score."
       />
       <PipelineBoardView jobId={id} />
+      <div className="mt-8">
+        <RoleAnalyticsPanel jobId={id} />
+      </div>
     </>
   );
 }

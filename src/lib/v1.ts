@@ -287,6 +287,35 @@ export interface PassportVerifyResult {
   reason: string;
 }
 
+// Role analytics — evidence-alignment + funnel.
+export interface TierSelection {
+  tier: string;
+  total: number;
+  advanced: number;
+  rate: number;
+}
+export interface AlignmentResult {
+  alignment: number; // 0..1, 1 = decisions track evidence
+  gamma: number;
+  concordant: number;
+  discordant: number;
+  decided: number;
+  monotonic: boolean;
+  note: string;
+}
+export interface FunnelResult {
+  counts: Record<string, number>;
+  reviewed_rate: number;
+  intro_rate: number;
+  hired_rate: number;
+}
+export interface RoleAnalytics {
+  total_candidates: number;
+  by_tier: TierSelection[];
+  alignment: AlignmentResult;
+  funnel: FunnelResult;
+}
+
 // Notifications feed.
 export type NotificationKind = "intro" | "evidence" | "system";
 export interface Notification {
@@ -711,6 +740,8 @@ export const v1 = {
     authFetch<JobRecommendation[]>(`/v1/jobs/${jobId}/recommendations`, { method: "GET" }),
   jobPipeline: (jobId: string) =>
     authFetch<PipelineBoard>(`/v1/jobs/${jobId}/pipeline`, { method: "GET" }),
+  jobAnalytics: (jobId: string) =>
+    authFetch<RoleAnalytics>(`/v1/jobs/${jobId}/analytics`, { method: "GET" }),
   moveCandidate: (jobId: string, candidateId: string, stage: PipelineStage) =>
     authFetch<PipelineBoard>(`/v1/jobs/${jobId}/pipeline/${candidateId}/stage`, {
       method: "POST",
