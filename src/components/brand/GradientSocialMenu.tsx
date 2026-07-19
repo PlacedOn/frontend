@@ -32,7 +32,7 @@ const SOCIALS: Social[] = [
   },
   {
     name: "X",
-    href: "https://x.com/placedon",
+    href: "https://x.com/placedonai",
     external: true,
     grad: "linear-gradient(135deg,#6922F5,#4311a8)",
     icon: (

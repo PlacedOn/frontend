@@ -55,7 +55,7 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
   float v = 0.0, a = 0.5;
   mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 4; i++) {
     v += a * noise(p);
     p = m * p;
     a *= 0.5;
@@ -204,15 +204,24 @@ export function HeroAurora({ className = "" }: { className?: string }) {
     };
     if (!reduce) window.addEventListener("pointermove", onMove, { passive: true });
 
+    // Pause the GPU loop when the hero is scrolled off-screen.
+    let visible = true;
+    const io = new IntersectionObserver(([e]) => (visible = e?.isIntersecting ?? true), { rootMargin: "80px" });
+    io.observe(canvas);
+
     let raf = 0;
+    let last = 0;
+    const FRAME = 1000 / 30; // 30fps cap halves GPU cost
     const start = performance.now();
     const render = (now: number) => {
+      raf = requestAnimationFrame(render);
+      if (!visible || now - last < FRAME) return;
+      last = now;
       mouse.x += (target.x - mouse.x) * 0.04;
       mouse.y += (target.y - mouse.y) * 0.04;
       gl.uniform1f(uTime, (now - start) / 1000);
       gl.uniform2f(uMouse, mouse.x, mouse.y);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-      raf = requestAnimationFrame(render);
     };
 
     if (reduce) {
@@ -226,6 +235,7 @@ export function HeroAurora({ className = "" }: { className?: string }) {
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      io.disconnect();
       window.removeEventListener("pointermove", onMove);
       gl.deleteProgram(prog);
       gl.deleteShader(vs);

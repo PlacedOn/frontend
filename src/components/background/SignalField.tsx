@@ -32,7 +32,7 @@ export function SignalField() {
     let raf = 0;
     let w = 0;
     let h = 0;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const nodes: Node[] = [];
 
     // Seeded PRNG so the field is stable across resizes (and looks intentional).
@@ -50,8 +50,8 @@ export function SignalField() {
       canvas.height = Math.floor(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const target = Math.round((w * h) / 15000);
-      const count = Math.max(38, Math.min(120, target));
+      const target = Math.round((w * h) / 24000);
+      const count = Math.max(28, Math.min(70, target));
       nodes.length = 0;
       seed = 1337;
       for (let i = 0; i < count; i++) {
@@ -97,7 +97,12 @@ export function SignalField() {
       }
     };
 
-    const step = () => {
+    let last = 0;
+    const FRAME = 1000 / 30; // 30fps cap — the O(n²) link pass is the cost
+    const step = (now: number) => {
+      raf = requestAnimationFrame(step);
+      if (document.hidden || now - last < FRAME) return;
+      last = now;
       for (const n of nodes) {
         n.x += n.vx;
         n.y += n.vy;
@@ -107,12 +112,11 @@ export function SignalField() {
         else if (n.y > h + 20) n.y = -20;
       }
       draw();
-      raf = requestAnimationFrame(step);
     };
 
     build();
     if (reduce) draw();
-    else step();
+    else raf = requestAnimationFrame(step);
 
     const onResize = () => {
       build();
@@ -129,13 +133,12 @@ export function SignalField() {
     <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden" style={{ zIndex: 0 }}>
       {/* gentle ambient aurora wash (always-on colour) */}
       <div
-        className="sf-aurora absolute inset-[-25%]"
+        className="sf-aurora absolute inset-[-45%]"
         style={{
           background:
             "linear-gradient(120deg, rgba(139,84,255,0.22), rgba(120,178,255,0.14) 34%, rgba(255,196,132,0.08) 55%, rgba(105,34,245,0.20) 78%, rgba(139,84,255,0.22))",
-          backgroundSize: "200% 200%",
-          filter: "blur(70px)",
-          willChange: "background-position",
+          filter: "blur(64px)",
+          willChange: "transform",
         }}
       />
 
@@ -151,11 +154,12 @@ export function SignalField() {
 
       <style>{`
         @keyframes sfAuroraShift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+          0% { transform: translate3d(-5%, -3%, 0); }
+          50% { transform: translate3d(5%, 3%, 0); }
+          100% { transform: translate3d(-5%, -3%, 0); }
         }
-        .sf-aurora { animation: sfAuroraShift 14s ease-in-out infinite; }
+        .sf-aurora { animation: sfAuroraShift 20s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .sf-aurora { animation: none; } }
       `}</style>
     </div>
   );

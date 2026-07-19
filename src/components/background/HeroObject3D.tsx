@@ -14,7 +14,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useReducedMotion } from "motion/react";
 import type { Points } from "three";
 
-const COUNT = 2600;
+const COUNT = 1600;
 const RADIUS = 1.32;
 
 function useSpherePoints() {
@@ -78,8 +78,8 @@ export default function HeroObject3D() {
     <div ref={wrapRef} aria-hidden className="pointer-events-none absolute inset-0" style={{ opacity: 0.9 }}>
       <Canvas
         camera={{ position: [0, 0, 3.1], fov: 45 }}
-        dpr={[1, 1.6]}
-        gl={{ antialias: true, alpha: true }}
+        dpr={[1, 1.3]}
+        gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
         frameloop={visible ? "always" : "never"}
       >
         <ParticleSphere reduce={!!reduce} />
