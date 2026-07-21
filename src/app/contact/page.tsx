@@ -42,8 +42,8 @@ export default function ContactPage() {
           href="mailto:Placedon.com@gmail.com"
           className="glass group flex flex-col rounded-[var(--r-card)] p-7 transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
         >
-          <span className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
-            <Mail size={20} />
+          <span className="grid h-10 w-10 place-items-center rounded-xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
+            <Mail size={19} />
           </span>
           <h2 className="mt-5 text-[1.2rem]">Email us</h2>
           <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--ink-2)]">
@@ -59,8 +59,8 @@ export default function ContactPage() {
           href="/demo"
           className="glass group flex flex-col rounded-[var(--r-card)] p-7 transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
         >
-          <span className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
-            <MessageSquare size={20} />
+          <span className="grid h-10 w-10 place-items-center rounded-xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
+            <MessageSquare size={19} />
           </span>
           <h2 className="mt-5 text-[1.2rem]">Book a demo</h2>
           <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--ink-2)]">
@@ -74,8 +74,8 @@ export default function ContactPage() {
 
       {/* Company details */}
       <div className="glass mt-4 flex items-start gap-3 rounded-[var(--r-card)] p-7">
-        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
-          <MapPin size={20} />
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
+          <MapPin size={19} />
         </span>
         <div>
           <h2 className="text-[1.2rem]">Placedon</h2>

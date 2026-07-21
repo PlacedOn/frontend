@@ -110,8 +110,8 @@ function InControl() {
       <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">
         {CONTROL.map(({ icon: Icon, title, body }) => (
           <div key={title} className="glass rounded-[var(--r-card)] p-6">
-            <span className="mb-4 inline-grid h-11 w-11 place-items-center rounded-[0.85rem]" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-              <Icon size={20} />
+            <span className="mb-4 inline-grid h-10 w-10 place-items-center rounded-xl" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
+              <Icon size={19} />
             </span>
             <h3 className="font-[var(--font-display)] text-[16.5px] font-semibold text-[var(--ink)]">{title}</h3>
             <p className="mt-2 text-[14px] leading-relaxed text-[var(--ink-2)]">{body}</p>

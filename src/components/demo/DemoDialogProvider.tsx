@@ -122,10 +122,10 @@ export function DemoDialogProvider({ children }: { children: ReactNode }) {
               {status === "done" ? (
                 <div className="py-6 text-center">
                   <span
-                    className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full"
+                    className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full"
                     style={{ background: "var(--iris)", color: "#fff" }}
                   >
-                    <Check size={22} strokeWidth={3} />
+                    <Check size={19} strokeWidth={3} />
                   </span>
                   <h2 id="demo-title" className="text-[1.4rem]">You&rsquo;re on the list.</h2>
                   <p className="mt-2 text-[14.5px] text-[var(--ink-2)]">

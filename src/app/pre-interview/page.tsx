@@ -25,8 +25,8 @@ export default function PreInterviewPage() {
           const Icon = c.icon;
           return (
             <article key={c.title} className="glass rounded-[var(--r-card)] p-6">
-              <span className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
-                <Icon size={20} />
+              <span className="grid h-10 w-10 place-items-center rounded-xl" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
+                <Icon size={19} />
               </span>
               <h2 className="mt-5 text-[1.2rem]">{c.title}</h2>
               <p className="mt-2 text-[14px] leading-relaxed text-[var(--ink-2)]">{c.body}</p>

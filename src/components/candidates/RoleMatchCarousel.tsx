@@ -71,11 +71,11 @@ export function RoleMatchCarousel() {
       <div className="mx-auto flex max-w-2xl items-center gap-3">
         <button
           onClick={() => go(-1)}
-          className="grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-full transition-colors hover:bg-[var(--iris-ghost)]"
+          className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full transition-colors hover:bg-[var(--iris-ghost)]"
           style={{ border: "1px solid var(--glass-line)", color: "var(--ink-2)" }}
           aria-label="Previous role"
         >
-          <ChevronLeft size={20} />
+          <ChevronLeft size={18} />
         </button>
 
         <div className="relative min-h-[290px] min-w-0 flex-1 sm:min-h-[250px]">
@@ -121,11 +121,11 @@ export function RoleMatchCarousel() {
 
         <button
           onClick={() => go(1)}
-          className="grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-full transition-colors hover:bg-[var(--iris-ghost)]"
+          className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full transition-colors hover:bg-[var(--iris-ghost)]"
           style={{ border: "1px solid var(--glass-line)", color: "var(--ink-2)" }}
           aria-label="Next role"
         >
-          <ChevronRight size={20} />
+          <ChevronRight size={18} />
         </button>
       </div>
 

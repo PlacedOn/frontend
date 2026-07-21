@@ -61,10 +61,10 @@ export default function TrustPage() {
               className="glass group flex flex-col rounded-[var(--r-card)] p-7 transition-shadow duration-[var(--d-std)] hover:shadow-[var(--shadow-md)]"
             >
               <span
-                className="grid h-11 w-11 place-items-center rounded-2xl"
+                className="grid h-10 w-10 place-items-center rounded-xl"
                 style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}
               >
-                <Icon size={20} />
+                <Icon size={19} />
               </span>
               <h2 className="mt-5 text-[1.35rem]">{p.title}</h2>
               <p className="mt-2.5 text-[14.5px] leading-relaxed text-[var(--ink-2)]">{p.body}</p>

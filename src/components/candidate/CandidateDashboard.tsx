@@ -212,7 +212,7 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/45">Trust passport</p>
                 <h3 className="mt-1 text-[20px] font-bold" style={{ color: "#fff" }}>{snapshot.firstName}&rsquo;s profile</h3>
               </div>
-              <span className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "var(--iris)" }}>
+              <span className="grid h-10 w-10 place-items-center rounded-xl" style={{ background: "var(--iris)" }}>
                 <ShieldCheck className="h-5 w-5" />
               </span>
             </div>
@@ -255,7 +255,7 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
           return (
             <motion.div key={item.label} {...reveal(0.06 * (i + 1))} className="glass rounded-[1.5rem] p-5">
               <div className="mb-5 flex items-center justify-between">
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-[var(--iris)]" style={{ boxShadow: "var(--shadow-sm)" }}>
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-white text-[var(--iris)]" style={{ boxShadow: "var(--shadow-sm)" }}>
                   <Icon className="h-5 w-5" />
                 </span>
                 <Pill label={item.value} tone={item.tone} />
@@ -311,8 +311,8 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
         </motion.section>
 
         <motion.section {...reveal(0.28)} className="rounded-[2rem] p-6" style={{ background: "var(--iris-ghost)", border: "1px solid var(--iris-line)" }}>
-          <span className="mb-6 grid h-12 w-12 place-items-center rounded-2xl text-white" style={{ background: "var(--iris)", boxShadow: "var(--shadow-iris)" }}>
-            <BadgeCheck className="h-6 w-6" />
+          <span className="mb-5 grid h-10 w-10 place-items-center rounded-xl text-white" style={{ background: "var(--iris)", boxShadow: "var(--shadow-iris)" }}>
+            <BadgeCheck className="h-5 w-5" />
           </span>
           <p className="eyebrow">Trust control</p>
           <h3 className="mt-2 text-[24px] font-bold leading-tight text-[var(--ink)]">Nothing is shared until you say yes.</h3>

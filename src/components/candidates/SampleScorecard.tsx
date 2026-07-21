@@ -47,7 +47,7 @@ export function SampleScorecard() {
         {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-6" style={{ borderColor: "var(--glass-line)" }}>
           <div className="flex items-center gap-3">
-            <span className="grid h-12 w-12 place-items-center rounded-full text-[15px] font-bold text-white" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))" }}>
+            <span className="grid h-10 w-10 place-items-center rounded-full text-[13px] font-bold text-white" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))" }}>
               ML
             </span>
             <div>

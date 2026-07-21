@@ -67,11 +67,11 @@ export function CandidateMatchCarousel() {
       <div className="mx-auto flex max-w-2xl items-center gap-3">
         <button
           onClick={() => go(-1)}
-          className="grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-full transition-colors hover:bg-[var(--iris-ghost)]"
+          className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full transition-colors hover:bg-[var(--iris-ghost)]"
           style={{ border: "1px solid var(--glass-line)", color: "var(--ink-2)" }}
           aria-label="Previous candidate"
         >
-          <ChevronLeft size={20} />
+          <ChevronLeft size={18} />
         </button>
 
         <div className="relative min-h-[300px] min-w-0 flex-1 sm:min-h-[260px]">
@@ -87,7 +87,7 @@ export function CandidateMatchCarousel() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-[14px] font-bold text-white" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))" }}>
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-[13px] font-bold text-white" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))" }}>
                     {c.name.split(" ").map((w) => w[0]).join("")}
                   </span>
                   <div className="min-w-0">
@@ -121,11 +121,11 @@ export function CandidateMatchCarousel() {
 
         <button
           onClick={() => go(1)}
-          className="grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-full transition-colors hover:bg-[var(--iris-ghost)]"
+          className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full transition-colors hover:bg-[var(--iris-ghost)]"
           style={{ border: "1px solid var(--glass-line)", color: "var(--ink-2)" }}
           aria-label="Next candidate"
         >
-          <ChevronRight size={20} />
+          <ChevronRight size={18} />
         </button>
       </div>
 

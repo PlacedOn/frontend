@@ -84,13 +84,13 @@ export function AuthPanel() {
       >
         <BeamRing />
         <span
-          className="grid h-12 w-12 place-items-center rounded-2xl text-white"
+          className="grid h-10 w-10 place-items-center rounded-xl text-white"
           style={{
             background: "linear-gradient(135deg, var(--iris-soft), var(--iris))",
             boxShadow: "var(--shadow-iris)",
           }}
         >
-          <MailCheck size={22} />
+          <MailCheck size={19} />
         </span>
         <h2 id="auth-confirm-heading" className="mt-5 text-[1.5rem]">
           Check your inbox.

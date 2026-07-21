@@ -123,10 +123,10 @@ export function CandidateMatches() {
     return (
       <div className="glass rounded-[var(--r-card)] p-10 text-center">
         <span
-          className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full"
+          className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full"
           style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}
         >
-          <Sparkles size={20} />
+          <Sparkles size={19} />
         </span>
         <h2 className="text-[1.3rem]">Matches appear once your profile is live.</h2>
         <p className="mx-auto mt-2 max-w-sm text-[14.5px] leading-relaxed text-[var(--ink-2)]">

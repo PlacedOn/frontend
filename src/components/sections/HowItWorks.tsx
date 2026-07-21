@@ -145,10 +145,10 @@ export function HowItWorks() {
                 <div className="glass flex flex-col rounded-[var(--r-card)] p-6 md:p-8">
                   <div className="flex items-center justify-between">
                     <span
-                      className="grid h-12 w-12 place-items-center rounded-2xl"
+                      className="grid h-10 w-10 place-items-center rounded-xl"
                       style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}
                     >
-                      <Icon size={22} />
+                      <Icon size={19} />
                     </span>
                     <span
                       className="text-[13px] font-semibold text-[var(--ink-3)]"

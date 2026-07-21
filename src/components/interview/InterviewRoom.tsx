@@ -60,8 +60,8 @@ export function InterviewRoom({ initialId }: InterviewRoomProps) {
   if (ended) {
     return (
       <motion.div initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="glass rounded-[var(--r-card)] p-8 text-center">
-        <span className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-          <Sparkles size={22} />
+        <span className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
+          <Sparkles size={19} />
         </span>
         <h2 className="text-[1.4rem]">That's a wrap — nicely done.</h2>
         <p className="mx-auto mt-2.5 max-w-md text-[14.5px] leading-relaxed text-[var(--ink-2)]">

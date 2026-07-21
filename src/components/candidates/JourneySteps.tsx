@@ -69,10 +69,10 @@ export function JourneySteps() {
                 aria-expanded={isOpen}
               >
                 <span
-                  className="grid h-11 w-11 shrink-0 place-items-center rounded-[0.85rem] text-white"
+                  className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-white"
                   style={{ background: step.highlight ? "linear-gradient(135deg,var(--iris-soft),var(--iris))" : "var(--iris-ghost)", color: step.highlight ? "#fff" : "var(--iris-ink)" }}
                 >
-                  <Icon size={20} />
+                  <Icon size={19} />
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
