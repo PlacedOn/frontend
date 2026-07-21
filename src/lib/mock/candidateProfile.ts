@@ -27,6 +27,7 @@ export const MOCK_CANDIDATE_PROFILE: CandidateProfile = {
     { id: "h1", title: "Fixed duplicate-charge incident in payments", context: "Traced it to a missing idempotency key on the retry path and shipped a dedupe table.", role_family_hint: "Backend / Platform Engineering" },
     { id: "h2", title: "Migrated an events table under load", context: "Normalised the schema and added a composite index without downtime.", role_family_hint: "Backend / Platform Engineering" },
   ],
+  linked_accounts: [],
   completeness: 72,
   updated_at: "2026-07-16T09:30:00Z",
 };

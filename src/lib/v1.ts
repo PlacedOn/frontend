@@ -580,8 +580,19 @@ export interface CandidateProfile {
   comp_expectation: string | null;
   claimed_skills: ClaimedSkill[]; // Card A claims the interview will verify
   highlights: ExperienceHighlight[]; // seeds the interview's opening questions
+  linked_accounts: LinkedAccount[]; // connected platforms — work → evidence, social → presentation
   completeness: number; // 0–100 engagement momentum, NOT a talent score
   updated_at: string | null;
+}
+
+/** A connected external account. `kind` decides which layer it lands in:
+ *  work platforms (GitHub…) become verifiable evidence; social links are
+ *  presentation-only and never touch assessment. */
+export interface LinkedAccount {
+  platform: "github" | "gitlab" | "linkedin" | "portfolio" | "site";
+  kind: "work" | "social";
+  url: string;
+  connected: boolean; // OAuth-verified (work) or just provided (social)
 }
 
 /** How much of a matched opening's public requirements the candidate's evidence covers. */
