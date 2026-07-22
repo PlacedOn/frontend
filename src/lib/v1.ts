@@ -241,11 +241,14 @@ export interface CoverageVector {
 // Fit Check — role-evidence coverage %, scoped to one role, with the strict contract.
 export type FitBucket = "strong" | "worth_discussing" | "clarify" | "not_enough";
 export interface FitCheck {
-  coverage_percent: number; // must-have rubric coverage, evidence-only — NOT a prediction/person-score
+  coverage_percent: number; // success-signal rubric coverage, evidence-only — NOT a prediction/person-score
   bucket: FitBucket;
   bucket_label: string;
   role_requirements_clear: number;
   role_requirements_total: number;
+  must_have_status: "clear" | "clarify" | "unmet" | "not_specified";
+  must_have_clear: number;
+  must_have_total: number;
   work_reality: "aligned" | "conflict" | "not_shared";
   evidence_confidence: "sufficient" | "limited";
 }
@@ -317,13 +320,17 @@ export interface TierSelection {
   total: number;
   advanced: number;
   rate: number;
+  rate_lower: number | null;
+  rate_upper: number | null;
 }
 export interface AlignmentResult {
   alignment: number; // 0..1, 1 = decisions track evidence
   gamma: number;
   concordant: number;
   discordant: number;
+  comparable_pairs: number;
   decided: number;
+  is_sufficient: boolean;
   monotonic: boolean;
   note: string;
 }
@@ -710,6 +717,15 @@ export interface OrgInvite {
   created_at: string | null;
 }
 
+// Candidate Network — result of importing proof-of-work from GitHub.
+export interface ImportGithubSummary {
+  imported: number;
+  linked: number;
+  skipped_existing: number;
+  skipped_flagged: number;
+  titles: string[];
+}
+
 export const v1 = {
   createJob: (payload: JobCreate) =>
     authFetch<JobSummary>("/v1/jobs", { method: "POST", body: JSON.stringify(payload) }),
@@ -832,6 +848,14 @@ export const v1 = {
 
   // Growth Report — candidate-owned career guidance (readiness, gaps, roadmap)
   growthReport: () => authFetch<GrowthReport>("/v1/candidate/growth", { method: "GET" }),
+
+  // Candidate Network — import public GitHub repos as verified proof-of-work
+  // artifacts that feed the same readiness engine (source=github, verified).
+  importGithub: (username: string) =>
+    authFetch<ImportGithubSummary>("/v1/candidate/import-github", {
+      method: "POST",
+      body: JSON.stringify({ username }),
+    }),
 
   // Candidate Profile (Card A) + matched openings (readiness, not odds)
   getProfile: () => authFetch<CandidateProfile>("/v1/candidate/profile", { method: "GET" }),
