@@ -11,6 +11,7 @@ import {
   Plus,
   BadgeCheck,
   Radar,
+  Hexagon,
   type LucideIcon,
 } from "lucide-react";
 
@@ -36,6 +37,7 @@ export const ROLE_LABEL: Record<DashboardRole, string> = {
 
 const CANDIDATE_NAV: NavItem[] = [
   { label: "Home", href: "/candidate", icon: LayoutDashboard },
+  { label: "Workshop", href: "/candidate/workshop", icon: Hexagon },
   { label: "Network", href: "/candidate/network", icon: Radar },
   { label: "Profile", href: "/candidate/profile", icon: UserRound },
   { label: "Growth", href: "/candidate/growth", icon: Sparkles },

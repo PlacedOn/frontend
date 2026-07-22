@@ -26,9 +26,19 @@
   --iris-ghost:  rgba(105, 34, 245, 0.10);
   --iris-line:   rgba(105, 34, 245, 0.22);
 
-  /* ── scarce warm signal (live moments only) ─ */
+  /* ── scarce warm signal / "ember" (live proof moments only) ─ */
   --signal:      #F5860B;
   --signal-soft: #FFB454;
+
+  /* ── workshop material registers (Fable "Workshop" vision) ─ */
+  --specimen:      #F7F2E9;          /* warm artifact stock — shipped work reads as "made" */
+  --specimen-line: #E7DECB;
+  --instrument:      #0E1020;        /* dark evidence-world ground (register-switch = meaning) */
+  --instrument-2:    #15173a;
+  --instrument-ink:  #A9A7C8;        /* body text inside the instrument register */
+  --instrument-ink-2:#7F7DA0;        /* labels / specimen numbers on dark */
+  --instrument-line: rgba(255, 255, 255, 0.10);
+  --vitrine:         rgba(255, 255, 255, 0.05);  /* display-case fill for unrolled facets */
 
   --danger: #E5484D;
 
@@ -68,6 +78,10 @@
   --z-base: 10;
   --z-nav: 40;
   --z-drawer: 50;
+  /* register switches cover the whole world, nav chrome included — leaving the
+     everyday porcelain register IS the wayfinding, so nothing may sit on top */
+  --z-register: 60;
+  --z-peak: 70;
 }
 
 * { box-sizing: border-box; }
