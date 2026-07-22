@@ -68,9 +68,11 @@ export function WorkshopEmpty({ live, onImported }: Props) {
           >
             Take the trial interview <ArrowRight size={15} aria-hidden />
           </Link>
+          {/* 25–30 min is the figure /pre-interview commits to; this door must
+              not undercut the next screen. */}
           <p className="mt-2 text-[12.5px] text-[var(--ink-3)]">
-            About 12 minutes, conversational. Nothing becomes visible to anyone until
-            you say so.
+            25–30 minutes, conversational, pause anytime. Nothing becomes visible to
+            anyone until you say so.
           </p>
         </div>
       </section>

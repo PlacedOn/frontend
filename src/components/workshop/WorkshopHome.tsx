@@ -53,35 +53,74 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
   const [isRegisterOpen, setRegisterOpen] = useState(false);
   const [isPeakOpen, setPeakOpen] = useState(false);
   const [emberCaption, setEmberCaption] = useState<string | null>(null);
+  const [isEvidenceSettled, setEvidenceSettled] = useState(!live);
   const emberTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => () => window.clearTimeout(emberTimer.current), []);
 
   useEffect(() => {
     if (!live) return;
-    v1.growthReport().then(setReport).catch((e: unknown) => {
-      if (!(e instanceof V1Error)) return;
-    });
+    v1.growthReport()
+      .then(setReport)
+      .catch((e: unknown) => {
+        if (!(e instanceof V1Error)) return;
+      })
+      // Gate the empty state on this: rendering "nothing here yet" while the
+      // interview evidence is still in flight tells the candidate their work
+      // does not exist, then contradicts itself a moment later.
+      .finally(() => setEvidenceSettled(true));
   }, [live]);
 
   const topFit = report?.role_fits[0] ?? null;
   const pct = topFit?.readiness_pct ?? Math.round(initial.latestCoverage?.coverage ?? 0);
 
-  // Specimens are the candidate's real artifacts. When there are none, a signed-in
-  // candidate must see an empty shelf — showing the sample shelf would present
-  // fabricated proofs (and a fictional collaborator) as their own work, which is
-  // the exact claim this product exists to refuse. The demo shelf survives only
-  // in preview, where the whole surface is understood to be mock.
+  // Specimens come from BOTH sources of proof, because both are how a candidate
+  // actually shows work: what they demonstrated in the interview, and what they
+  // shipped in public. Drawing the shelf from artifacts alone made an interview
+  // produce no visible result — the shelf stayed empty after the one action the
+  // empty state asks for, and a candidate with no public repos had no path at
+  // all. The sample shelf always depicted this mix; only the wiring was missing.
+  //
+  // When both are genuinely empty a signed-in candidate must see the empty
+  // shelf: showing sample data would present fabricated proofs (and a fictional
+  // collaborator) as their own work, the exact claim this product refuses. The
+  // demo shelf survives only in preview, where the surface is understood as mock.
   const specimens: Specimen[] = useMemo(() => {
-    if (initial.artifacts.length === 0) return live ? [] : SAMPLE_SPECIMENS;
-    return initial.artifacts.map((a, i) => ({
-      exNo: `EX-${String(i + 1).padStart(3, "0")}`,
+    // Preview is an explicitly mock surface (same convention as
+    // MOCK_GROWTH_REPORT), so it keeps the curated demo shelf.
+    if (!live) return SAMPLE_SPECIMENS;
+
+    const fromInterview: Specimen[] = (report?.edges ?? []).map((e) => ({
+      exNo: "",
+      title: e.skill_label,
+      kind: e.quote ? (
+        <>
+          From your interview · <i>&ldquo;{e.quote}&rdquo;</i>
+        </>
+      ) : (
+        <>From your interview · {e.note}</>
+      ),
+      // Only a supported band is sealed; emerging evidence is shown honestly as
+      // still forming rather than promoted to proof.
+      sealed: e.band === "supported",
+      respect: 0,
+    }));
+
+    const fromArtifacts: Specimen[] = initial.artifacts.map((a) => ({
+      exNo: "",
       title: a.title,
       kind: a.source === "github" || a.verified_at ? <>verified from GitHub</> : <>{a.kind}</>,
       sealed: a.source === "github" || a.verified_at != null,
       respect: 0,
     }));
-  }, [initial.artifacts, live]);
+
+    // Number the shelf only once it is assembled, so EX- numbers stay contiguous
+    // across both sources.
+    return [...fromInterview, ...fromArtifacts].map((s, i) => ({
+      ...s,
+      exNo: `EX-${String(i + 1).padStart(3, "0")}`,
+    }));
+  }, [report, initial.artifacts, live]);
 
   const sealed = specimens.filter((s) => s.sealed).length;
 
@@ -100,7 +139,10 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
     );
   }, [pct, sealed, reduce]);
 
-  const isEmpty = specimens.length === 0;
+  // Three states, not two: an unsettled fetch must render neither the shelf
+  // (a 0-facet ring) nor the empty state (a false "nothing here yet").
+  const hasSpecimens = specimens.length > 0;
+  const isEmpty = !hasSpecimens && isEvidenceSettled;
 
   return (
     <div>
@@ -108,11 +150,11 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
         Your workshop
       </p>
       <h1 className="mt-1.5 text-[clamp(1.5rem,1.2rem+1.4vw,2.1rem)] font-extrabold tracking-tight text-[var(--ink)]">
-        {isEmpty ? "This is your workshop." : "What you've built speaks for you."}
+        {hasSpecimens ? "What you've built speaks for you." : "This is your workshop."}
       </h1>
       {/* The role line describes a candidate we have evidence about; with an
           empty shelf we know nothing about them yet, so we claim nothing. */}
-      {!isEmpty && (
+      {hasSpecimens && (
         <p className="mt-1 text-[15px] text-[var(--ink-2)]">
           Backend engineer · <b className="font-semibold text-[var(--ink)]">building payment reliability in public</b>
         </p>
@@ -120,7 +162,7 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
 
       {isEmpty && <WorkshopEmpty live={live} onImported={() => router.refresh()} />}
 
-      {!isEmpty && (
+      {hasSpecimens && (
         <>
       {/* Facet hero */}
       <section

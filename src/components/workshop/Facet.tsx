@@ -24,6 +24,12 @@ type Props = {
 
 const GAP_DEG = 2.6;
 
+/** Straight-edge segments around the full ring. Each facet's outer edge is
+ *  subdivided into its share of these, which keeps the silhouette a polygon at
+ *  any facet count: a single chord across a wide wedge collapses to a flat line,
+ *  so a two-specimen shelf would otherwise render as two vertical strokes. */
+const TARGET_SIDES = 14;
+
 type FacetPath = { d: string; index: number };
 
 /** Flat-edged annular sectors → a cut-stone, faceted ring (echoes the angular
@@ -35,20 +41,23 @@ function buildFacets(size: number, count: number): FacetPath[] {
   const rOuter = (size / 2) * 0.92;
   const rInner = (size / 2) * 0.68;
   const step = 360 / count;
-  const pol = (r: number, deg: number): [number, number] => {
-    const a = (deg * Math.PI) / 180;
-    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
-  };
   const round = (n: number) => Math.round(n * 100) / 100; // stable server/client serialization
+  const pol = (r: number, deg: number): string => {
+    const a = (deg * Math.PI) / 180;
+    return `${round(cx + r * Math.cos(a))} ${round(cy + r * Math.sin(a))}`;
+  };
+
+  // Wider wedges get more segments, so total sides stay roughly constant.
+  const segments = Math.max(1, Math.round(TARGET_SIDES / count));
 
   return Array.from({ length: count }, (_, i) => {
     const a0 = -90 + i * step + GAP_DEG / 2;
     const a1 = -90 + (i + 1) * step - GAP_DEG / 2;
-    const [ox0, oy0] = pol(rOuter, a0);
-    const [ox1, oy1] = pol(rOuter, a1);
-    const [ix1, iy1] = pol(rInner, a1);
-    const [ix0, iy0] = pol(rInner, a0);
-    const d = `M${round(ox0)} ${round(oy0)}L${round(ox1)} ${round(oy1)}L${round(ix1)} ${round(iy1)}L${round(ix0)} ${round(iy0)}Z`;
+    const at = (k: number) => a0 + ((a1 - a0) * k) / segments;
+
+    const outer = Array.from({ length: segments + 1 }, (_, k) => pol(rOuter, at(k)));
+    const inner = Array.from({ length: segments + 1 }, (_, k) => pol(rInner, at(segments - k)));
+    const d = `M${outer.join("L")}L${inner.join("L")}Z`;
     return { d, index: i };
   });
 }
