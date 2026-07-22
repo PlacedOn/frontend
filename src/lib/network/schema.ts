@@ -16,6 +16,17 @@ export const ARTIFACT_KINDS = [
   "other",
 ] as const;
 
+/** Candidate-facing names for the kinds above — the raw enum values are storage
+ *  vocabulary and must never be shown as-is. */
+export const ARTIFACT_KIND_LABEL: Record<(typeof ARTIFACT_KINDS)[number], string> = {
+  repo: "Repository",
+  project: "Project",
+  writeup: "Write-up",
+  deployment: "Deployment",
+  credential: "Credential",
+  other: "Something else",
+};
+
 export const EVIDENCE_STRENGTHS = ["mentioned", "demonstrated", "verified"] as const;
 
 const optionalUrl = z

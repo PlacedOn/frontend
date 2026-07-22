@@ -7,11 +7,13 @@ import { Play, Network } from "lucide-react";
 import { v1, V1Error, isLiveBackend, type GrowthReport } from "@/lib/v1";
 import { MOCK_GROWTH_REPORT } from "@/lib/mock/growthReport";
 import type { DashboardData } from "@/lib/network/queries";
+import { ARTIFACT_KIND_LABEL } from "@/lib/network/schema";
 import { Facet } from "./Facet";
 import { SpecimenCard, type Specimen } from "./SpecimenCard";
 import { InstrumentRegister } from "./InstrumentRegister";
 import { OnboardingPeak, type Trait } from "./OnboardingPeak";
 import { WorkshopEmpty } from "./WorkshopEmpty";
+import { AddSpecimen } from "./AddSpecimen";
 
 type Lens = "coverage" | "foundation";
 
@@ -106,13 +108,24 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
       respect: 0,
     }));
 
-    const fromArtifacts: Specimen[] = initial.artifacts.map((a) => ({
-      exNo: "",
-      title: a.title,
-      kind: a.source === "github" || a.verified_at ? <>verified from GitHub</> : <>{a.kind}</>,
-      sealed: a.source === "github" || a.verified_at != null,
-      respect: 0,
-    }));
+    const fromArtifacts: Specimen[] = initial.artifacts.map((a) => {
+      const verified = a.source === "github" || a.verified_at != null;
+      return {
+        exNo: "",
+        title: a.title,
+        // Never show the raw enum. A self-added item says so plainly rather than
+        // borrowing the language of verified evidence.
+        kind: verified ? (
+          <>verified from GitHub</>
+        ) : (
+          <>
+            {ARTIFACT_KIND_LABEL[a.kind]} · <i>added by you, not yet verified</i>
+          </>
+        ),
+        sealed: verified,
+        respect: 0,
+      };
+    });
 
     // Number the shelf only once it is assembled, so EX- numbers stay contiguous
     // across both sources.
@@ -160,7 +173,7 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
         </p>
       )}
 
-      {isEmpty && <WorkshopEmpty live={live} onImported={() => router.refresh()} />}
+      {isEmpty && <WorkshopEmpty live={live} onChanged={() => router.refresh()} />}
 
       {hasSpecimens && (
         <>
@@ -233,10 +246,13 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
       </section>
 
       {/* Specimen shelf */}
-      <div className="mt-8 mb-3.5 flex items-baseline gap-3">
+      <div className="mt-8 mb-3.5 flex flex-wrap items-baseline gap-x-3 gap-y-2">
         <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.16em] text-[var(--iris)]">Proof of work</span>
         <h2 className="text-[1.35rem] font-extrabold tracking-tight text-[var(--ink)]">The specimens</h2>
         <span className="font-mono text-[12px] text-[var(--ink-3)]">{sealed} sealed · {specimens.length - sealed} emerging</span>
+        <div className="ml-auto self-center">
+          <AddSpecimen onAdded={() => router.refresh()} />
+        </div>
       </div>
       <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
         {specimens.map((s) => (

@@ -21,7 +21,13 @@ import type { Artifact, ProgressLog, EvidenceLink } from "@/lib/network/types";
 
 export type ActionResult<T> = { data?: T; error?: string };
 
-const DASHBOARD = "/candidate/network";
+// Both candidate surfaces read these rows, so both must be revalidated — the
+// Workshop shelf is built from the same artifacts table as the Network stream.
+const AFFECTED_ROUTES = ["/candidate/network", "/candidate/workshop"] as const;
+
+function revalidateCandidateSurfaces(): void {
+  for (const route of AFFECTED_ROUTES) revalidatePath(route);
+}
 
 function firstIssue(error: z.ZodError): string {
   return error.issues[0]?.message ?? "Please check the details and try again.";
@@ -66,7 +72,7 @@ export async function addArtifact(
     return { error: "We couldn't save that just now. Please try again in a moment." };
   }
 
-  revalidatePath(DASHBOARD);
+  revalidateCandidateSurfaces();
   return { data: data as Artifact };
 }
 
@@ -94,7 +100,7 @@ export async function logProgress(
     return { error: "We couldn't post that update. Please try again in a moment." };
   }
 
-  revalidatePath(DASHBOARD);
+  revalidateCandidateSurfaces();
   return { data: data as ProgressLog };
 }
 
@@ -129,6 +135,6 @@ export async function linkEvidence(
     return { error: "We couldn't link that evidence. Please try again in a moment." };
   }
 
-  revalidatePath(DASHBOARD);
+  revalidateCandidateSurfaces();
   return { data: data as EvidenceLink };
 }

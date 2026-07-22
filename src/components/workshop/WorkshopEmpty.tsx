@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
-import type { ImportGithubSummary } from "@/lib/v1";
 import { ImportGithub } from "@/components/network/ImportGithub";
+import { AddSpecimen } from "./AddSpecimen";
 import { Facet } from "./Facet";
 
 type Props = {
   live: boolean;
-  onImported: (summary: ImportGithubSummary) => void;
+  /** Something landed on the shelf — re-read it. Both doors report the same way. */
+  onChanged: () => void;
 };
 
 /** The scaffold ring shown before any proof exists. Deliberately not a target:
@@ -23,10 +24,10 @@ const SCAFFOLD_FACETS = 8;
  * Two rules hold it honest. It shows no percentage: a number computed from zero
  * evidence would be a claim we cannot support, and 0% reads as a verdict on the
  * person rather than a fact about the shelf. And it invents no specimens — an
- * empty shelf is the truth, so the screen's whole job is to offer the two real
- * doors out of it.
+ * empty shelf is the truth, so the screen's whole job is to offer the three real
+ * doors out of it: the interview, GitHub import, and adding work by hand.
  */
-export function WorkshopEmpty({ live, onImported }: Props) {
+export function WorkshopEmpty({ live, onChanged }: Props) {
   const reduce = useReducedMotion();
 
   return (
@@ -81,7 +82,13 @@ export function WorkshopEmpty({ live, onImported }: Props) {
           headline and internal two-column grid, so nesting it in a prose column
           collapses it to one word per line. */}
       <div className="mt-4">
-        <ImportGithub live={live} onImported={onImported} />
+        <ImportGithub live={live} onImported={() => onChanged()} />
+      </div>
+
+      {/* The third door. Without it, a candidate whose work isn't on GitHub and
+          who hasn't interviewed yet has no way onto their own shelf. */}
+      <div className="mt-4">
+        <AddSpecimen onAdded={onChanged} />
       </div>
     </div>
   );
