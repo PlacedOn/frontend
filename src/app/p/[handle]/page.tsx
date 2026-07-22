@@ -31,11 +31,11 @@ const SAMPLE: PublicProfileData = {
   fits: [
     {
       roleName: "Backend Engineer",
-      fit: { coverage_percent: 88, bucket: "strong", bucket_label: "Strong evidence to explore", role_requirements_clear: 5, role_requirements_total: 6, work_reality: "aligned", evidence_confidence: "sufficient" },
+      fit: { coverage_percent: 88, bucket: "strong", bucket_label: "Strong evidence to explore", role_requirements_clear: 5, role_requirements_total: 6, must_have_status: "clear", must_have_clear: 1, must_have_total: 1, work_reality: "aligned", evidence_confidence: "sufficient" },
     },
     {
       roleName: "Platform Engineer",
-      fit: { coverage_percent: 61, bucket: "worth_discussing", bucket_label: "Worth discussing", role_requirements_clear: 3, role_requirements_total: 6, work_reality: "not_shared", evidence_confidence: "limited" },
+      fit: { coverage_percent: 61, bucket: "worth_discussing", bucket_label: "Worth discussing", role_requirements_clear: 3, role_requirements_total: 6, must_have_status: "not_specified", must_have_clear: 0, must_have_total: 0, work_reality: "not_shared", evidence_confidence: "limited" },
     },
   ],
 };

@@ -22,11 +22,11 @@ function alignColor(a: number): string {
 const SAMPLE: RoleAnalytics = {
   total_candidates: 12,
   by_tier: [
-    { tier: "strong", total: 4, advanced: 3, rate: 0.75 },
-    { tier: "worth_a_look", total: 5, advanced: 2, rate: 0.4 },
-    { tier: "gaps", total: 3, advanced: 0, rate: 0 },
+    { tier: "strong", total: 4, advanced: 3, rate: 0.75, rate_lower: 0.30, rate_upper: 0.95 },
+    { tier: "worth_a_look", total: 5, advanced: 2, rate: 0.4, rate_lower: 0.12, rate_upper: 0.77 },
+    { tier: "gaps", total: 3, advanced: 0, rate: 0, rate_lower: 0, rate_upper: 0.56 },
   ],
-  alignment: { alignment: 0.82, gamma: 0.64, concordant: 9, discordant: 2, decided: 8, monotonic: true, note: "Your advance/pass decisions track the evidence well." },
+  alignment: { alignment: 0.8, gamma: 0.6, concordant: 16, discordant: 4, comparable_pairs: 20, decided: 8, is_sufficient: true, monotonic: true, note: "Your advance/pass decisions track the evidence well." },
   funnel: { counts: { new: 3, reviewing: 4, intro: 4, hired: 1, passed: 0 }, reviewed_rate: 0.75, intro_rate: 0.42, hired_rate: 0.08 },
 };
 
@@ -47,7 +47,7 @@ export function RoleAnalyticsPanel({ jobId }: { jobId: string }) {
 
   const a = data.alignment;
   const pct = Math.round(a.alignment * 100);
-  const color = alignColor(a.alignment);
+  const color = a.is_sufficient ? alignColor(a.alignment) : "var(--ink-3)";
 
   return (
     <div className="glass rounded-[var(--r-card)] p-6">
@@ -60,14 +60,24 @@ export function RoleAnalyticsPanel({ jobId }: { jobId: string }) {
       <div className="mt-4">
         <div className="flex items-baseline justify-between">
           <span className="text-[12.5px] font-semibold text-[var(--ink-3)]">Decisions ↔ evidence alignment</span>
-          <span className="text-[22px] font-extrabold" style={{ color, fontFamily: "var(--font-mono)" }}>{pct}%</span>
+          <span className="text-[22px] font-extrabold" style={{ color, fontFamily: "var(--font-mono)" }}>
+            {a.is_sufficient ? `${pct}%` : "Not ready"}
+          </span>
         </div>
-        <div className="mt-2 h-2.5 overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
-          <div className="h-full rounded-full transition-[width] duration-700" style={{ width: `${pct}%`, background: color }} />
-        </div>
+        {a.is_sufficient ? (
+          <div className="mt-2 h-2.5 overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
+            <div className="h-full rounded-full transition-[width] duration-700" style={{ width: `${pct}%`, background: color }} />
+          </div>
+        ) : (
+          <div className="mt-2 rounded-[var(--r-btn)] px-3 py-2 text-[12px] text-[var(--ink-3)]" style={{ background: "var(--porcelain-2)" }}>
+            Needs at least 20 comparable decision pairs before this is interpreted.
+          </div>
+        )}
         <p className="mt-2 text-[13px] leading-relaxed text-[var(--ink-2)]">{a.note}</p>
         <p className="mt-1 text-[11.5px] text-[var(--ink-3)]">
-          Rank-concordance over {a.decided} decided candidate(s) · {a.concordant} concordant / {a.discordant} inverted · uses coverage tiers, never protected traits.
+          {a.is_sufficient
+            ? `Rank-concordance over ${a.decided} decided candidate(s) · ${a.concordant} concordant / ${a.discordant} inverted.`
+            : `${a.comparable_pairs} of 20 comparable decision pairs collected so far.`} Uses coverage tiers, never protected traits.
         </p>
       </div>
 
@@ -81,11 +91,14 @@ export function RoleAnalyticsPanel({ jobId }: { jobId: string }) {
               <div className="h-2 flex-1 overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
                 <div className="h-full rounded-full" style={{ width: `${Math.round(t.rate * 100)}%`, background: "var(--iris)" }} />
               </div>
-              <span className="w-24 shrink-0 text-right text-[11.5px] font-semibold text-[var(--ink-3)]">{t.advanced}/{t.total} advanced</span>
+              <span className="w-40 shrink-0 text-right text-[11.5px] font-semibold text-[var(--ink-3)]">
+                {t.advanced}/{t.total} · {Math.round(t.rate * 100)}%
+                {t.rate_lower !== null && t.rate_upper !== null && ` (95% CI ${Math.round(t.rate_lower * 100)}–${Math.round(t.rate_upper * 100)}%)`}
+              </span>
             </div>
           ))}
         </div>
-        {!a.monotonic && a.decided > 0 && (
+        {a.is_sufficient && !a.monotonic && a.decided > 0 && (
           <p className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold" style={{ color: "#B45309" }}>
             <TrendingUp size={13} /> Advancement isn&rsquo;t tracking evidence tier — worth a review.
           </p>
