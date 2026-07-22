@@ -85,13 +85,16 @@ export function ReadinessGauge({ pct, size = 220, variant = "hero" }: Props) {
           const angle = ((START_ROTATION + (t / 100) * ARC_DEGREES) * Math.PI) / 180;
           const r1 = r - stroke * 1.15;
           const r2 = r - stroke * 1.75;
+          // Round to 3dp so the server and client serialize identical coords —
+          // raw float trig differs in the last digits and trips hydration.
+          const round = (n: number) => Math.round(n * 1000) / 1000;
           return (
             <line
               key={t}
-              x1={size / 2 + r1 * Math.cos(angle)}
-              y1={size / 2 + r1 * Math.sin(angle)}
-              x2={size / 2 + r2 * Math.cos(angle)}
-              y2={size / 2 + r2 * Math.sin(angle)}
+              x1={round(size / 2 + r1 * Math.cos(angle))}
+              y1={round(size / 2 + r1 * Math.sin(angle))}
+              x2={round(size / 2 + r2 * Math.cos(angle))}
+              y2={round(size / 2 + r2 * Math.sin(angle))}
               stroke="var(--glass-line-hi)"
               strokeWidth={1.5}
               strokeLinecap="round"
