@@ -82,7 +82,7 @@ export const NEXT_ACTION: Record<CandidateDashboardMode, NextAction> = {
     description:
       "One calm conversation creates the evidence-backed profile employers can review — after you approve it.",
     label: "Start interview",
-    path: "/pre-interview",
+    path: "/start",
     iconKey: "message",
   },
   interview_in_progress: {
