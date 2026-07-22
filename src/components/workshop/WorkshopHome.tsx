@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { Play, Network } from "lucide-react";
 import { v1, V1Error, isLiveBackend, type GrowthReport } from "@/lib/v1";
@@ -10,6 +11,7 @@ import { Facet } from "./Facet";
 import { SpecimenCard, type Specimen } from "./SpecimenCard";
 import { InstrumentRegister } from "./InstrumentRegister";
 import { OnboardingPeak, type Trait } from "./OnboardingPeak";
+import { WorkshopEmpty } from "./WorkshopEmpty";
 
 type Lens = "coverage" | "foundation";
 
@@ -44,6 +46,7 @@ const FACET_SETTLE_MS = 650;
 export function WorkshopHome({ initial }: { initial: DashboardData }) {
   const live = isLiveBackend();
   const reduce = useReducedMotion();
+  const router = useRouter();
   const [report, setReport] = useState<GrowthReport | null>(live ? null : MOCK_GROWTH_REPORT);
   const [lens, setLens] = useState<Lens>("coverage");
   const [assembleKey, setAssembleKey] = useState(0);
@@ -64,9 +67,13 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
   const topFit = report?.role_fits[0] ?? null;
   const pct = topFit?.readiness_pct ?? Math.round(initial.latestCoverage?.coverage ?? 0);
 
-  // Specimens: the candidate's real artifacts if any, else the sample shelf.
+  // Specimens are the candidate's real artifacts. When there are none, a signed-in
+  // candidate must see an empty shelf — showing the sample shelf would present
+  // fabricated proofs (and a fictional collaborator) as their own work, which is
+  // the exact claim this product exists to refuse. The demo shelf survives only
+  // in preview, where the whole surface is understood to be mock.
   const specimens: Specimen[] = useMemo(() => {
-    if (initial.artifacts.length === 0) return SAMPLE_SPECIMENS;
+    if (initial.artifacts.length === 0) return live ? [] : SAMPLE_SPECIMENS;
     return initial.artifacts.map((a, i) => ({
       exNo: `EX-${String(i + 1).padStart(3, "0")}`,
       title: a.title,
@@ -74,7 +81,7 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
       sealed: a.source === "github" || a.verified_at != null,
       respect: 0,
     }));
-  }, [initial.artifacts]);
+  }, [initial.artifacts, live]);
 
   const sealed = specimens.filter((s) => s.sealed).length;
 
@@ -93,18 +100,28 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
     );
   }, [pct, sealed, reduce]);
 
+  const isEmpty = specimens.length === 0;
+
   return (
     <div>
       <p className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.16em] text-[var(--iris)]">
         Your workshop
       </p>
       <h1 className="mt-1.5 text-[clamp(1.5rem,1.2rem+1.4vw,2.1rem)] font-extrabold tracking-tight text-[var(--ink)]">
-        What you've built speaks for you.
+        {isEmpty ? "This is your workshop." : "What you've built speaks for you."}
       </h1>
-      <p className="mt-1 text-[15px] text-[var(--ink-2)]">
-        Backend engineer · <b className="font-semibold text-[var(--ink)]">building payment reliability in public</b>
-      </p>
+      {/* The role line describes a candidate we have evidence about; with an
+          empty shelf we know nothing about them yet, so we claim nothing. */}
+      {!isEmpty && (
+        <p className="mt-1 text-[15px] text-[var(--ink-2)]">
+          Backend engineer · <b className="font-semibold text-[var(--ink)]">building payment reliability in public</b>
+        </p>
+      )}
 
+      {isEmpty && <WorkshopEmpty live={live} onImported={() => router.refresh()} />}
+
+      {!isEmpty && (
+        <>
       {/* Facet hero */}
       <section
         className="mt-5 grid items-center gap-8 rounded-[26px] border p-7 md:grid-cols-[auto_1fr] md:p-8"
@@ -184,6 +201,8 @@ export function WorkshopHome({ initial }: { initial: DashboardData }) {
           <SpecimenCard key={s.exNo} {...s} />
         ))}
       </div>
+        </>
+      )}
 
       <InstrumentRegister
         isOpen={isRegisterOpen}

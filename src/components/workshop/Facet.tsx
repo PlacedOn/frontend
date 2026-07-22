@@ -17,6 +17,9 @@ type Props = {
   lens?: Lens;
   /** Bumps to re-run the materialize (facet-by-facet) assemble animation. */
   assembleKey?: number;
+  /** False renders the bare scaffold. A percentage derived from zero evidence
+   *  is a claim we cannot support — so before any proof exists, show no number. */
+  showValue?: boolean;
 };
 
 const GAP_DEG = 2.6;
@@ -55,7 +58,15 @@ function buildFacets(size: number, count: number): FacetPath[] {
  * assembled from real, verified proofs, that you can always take apart. Unifies
  * the two legacy readiness dials under one geometry with two lenses.
  */
-export function Facet({ pct, size = 300, facets, lit, lens = "coverage", assembleKey = 0 }: Props) {
+export function Facet({
+  pct,
+  size = 300,
+  facets,
+  lit,
+  lens = "coverage",
+  assembleKey = 0,
+  showValue = true,
+}: Props) {
   const reduce = useReducedMotion();
   const gradId = useId();
   const clamped = Math.max(0, Math.min(100, Math.round(pct)));
@@ -72,7 +83,11 @@ export function Facet({ pct, size = 300, facets, lit, lens = "coverage", assembl
         height={size}
         viewBox={`0 0 ${size} ${size}`}
         role="img"
-        aria-label={`${clamped}% readiness, assembled from ${litCount} verified ${litCount === 1 ? "facet" : "facets"} of ${count}`}
+        aria-label={
+          showValue
+            ? `${clamped}% readiness, assembled from ${litCount} verified ${litCount === 1 ? "facet" : "facets"} of ${count}`
+            : "An empty ring — no verified evidence yet"
+        }
       >
         <defs>
           <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
@@ -102,15 +117,17 @@ export function Facet({ pct, size = 300, facets, lit, lens = "coverage", assembl
         ))}
       </svg>
 
-      <div className="pointer-events-none absolute inset-0 grid place-content-center text-center">
-        <div className="font-extrabold leading-none tracking-tight text-[var(--ink)]" style={{ fontSize: size * 0.19, fontVariantNumeric: "tabular-nums" }}>
-          {clamped}
-          <span className="text-[0.42em] text-[var(--ink-3)]">%</span>
+      {showValue && (
+        <div className="pointer-events-none absolute inset-0 grid place-content-center text-center">
+          <div className="font-extrabold leading-none tracking-tight text-[var(--ink)]" style={{ fontSize: size * 0.19, fontVariantNumeric: "tabular-nums" }}>
+            {clamped}
+            <span className="text-[0.42em] text-[var(--ink-3)]">%</span>
+          </div>
+          <div className="mt-1.5 font-mono text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[var(--iris-ink)]">
+            {lens === "coverage" ? "readiness" : "foundation"}
+          </div>
         </div>
-        <div className="mt-1.5 font-mono text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[var(--iris-ink)]">
-          {lens === "coverage" ? "readiness" : "foundation"}
-        </div>
-      </div>
+      )}
     </div>
   );
 }
