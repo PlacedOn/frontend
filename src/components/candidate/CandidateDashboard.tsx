@@ -217,9 +217,11 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
                 <ShieldCheck className="h-5 w-5" />
               </span>
             </div>
+            {/* Profile setup — how far along the profile is, framed as momentum,
+                never a rating of the person (completeness = engagement, not score). */}
             <div className="mb-2 flex items-center justify-between text-[13px] font-bold">
-              <span>Profile strength</span>
-              <span>{snapshot.profile.strength}%</span>
+              <span>Profile setup</span>
+              <span className="tabular-nums">{snapshot.profile.strength}%</span>
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,0.12)" }}>
               <motion.div
@@ -230,17 +232,31 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
                 style={{ background: "var(--iris-soft)" }}
               />
             </div>
+            <p className="mt-1.5 text-[11.5px] text-white/45">How complete your profile is — not a rating of you.</p>
+
+            {/* Real state only. The evidence itself lives in your report card and is
+                never invented here — a dashboard must not fabricate a person's traits. */}
             <div className="mt-5 grid gap-2.5">
-              {[
-                ["Structured debugging", "High evidence"],
-                ["React architecture", "High evidence"],
-                ["Team communication", "Needs review"],
-              ].map(([trait, status]) => (
-                <div key={trait} className="flex items-center justify-between rounded-xl border px-4 py-2.5" style={{ borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)" }}>
-                  <span className="text-[13.5px] font-semibold">{trait}</span>
-                  <span className="text-[11.5px] font-bold text-white/55">{status}</span>
-                </div>
-              ))}
+              <div className="flex items-center justify-between rounded-xl border px-4 py-2.5" style={{ borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)" }}>
+                <span className="inline-flex items-center gap-2 text-[13.5px] font-semibold">
+                  <FileCheck2 className="h-4 w-4 text-white/60" /> Evidence from your interview
+                </span>
+                <span
+                  className="text-[11.5px] font-bold"
+                  style={{ color: snapshot.profile.traitsPending > 0 ? "var(--signal-soft)" : "#6ee7b7" }}
+                >
+                  {snapshot.profile.traitsPending > 0 ? `${snapshot.profile.traitsPending} to review` : "All reviewed"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl border px-4 py-2.5" style={{ borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)" }}>
+                <span className="inline-flex items-center gap-2 text-[13.5px] font-semibold">
+                  {snapshot.profile.employerVisible ? <Eye className="h-4 w-4 text-white/60" /> : <Lock className="h-4 w-4 text-white/60" />}{" "}
+                  Employer visibility
+                </span>
+                <span className="text-[11.5px] font-bold text-white/70">
+                  {snapshot.profile.employerVisible ? "On" : "Private"}
+                </span>
+              </div>
             </div>
             <p className="mt-4 rounded-xl px-4 py-3 text-[12.5px] leading-5 text-white/65" style={{ background: "rgba(255,255,255,0.05)" }}>
               Employers cannot see this until you approve the evidence and visibility.
