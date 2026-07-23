@@ -9,6 +9,7 @@ import { listCandidateReports, type CandidateReport } from "@/lib/mock/candidate
 import { isLiveBackend } from "@/lib/api";
 import { CandidateSummaryCard } from "./CandidateSummaryCard";
 import { LiveEmployerBoard } from "./LiveEmployerBoard";
+import { TeamOperate } from "./TeamOperate";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -106,6 +107,9 @@ function MockEmployerBoard() {
           {meta.live ? "Live · from backend" : "Sample pipeline · illustrative"}
         </span>
       </div>
+
+      {/* Operate — what needs a human today, per person not per score */}
+      <TeamOperate />
 
       {/* Roles */}
       <section>
