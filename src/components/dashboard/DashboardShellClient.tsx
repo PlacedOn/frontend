@@ -50,41 +50,54 @@ function NavList({
   collapsed: boolean;
   onNavigate?: () => void;
 }) {
+  const { primary, secondary } = NAV[role];
+  const renderItem = (item: NavItem) => {
+    const active = isNavActive(pathname, item, role);
+    const Icon = item.icon;
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        onClick={onNavigate}
+        aria-current={active ? "page" : undefined}
+        title={collapsed ? item.label : undefined}
+        className="group relative flex items-center gap-3 rounded-[14px] px-3 py-2.5 text-[14px] font-semibold transition-colors"
+        style={active ? { background: "var(--iris-ghost)", color: "var(--iris-ink)" } : { color: "var(--ink-2)" }}
+      >
+        {active && (
+          <motion.span
+            layoutId={`nav-active-${role}`}
+            className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full"
+            style={{ background: "var(--iris)" }}
+          />
+        )}
+        <Icon
+          size={18}
+          className="shrink-0 transition-transform group-hover:scale-110"
+          style={{ color: active ? "var(--iris-ink)" : "var(--ink-3)" }}
+        />
+        {!collapsed && <span className="truncate">{item.label}</span>}
+      </Link>
+    );
+  };
+
   return (
     <nav aria-label={`${ROLE_LABEL[role]} navigation`} className="flex flex-1 flex-col gap-1">
-      {NAV[role].map((item: NavItem) => {
-        const active = isNavActive(pathname, item, role);
-        const Icon = item.icon;
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={onNavigate}
-            aria-current={active ? "page" : undefined}
-            title={collapsed ? item.label : undefined}
-            className="group relative flex items-center gap-3 rounded-[14px] px-3 py-2.5 text-[14px] font-semibold transition-colors"
-            style={
-              active
-                ? { background: "var(--iris-ghost)", color: "var(--iris-ink)" }
-                : { color: "var(--ink-2)" }
-            }
-          >
-            {active && (
-              <motion.span
-                layoutId={`nav-active-${role}`}
-                className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full"
-                style={{ background: "var(--iris)" }}
-              />
-            )}
-            <Icon
-              size={18}
-              className="shrink-0 transition-transform group-hover:scale-110"
-              style={{ color: active ? "var(--iris-ink)" : "var(--ink-3)" }}
-            />
-            {!collapsed && <span className="truncate">{item.label}</span>}
-          </Link>
-        );
-      })}
+      {primary.map(renderItem)}
+      {secondary.length > 0 && (
+        <>
+          {/* the divider is the calm: daily doors above, everything else below,
+              one click away and clearly separated */}
+          {collapsed ? (
+            <span aria-hidden className="mx-2 my-2 h-px" style={{ background: "var(--glass-line)" }} />
+          ) : (
+            <span className="mx-3 mb-1 mt-4 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
+              More
+            </span>
+          )}
+          {secondary.map(renderItem)}
+        </>
+      )}
     </nav>
   );
 }

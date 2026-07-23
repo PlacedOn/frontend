@@ -35,26 +35,41 @@ export const ROLE_LABEL: Record<DashboardRole, string> = {
   employer: "Hiring team",
 };
 
-const CANDIDATE_NAV: NavItem[] = [
-  { label: "Home", href: "/candidate", icon: LayoutDashboard },
-  { label: "Workshop", href: "/candidate/workshop", icon: Hexagon },
-  { label: "Network", href: "/candidate/network", icon: Radar },
-  { label: "Profile", href: "/candidate/profile", icon: UserRound },
-  { label: "Growth", href: "/candidate/growth", icon: Sparkles },
-  { label: "Passport", href: "/candidate/passport", icon: BadgeCheck },
-  { label: "Matches", href: "/candidate/matches", icon: BriefcaseBusiness },
-  { label: "Applications", href: "/candidate/applications", icon: Send },
-  { label: "Preferences", href: "/candidate/preferences", icon: SlidersHorizontal },
-];
+/** A role's nav, split into the few daily doors (primary) and the occasional
+ *  surfaces (secondary), so a first-time candidate isn't met with a flat wall of
+ *  nine items. Everything stays one click away — grouped, never hidden. */
+export type NavGroups = { primary: NavItem[]; secondary: NavItem[] };
 
-const EMPLOYER_NAV: NavItem[] = [
-  { label: "Overview", href: "/employer", icon: LayoutDashboard },
-  { label: "Search", href: "/employer/search", icon: Search },
-  { label: "Team", href: "/employer/team", icon: Users },
-  { label: "Introductions", href: "/intros", icon: MessagesSquare },
-];
+// Candidate's four daily doors: what to do now, what I've proven, jobs, what
+// others see. The rest — guidance, tracking, the claims builder, settings —
+// sit under a divider, reachable but out of the way.
+const CANDIDATE_NAV: NavGroups = {
+  primary: [
+    { label: "Home", href: "/candidate", icon: LayoutDashboard },
+    { label: "Workshop", href: "/candidate/workshop", icon: Hexagon },
+    { label: "Matches", href: "/candidate/matches", icon: BriefcaseBusiness },
+    { label: "Passport", href: "/candidate/passport", icon: BadgeCheck },
+  ],
+  secondary: [
+    { label: "Growth", href: "/candidate/growth", icon: Sparkles },
+    { label: "Applications", href: "/candidate/applications", icon: Send },
+    { label: "Network", href: "/candidate/network", icon: Radar },
+    { label: "Profile", href: "/candidate/profile", icon: UserRound },
+    { label: "Preferences", href: "/candidate/preferences", icon: SlidersHorizontal },
+  ],
+};
 
-export const NAV: Record<DashboardRole, NavItem[]> = {
+const EMPLOYER_NAV: NavGroups = {
+  primary: [
+    { label: "Overview", href: "/employer", icon: LayoutDashboard },
+    { label: "Search", href: "/employer/search", icon: Search },
+    { label: "Team", href: "/employer/team", icon: Users },
+    { label: "Introductions", href: "/intros", icon: MessagesSquare },
+  ],
+  secondary: [],
+};
+
+export const NAV: Record<DashboardRole, NavGroups> = {
   candidate: CANDIDATE_NAV,
   employer: EMPLOYER_NAV,
 };
