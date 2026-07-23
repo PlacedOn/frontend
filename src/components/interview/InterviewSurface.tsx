@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, ShieldCheck, Send, Square, Sparkles, RefreshCw, PenTool } from "lucide-react";
+import { ArrowRight, ShieldCheck, Send, Square, Sparkles, RefreshCw, PenTool, Mic } from "lucide-react";
 import type { InterviewMessage, InterviewStatus } from "@/lib/interview/useInterviewSession";
+import { useSpeechInput } from "@/lib/interview/useSpeechInput";
 import { Whiteboard } from "./Whiteboard";
 import { emptyEvidence, type WhiteboardEvidence } from "@/lib/interview";
 
@@ -49,14 +50,34 @@ export function InterviewSurface({
   const ended = status === "ended";
   const reconnecting = status === "reconnecting";
 
+  // Speech-to-text: finalised phrases append to the draft; the candidate reviews
+  // and edits before sending. Text is always available; voice is additive.
+  const appendChunk = useCallback((chunk: string) => {
+    setDraft((d) => (d ? `${d} ${chunk}` : chunk));
+  }, []);
+  const speech = useSpeechInput(appendChunk);
+
+  // Never keep listening once it's no longer the candidate's turn.
+  useEffect(() => {
+    if (!canAnswer && speech.listening) speech.stop();
+  }, [canAnswer, speech]);
+
+  const toggleMic = () => {
+    if (!canAnswer) return;
+    if (speech.listening) speech.stop();
+    else speech.start();
+  };
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: reduce ? "auto" : "smooth" });
   }, [messages, streaming, status, reduce]);
 
   const submit = () => {
     if (!canAnswer || !draft.trim()) return;
+    if (speech.listening) speech.stop();
     onSend(draft);
     setDraft("");
+    speech.reset();
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -167,23 +188,82 @@ export function InterviewSurface({
         )}
       </div>
 
-      <div className="glass rounded-[var(--r-card)] p-3">
+      <div
+        className="glass rounded-[var(--r-card)] p-3 transition-[box-shadow] duration-300"
+        style={speech.listening ? { boxShadow: "0 0 0 2px var(--iris-line), var(--shadow-sm)" } : undefined}
+      >
         <textarea
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={onKeyDown}
           disabled={!canAnswer}
           rows={3}
-          placeholder={reconnecting ? "Reconnecting… your answer is safe here." : canAnswer ? "Answer in your own words — take your time." : "Listening…"}
+          placeholder={
+            reconnecting
+              ? "Reconnecting… your answer is safe here."
+              : !canAnswer
+                ? "Listening…"
+                : speech.supported
+                  ? "Speak or type — answer in your own words, take your time."
+                  : "Answer in your own words — take your time."
+          }
           aria-label="Your answer"
           className="w-full resize-none bg-transparent px-3 py-2 text-[14.5px] leading-relaxed text-[var(--ink)] outline-none placeholder:text-[var(--ink-3)] disabled:opacity-60"
         />
+
+        {/* live interim transcript — the words appearing as you speak, greyed
+            until finalised, so speaking feels responsive */}
+        {speech.listening && speech.interim && (
+          <p className="px-3 pb-1 text-[14px] italic leading-relaxed text-[var(--ink-3)]" aria-live="polite">
+            {speech.interim}…
+          </p>
+        )}
+
         <div className="mt-1 flex items-center justify-between gap-3 px-1">
-          <span className="text-[11.5px] text-[var(--ink-3)]">Enter to send · Shift+Enter for a new line</span>
+          <div className="flex items-center gap-2.5">
+            {speech.supported && (
+              <button
+                type="button"
+                onClick={toggleMic}
+                disabled={!canAnswer}
+                aria-pressed={speech.listening}
+                aria-label={speech.listening ? "Stop speaking" : "Answer by speaking"}
+                className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold transition-transform active:scale-[0.96] disabled:opacity-45"
+                style={
+                  speech.listening
+                    ? { borderColor: "var(--iris)", background: "var(--iris-ghost)", color: "var(--iris-ink)" }
+                    : { borderColor: "var(--glass-line-hi)", color: "var(--ink-2)" }
+                }
+              >
+                {speech.listening ? (
+                  <>
+                    <motion.span
+                      className="h-2 w-2 rounded-full"
+                      style={{ background: "var(--iris)" }}
+                      animate={reduce ? undefined : { scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                      transition={reduce ? undefined : { duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    Listening
+                  </>
+                ) : (
+                  <>
+                    <Mic size={14} /> Speak
+                  </>
+                )}
+              </button>
+            )}
+            <span className="hidden text-[11.5px] text-[var(--ink-3)] sm:inline">Enter to send · Shift+Enter for a new line</span>
+          </div>
           <button type="button" onClick={submit} disabled={!canAnswer || !draft.trim()} className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-2.5 text-[14px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-45" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}>
             Send <Send size={15} />
           </button>
         </div>
+
+        {speech.error && (
+          <p className="mt-1.5 px-3 text-[12px] font-medium text-[#b45309]" aria-live="polite">
+            {speech.error}
+          </p>
+        )}
       </div>
 
       {/* Optional whiteboard — solve visibly; we capture only what you produce, never your face. */}
