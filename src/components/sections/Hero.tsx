@@ -1,7 +1,15 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+  type MotionValue,
+} from "motion/react";
 import { AnimateIcon, ArrowRight } from "@/components/ui/icons";
 import { Quote, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -11,12 +19,11 @@ import { HeroAurora } from "@/components/background/HeroAurora";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 /*
- * Scale-AI-inspired hero: editorial, asymmetric, evidence-forward. The left
- * column states plainly what PlacedOn does and hands the visitor one obvious way
- * to start. The right column is not decoration — it's the actual product output
- * (a trait, its confidence interval, and the transcript line it traces to), so a
- * first-time visitor understands the whole promise at a glance. No centred blob,
- * no poetry — the artifact does the persuading.
+ * Scale-AI-inspired hero: editorial, asymmetric, evidence-forward. The right
+ * column is the actual product output (a trait, its confidence interval, and the
+ * transcript line it traces to), rendered as a real 3D surface — it tilts toward
+ * the pointer with spring physics, and its layers sit at different depths, so the
+ * motion sells the product instead of decorating around it. No floating blob.
  */
 export function Hero() {
   const reduce = useReducedMotion();
@@ -28,6 +35,28 @@ export function Hero() {
   const copyY = useTransform(scrollYProgress, [0, 1], [0, 64]);
   const cardY = useTransform(scrollYProgress, [0, 1], [0, -40]);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  // Pointer-tracked 3D tilt (decorative — Apple/Emil spring pattern). Normalised
+  // pointer offset drives rotateX/rotateY through a spring so it has momentum,
+  // never a hard 1:1 snap. Off entirely under reduced-motion.
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const spring = { stiffness: 150, damping: 18, mass: 0.6 };
+  const rotX = useSpring(useTransform(py, [-0.5, 0.5], [7, -7]), spring);
+  const rotY = useSpring(useTransform(px, [-0.5, 0.5], [-10, 10]), spring);
+  const glareX = useSpring(useTransform(px, [-0.5, 0.5], [12, 88]), spring);
+  const glareY = useSpring(useTransform(py, [-0.5, 0.5], [8, 92]), spring);
+
+  const onTilt = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (reduce) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    px.set((e.clientX - r.left) / r.width - 0.5);
+    py.set((e.clientY - r.top) / r.height - 0.5);
+  };
+  const resetTilt = () => {
+    px.set(0);
+    py.set(0);
+  };
 
   const rise = (delay: number) => ({
     initial: reduce ? false : { opacity: 0, y: 20 },
@@ -111,31 +140,51 @@ export function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* ── Right: the actual product output ──────────────────────── */}
+        {/* ── Right: the actual product output, as a 3D surface ─────── */}
         <motion.div
           className="relative mx-auto w-full min-w-0 max-w-md lg:mx-0"
-          style={reduce ? undefined : { y: cardY }}
+          style={reduce ? undefined : { y: cardY, perspective: 1100 }}
           initial={reduce ? false : { opacity: 0, y: 28, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.85, delay: 0.3, ease: EASE }}
+          onPointerMove={onTilt}
+          onPointerLeave={resetTilt}
         >
-          <EvidenceCard reduce={!!reduce} />
+          <EvidenceCard reduce={!!reduce} rotX={rotX} rotY={rotY} glareX={glareX} glareY={glareY} />
         </motion.div>
       </div>
     </section>
   );
 }
 
+type CardProps = {
+  reduce: boolean;
+  rotX: MotionValue<number>;
+  rotY: MotionValue<number>;
+  glareX: MotionValue<number>;
+  glareY: MotionValue<number>;
+};
+
 /**
  * A faithful miniature of a PlacedOn evidence profile — the thing employers
- * actually receive. Static content, real structure: a verified trait with its
- * confidence interval, and the candidate's own transcript line it's grounded in.
+ * actually receive. Its layers sit at different translateZ depths so the pointer
+ * tilt reveals real parallax; a pointer-following glare reads the surface as glass.
  */
-function EvidenceCard({ reduce }: { reduce: boolean }) {
+function EvidenceCard({ reduce, rotX, rotY, glareX, glareY }: CardProps) {
+  // Hooks run unconditionally at the top; the value is only *used* when motion
+  // is allowed. A pointer-following radial glare reads the surface as glass.
+  const glare = useTransform([glareX, glareY], (latest: number[]) => {
+    const [x, y] = latest;
+    return `radial-gradient(140px circle at ${x}% ${y}%, rgba(255,255,255,0.5), transparent 60%)`;
+  });
+
   return (
-    <div
+    <motion.div
       className="relative rounded-[26px] border p-6 md:p-7"
       style={{
+        transformStyle: "preserve-3d",
+        rotateX: reduce ? 0 : rotX,
+        rotateY: reduce ? 0 : rotY,
         background: "linear-gradient(160deg, var(--glass-hi), var(--glass) 72%)",
         borderColor: "var(--glass-line-hi)",
         backdropFilter: "blur(22px) saturate(1.35)",
@@ -143,8 +192,20 @@ function EvidenceCard({ reduce }: { reduce: boolean }) {
         boxShadow: "0 40px 90px -40px rgba(40,26,120,0.5), inset 0 1px 0 rgba(255,255,255,0.7)",
       }}
     >
+      {/* pointer-following glare — sits just above the surface */}
+      {!reduce && (
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[26px]"
+          style={{
+            background: glare,
+            mixBlendMode: "soft-light",
+          }}
+        />
+      )}
+
       {/* header */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3" style={{ transform: "translateZ(28px)" }}>
         <span
           className="grid size-11 shrink-0 place-items-center rounded-full text-[15px] font-bold text-white"
           style={{ background: "linear-gradient(135deg, var(--iris-soft), var(--iris))", boxShadow: "var(--shadow-iris)" }}
@@ -164,14 +225,14 @@ function EvidenceCard({ reduce }: { reduce: boolean }) {
       </div>
 
       {/* trait + confidence interval */}
-      <div className="mt-6">
+      <div className="mt-6" style={{ transform: "translateZ(38px)" }}>
         <div className="flex items-baseline justify-between">
           <p className="text-[14px] font-bold text-[var(--ink)]">Systems thinking</p>
           <p className="text-[12.5px] font-semibold text-[var(--ink-3)]">
             <span className="text-[var(--iris-ink)]">Strong</span> · 71–88%
           </p>
         </div>
-        <div className="mt-2.5 h-2.5 w-full overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
+        <div className="relative mt-2.5 h-2.5 w-full overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
           {/* the interval band, not a single fake score */}
           <motion.span
             className="block h-full rounded-full"
@@ -180,13 +241,23 @@ function EvidenceCard({ reduce }: { reduce: boolean }) {
             animate={reduce ? { width: "80%" } : { scaleX: 0.8 }}
             transition={{ duration: 1, delay: 0.7, ease: EASE }}
           />
+          {/* continuous scan shimmer — the signal being read */}
+          {!reduce && (
+            <motion.span
+              aria-hidden
+              className="absolute inset-y-0 w-1/3"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent)" }}
+              animate={{ x: ["-120%", "360%"] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 1.6, repeatDelay: 1.4 }}
+            />
+          )}
         </div>
       </div>
 
       {/* the grounding transcript line — the whole point */}
       <figure
         className="mt-5 rounded-[16px] border p-4"
-        style={{ background: "var(--iris-ghost)", borderColor: "var(--iris-line)" }}
+        style={{ background: "var(--iris-ghost)", borderColor: "var(--iris-line)", transform: "translateZ(48px)" }}
       >
         <Quote size={15} className="text-[var(--iris)]" aria-hidden />
         <blockquote className="mt-1.5 text-[13.5px] leading-relaxed text-[var(--ink-2)]">
@@ -198,11 +269,12 @@ function EvidenceCard({ reduce }: { reduce: boolean }) {
         </figcaption>
       </figure>
 
-      {/* floating fit pill — overlap for depth */}
+      {/* floating fit pill — lifts highest for the strongest parallax */}
       <motion.div
         aria-hidden
         className="absolute -top-4 right-2 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-bold text-[var(--ink)] md:-right-4"
         style={{
+          transform: "translateZ(72px)",
           background: "rgba(255,255,255,0.94)",
           borderColor: "var(--iris-line)",
           backdropFilter: "blur(14px)",
@@ -218,6 +290,6 @@ function EvidenceCard({ reduce }: { reduce: boolean }) {
         </span>
         Fits 4 of 5 role signals
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
