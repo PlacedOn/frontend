@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { PageHeading } from "@/components/dashboard/PageHeading";
-import { CandidateReadiness } from "@/components/candidate/CandidateReadiness";
-import { ProfileBuilder } from "@/components/candidate/profile/ProfileBuilder";
+import { GuidedProfileFlow } from "@/components/candidate/profile/GuidedProfileFlow";
 import { TrustPassport } from "@/components/candidate/TrustPassport";
 
 export const metadata: Metadata = {
@@ -12,23 +10,17 @@ export const metadata: Metadata = {
 
 export default function CandidateProfilePage() {
   return (
-    <>
-      <PageHeading
-        eyebrow="Profile builder"
-        title={
-          <>
-            Say it here. <span className="grad-iris">Prove it</span> in your interview.
-          </>
-        }
-        intro="Your profile is claims + intent — what you say about yourself and what you're looking for. Flag a skill and the interview probes exactly that. It never asks about college, background, or anything that isn't your work."
-      />
-      <div className="mb-8">
-        <CandidateReadiness />
-      </div>
-      <ProfileBuilder />
+    <div className="lg:pt-2">
+      {/* Compact header — the guided flow carries its own progress, so no tall hero. */}
+      <p className="eyebrow">Build your profile</p>
+      <h1 className="mt-0.5 mb-6 text-[clamp(1.25rem,1.1rem+0.6vw,1.7rem)] font-extrabold tracking-tight text-[var(--ink)]">
+        Say it here. <span className="grad-iris">Prove it</span> in your interview.
+      </h1>
 
-      {/* Said vs shown: the builder above is claims; this is verified evidence. */}
-      <section id="evidence" aria-labelledby="evidence-heading" className="scroll-mt-28 pt-20">
+      <GuidedProfileFlow />
+
+      {/* Said vs shown: the flow above is claims; this is verified evidence. */}
+      <section id="evidence" aria-labelledby="evidence-heading" className="mx-auto mt-20 max-w-2xl scroll-mt-28">
         <p className="eyebrow">Shown — verified evidence</p>
         <h2 id="evidence-heading" className="mt-3 max-w-2xl text-[clamp(1.8rem,1.2rem+2vw,2.6rem)]">
           What your interview has verified.
@@ -41,6 +33,6 @@ export default function CandidateProfilePage() {
           <TrustPassport />
         </div>
       </section>
-    </>
+    </div>
   );
 }
