@@ -12,6 +12,7 @@ import {
   BadgeCheck,
   Radar,
   Hexagon,
+  Sparkle,
   type LucideIcon,
 } from "lucide-react";
 
@@ -46,6 +47,7 @@ export type NavGroups = { primary: NavItem[]; secondary: NavItem[] };
 const CANDIDATE_NAV: NavGroups = {
   primary: [
     { label: "Home", href: "/candidate", icon: LayoutDashboard },
+    { label: "Assistant", href: "/candidate/assistant", icon: Sparkle },
     { label: "Workshop", href: "/candidate/workshop", icon: Hexagon },
     { label: "Matches", href: "/candidate/matches", icon: BriefcaseBusiness },
     { label: "Passport", href: "/candidate/passport", icon: BadgeCheck },
