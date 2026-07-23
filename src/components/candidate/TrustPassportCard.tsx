@@ -27,11 +27,9 @@ const BAND: Record<TraitBand, { text: string; fill: number; fg: string }> = {
 
 export function TrustPassportCard({
   name,
-  strength,
   traits,
 }: {
   name: string;
-  strength: number;
   traits: PassportTrait[];
 }) {
   const reduce = useReducedMotion();
@@ -44,28 +42,18 @@ export function TrustPassportCard({
       <div className="mb-6 flex items-center justify-between">
         <div>
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/45">Trust passport</p>
-          <h3 className="mt-1 text-[20px] font-bold text-white">{name}&rsquo;s evidence</h3>
+          {/* inline colour: the unlayered h1–h4 rule in globals.css beats text-white */}
+          <h3 className="mt-1 text-[20px] font-bold" style={{ color: "#fff" }}>{name}&rsquo;s evidence</h3>
         </div>
         <span className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "var(--iris)" }}>
           <ShieldCheck className="h-5 w-5" />
         </span>
       </div>
 
-      {/* profile strength — the only large numeral here, mono/tabular */}
-      <div className="mb-2 flex items-center justify-between text-[13px] font-bold">
-        <span>Profile strength</span>
-        <span style={{ fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>{strength}%</span>
-      </div>
-      <div className="h-2 w-full overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,0.12)" }}>
-        <motion.div
-          className="h-full origin-left rounded-full"
-          style={{ background: "var(--iris-soft)" }}
-          initial={reduce ? { opacity: 1 } : { scaleX: 0 }}
-          whileInView={{ scaleX: strength / 100 }}
-          viewport={{ once: true, margin: "-15%" }}
-          transition={{ duration: reduce ? 0 : 0.62, ease: EASE_OUT }}
-        />
-      </div>
+      {/* No single score on the public face. Completeness/"strength" is the
+          candidate's own setup metric and is meaningless — and misleading — to an
+          employer. The evidence is the traits below, each tied to a real moment. */}
+      <p className="text-[12.5px] font-medium text-white/55">Evidence from an interview — no single score.</p>
 
       {/* trait rows — staggered once, no hover lift */}
       <div className="mt-5 grid gap-2.5">

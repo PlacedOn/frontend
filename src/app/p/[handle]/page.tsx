@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { PublicProfileShell, type PublicProfileData } from "@/components/candidate/profile/public/PublicProfileShell";
+import { PublicProfileUnavailable } from "@/components/candidate/profile/public/PublicProfileUnavailable";
 
 export const metadata: Metadata = {
   title: "Profile — Placedon",
   description: "An evidence-based candidate profile: authored story above, earned evidence below the seam.",
 };
 
-// Sample data — this is the design preview. Phase-1 next step: fetch the real
-// profile by handle (public read that respects per-section visibility).
+// Sample data — reachable only via the explicit preview handles below, and
+// always rendered with a "sample profile" badge. It is never shown for a real
+// handle, so it can't be mistaken for an actual candidate.
 const SAMPLE: PublicProfileData = {
   displayName: "Ananya R.",
   headline: "Backend engineer who likes the hard, quiet parts of systems.",
@@ -20,7 +22,6 @@ const SAMPLE: PublicProfileData = {
   ],
   passport: {
     name: "Ananya",
-    strength: 82,
     traits: [
       { label: "Systems thinking", band: "high" },
       { label: "Structured debugging", band: "high" },
@@ -40,7 +41,19 @@ const SAMPLE: PublicProfileData = {
   ],
 };
 
+const PREVIEW_HANDLES = new Set(["preview", "sample", "demo"]);
+
 export default async function PublicProfilePage({ params }: { params: Promise<{ handle: string }> }) {
-  await params; // handle wiring comes with the real public read
-  return <PublicProfileShell data={SAMPLE} />;
+  const { handle } = await params;
+
+  // Explicit, badged design preview so the surface stays viewable without lying.
+  if (PREVIEW_HANDLES.has(handle.toLowerCase())) {
+    return <PublicProfileShell data={SAMPLE} preview />;
+  }
+
+  // No public-read-by-handle endpoint exists yet, and profiles are private by
+  // default — so a real handle must never be answered with fabricated evidence.
+  // When the read + per-section visibility land, resolve the profile here and
+  // render the shell only if the owner has published it.
+  return <PublicProfileUnavailable />;
 }

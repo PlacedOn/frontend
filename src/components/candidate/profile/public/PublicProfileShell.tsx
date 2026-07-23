@@ -16,7 +16,6 @@ import { Quote, ArrowRight, MapPin, Clock3 } from "lucide-react";
 import { TrustPassportCard, type PassportTrait } from "@/components/candidate/TrustPassportCard";
 import { FitCheckCard } from "@/components/fit/FitCheckCard";
 import { LayerSeam } from "./LayerSeam";
-import { ConnectAccounts } from "./ConnectAccounts";
 import type { FitCheck } from "@/lib/v1";
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
@@ -27,11 +26,11 @@ export type PublicProfileData = {
   summary: string;
   pills: string[];
   highlights: { title: string; body: string }[];
-  passport: { name: string; strength: number; traits: PassportTrait[] };
+  passport: { name: string; traits: PassportTrait[] };
   fits: { roleName: string; fit: FitCheck }[];
 };
 
-export function PublicProfileShell({ data }: { data: PublicProfileData }) {
+export function PublicProfileShell({ data, preview = false }: { data: PublicProfileData; preview?: boolean }) {
   const reduce = useReducedMotion();
   const rise = (delay: number) => ({
     initial: reduce ? { opacity: 0 } : { opacity: 0, y: 18 },
@@ -41,6 +40,19 @@ export function PublicProfileShell({ data }: { data: PublicProfileData }) {
 
   return (
     <div>
+      {/* Design preview — explicitly a sample so it can never be mistaken for a
+          real candidate's public profile. */}
+      {preview && (
+        <div className="shell pt-5">
+          <span
+            className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11.5px] font-semibold"
+            style={{ borderColor: "var(--iris-line)", background: "var(--iris-ghost)", color: "var(--iris-ink)" }}
+          >
+            Design preview · sample profile — not a real candidate
+          </span>
+        </div>
+      )}
+
       {/* ── Presentation layer (porcelain) ── */}
       <section className="relative overflow-hidden">
         <span
@@ -110,14 +122,6 @@ export function PublicProfileShell({ data }: { data: PublicProfileData }) {
         </section>
       )}
 
-      {/* Connect accounts — the hinge */}
-      <section className="shell pb-20">
-        <p className="eyebrow">Connect your work</p>
-        <div className="mt-5">
-          <ConnectAccounts />
-        </div>
-      </section>
-
       {/* ── The Seam ── */}
       <LayerSeam />
 
@@ -125,7 +129,7 @@ export function PublicProfileShell({ data }: { data: PublicProfileData }) {
       <section style={{ background: "#13152e" }}>
         <div className="shell py-16 md:py-24">
           <div className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-start">
-            <TrustPassportCard name={data.passport.name} strength={data.passport.strength} traits={data.passport.traits} />
+            <TrustPassportCard name={data.passport.name} traits={data.passport.traits} />
             <div className="flex flex-col gap-5">
               <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
                 Fit for the roles they published
@@ -138,7 +142,8 @@ export function PublicProfileShell({ data }: { data: PublicProfileData }) {
 
           {/* consent footer */}
           <div className="mt-12 rounded-[var(--r-card)] p-6 text-white" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-            <h3 className="text-[18px] font-bold">Nothing above is shared until they say yes.</h3>
+            {/* inline colour: the unlayered h1–h4 rule in globals.css beats the dark ground */}
+            <h3 className="text-[18px] font-bold" style={{ color: "#fff" }}>Nothing above is shared until they say yes.</h3>
             <p className="mt-2 max-w-[60ch] text-[14.5px] leading-relaxed text-white/65">
               Evidence is earned in an honest interview, approved by the candidate, and bias-audited. Employers reach out through
               a consented intro — identity is revealed only when both sides agree.
