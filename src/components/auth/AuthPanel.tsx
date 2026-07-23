@@ -38,7 +38,7 @@ function validate(formData: FormData, mode: Mode): FieldErrors {
 }
 
 /** Sign in / create account panel with the candidate–employer role fork. */
-export function AuthPanel() {
+export function AuthPanel({ next }: { next?: string }) {
   const reduce = useReducedMotion();
   const [mode, setMode] = useState<Mode>("signin");
   const [role, setRole] = useState<Role>("candidate");
@@ -61,6 +61,7 @@ export function AuthPanel() {
     event.preventDefault();
     if (pending) return;
     const formData = new FormData(event.currentTarget);
+    if (next) formData.set("next", next); // return to where the journey left off
     const errors = validate(formData, mode);
     setFieldErrors(errors);
     setFormError(null);

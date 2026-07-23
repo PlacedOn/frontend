@@ -44,6 +44,14 @@ function dashboardFor(role: string | null | undefined): string {
   return role === "employer" ? "/employer" : "/candidate";
 }
 
+/** Return-to path after auth — internal relative paths only, so a crafted
+ *  ?next= can never redirect the user to another origin (open-redirect guard). */
+function safeNext(formData: FormData): string | null {
+  const n = formData.get("next");
+  if (typeof n === "string" && n.startsWith("/") && !n.startsWith("//")) return n;
+  return null;
+}
+
 async function roleOf(supabase: SupabaseClient, userId: string): Promise<string | null> {
   const { data } = await supabase
     .from("profiles")
@@ -74,7 +82,7 @@ export async function signIn(formData: FormData): Promise<AuthResult> {
     return { error: "That email or password doesn't look right. Have another go." };
   }
 
-  redirect(dashboardFor(await roleOf(supabase, data.user.id)));
+  redirect(safeNext(formData) ?? dashboardFor(await roleOf(supabase, data.user.id)));
 }
 
 export async function signUp(formData: FormData): Promise<AuthResult> {
@@ -110,7 +118,7 @@ export async function signUp(formData: FormData): Promise<AuthResult> {
   }
 
   if (data.session) {
-    redirect(dashboardFor(role));
+    redirect(safeNext(formData) ?? dashboardFor(role));
   }
 
   return { needsConfirmation: true };

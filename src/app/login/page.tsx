@@ -11,7 +11,15 @@ export const metadata: Metadata = {
     "Sign in to Placedon, or create an account. Job seekers and hiring teams each get their own dashboard.",
 };
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string }>;
+}) {
+  const { next } = await searchParams;
+  // internal relative paths only (open-redirect guard)
+  const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : undefined;
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -23,7 +31,7 @@ export default async function LoginPage() {
       .select("role")
       .eq("id", user.id)
       .maybeSingle();
-    redirect(profile?.role === "employer" ? "/employer" : "/candidate");
+    redirect(safeNext ?? (profile?.role === "employer" ? "/employer" : "/candidate"));
   }
 
   return (
@@ -32,7 +40,7 @@ export default async function LoginPage() {
       <main className="relative min-h-[100svh]" style={{ zIndex: "var(--z-base)" }}>
         <div className="shell grid min-h-[100svh] content-center items-center gap-10 py-10 md:py-14 lg:grid-cols-[1.05fr_minmax(0,470px)] lg:gap-16">
           <AuthAside />
-          <AuthPanel />
+          <AuthPanel next={safeNext} />
         </div>
       </main>
     </>

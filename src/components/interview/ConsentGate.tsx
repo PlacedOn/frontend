@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ShieldCheck, FileText, Type, Trash2, EyeOff, ArrowRight } from "lucide-react";
+import { ShieldCheck, FileText, Type, Trash2, EyeOff, ArrowRight, LogIn } from "lucide-react";
 import { v1, V1Error, isLiveBackend } from "@/lib/v1";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 /**
  * Pre-interview consent gate. Nothing starts until the candidate explicitly agrees.
@@ -30,14 +31,28 @@ export function ConsentGate({
 }) {
   const router = useRouter();
   const live = isLiveBackend();
+  const { user, loading: authLoading } = useAuth();
   const [agreed, setAgreed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Where to come back to after signing in — this exact consent screen, with role/job.
+  const params = new URLSearchParams();
+  if (roleFamily && roleFamily !== DEFAULT_ROLE_FAMILY) params.set("role", roleFamily);
+  if (jobId) params.set("job", jobId);
+  const returnTo = `/interview/consent${params.toString() ? `?${params}` : ""}`;
+  const toLogin = () => router.push(`/login?next=${encodeURIComponent(returnTo)}`);
+  const needsAuth = live && !authLoading && !user;
 
   const begin = async () => {
     if (!agreed) return;
     if (!live) {
       router.push("/interview"); // demo runtime; no consent is stored
+      return;
+    }
+    // Not signed in? Send them to sign in and back here — never a dead-end.
+    if (!user) {
+      toLogin();
       return;
     }
     setBusy(true);
@@ -51,6 +66,11 @@ export function ConsentGate({
       });
       router.push(`/interview?session=${session.id}`);
     } catch (err) {
+      // A stale/expired session lands here too — route to sign in, don't dead-end.
+      if (err instanceof V1Error && err.status === 401) {
+        toLogin();
+        return;
+      }
       setError(err instanceof V1Error ? err.message : "Could not start the interview.");
       setBusy(false);
     }
@@ -95,16 +115,33 @@ export function ConsentGate({
         </span>
       </label>
 
+      {needsAuth && (
+        <p className="mt-6 flex items-start gap-2 rounded-[var(--r-btn)] px-4 py-3 text-[13px] leading-relaxed" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
+          <LogIn size={15} className="mt-0.5 shrink-0" />
+          You&rsquo;ll sign in first so your evidence saves to your account — it takes a moment, and we bring you right back here.
+        </p>
+      )}
+
       {error && <p className="mt-4 text-[13px] font-semibold text-[#b91c1c]">{error}</p>}
 
       <button
         type="button"
         onClick={begin}
-        disabled={!agreed || busy}
+        disabled={!agreed || busy || authLoading}
         className="mt-6 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-[var(--r-btn)] px-6 py-4 text-[15px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
         style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
       >
-        {busy ? "Starting…" : "I agree — start my interview"} <ArrowRight size={16} />
+        {busy ? (
+          "Starting…"
+        ) : needsAuth ? (
+          <>
+            <LogIn size={16} /> Sign in to start
+          </>
+        ) : (
+          <>
+            I agree — start my interview <ArrowRight size={16} />
+          </>
+        )}
       </button>
     </section>
   );
