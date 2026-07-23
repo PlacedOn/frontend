@@ -58,8 +58,14 @@ export function CandidatePreferences() {
     }));
 
   const save = async () => {
-    setBusy(true);
     setMsg(null);
+    // Preview has no account to write to; don't throw a backend error at a
+    // candidate who's just exploring their settings.
+    if (!live) {
+      setMsg("Preview — your choices save here once your account is connected.");
+      return;
+    }
+    setBusy(true);
     try {
       const payload: Prefs = {
         ...prefs,
@@ -82,7 +88,7 @@ export function CandidatePreferences() {
     <div className="glass max-w-2xl rounded-[var(--r-card)] p-6 sm:p-8">
       {!live && (
         <p className="mb-6 rounded-[var(--r-btn)] px-4 py-3 text-[13px] leading-relaxed" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-          Backend not connected. Set <code>NEXT_PUBLIC_API_BASE_URL</code> to save your preferences.
+          Preview — explore every setting freely. You&rsquo;re <b>private by default</b>; nothing is shared or saved until your account is connected.
         </p>
       )}
 

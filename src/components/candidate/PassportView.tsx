@@ -51,10 +51,11 @@ export function PassportView() {
   if (!live) {
     return (
       <div className="glass max-w-xl rounded-[var(--r-card)] p-6">
-        <p className="text-[14.5px] font-semibold text-[var(--ink)]">Backend not connected</p>
+        <p className="text-[14.5px] font-semibold text-[var(--ink)]">Your passport mints once your account is connected.</p>
         <p className="mt-1.5 text-[13.5px] text-[var(--ink-2)]">
-          Your Evidence Passport is a signed, shareable proof of the evidence you approved — anyone can verify it&rsquo;s
-          authentic without seeing your private data. Connect the backend to mint yours.
+          It&rsquo;s a signed, shareable proof of the evidence you approved — anyone can verify it&rsquo;s authentic and
+          unaltered without ever seeing your private interview. It&rsquo;s created from a real, approved report, so there&rsquo;s
+          nothing to preview here yet.
         </p>
       </div>
     );
