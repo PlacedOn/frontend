@@ -28,6 +28,7 @@ import {
   type IconKey,
 } from "@/lib/mock/candidate";
 import { JourneyStrip } from "@/components/candidate/profile/JourneyStrip";
+import { ConnectedGreeting } from "@/components/candidate/ConnectedGreeting";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -135,6 +136,9 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Warm, personal top — where your evidence stands today */}
+      <ConnectedGreeting snapshot={snapshot} />
+
       {/* State preview switcher (mock) / live indicator (backend) */}
       {live ? (
         <div className="flex items-center gap-2">
