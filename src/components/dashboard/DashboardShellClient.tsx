@@ -283,10 +283,36 @@ export function DashboardShellClient({
         )}
       </AnimatePresence>
 
+      {/* Mobile bottom tab bar — thumb-reachable primary nav, the native-app pattern */}
+      <nav
+        aria-label={`${ROLE_LABEL[role]} primary`}
+        className="fixed inset-x-0 bottom-0 z-[var(--z-nav)] lg:hidden"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      >
+        <div className="glass mx-3 mb-2.5 flex items-stretch justify-around gap-0.5 rounded-[var(--r-chip)] p-1.5" style={{ boxShadow: "var(--shadow-md)" }}>
+          {NAV[role].primary.map((item: NavItem) => {
+            const active = isNavActive(pathname, item, role);
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-[var(--r-btn)] px-1 py-1.5 text-[10px] font-semibold transition-colors"
+                style={active ? { background: "var(--iris-ghost)", color: "var(--iris-ink)" } : { color: "var(--ink-3)" }}
+              >
+                <Icon size={19} style={{ color: active ? "var(--iris-ink)" : "var(--ink-3)" }} />
+                <span className="truncate">{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+
       {/* Content */}
       <div className="relative min-h-screen pt-20 lg:pt-0" style={{ zIndex: "var(--z-base)" }}>
         <div className="transition-[padding] duration-300 lg:pl-[var(--sb)]">
-          <main className="mx-auto w-full max-w-[1180px] px-4 pb-20 md:px-8 lg:pt-10">{children}</main>
+          <main className="mx-auto w-full max-w-[1180px] px-4 pb-28 md:px-8 lg:pt-10 lg:pb-20">{children}</main>
         </div>
       </div>
     </div>

@@ -75,7 +75,7 @@ export function CandidateAssistant() {
   };
 
   return (
-    <div className="mx-auto flex h-[calc(100svh-9rem)] max-w-2xl flex-col md:h-[calc(100vh-11rem)]">
+    <div className="mx-auto flex h-[calc(100svh-15rem)] max-w-2xl flex-col md:h-[calc(100vh-12rem)]">
       {!live && (
         <span className="mb-2 inline-flex w-fit items-center gap-1.5 rounded-full border px-3 py-1 text-[11.5px] font-semibold" style={{ borderColor: "var(--iris-line)", background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
           Preview · sample evidence
