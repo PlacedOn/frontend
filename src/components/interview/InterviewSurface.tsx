@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, ShieldCheck, Send, Square, Sparkles, RefreshCw, PenTool, Mic } from "lucide-react";
+import { ArrowRight, ShieldCheck, Send, Square, Sparkles, RefreshCw, PenTool, Mic, Volume2, VolumeX } from "lucide-react";
 import type { InterviewMessage, InterviewStatus } from "@/lib/interview/useInterviewSession";
 import { useSpeechInput } from "@/lib/interview/useSpeechInput";
+import { useSpeechOutput } from "@/lib/interview/useSpeechOutput";
 import { Whiteboard } from "./Whiteboard";
 import { emptyEvidence, type WhiteboardEvidence } from "@/lib/interview";
 
@@ -56,16 +57,33 @@ export function InterviewSurface({
     setDraft((d) => (d ? `${d} ${chunk}` : chunk));
   }, []);
   const speech = useSpeechInput(appendChunk);
+  const tts = useSpeechOutput();
 
   // Never keep listening once it's no longer the candidate's turn.
   useEffect(() => {
     if (!canAnswer && speech.listening) speech.stop();
   }, [canAnswer, speech]);
 
+  // Read each newly-arrived question aloud when read-aloud is on. Track the last
+  // spoken id so history isn't re-read and the same question isn't repeated.
+  const spokenRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!tts.enabled) return;
+    const last = messages[messages.length - 1];
+    if (last && last.role !== "you" && last.id !== spokenRef.current) {
+      spokenRef.current = last.id;
+      tts.speak(last.text);
+    }
+  }, [messages, tts]);
+
   const toggleMic = () => {
     if (!canAnswer) return;
-    if (speech.listening) speech.stop();
-    else speech.start();
+    if (speech.listening) {
+      speech.stop();
+    } else {
+      tts.cancel(); // don't let the mic pick up the question being read aloud
+      speech.start();
+    }
   };
 
   useEffect(() => {
@@ -144,9 +162,24 @@ export function InterviewSurface({
             Question {turn || 1}
           </span>
         </div>
-        <button type="button" onClick={onEnd} className="inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--r-btn)] border px-3.5 py-2 text-[12.5px] font-semibold text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]" style={{ borderColor: "var(--glass-line-hi)" }}>
-          <Square size={12} /> End interview
-        </button>
+        <div className="flex items-center gap-2">
+          {tts.supported && (
+            <button
+              type="button"
+              onClick={tts.toggle}
+              aria-pressed={tts.enabled}
+              aria-label={tts.enabled ? "Turn off reading questions aloud" : "Read questions aloud"}
+              className="inline-flex items-center gap-1.5 rounded-[var(--r-btn)] border px-3 py-2 text-[12.5px] font-semibold transition-colors"
+              style={tts.enabled ? { borderColor: "var(--iris)", background: "var(--iris-ghost)", color: "var(--iris-ink)" } : { borderColor: "var(--glass-line-hi)", color: "var(--ink-2)" }}
+            >
+              {tts.enabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
+              <span className="hidden sm:inline">Read aloud</span>
+            </button>
+          )}
+          <button type="button" onClick={onEnd} className="inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--r-btn)] border px-3.5 py-2 text-[12.5px] font-semibold text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]" style={{ borderColor: "var(--glass-line-hi)" }}>
+            <Square size={12} /> End interview
+          </button>
+        </div>
       </div>
 
       {!live && (
