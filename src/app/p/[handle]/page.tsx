@@ -22,11 +22,12 @@ const SAMPLE: PublicProfileData = {
   ],
   passport: {
     name: "Ananya",
+    verifiedMinutes: 24,
     traits: [
-      { label: "Systems thinking", band: "high" },
-      { label: "Structured debugging", band: "high" },
-      { label: "Clear communication", band: "emerging" },
-      { label: "Handles ambiguity", band: "needs_review" },
+      { label: "Systems thinking", band: "high", quote: "I'd cache the read path and measure before touching the write side — a rollback I can't reason about is worse than the bug.", at: "08:41" },
+      { label: "Structured debugging", band: "high", quote: "I bisected by cost first, ruled out the cache path, and that pointed straight at the write lock.", at: "12:07" },
+      { label: "Clear communication", band: "emerging", quote: "I wrote the postmortem so the next on-call could act without paging me — the failure mode, not just the fix.", at: "17:52" },
+      { label: "Handles ambiguity", band: "needs_review", quote: "Honestly I hadn't owned the ambiguous-requirements part before — I'd want a week to sit with the domain first.", at: "21:10" },
     ],
   },
   fits: [
