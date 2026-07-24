@@ -62,6 +62,9 @@ export function Globe({ className, config = GLOBE_CONFIG }: { className?: string
     // Ambient auto-spin plays regardless of the OS reduced-motion setting —
     // it is slow and non-vestibular. (macOS "Reduce Motion" was otherwise
     // leaving the globe motionless.)
+    const reduce = false;
+    let globe: ReturnType<typeof createGlobe> | null = null;
+    let raf = 0;
     let isVisible = false;
     let io: IntersectionObserver | null = null;
 
