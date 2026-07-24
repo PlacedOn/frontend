@@ -67,13 +67,13 @@ export function DemoForm() {
         transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
       >
         <motion.span
-          className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full"
+          className="mx-auto mb-4 grid h-10 w-10 place-items-center rounded-full"
           style={{ background: "var(--iris)", color: "#fff", boxShadow: "var(--shadow-iris)" }}
           initial={reduce ? { opacity: 0 } : { scale: 0.4, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.08, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
-          <Check size={26} strokeWidth={3} />
+          <Check size={19} strokeWidth={3} />
         </motion.span>
         <h2 className="text-[1.5rem]">You&rsquo;re on the list.</h2>
         <p className="mx-auto mt-2 max-w-xs text-[14.5px] leading-relaxed text-[var(--ink-2)]">
