@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties, ComponentType } from "react";
-import { motion } from "motion/react";
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "motion/react";
 import {
   AnimateIcon,
   Accessibility,
@@ -14,6 +14,7 @@ import {
   Mic,
   ShieldCheck,
 } from "@/components/ui/icons";
+import { BriefcaseBusiness } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 import { CalmField } from "./CalmField";
@@ -117,9 +118,44 @@ function FloatChip({ className, delay = 0, duration = 7.5, icon: Icon, label }: 
   );
 }
 
+/** A role-match card orbiting the breathing orb — "the roles this one
+ *  conversation opens" (one interview → match many). Sits at a translateZ depth
+ *  so the deck tilt reveals real parallax. */
+function OrbRole({ className, z, role, fit, delay = 0, reduce }: { className?: string; z: number; role: string; fit: number; delay?: number; reduce: boolean }) {
+  return (
+    <motion.div
+      className={cn("absolute z-[2]", className)}
+      style={{ transform: `translateZ(${z}px)` }}
+      animate={reduce ? undefined : { y: [-6, 6, -6] }}
+      transition={reduce ? undefined : { duration: 7.5 + z / 24, repeat: Infinity, ease: "easeInOut", delay }}
+    >
+      <div className="flex items-center gap-2 whitespace-nowrap rounded-[14px] border px-3 py-2" style={{ background: "rgba(255,255,255,0.96)", borderColor: "var(--iris-line)", boxShadow: "0 16px 34px -16px rgba(60,35,140,0.45)" }}>
+        <span className="grid size-7 place-items-center rounded-[9px]" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
+          <BriefcaseBusiness size={14} strokeWidth={1.75} />
+        </span>
+        <span className="text-[12.5px] font-bold text-[var(--ink)]">{role}</span>
+        <span className="text-[13px] font-extrabold" style={{ color: "var(--iris)", fontFamily: "var(--font-mono)" }}>{fit}%</span>
+      </div>
+    </motion.div>
+  );
+}
+
 /* ── page body ────────────────────────────────────────────────── */
 
 export function PreInterviewBody() {
+  const reduce = useReducedMotion();
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const rotX = useSpring(useTransform(py, [-0.5, 0.5], [8, -8]), { stiffness: 150, damping: 18 });
+  const rotY = useSpring(useTransform(px, [-0.5, 0.5], [-10, 10]), { stiffness: 150, damping: 18 });
+  const onOrbMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (reduce) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    px.set((e.clientX - r.left) / r.width - 0.5);
+    py.set((e.clientY - r.top) / r.height - 0.5);
+  };
+  const resetOrb = () => { px.set(0); py.set(0); };
+
   return (
     <>
       {/* Hero — big editorial reassurance + the breathing field */}
@@ -134,7 +170,7 @@ export function PreInterviewBody() {
               Take a breath.
             </span>
             <span className="mt-4 block text-[clamp(1.45rem,1.05rem+1.6vw,2.3rem)] leading-[1.18] tracking-[-0.02em] text-[var(--ink-2)]">
-              This is a <span className="grad-iris font-semibold">conversation</span>, not a test.
+              One <span className="grad-iris font-semibold">conversation</span>, not a test — and the only one you take.
             </span>
           </motion.h1>
 
@@ -142,8 +178,8 @@ export function PreInterviewBody() {
             {...rise(0.18)}
             className="mt-7 max-w-md text-[17px] leading-relaxed text-[var(--ink-2)]"
           >
-            No timer. No trick questions. No score staring back at you. Here&rsquo;s exactly what
-            to expect before you begin.
+            No timer. No trick questions. No score staring back at you. You interview once —
+            your evidence does the rest, everywhere you&rsquo;re a fit.
           </motion.p>
 
           <motion.div
@@ -180,48 +216,44 @@ export function PreInterviewBody() {
           </motion.div>
         </div>
 
-        {/* Centerpiece — glass disc + canvas breath field + drifting chips */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease }}
+        {/* Centerpiece — breathing orb, 3D-tilt, and the roles one conversation opens */}
+        <div
           className="relative order-first mx-auto w-full max-w-[300px] sm:max-w-[440px] lg:order-none"
+          style={{ perspective: 1200 }}
+          onPointerMove={onOrbMove}
+          onPointerLeave={resetOrb}
         >
-          <div
-            aria-hidden
-            className="absolute inset-[6%] rounded-full"
-            style={{
-              background:
-                "linear-gradient(160deg, rgba(255,255,255,0.66), rgba(244,242,255,0.28) 70%)",
-              border: "1px solid rgba(255,255,255,0.78)",
-              boxShadow:
-                "0 44px 90px -42px rgba(90,58,180,0.5), inset 0 1px 0 rgba(255,255,255,0.9)",
-              backdropFilter: "blur(10px)",
-              WebkitBackdropFilter: "blur(10px)",
-            }}
-          />
-          <div
-            aria-hidden
-            className="absolute inset-[15%] rounded-full"
-            style={{ border: "1px solid rgba(139,84,255,0.14)" }}
-          />
-          <CalmField />
-          <FloatChip className="left-[-3%] top-[15%]" icon={Mic} label="Voice or text" />
-          <FloatChip
-            className="right-[-5%] top-[42%]"
-            delay={1.3}
-            duration={8.5}
-            icon={Clock}
-            label="25–30 min"
-          />
-          <FloatChip
-            className="bottom-[8%] left-[10%]"
-            delay={2.2}
-            duration={9.5}
-            icon={ShieldCheck}
-            label="You approve everything"
-          />
-        </motion.div>
+          <motion.div
+            className="relative"
+            style={reduce ? undefined : { rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }}
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease }}
+          >
+            <div
+              aria-hidden
+              className="absolute inset-[6%] rounded-full"
+              style={{
+                background: "linear-gradient(160deg, rgba(255,255,255,0.66), rgba(244,242,255,0.28) 70%)",
+                border: "1px solid rgba(255,255,255,0.78)",
+                boxShadow: "0 44px 90px -42px rgba(90,58,180,0.5), inset 0 1px 0 rgba(255,255,255,0.9)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+              }}
+            />
+            <div aria-hidden className="absolute inset-[15%] rounded-full" style={{ border: "1px solid rgba(139,84,255,0.14)" }} />
+            <CalmField />
+
+            {/* one interview → the roles it opens */}
+            <OrbRole className="right-[-10%] top-[11%]" z={72} role="Backend engineer" fit={88} reduce={!!reduce} />
+            <OrbRole className="left-[-13%] top-[45%]" z={52} role="Frontend" fit={74} delay={1.1} reduce={!!reduce} />
+            <OrbRole className="right-[-4%] bottom-[11%]" z={62} role="Data engineer" fit={69} delay={2} reduce={!!reduce} />
+
+            {/* calm reassurance */}
+            <FloatChip className="left-[-2%] top-[74%]" icon={Mic} label="Voice or text" />
+            <FloatChip className="bottom-[-3%] left-[36%]" delay={2.2} duration={9.5} icon={ShieldCheck} label="You approve" />
+          </motion.div>
+        </div>
       </section>
 
       {/* Reassurances — asymmetric bento anchored by one living focal card */}
