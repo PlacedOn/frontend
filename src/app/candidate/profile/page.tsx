@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { GuidedProfileFlow } from "@/components/candidate/profile/GuidedProfileFlow";
-import { TrustPassport } from "@/components/candidate/TrustPassport";
+import { ProfileEvidence } from "@/components/candidate/profile/ProfileEvidence";
 
 export const metadata: Metadata = {
   title: "Profile builder — Placedon",
@@ -19,20 +19,8 @@ export default function CandidateProfilePage() {
 
       <GuidedProfileFlow />
 
-      {/* Said vs shown: the flow above is claims; this is verified evidence. */}
-      <section id="evidence" aria-labelledby="evidence-heading" className="mx-auto mt-20 max-w-2xl scroll-mt-28">
-        <p className="eyebrow">Shown — verified evidence</p>
-        <h2 id="evidence-heading" className="mt-3 max-w-2xl text-[clamp(1.8rem,1.2rem+2vw,2.6rem)]">
-          What your interview has verified.
-        </h2>
-        <p className="mt-4 max-w-xl text-[15px] leading-7 text-[var(--ink-2)]">
-          Everything above is what you <em>said</em>. This is what you&rsquo;ve <em>shown</em> — each trait traces
-          to your own words in the interview, and you control exactly what employers see.
-        </p>
-        <div className="mt-8">
-          <TrustPassport />
-        </div>
-      </section>
+      {/* Said vs shown: the flow above is claims; this is verified evidence you control. */}
+      <ProfileEvidence />
     </div>
   );
 }
