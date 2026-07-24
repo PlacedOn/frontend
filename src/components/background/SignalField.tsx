@@ -45,21 +45,21 @@ export function SignalField() {
     const build = () => {
       w = canvas.clientWidth;
       h = canvas.clientHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.25);
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const target = Math.round((w * h) / 24000);
-      const count = Math.max(28, Math.min(70, target));
+      const target = Math.round((w * h) / 36000);
+      const count = Math.max(20, Math.min(36, target));
       nodes.length = 0;
       seed = 1337;
       for (let i = 0; i < count; i++) {
         nodes.push({
           x: rnd() * w,
           y: rnd() * h,
-          vx: (rnd() - 0.5) * 1.1,
-          vy: (rnd() - 0.5) * 1.1,
+          vx: (rnd() - 0.5) * 0.8,
+          vy: (rnd() - 0.5) * 0.8,
           r: 1.1 + rnd() * 2.1,
         });
       }
@@ -133,12 +133,10 @@ export function SignalField() {
     <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden" style={{ zIndex: 0 }}>
       {/* gentle ambient aurora wash (always-on colour) */}
       <div
-        className="sf-aurora absolute inset-[-45%]"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(120deg, rgba(139,84,255,0.22), rgba(120,178,255,0.14) 34%, rgba(255,196,132,0.08) 55%, rgba(105,34,245,0.20) 78%, rgba(139,84,255,0.22))",
-          filter: "blur(64px)",
-          willChange: "transform",
+            "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139,84,255,0.15), rgba(120,178,255,0.08) 50%, transparent 80%)",
         }}
       />
 

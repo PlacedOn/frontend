@@ -62,9 +62,8 @@ export function Globe({ className, config = GLOBE_CONFIG }: { className?: string
     // Ambient auto-spin plays regardless of the OS reduced-motion setting —
     // it is slow and non-vestibular. (macOS "Reduce Motion" was otherwise
     // leaving the globe motionless.)
-    const reduce = false;
-    let globe: ReturnType<typeof createGlobe> | null = null;
-    let raf = 0;
+    let isVisible = false;
+    let io: IntersectionObserver | null = null;
 
     const create = () => {
       if (globe || widthRef.current === 0) return;
@@ -74,6 +73,7 @@ export function Globe({ className, config = GLOBE_CONFIG }: { className?: string
         height: widthRef.current * 2,
       });
       const animate = () => {
+        if (!isVisible) return;
         if (pointerInteracting.current === null && !reduce) phiRef.current += 0.004;
         globe!.update({
           phi: phiRef.current + dragRef.current,
@@ -83,7 +83,17 @@ export function Globe({ className, config = GLOBE_CONFIG }: { className?: string
         });
         raf = requestAnimationFrame(animate);
       };
-      animate();
+
+      io = new IntersectionObserver(([entry]) => {
+        const wasVisible = isVisible;
+        isVisible = entry.isIntersecting;
+        if (isVisible && !wasVisible) {
+          cancelAnimationFrame(raf);
+          raf = requestAnimationFrame(animate);
+        }
+      });
+      io.observe(canvas);
+
       requestAnimationFrame(() => {
         canvas.style.opacity = "1";
       });
@@ -99,6 +109,7 @@ export function Globe({ className, config = GLOBE_CONFIG }: { className?: string
     ro.observe(canvas);
 
     return () => {
+      io?.disconnect();
       ro.disconnect();
       cancelAnimationFrame(raf);
       globe?.destroy();
