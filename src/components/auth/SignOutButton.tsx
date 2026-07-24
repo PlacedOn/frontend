@@ -19,7 +19,7 @@ export function SignOutButton({ className }: Props) {
       disabled={pending}
       onClick={() => startTransition(() => signOut())}
       className={cn(
-        "inline-flex min-h-[44px] items-center gap-1.5 rounded-[var(--r-chip)] border px-4 text-[13.5px] font-semibold text-[var(--ink-2)] transition-colors duration-[var(--d-micro)] hover:text-[var(--ink)]",
+        "inline-flex py-2 items-center gap-1.5 rounded-[var(--r-chip)] border px-3.5 text-[13px] font-semibold text-[var(--ink-2)] transition-colors duration-[var(--d-micro)] hover:text-[var(--ink)]",
         pending ? "cursor-wait opacity-70" : "cursor-pointer",
         className,
       )}

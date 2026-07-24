@@ -153,12 +153,12 @@ function SidebarInner({
         <PrimaryCta role={role} collapsed={collapsed} onNavigate={onNavigate} />
       </div>
 
-      <div className="relative mt-3 flex-1 px-1">
+      <div className="relative mt-3 flex-1 min-h-0 overflow-y-auto px-1">
         <NavList role={role} pathname={pathname} collapsed={collapsed} onNavigate={onNavigate} />
       </div>
 
       {/* footer: identity + sign out + collapse */}
-      <div className="relative mt-2 flex flex-col gap-2 border-t px-1 pt-3" style={{ borderColor: "var(--glass-line)" }}>
+      <div className="relative mt-2 flex shrink-0 flex-col gap-2 border-t px-1 pt-3" style={{ borderColor: "var(--glass-line)" }}>
         {!collapsed && email && (
           <p className="truncate px-2 text-[12px] text-[var(--ink-3)]" title={email}>
             {email}

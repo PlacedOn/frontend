@@ -152,16 +152,20 @@ function RoleCard({ role, index, reduce, interviewDone }: { role: OpenRole; inde
       transition={{ duration: 0.34, delay: reduce ? 0 : Math.min(index * 0.04, 0.2), ease: EASE }}
       className="glass flex flex-col rounded-[20px] p-5"
     >
-      <div className="flex items-center gap-3">
-        <IconTile icon={BriefcaseBusiness} tone="iris" size="md" />
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-[12.5px] font-semibold text-[var(--ink-3)]">{role.company}</p>
-          <span className="mt-0.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: "var(--mist)", color: "var(--ink-2)" }}>
-            {WORK_TYPE_LABEL[role.workType]}
-          </span>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <IconTile icon={BriefcaseBusiness} tone="iris" size="md" className="shrink-0" />
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="truncate text-[13px] font-semibold text-[var(--ink-3)]">{role.company}</p>
+              <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: "var(--mist)", color: "var(--ink-2)" }}>
+                {WORK_TYPE_LABEL[role.workType]}
+              </span>
+            </div>
+          </div>
         </div>
         {role.fresh && (
-          <span className="rounded-full px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-[0.06em]" style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}>
+          <span className="shrink-0 rounded-full px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-[0.06em]" style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}>
             New
           </span>
         )}
