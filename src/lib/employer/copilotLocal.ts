@@ -222,7 +222,19 @@ const TITLE_RULES: [RegExp, string][] = [
   [/\b(back[\s-]?end|api|server|database|payment)\b/, "Backend Engineer"],
   [/\b(product)\b/, "Product Engineer"],
 ];
+// Explicit "<role> engineer" phrases win over loose keyword signals — so a JD
+// titled "Senior Backend Engineer" isn't mislabeled from a stray "observability".
+const TITLE_PHRASES: [RegExp, string][] = [
+  [/\bfull[\s-]?stack engineer\b/, "Full-stack Engineer"],
+  [/\bbackend engineer\b/, "Backend Engineer"],
+  [/\bfront[\s-]?end engineer\b/, "Frontend Engineer"],
+  [/\bdata engineer\b/, "Data Engineer"],
+  [/\b(platform|devops|sre|reliability|infrastructure) engineer\b/, "Platform / DevOps Engineer"],
+  [/\b(applied ai|ml|machine learning) engineer\b/, "Applied AI Engineer"],
+  [/\bproduct engineer\b/, "Product Engineer"],
+];
 function inferTitle(hay: string): string {
+  for (const [re, title] of TITLE_PHRASES) if (re.test(hay)) return title;
   for (const [re, title] of TITLE_RULES) if (re.test(hay)) return title;
   return "Software Engineer";
 }

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   Sparkles, Send, ShieldCheck, ShieldAlert, Quote, ArrowRight, Check, Loader2,
-  BriefcaseBusiness, Mic, Target, MapPin, FileText, Users, Pencil, Wand2, Rocket,
+  BriefcaseBusiness, Mic, Target, MapPin, FileText, Users, Pencil, Wand2, Rocket, Upload,
 } from "lucide-react";
 import { synthesizeRole, type HrCreateResult, type HrMatch } from "@/lib/employer/copilotLocal";
 import { IconTile } from "@/components/ui/IconTile";
@@ -123,6 +123,16 @@ function PromptDeck({
   onStart: () => void; reduce: boolean;
 }) {
   const canRun = prompt.trim().length >= 8;
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [jdName, setJdName] = useState<string | null>(null);
+  const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setJdName(file.name);
+    const reader = new FileReader();
+    reader.onload = () => setPrompt(String(reader.result || "").slice(0, 6000));
+    reader.readAsText(file);
+  };
   return (
     <motion.div
       initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16 }}
@@ -132,10 +142,10 @@ function PromptDeck({
       <div className="mx-auto max-w-2xl text-center">
         <span className="chip"><Wand2 size={14} className="text-[var(--iris)]" /> HR Copilot</span>
         <h2 className="mt-4 text-[clamp(1.7rem,1.3rem+1.6vw,2.6rem)] font-extrabold leading-[1.05] tracking-tight text-[var(--ink)]">
-          Describe the role. <span className="grad-iris">We build the interview and find the people.</span>
+          Paste a JD. <span className="grad-iris">We build the interview and find the people.</span>
         </h2>
         <p className="mt-3 text-[14.5px] leading-relaxed text-[var(--ink-2)]">
-          One brief in plain words. The Copilot drafts the assessment and returns candidates ranked by evidence — never identity.
+          Drop in a job description — or describe the role in plain words. The Copilot drafts the assessment and returns candidates ranked by evidence, never identity.
         </p>
       </div>
 
@@ -152,11 +162,16 @@ function PromptDeck({
             onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); onStart(); } }}
             rows={3}
-            placeholder="e.g. a mid-level backend engineer who can debug a production payment outage and own the incident, hybrid Bengaluru…"
-            aria-label="Describe the role"
+            placeholder="Paste a full job description here — or describe the role in plain words…"
+            aria-label="Job description or role brief"
             className="w-full resize-none bg-transparent px-3 pt-3 pb-2 text-[15px] leading-relaxed text-[var(--ink)] outline-none placeholder:text-[var(--ink-3)]"
           />
           <div className="flex flex-wrap items-center gap-2 px-1.5 pb-1 pt-1">
+            <input ref={fileRef} type="file" accept=".txt,.md,.text" className="hidden" onChange={onFile} />
+            <button type="button" onClick={() => fileRef.current?.click()} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold text-[var(--ink-2)] transition-colors hover:bg-[var(--mist)]">
+              <Upload size={14} /> {jdName ? "Replace JD" : "Upload JD"}
+            </button>
+            {jdName && <span className="max-w-[150px] truncate rounded-full px-2.5 py-1 text-[11.5px] font-semibold" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>{jdName}</span>}
             <Selector label="Seniority" value={seniority} options={SENIORITY} onChange={setSeniority} />
             <Selector label="Type" value={workType} options={WORKTYPES} onChange={setWorkType} />
             <div className="flex-1" />
