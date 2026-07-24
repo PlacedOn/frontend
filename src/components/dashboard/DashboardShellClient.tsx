@@ -29,6 +29,7 @@ function PrimaryCta({ role, collapsed, onNavigate }: { role: DashboardRole; coll
   return (
     <Link
       href={cta.href}
+      prefetch={true}
       onClick={onNavigate}
       title={collapsed ? cta.label : undefined}
       className="group flex items-center justify-center gap-2 rounded-[14px] px-3 py-2.5 text-[14px] font-bold text-white transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
@@ -63,7 +64,10 @@ function NavList({
         onClick={onNavigate}
         aria-current={active ? "page" : undefined}
         title={collapsed ? item.label : undefined}
-        className="group relative flex items-center gap-3 rounded-[14px] px-3 py-2.5 text-[14px] font-semibold transition-colors"
+        className={cn(
+          "group relative flex items-center rounded-[14px] py-2.5 text-[14px] font-semibold transition-colors",
+          collapsed ? "justify-center px-2" : "gap-3 px-3"
+        )}
         style={active ? { background: "var(--iris-ghost)", color: "var(--iris-ink)" } : { color: "var(--ink-2)" }}
       >
         {active && (
@@ -131,9 +135,9 @@ function SidebarInner({
         style={{ background: "var(--iris)", opacity: 0.16, filter: "blur(70px)" }}
       />
 
-      <div className="relative flex items-center gap-2 px-2 py-2">
+      <div className={cn("relative flex items-center px-2 py-2", collapsed ? "justify-center" : "gap-2")}>
         <Link href="/" aria-label="Placedon home">
-          <Logo size={30} showWordmark={!collapsed} />
+          <Logo size={26} showWordmark={!collapsed} />
         </Link>
         {!collapsed && (
           <div className="ml-auto">
@@ -166,26 +170,45 @@ function SidebarInner({
             {email}
           </p>
         )}
-        <div className="flex items-center justify-between gap-2">
-          {email ? (
-            <SignOutButton className={collapsed ? "!px-2" : undefined} />
-          ) : (
-            <Link href="/login" className="chip cursor-pointer">
-              Sign in
-            </Link>
-          )}
-          {onToggleCollapse && (
-            <button
-              type="button"
-              onClick={onToggleCollapse}
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              className="hidden h-9 w-9 shrink-0 cursor-pointer place-items-center rounded-[var(--r-chip)] border text-[var(--ink-3)] transition-colors hover:text-[var(--ink)] lg:grid"
-              style={{ borderColor: "var(--glass-line)", background: "var(--glass-hi)" }}
-            >
-              {collapsed ? <PanelLeftOpen size={16} /> : <PanelLeftClose size={16} />}
-            </button>
-          )}
-        </div>
+        {collapsed ? (
+          <div className="flex flex-col items-center gap-2">
+            {email && <SignOutButton iconOnly />}
+            {onToggleCollapse && (
+              <button
+                type="button"
+                onClick={onToggleCollapse}
+                aria-label="Expand sidebar"
+                title="Expand sidebar"
+                className="hidden h-9 w-9 shrink-0 cursor-pointer place-items-center rounded-[var(--r-chip)] border text-[var(--ink-3)] transition-colors hover:text-[var(--ink)] lg:grid"
+                style={{ borderColor: "var(--glass-line)", background: "var(--glass-hi)" }}
+              >
+                <PanelLeftOpen size={16} />
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="flex items-center justify-between gap-2">
+            {email ? (
+              <SignOutButton />
+            ) : (
+              <Link href="/login" className="chip cursor-pointer">
+                Sign in
+              </Link>
+            )}
+            {onToggleCollapse && (
+              <button
+                type="button"
+                onClick={onToggleCollapse}
+                aria-label="Collapse sidebar"
+                title="Collapse sidebar"
+                className="hidden h-9 w-9 shrink-0 cursor-pointer place-items-center rounded-[var(--r-chip)] border text-[var(--ink-3)] transition-colors hover:text-[var(--ink)] lg:grid"
+                style={{ borderColor: "var(--glass-line)", background: "var(--glass-hi)" }}
+              >
+                <PanelLeftClose size={16} />
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
