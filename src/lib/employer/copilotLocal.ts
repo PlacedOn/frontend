@@ -186,3 +186,94 @@ export function localCopilotSearch(prompt: string, tags: string[]): HrSearchResu
 
   return { refused: null, stripped, matches };
 }
+
+// ── HR "create" step: prompt → Role-DNA + interview blueprint ──────
+// The AI architects the assessment from the prompt: structured requirements
+// (Role-DNA) and the interview a candidate will actually face. Local synthesis
+// today; swaps to /v1/jobs/{id}/role-dna/generate + question-gen when live.
+
+export interface RoleDNA {
+  title: string;
+  seniority: string;
+  workType: string;
+  location: string | null;
+  mustHave: string[]; // evidenced skills the role needs
+  behaviors: string[]; // behavioural signals the interview probes
+}
+export interface InterviewTopic { label: string; probes: string }
+export interface InterviewBlueprint { minutes: number; topics: InterviewTopic[] }
+export interface HrCreateResult {
+  refused: string | null;
+  stripped: string[];
+  role: RoleDNA;
+  interview: InterviewBlueprint;
+  matches: HrMatch[];
+}
+
+const EMPTY_ROLE: RoleDNA = { title: "", seniority: "", workType: "", location: null, mustHave: [], behaviors: [] };
+const EMPTY_INTERVIEW: InterviewBlueprint = { minutes: 0, topics: [] };
+
+const TITLE_RULES: [RegExp, string][] = [
+  [/\b(front[\s-]?end|react|ui|css)\b/, "Frontend Engineer"],
+  [/\b(full[\s-]?stack)\b/, "Full-stack Engineer"],
+  [/\b(data|pipeline|etl|warehouse|analytics)\b/, "Data Engineer"],
+  [/\b(devops|sre|platform|infra|kubernetes|reliability)\b/, "Platform / DevOps Engineer"],
+  [/\b(ml|machine learning|\bai\b|model|llm)\b/, "Applied AI Engineer"],
+  [/\b(back[\s-]?end|api|server|database|payment)\b/, "Backend Engineer"],
+  [/\b(product)\b/, "Product Engineer"],
+];
+function inferTitle(hay: string): string {
+  for (const [re, title] of TITLE_RULES) if (re.test(hay)) return title;
+  return "Software Engineer";
+}
+
+const CITIES = ["bengaluru", "bangalore", "pune", "hyderabad", "delhi", "gurgaon", "noida", "mumbai", "chennai", "kolkata", "remote"];
+function inferLocation(hay: string): string | null {
+  const hit = CITIES.find((c) => hay.includes(c));
+  if (!hit) return null;
+  return hit === "remote" ? "Remote" : hit.charAt(0).toUpperCase() + hit.slice(1);
+}
+
+const BEHAVIOR_RULES: [RegExp, string][] = [
+  [/\b(incident|outage|on[\s-]?call|firefight|pager)\b/, "Owns incidents end to end"],
+  [/\b(debug|root cause|troubleshoot)\b/, "Systematic debugging"],
+  [/\b(mentor|pair|coach|junior)\b/, "Mentoring & lifting the team"],
+  [/\b(stakeholder|communicat|cross[\s-]?functional|collaborat)\b/, "Stakeholder communication"],
+  [/\b(ship|deploy|rollout|release)\b/, "Ships safely under pressure"],
+  [/\b(scale|scaling|distributed|throughput)\b/, "Systems thinking at scale"],
+];
+function inferBehaviors(hay: string): string[] {
+  const out = BEHAVIOR_RULES.filter(([re]) => re.test(hay)).map(([, b]) => b);
+  return out.length ? Array.from(new Set(out)).slice(0, 4) : ["Judgment under pressure"];
+}
+
+function skillsFromPrompt(prompt: string): string[] {
+  const hay = norm(prompt);
+  return SUGGESTED_SKILLS.filter((sk) => {
+    const words = norm(sk).split(/\s+/).filter((w) => w.length > 3);
+    return words.some((w) => new RegExp(`\\b${w}\\b`).test(hay));
+  });
+}
+
+export function synthesizeRole(prompt: string, seniority: string, workType: string): HrCreateResult {
+  const found = localCopilotSearch(prompt, []); // fairness firewall + candidate matching, reused
+  if (found.refused) {
+    return { refused: found.refused, stripped: found.stripped, role: EMPTY_ROLE, interview: EMPTY_INTERVIEW, matches: [] };
+  }
+  const hay = norm(prompt);
+  const mustHave = skillsFromPrompt(prompt);
+  const behaviors = inferBehaviors(hay);
+  const role: RoleDNA = {
+    title: inferTitle(hay),
+    seniority,
+    workType,
+    location: inferLocation(hay),
+    mustHave: mustHave.length ? mustHave : ["Core engineering"],
+    behaviors,
+  };
+  const topics: InterviewTopic[] = [
+    ...role.mustHave.slice(0, 3).map((s) => ({ label: s, probes: `A real situation that shows evidenced ${s.toLowerCase()}.` })),
+    ...behaviors.slice(0, 2).map((b) => ({ label: b, probes: `How they've actually shown ${b.toLowerCase()}.` })),
+  ];
+  return { refused: null, stripped: found.stripped, role, interview: { minutes: 24, topics }, matches: found.matches };
+}
