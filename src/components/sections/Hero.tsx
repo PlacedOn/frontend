@@ -6,12 +6,9 @@ import {
   useReducedMotion,
   useMotionValue,
   useSpring,
-  type MotionValue,
 } from "motion/react";
 import {
-  Mic, ShieldCheck, FileCheck2, Sparkles, Scale, MessageSquareText, Search,
-  TrendingUp, Users, BadgeCheck, Fingerprint, BrainCircuit, Award, Quote,
-  type LucideProps,
+  ShieldCheck, Sparkles, BadgeCheck, Quote, type LucideProps,
 } from "lucide-react";
 import { AnimateIcon, ArrowRight } from "@/components/ui/icons";
 import { Button } from "@/components/ui/Button";
@@ -21,30 +18,30 @@ import { cn } from "@/lib/cn";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-type FloatItem = { Icon: ComponentType<LucideProps>; className: string; mobile?: boolean };
-
 /*
- * Floating-icons hero (after 21st.dev @ravikatiyar162): a centred headline
- * inside a field of soft-shadowed icon tiles that (a) drift continuously and
- * (b) repel from the cursor on spring physics. Adapted to Frost Luxe and — the
- * deliberate change — the tiles carry PlacedOn's hiring ecosystem (interview,
- * evidence, fairness, matching), never random brand logos.
+ * Floating-cards hero (after 21st.dev @ravikatiyar162/floating-icons-hero-section):
+ * a centred headline inside a field of soft-shadowed cards that drift and repel
+ * from the cursor on spring physics. The cards carry PlacedOn's real ecosystem —
+ * candidates with roles, an evidenced trait, a verification, live activity — so
+ * the field says what the product does at a glance instead of decorating.
  */
-const ICONS: FloatItem[] = [
-  { Icon: Mic, className: "top-[14%] left-[9%]", mobile: true },
-  { Icon: ShieldCheck, className: "top-[18%] right-[10%]", mobile: true },
-  { Icon: FileCheck2, className: "bottom-[16%] left-[11%]", mobile: true },
-  { Icon: Sparkles, className: "bottom-[14%] right-[12%]", mobile: true },
-  { Icon: TrendingUp, className: "top-[44%] left-[6%]", mobile: true },
-  { Icon: BadgeCheck, className: "top-[47%] right-[6%]", mobile: true },
-  { Icon: Scale, className: "top-[9%] left-[30%]" },
-  { Icon: MessageSquareText, className: "top-[8%] right-[31%]" },
-  { Icon: Search, className: "bottom-[11%] left-[32%]" },
-  { Icon: Users, className: "top-[68%] right-[25%]" },
-  { Icon: Fingerprint, className: "bottom-[9%] right-[39%]" },
-  { Icon: BrainCircuit, className: "top-[27%] left-[19%]" },
-  { Icon: Award, className: "top-[25%] right-[20%]" },
-  { Icon: Quote, className: "top-[71%] left-[21%]" },
+type Person = { kind: "person"; initials: string; name: string; role: string; tone: string };
+type Trait = { kind: "trait"; label: string; value: string; sub: string; fill: number };
+type Verified = { kind: "verified"; label: string; sub: string };
+type Activity = { kind: "activity"; label: string; bars: number[] };
+type Badge = { kind: "badge"; Icon: ComponentType<LucideProps>; text: string };
+type Card = (Person | Trait | Verified | Activity | Badge) & { className: string; mobile?: boolean };
+
+const CARDS: Card[] = [
+  { kind: "person", initials: "AR", name: "Aarav Rao", role: "Backend engineer", tone: "var(--iris)", className: "top-[12%] left-[6%]", mobile: true },
+  { kind: "person", initials: "MP", name: "Maya Patel", role: "Applied AI engineer", tone: "#EC4899", className: "top-[15%] right-[6%]", mobile: true },
+  { kind: "person", initials: "DK", name: "Diego Kim", role: "Data engineer", tone: "#10B981", className: "bottom-[15%] left-[7%]" },
+  { kind: "person", initials: "LC", name: "Lena Cho", role: "Frontend engineer", tone: "#3B82F6", className: "bottom-[14%] right-[7%]", mobile: true },
+  { kind: "verified", label: "Verified", sub: "22-min conversation", className: "top-[13%] left-[35%]" },
+  { kind: "trait", label: "Systems thinking", value: "Strong", sub: "71–88% evidenced", fill: 0.82, className: "top-[42%] left-[3%]" },
+  { kind: "activity", label: "Interview activity", bars: [8, 12, 7, 15, 11, 17, 13], className: "top-[45%] right-[3%]" },
+  { kind: "badge", Icon: BadgeCheck, text: "Fits 4 of 5 role signals", className: "bottom-[11%] right-[33%]", mobile: true },
+  { kind: "badge", Icon: Quote, text: "Traceable to transcript", className: "top-[56%] left-[4%]" },
 ];
 
 export function Hero() {
@@ -79,14 +76,14 @@ export function Hero() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(58% 50% at 50% 46%, rgba(247,249,254,0.82) 0%, rgba(247,249,254,0.3) 55%, rgba(247,249,254,0) 80%)",
+            "radial-gradient(56% 48% at 50% 46%, rgba(247,249,254,0.85) 0%, rgba(247,249,254,0.35) 52%, rgba(247,249,254,0) 80%)",
         }}
       />
 
-      {/* floating icon field — decorative, never blocks the CTAs */}
+      {/* floating card field — decorative, never blocks the CTAs */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        {ICONS.map((item, i) => (
-          <FloatIcon key={i} item={item} index={i} mouseX={mouseX} mouseY={mouseY} reduce={!!reduce} />
+        {CARDS.map((card, i) => (
+          <FloatCard key={i} card={card} index={i} mouseX={mouseX} mouseY={mouseY} reduce={!!reduce} />
         ))}
       </div>
 
@@ -139,7 +136,7 @@ export function Hero() {
           <span className="hidden text-[var(--glass-line-hi)] sm:inline">·</span>
           <span>Every score tied to a transcript moment</span>
           <span className="hidden text-[var(--glass-line-hi)] sm:inline">·</span>
-          <span>Zero résumé bias</span>
+          <span>Zero resume bias</span>
         </motion.div>
       </div>
     </section>
@@ -147,14 +144,14 @@ export function Hero() {
 }
 
 /**
- * One floating tile: staggered scale-in, a continuous drift, and cursor
- * repulsion (spring). All motion is disabled under reduced-motion, where the
- * tile simply fades in and holds still.
+ * One floating card: staggered scale-in, continuous drift, and cursor repulsion
+ * (spring). All motion is disabled under reduced-motion, where the card fades in
+ * and holds still.
  */
-function FloatIcon({
-  item, index, mouseX, mouseY, reduce,
+function FloatCard({
+  card, index, mouseX, mouseY, reduce,
 }: {
-  item: FloatItem;
+  card: Card;
   index: number;
   mouseX: React.MutableRefObject<number>;
   mouseY: React.MutableRefObject<number>;
@@ -168,7 +165,7 @@ function FloatIcon({
 
   useEffect(() => {
     if (reduce) return;
-    const REACH = 150;
+    const REACH = 160;
     const onMove = () => {
       const el = ref.current;
       if (!el) return;
@@ -178,7 +175,7 @@ function FloatIcon({
       const dist = Math.hypot(dx, dy);
       if (dist < REACH) {
         const angle = Math.atan2(dy, dx);
-        const force = (1 - dist / REACH) * 50;
+        const force = (1 - dist / REACH) * 42;
         x.set(-Math.cos(angle) * force);
         y.set(-Math.sin(angle) * force);
       } else {
@@ -196,25 +193,98 @@ function FloatIcon({
     <motion.div
       ref={ref}
       style={reduce ? undefined : { x: springX, y: springY }}
-      initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: reduce ? 0 : index * 0.07, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={cn("absolute", item.className, item.mobile ? "" : "hidden md:block")}
+      initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.7, y: 14 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ delay: reduce ? 0 : index * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className={cn("absolute hidden md:block", card.className)}
     >
       <motion.div
-        className="grid size-14 place-items-center rounded-[22px] md:size-16"
+        className="rounded-[16px] border px-3.5 py-2.5"
         style={{
           background: "var(--glass-hi)",
-          border: "1px solid var(--glass-line-hi)",
-          backdropFilter: "blur(12px) saturate(1.3)",
-          WebkitBackdropFilter: "blur(12px) saturate(1.3)",
-          boxShadow: "0 18px 40px -18px rgba(40,26,120,0.42), inset 0 1px 0 rgba(255,255,255,0.75)",
+          borderColor: "var(--glass-line-hi)",
+          backdropFilter: "blur(16px) saturate(1.3)",
+          WebkitBackdropFilter: "blur(16px) saturate(1.3)",
+          boxShadow: "0 18px 44px -20px rgba(40,26,120,0.42), inset 0 1px 0 rgba(255,255,255,0.75)",
         }}
-        animate={reduce ? undefined : { y: [0, -8, 0, 8, 0], x: [0, 6, 0, -6, 0], rotate: [0, 5, 0, -5, 0] }}
+        animate={reduce ? undefined : { y: [0, -8, 0, 8, 0], x: [0, 5, 0, -5, 0], rotate: [0, 3, 0, -3, 0] }}
         transition={reduce ? undefined : { duration: dur, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
       >
-        <item.Icon className="size-6 md:size-7" style={{ color: "var(--iris)" }} strokeWidth={1.75} />
+        <CardBody card={card} />
       </motion.div>
     </motion.div>
+  );
+}
+
+function CardBody({ card }: { card: Card }) {
+  if (card.kind === "person") {
+    return (
+      <div className="flex items-center gap-2.5">
+        <span
+          className="grid size-9 shrink-0 place-items-center rounded-full text-[12px] font-bold text-white"
+          style={{ background: card.tone }}
+        >
+          {card.initials}
+        </span>
+        <div className="min-w-0 whitespace-nowrap pr-1">
+          <p className="text-[13px] font-bold leading-tight text-[var(--ink)]">{card.name}</p>
+          <p className="text-[11.5px] leading-tight text-[var(--ink-3)]">{card.role}</p>
+        </div>
+      </div>
+    );
+  }
+  if (card.kind === "verified") {
+    return (
+      <div className="flex items-center gap-2.5">
+        <span className="grid size-8 shrink-0 place-items-center rounded-full" style={{ background: "rgba(16,185,129,0.14)", color: "#047857" }}>
+          <ShieldCheck size={16} />
+        </span>
+        <div className="whitespace-nowrap pr-1">
+          <p className="text-[13px] font-bold leading-tight" style={{ color: "#047857" }}>{card.label}</p>
+          <p className="text-[11.5px] leading-tight text-[var(--ink-3)]">{card.sub}</p>
+        </div>
+      </div>
+    );
+  }
+  if (card.kind === "trait") {
+    return (
+      <div className="w-[168px]">
+        <div className="flex items-baseline justify-between gap-2">
+          <p className="text-[12.5px] font-bold text-[var(--ink)]">{card.label}</p>
+          <p className="text-[11.5px] font-semibold text-[var(--iris-ink)]">{card.value}</p>
+        </div>
+        <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
+          <span className="block h-full rounded-full" style={{ width: `${card.fill * 100}%`, background: "linear-gradient(90deg,var(--iris-soft),var(--iris))" }} />
+        </div>
+        <p className="mt-1 text-[11px] text-[var(--ink-3)]">{card.sub}</p>
+      </div>
+    );
+  }
+  if (card.kind === "activity") {
+    const max = Math.max(...card.bars);
+    return (
+      <div className="w-[150px]">
+        <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>{card.label}</p>
+        <div className="mt-2 flex h-9 items-end gap-1">
+          {card.bars.map((b, i) => (
+            <span
+              key={i}
+              className="flex-1 rounded-[3px]"
+              style={{ height: `${(b / max) * 100}%`, background: i === card.bars.length - 1 ? "var(--iris)" : "var(--iris-line)" }}
+            />
+          ))}
+        </div>
+        <p className="mt-1 text-[11px] text-[var(--ink-3)]">last 7 days</p>
+      </div>
+    );
+  }
+  // badge
+  return (
+    <div className="flex items-center gap-2 whitespace-nowrap pr-1">
+      <span className="grid size-6 shrink-0 place-items-center rounded-full" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
+        <card.Icon size={13} />
+      </span>
+      <p className="text-[12.5px] font-bold text-[var(--ink)]">{card.text}</p>
+    </div>
   );
 }
