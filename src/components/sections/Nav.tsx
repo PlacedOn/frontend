@@ -33,6 +33,8 @@ export function Nav() {
 
   const dashboard = role === "employer" ? "/employer" : "/candidate";
 
+  if (user) return null;
+
   return (
     <header
       className="fixed inset-x-0 top-0 flex justify-center px-4 pt-4"

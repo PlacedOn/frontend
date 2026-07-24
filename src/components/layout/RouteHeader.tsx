@@ -5,10 +5,14 @@ import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/Button";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 /** Compact header for sub-routes: home link + demo CTA. */
 export function RouteHeader() {
   const { open } = useDemoDialog();
+  const { user } = useAuth();
+
+  if (user) return null;
   return (
     <header className="fixed inset-x-0 top-0 flex justify-center px-4 pt-4" style={{ zIndex: "var(--z-nav)" }}>
       <nav
