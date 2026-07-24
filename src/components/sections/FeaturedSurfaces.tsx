@@ -176,8 +176,8 @@ export function FeaturedSurfaces() {
                   >
                     <div className="flex items-center gap-3">
                       <span
-                        className="grid h-10 w-10 shrink-0 place-items-center rounded-xl transition-colors"
-                        style={{ background: isActive ? "var(--iris)" : "var(--iris-ghost)", color: isActive ? "#fff" : "var(--iris-ink)" }}
+                        className="grid h-10 w-10 shrink-0 place-items-center rounded-[12px] border transition-colors"
+                        style={{ background: isActive ? "rgba(105,34,245,0.10)" : "rgba(105,34,245,0.05)", borderColor: isActive ? "var(--iris)" : "var(--iris-line)", color: "var(--iris-ink)" }}
                       >
                         <Icon size={18} />
                       </span>

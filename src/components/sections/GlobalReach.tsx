@@ -54,7 +54,7 @@ function Chip({ icon: Icon, k, v }: { icon: typeof GlobeIcon; k: string; v: stri
       className="flex items-center gap-3 rounded-2xl px-4 py-3 backdrop-blur-md"
       style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 12px 40px rgba(8,6,15,0.4)" }}
     >
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl" style={{ background: "rgba(139,84,255,0.18)", color: "#c9bcff" }}>
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[11px] border" style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.14)", color: "#c9bcff" }}>
         <Icon size={17} />
       </span>
       <span className="flex flex-col">

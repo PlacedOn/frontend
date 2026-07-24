@@ -69,8 +69,8 @@ export function TeamJourneySteps() {
                 aria-expanded={isOpen}
               >
                 <span
-                  className="grid h-11 w-11 shrink-0 place-items-center rounded-[0.85rem]"
-                  style={{ background: step.highlight ? "linear-gradient(135deg,var(--iris-soft),var(--iris))" : "var(--iris-ghost)", color: step.highlight ? "#fff" : "var(--iris-ink)" }}
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-[13px] border"
+                  style={{ background: "rgba(105,34,245,0.06)", borderColor: "var(--iris-line)", color: "var(--iris-ink)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.7)" }}
                 >
                   <Icon size={20} animateOnView animateOnHover />
                 </span>
