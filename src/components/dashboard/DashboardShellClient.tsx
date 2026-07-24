@@ -59,6 +59,7 @@ function NavList({
       <Link
         key={item.href}
         href={item.href}
+        prefetch={true}
         onClick={onNavigate}
         aria-current={active ? "page" : undefined}
         title={collapsed ? item.label : undefined}
