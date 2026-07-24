@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { IconTile } from "@/components/ui/IconTile";
 import { getApplicationsData, type Application, type AppStage, type AppStageId } from "@/lib/mock/applications";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -49,9 +50,7 @@ export function CandidateApplications() {
   if (applications.length === 0) {
     return (
       <div className="glass rounded-[var(--r-card)] p-10 text-center">
-        <span className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-          <Sparkles size={20} />
-        </span>
+        <IconTile icon={Sparkles} tone="iris" size="lg" className="mx-auto mb-4" />
         <h2 className="text-[1.3rem]">No applications yet.</h2>
         <p className="mx-auto mt-2 max-w-sm text-[14.5px] leading-relaxed text-[var(--ink-2)]">
           Show interest in a matched role and it will appear here — you stay in control of every intro.

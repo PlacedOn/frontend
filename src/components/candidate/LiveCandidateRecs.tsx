@@ -11,6 +11,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ShieldCheck, ArrowRight, Sparkles } from "lucide-react";
+import { IconTile } from "@/components/ui/IconTile";
 import { v1, V1Error, type CandidateOpeningRec, type MutualFitTier } from "@/lib/v1";
 import { FitCheckCard } from "@/components/fit/FitCheckCard";
 
@@ -62,9 +63,7 @@ export function LiveCandidateRecs() {
   if (recs.length === 0) {
     return (
       <div className="glass rounded-[var(--r-card)] p-10 text-center">
-        <span className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-          <Sparkles size={20} />
-        </span>
+        <IconTile icon={Sparkles} tone="iris" size="lg" className="mx-auto mb-4" />
         <h2 className="text-[1.3rem]">No open roles to match yet.</h2>
         <p className="mx-auto mt-2 max-w-sm text-[14.5px] leading-relaxed text-[var(--ink-2)]">
           Finish your interview and approve your evidence — then live roles are ranked by how much of each one your evidence covers.

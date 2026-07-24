@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { MapPin, Quote, X, Check, Loader2, ArrowRight, Sparkles } from "lucide-react";
+import { IconTile } from "@/components/ui/IconTile";
 import type { Confidence, RoleMatch } from "@/lib/types";
 import { getCandidateMatches, submitInterest, dismissMatch } from "@/lib/mock/matches";
 
@@ -122,12 +123,7 @@ export function CandidateMatches() {
   if (matches.length === 0) {
     return (
       <div className="glass rounded-[var(--r-card)] p-10 text-center">
-        <span
-          className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full"
-          style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}
-        >
-          <Sparkles size={20} />
-        </span>
+        <IconTile icon={Sparkles} tone="iris" size="lg" className="mx-auto mb-4" />
         <h2 className="text-[1.3rem]">Matches appear once your profile is live.</h2>
         <p className="mx-auto mt-2 max-w-sm text-[14.5px] leading-relaxed text-[var(--ink-2)]">
           Finish one calm interview and approve your profile — then roles that fit your evidence show up here.

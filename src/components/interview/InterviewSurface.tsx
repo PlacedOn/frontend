@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "re
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowRight, ShieldCheck, Send, Square, Sparkles, RefreshCw, PenTool, Mic, Volume2, VolumeX, ChevronDown } from "lucide-react";
+import { IconTile } from "@/components/ui/IconTile";
 import type { InterviewMessage, InterviewStatus } from "@/lib/interview/useInterviewSession";
 import { useSpeechInput } from "@/lib/interview/useSpeechInput";
 import { useSpeechOutput } from "@/lib/interview/useSpeechOutput";
@@ -139,9 +140,7 @@ export function InterviewSurface({
   if (ended) {
     return (
       <motion.div initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="glass rounded-[var(--r-card)] p-8 text-center">
-        <span className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-          <Sparkles size={22} />
-        </span>
+        <IconTile icon={Sparkles} tone="iris" size="lg" className="mx-auto mb-4" />
         <h2 className="text-[1.4rem]">That&rsquo;s a wrap — nicely done.</h2>
         <p className="mx-auto mt-2.5 max-w-md text-[14.5px] leading-relaxed text-[var(--ink-2)]">
           We&rsquo;re turning your conversation into evidence-backed traits. You review every one before any employer sees it — nothing is shared by default.

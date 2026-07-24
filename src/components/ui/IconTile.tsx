@@ -3,7 +3,7 @@ import type { LucideProps } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 type Tone = "ink" | "iris" | "green" | "amber";
-type Size = "sm" | "md";
+type Size = "sm" | "md" | "lg";
 
 /**
  * Keyline icon tile — the house replacement for the "icon in a saturated colored
@@ -21,6 +21,7 @@ const TONE: Record<Tone, { fg: string; bg: string; border: string }> = {
 const SIZE: Record<Size, { box: string; icon: number }> = {
   sm: { box: "size-8 rounded-[9px]", icon: 15 },
   md: { box: "size-10 rounded-[11px]", icon: 18 },
+  lg: { box: "size-12 rounded-[13px]", icon: 22 },
 };
 
 type Props = {
