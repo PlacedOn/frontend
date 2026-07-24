@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CandidateDashboard } from "@/components/candidate/CandidateDashboard";
+import { CandidateHub } from "@/components/candidate/CandidateHub";
 import { DASHBOARD_MODES, type CandidateDashboardMode } from "@/lib/mock/candidate";
 
 export const metadata: Metadata = {
@@ -20,5 +20,5 @@ export default async function CandidatePage({
   searchParams: Promise<{ mode?: string | string[] }>;
 }) {
   const { mode } = await searchParams;
-  return <CandidateDashboard mode={resolveMode(mode)} />;
+  return <CandidateHub mode={resolveMode(mode)} />;
 }
