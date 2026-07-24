@@ -142,8 +142,20 @@ function OrbRole({ className, z, role, fit, delay = 0, reduce }: { className?: s
 
 /* ── page body ────────────────────────────────────────────────── */
 
-export function PreInterviewBody() {
+export type PreInterviewRole = {
+  jobId: string;
+  roleFamily: string;
+  title: string;
+  company: string;
+};
+
+export function PreInterviewBody({ role }: { role?: PreInterviewRole } = {}) {
   const reduce = useReducedMotion();
+  // When arriving from an "Apply", carry the job + role through consent so the
+  // interview session is created bound to this role (v1.createInterview).
+  const consentHref = role
+    ? `/interview/consent?job=${encodeURIComponent(role.jobId)}&role=${encodeURIComponent(role.roleFamily)}`
+    : "/interview/consent";
   const px = useMotionValue(0);
   const py = useMotionValue(0);
   const rotX = useSpring(useTransform(py, [-0.5, 0.5], [8, -8]), { stiffness: 150, damping: 18 });
@@ -164,6 +176,19 @@ export function PreInterviewBody() {
           <motion.p {...rise(0)} className="eyebrow inline-flex items-center gap-2">
             <span className="livedot" /> Before you start
           </motion.p>
+
+          {role && (
+            <motion.div
+              {...rise(0.04)}
+              className="mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2"
+              style={{ background: "var(--iris-ghost)", border: "1px solid var(--iris-line)" }}
+            >
+              <BriefcaseBusiness size={15} className="text-[var(--iris)]" aria-hidden />
+              <span className="text-[13px] font-semibold text-[var(--iris-ink)]">
+                Applying to {role.title} · {role.company}
+              </span>
+            </motion.div>
+          )}
 
           <motion.h1 {...rise(0.08)} className="mt-5">
             <span className="block text-[clamp(3rem,1.6rem+5.2vw,5.4rem)] leading-[0.98] tracking-[-0.035em]">
@@ -207,7 +232,7 @@ export function PreInterviewBody() {
           </motion.div>
 
           <motion.div {...rise(0.34)} className="mt-9 flex flex-wrap items-center gap-3">
-            <Button href="/interview/consent" className="!px-7 !py-3.5">
+            <Button href={consentHref} className="!px-7 !py-3.5">
               Begin interview <ArrowRight size={17} />
             </Button>
             <Button href="#expect" variant="ghost">
@@ -455,7 +480,7 @@ export function PreInterviewBody() {
               </p>
             </div>
             <div className="flex shrink-0 flex-col items-start gap-3 md:items-end">
-              <Button href="/interview/consent" className="!px-8 !py-4 text-[15.5px]">
+              <Button href={consentHref} className="!px-8 !py-4 text-[15.5px]">
                 Begin interview <ArrowRight size={17} />
               </Button>
               <p

@@ -3,6 +3,7 @@ import {
   UserRound,
   Sparkles,
   BriefcaseBusiness,
+  Compass,
   Send,
   SlidersHorizontal,
   Search,
@@ -47,12 +48,14 @@ export type NavGroups = { primary: NavItem[]; secondary: NavItem[] };
 const CANDIDATE_NAV: NavGroups = {
   primary: [
     { label: "Home", href: "/candidate", icon: LayoutDashboard },
-    { label: "Assistant", href: "/candidate/assistant", icon: Sparkle },
+    { label: "Jobs", href: "/candidate/jobs", icon: Compass },
     { label: "Workshop", href: "/candidate/workshop", icon: Hexagon },
     { label: "Matches", href: "/candidate/matches", icon: BriefcaseBusiness },
     { label: "Passport", href: "/candidate/passport", icon: BadgeCheck },
   ],
+  // Assistant moved under the divider to keep the daily rail to five doors.
   secondary: [
+    { label: "Assistant", href: "/candidate/assistant", icon: Sparkle },
     { label: "Growth", href: "/candidate/growth", icon: Sparkles },
     { label: "Applications", href: "/candidate/applications", icon: Send },
     { label: "Network", href: "/candidate/network", icon: Radar },
