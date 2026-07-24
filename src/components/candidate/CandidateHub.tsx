@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   Search, MapPin, BriefcaseBusiness, Sparkles, ArrowRight, Mic, CheckCircle2,
-  Eye, Lock, Target,
+  Eye, Lock, Target, Handshake,
 } from "lucide-react";
 import { getCandidateSnapshot, loadCandidateDashboard, type CandidateDashboardMode } from "@/lib/mock/candidate";
 import { OPEN_ROLES, WORK_FILTERS, type OpenRole } from "@/lib/candidate/openRoles";
@@ -34,7 +34,7 @@ export function CandidateHub({ mode }: { mode: CandidateDashboardMode }) {
   return (
     <div className="space-y-9">
       <ConnectedGreeting snapshot={snapshot} />
-      <JobBoard />
+      <JobBoard interviewDone={snapshot.interview.status === "complete"} />
       <EvidenceStrip
         interviewDone={snapshot.interview.status === "complete"}
         matchCount={snapshot.matches.length}
@@ -44,7 +44,7 @@ export function CandidateHub({ mode }: { mode: CandidateDashboardMode }) {
   );
 }
 
-function JobBoard() {
+function JobBoard({ interviewDone }: { interviewDone: boolean }) {
   const reduce = useReducedMotion();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<(typeof WORK_FILTERS)[number]["id"]>("all");
@@ -67,13 +67,29 @@ function JobBoard() {
     <section aria-labelledby="board-heading">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="eyebrow">Find your next role</p>
+          <p className="eyebrow">Your matches</p>
           <h2 id="board-heading" className="mt-1.5 text-[clamp(1.5rem,1.2rem+1.2vw,2rem)] font-extrabold tracking-tight text-[var(--ink)]">
-            Roles you can interview for now.
+            {interviewDone ? "Roles matched to your evidence." : "Roles you'll match."}
           </h2>
         </div>
-        <p className="text-[13px] text-[var(--ink-3)]">One conversation per role — questions built from what the team actually needs.</p>
+        <p className="max-w-xs text-[13px] text-[var(--ink-3)]">One honest interview — your evidence is matched to every open role. No re-interviewing.</p>
       </div>
+
+      {/* One-interview lead — the whole hub hinges on this single conversation */}
+      {!interviewDone && (
+        <div className="glass mt-5 flex flex-col items-start gap-4 rounded-[20px] p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <IconTile icon={Mic} tone="iris" size="lg" />
+            <div>
+              <p className="text-[15px] font-bold text-[var(--ink)]">Take your one honest interview</p>
+              <p className="text-[13px] text-[var(--ink-2)]">One conversation unlocks every role below that your evidence matches.</p>
+            </div>
+          </div>
+          <Link href="/pre-interview" className="inline-flex shrink-0 items-center gap-2 rounded-[var(--r-btn)] px-5 py-3 text-[14px] font-bold text-white transition-transform active:scale-[0.98]" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}>
+            Begin interview <ArrowRight size={15} />
+          </Link>
+        </div>
+      )}
 
       {/* search + filters */}
       <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -112,7 +128,7 @@ function JobBoard() {
       <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <AnimatePresence mode="popLayout">
           {roles.map((role, i) => (
-            <RoleCard key={role.id} role={role} index={i} reduce={!!reduce} />
+            <RoleCard key={role.id} role={role} index={i} reduce={!!reduce} interviewDone={interviewDone} />
           ))}
         </AnimatePresence>
       </div>
@@ -126,7 +142,7 @@ function JobBoard() {
   );
 }
 
-function RoleCard({ role, index, reduce }: { role: OpenRole; index: number; reduce: boolean }) {
+function RoleCard({ role, index, reduce, interviewDone }: { role: OpenRole; index: number; reduce: boolean; interviewDone: boolean }) {
   return (
     <motion.article
       layout
@@ -182,21 +198,29 @@ function RoleCard({ role, index, reduce }: { role: OpenRole; index: number; redu
       </p>
 
       <div className="mt-4 flex items-center gap-2 pt-1">
-        <Link
-          href={`/pre-interview?job=${role.id}`}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-[var(--r-btn)] px-4 py-2.5 text-[13.5px] font-bold text-white transition-transform active:scale-[0.98]"
-          style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
-        >
-          <Mic size={15} strokeWidth={2} /> Interview for this role
-        </Link>
-        <Link
-          href="/candidate/matches"
-          className="inline-flex items-center gap-1 rounded-[var(--r-btn)] border px-3 py-2.5 text-[13px] font-semibold text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]"
-          style={{ borderColor: "var(--glass-line-hi)" }}
-          aria-label={`Why you fit ${role.title}`}
-        >
-          Why <ArrowRight size={14} />
-        </Link>
+        {interviewDone ? (
+          <>
+            <Link
+              href="/candidate/matches"
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-[var(--r-btn)] px-4 py-2.5 text-[13.5px] font-bold text-white transition-transform active:scale-[0.98]"
+              style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
+            >
+              <Handshake size={15} strokeWidth={2} /> Express interest
+            </Link>
+            <Link
+              href="/candidate/matches"
+              className="inline-flex items-center gap-1 rounded-[var(--r-btn)] border px-3 py-2.5 text-[13px] font-semibold text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]"
+              style={{ borderColor: "var(--glass-line-hi)" }}
+              aria-label={`Why you fit ${role.title}`}
+            >
+              Why <ArrowRight size={14} />
+            </Link>
+          </>
+        ) : (
+          <span className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-[var(--r-btn)] border px-4 py-2.5 text-[12.5px] font-semibold text-[var(--ink-3)]" style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass)" }}>
+            <Lock size={13} /> Matches once you interview
+          </span>
+        )}
       </div>
     </motion.article>
   );
