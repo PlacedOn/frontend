@@ -14,9 +14,9 @@ const MARK_ASPECT = 354 / 400;
  * bookmark/star notch. Glyph tracks var(--iris) so it follows the brand token.
  * Gentle scale on hover of the enclosing link; no reinvented artwork.
  */
-export function Logo({ size = 34, showWordmark = true, className }: Props) {
+export function Logo({ size = 26, showWordmark = true, className }: Props) {
   return (
-    <span className={cn("group inline-flex items-center gap-2.5", className)}>
+    <span className={cn("group inline-flex items-center gap-2", className)}>
       <svg
         width={Math.round(size * MARK_ASPECT)}
         height={size}
@@ -31,7 +31,7 @@ export function Logo({ size = 34, showWordmark = true, className }: Props) {
 
       {showWordmark && (
         <span
-          className="text-[19px] font-bold tracking-tight"
+          className="text-[16.5px] font-bold tracking-tight"
           style={{ fontFamily: "var(--font-display)", color: "var(--ink)" }}
         >
           Placed<span className="grad-iris">on</span>

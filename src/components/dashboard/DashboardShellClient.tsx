@@ -191,13 +191,15 @@ function SidebarInner({
 
 export function DashboardShellClient({
   role,
-  email,
+  email: serverEmail,
   children,
 }: {
   role: DashboardRole;
-  email: string | null;
+  email?: string | null;
   children: React.ReactNode;
 }) {
+  const { user } = useAuth();
+  const email = user?.email ?? serverEmail ?? null;
   const pathname = usePathname();
   const reduce = useReducedMotion();
   const [collapsed, setCollapsed] = useState(false);

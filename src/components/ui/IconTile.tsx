@@ -19,9 +19,9 @@ const TONE: Record<Tone, { fg: string; bg: string; border: string }> = {
 };
 
 const SIZE: Record<Size, { box: string; icon: number }> = {
-  sm: { box: "size-8 rounded-[9px]", icon: 15 },
-  md: { box: "size-10 rounded-[11px]", icon: 18 },
-  lg: { box: "size-12 rounded-[13px]", icon: 22 },
+  sm: { box: "size-7 rounded-[8px]", icon: 14 },
+  md: { box: "size-8 rounded-[9px]", icon: 15 },
+  lg: { box: "size-10 rounded-[11px]", icon: 18 },
 };
 
 type Props = {
