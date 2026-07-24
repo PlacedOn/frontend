@@ -8,8 +8,10 @@ import { AccountMenu } from "@/components/auth/AccountMenu";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
 import { MobileMenu } from "@/components/sections/MobileMenu";
+import { NavMenu } from "@/components/sections/NavMenu";
 import { cn } from "@/lib/cn";
 
+// Flat list for the mobile drawer; desktop uses NavMenu's richer dropdowns.
 const LINKS = [
   { label: "How it works", href: "/#how" },
   { label: "For teams", href: "/companies" },
@@ -50,18 +52,7 @@ export function Nav() {
           <Logo />
         </Link>
 
-        <ul className="hidden items-center gap-1 md:flex">
-          {LINKS.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                className="rounded-full px-3.5 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-colors duration-[var(--d-micro)] hover:bg-white/60 hover:text-[var(--ink)]"
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <NavMenu />
 
         <div className="flex items-center gap-2">
           {user ? (
