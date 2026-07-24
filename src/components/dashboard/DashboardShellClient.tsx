@@ -18,6 +18,7 @@ import { SignOutButton } from "@/components/auth/SignOutButton";
 import { AuroraMesh } from "@/components/background/AuroraMesh";
 import { NotificationsBell } from "./NotificationsBell";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { cn } from "@/lib/cn";
 import { NAV, PRIMARY_CTA, ROLE_LABEL, isNavActive, type DashboardRole, type NavItem } from "@/lib/dashboardNav";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
