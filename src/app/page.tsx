@@ -2,7 +2,7 @@ import { SignalField } from "@/components/background/SignalField";
 import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { KineticMarquee } from "@/components/motion/KineticMarquee";
-import { ScrollStatement } from "@/components/motion/ScrollStatement";
+import { VisionReel } from "@/components/sections/VisionReel";
 import { VerifiedCompanies } from "@/components/sections/VerifiedCompanies";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FeaturedSurfaces } from "@/components/sections/FeaturedSurfaces";
@@ -23,7 +23,7 @@ export default function Home() {
         <VerifiedCompanies />
         <SignalAccordion />
         <KineticMarquee />
-        <ScrollStatement />
+        <VisionReel />
         <HowItWorks />
         <FeaturedSurfaces />
         <GlobalReach />
