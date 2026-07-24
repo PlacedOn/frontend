@@ -153,8 +153,8 @@ export function HowItWorks() {
                   <div className="glass flex flex-col rounded-[var(--r-card)] p-6 md:p-8">
                     <div className="flex items-center justify-between">
                       <span
-                        className="grid h-12 w-12 place-items-center rounded-2xl"
-                        style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}
+                        className="grid h-12 w-12 place-items-center rounded-[14px] border"
+                        style={{ background: "rgba(105,34,245,0.06)", borderColor: "var(--iris-line)", color: "var(--iris-ink)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.7)" }}
                       >
                         <Icon size={22} />
                       </span>
