@@ -132,7 +132,7 @@ export function AuthPanel({ next }: { next?: string }) {
       {/* mode toggle */}
       <div
         aria-label="Sign in or create account"
-        className="relative grid grid-cols-2 rounded-full p-1"
+        className="relative mb-6 sm:mb-8 grid grid-cols-2 rounded-full p-1"
         style={{
           background: "var(--mist)",
           border: "1px solid var(--glass-line)",
@@ -178,7 +178,7 @@ export function AuthPanel({ next }: { next?: string }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.28, ease: [0.22, 0.68, 0.31, 1] }}
       >
-        <h2 id="auth-heading" className="mt-7 text-[1.45rem]">
+        <h2 id="auth-heading" className="mt-2 text-[1.45rem] font-bold text-[var(--ink)]">
           {isSignup ? "Create your account." : "Welcome back."}
         </h2>
         <p className="mt-1.5 text-[14.5px] leading-relaxed text-[var(--ink-2)]">
