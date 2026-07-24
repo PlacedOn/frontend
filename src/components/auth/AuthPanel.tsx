@@ -132,10 +132,10 @@ export function AuthPanel({ next }: { next?: string }) {
       {/* mode toggle */}
       <div
         aria-label="Sign in or create account"
-        className="relative grid grid-cols-2 rounded-[var(--r-chip)] p-1"
+        className="relative grid grid-cols-2 rounded-full p-1"
         style={{
           background: "var(--mist)",
-          boxShadow: "inset 0 1px 3px rgba(14, 16, 32, 0.07)",
+          border: "1px solid var(--glass-line)",
         }}
       >
         {MODES.map(({ id, label }) => {
@@ -147,7 +147,7 @@ export function AuthPanel({ next }: { next?: string }) {
               aria-pressed={active}
               onClick={() => switchMode(id)}
               className={cn(
-                "relative min-h-[44px] rounded-[var(--r-chip)] px-3 text-[13.5px] font-semibold tracking-[0.01em] transition-colors duration-[var(--d-micro)]",
+                "relative flex items-center justify-center py-2 px-4 rounded-full text-[13.5px] font-bold transition-colors duration-[var(--d-micro)]",
                 active ? "text-[var(--ink)]" : "text-[var(--ink-3)] hover:text-[var(--ink-2)]",
               )}
             >
@@ -157,16 +157,16 @@ export function AuthPanel({ next }: { next?: string }) {
                   transition={
                     reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 34 }
                   }
-                  className="absolute inset-0 rounded-[var(--r-chip)]"
+                  className="absolute inset-0 rounded-full"
                   style={{
-                    background: "linear-gradient(180deg, #FFFFFF, rgba(255,255,255,0.92))",
-                    border: "1px solid var(--glass-line)",
-                    boxShadow: "var(--shadow-sm)",
+                    background: "#FFFFFF",
+                    border: "1px solid rgba(0,0,0,0.06)",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
                   }}
                   aria-hidden="true"
                 />
               )}
-              <span className="relative">{label}</span>
+              <span className="relative z-10">{label}</span>
             </button>
           );
         })}
