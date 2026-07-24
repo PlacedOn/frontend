@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, ShieldCheck, Send, Square, Sparkles, RefreshCw, PenTool, Mic, Volume2, VolumeX } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ArrowRight, ShieldCheck, Send, Square, Sparkles, RefreshCw, PenTool, Mic, Volume2, VolumeX, ChevronDown } from "lucide-react";
 import type { InterviewMessage, InterviewStatus } from "@/lib/interview/useInterviewSession";
 import { useSpeechInput } from "@/lib/interview/useSpeechInput";
 import { useSpeechOutput } from "@/lib/interview/useSpeechOutput";
@@ -14,6 +14,10 @@ import { emptyEvidence, type WhiteboardEvidence } from "@/lib/interview";
  * Presentational interview shell — pure props, no transport. Both the demo hook
  * (useInterviewSession) and the authed hook (useLiveInterview) feed it the same
  * shape so the room looks identical whether it's scripted or a real session.
+ *
+ * UX: this is a *conversation*, not a form. The current question is the single
+ * focal point; earlier exchanges recede into a disclosure; the mic is a
+ * first-class control. Text is always available — voice is additive.
  */
 export interface InterviewSurfaceProps {
   live: boolean;
@@ -44,6 +48,7 @@ export function InterviewSurface({
   const reduce = useReducedMotion();
   const [draft, setDraft] = useState("");
   const [showBoard, setShowBoard] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const [, setBoardEvidence] = useState<WhiteboardEvidence>(emptyEvidence);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -86,9 +91,11 @@ export function InterviewSurface({
     }
   };
 
+  // Auto-scroll the history box to the newest exchange while it's open.
   useEffect(() => {
+    if (!showHistory) return;
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: reduce ? "auto" : "smooth" });
-  }, [messages, streaming, status, reduce]);
+  }, [messages, streaming, status, reduce, showHistory]);
 
   const submit = () => {
     if (!canAnswer || !draft.trim()) return;
@@ -151,16 +158,38 @@ export function InterviewSurface({
     );
   }
 
+  // ── Derivations for the calm, single-question layout ──────────────
+  const interviewerMsgs = messages.filter((m) => m.role !== "you");
+  const currentQuestion = interviewerMsgs[interviewerMsgs.length - 1] ?? null;
+  const lastAnswer = [...messages].reverse().find((m) => m.role === "you") ?? null;
+  const thinking = status === "thinking" && !streaming;
+  const focusKey = streaming ? "streaming" : currentQuestion?.id ?? (thinking ? "thinking" : "start");
+  const questionCount = Math.max(turn || interviewerMsgs.length || 1, 1);
+
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
+      {/* progress + controls */}
       <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5">
-          <span className="chip !py-1 !px-2.5 !text-[11px]">
-            <span className="livedot" /> {live ? "Live · adaptive" : "Demo mode"}
+        <div className="flex items-center gap-3">
+          <span className="chip !px-2.5 !py-1 !text-[11px]">
+            <span className="livedot" /> {live ? "Live · adaptive" : "Demo"}
           </span>
-          <span className="text-[12px] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
-            Question {turn || 1}
-          </span>
+          <div className="flex items-center gap-1.5" aria-label={`Question ${questionCount}`}>
+            {Array.from({ length: Math.min(questionCount, 7) }).map((_, i) => (
+              <span
+                key={i}
+                className="h-1.5 rounded-full transition-all"
+                style={{
+                  width: i === questionCount - 1 ? 18 : 6,
+                  background: i <= questionCount - 1 ? "var(--iris)" : "var(--mist)",
+                  opacity: i === questionCount - 1 ? 1 : 0.5,
+                }}
+              />
+            ))}
+            <span className="ml-1 text-[12px] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
+              Q{questionCount}
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {tts.supported && (
@@ -169,24 +198,18 @@ export function InterviewSurface({
               onClick={tts.toggle}
               aria-pressed={tts.enabled}
               aria-label={tts.enabled ? "Turn off reading questions aloud" : "Read questions aloud"}
-              className="inline-flex items-center gap-1.5 rounded-[var(--r-btn)] border px-3 py-2 text-[12.5px] font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-[12.5px] font-semibold transition-colors"
               style={tts.enabled ? { borderColor: "var(--iris)", background: "var(--iris-ghost)", color: "var(--iris-ink)" } : { borderColor: "var(--glass-line-hi)", color: "var(--ink-2)" }}
             >
               {tts.enabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
               <span className="hidden sm:inline">Read aloud</span>
             </button>
           )}
-          <button type="button" onClick={onEnd} className="inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--r-btn)] border px-3.5 py-2 text-[12.5px] font-semibold text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]" style={{ borderColor: "var(--glass-line-hi)" }}>
-            <Square size={12} /> End interview
+          <button type="button" onClick={onEnd} className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3.5 py-2 text-[12.5px] font-semibold text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]" style={{ borderColor: "var(--glass-line-hi)" }}>
+            <Square size={12} /> End
           </button>
         </div>
       </div>
-
-      {!live && (
-        <p className="rounded-[var(--r-card)] px-4 py-3 text-[13px] leading-relaxed" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-          Demo mode runs a short scripted interview so you can feel the flow. Connect a backend for a live, adaptive AI interview.
-        </p>
-      )}
 
       {reconnecting && (
         <div role="status" aria-live="polite" className="flex items-center gap-2.5 rounded-[var(--r-card)] px-4 py-3 text-[13px] font-medium" style={{ background: "rgba(245,134,11,0.12)", color: "#B45309" }}>
@@ -195,109 +218,164 @@ export function InterviewSurface({
         </div>
       )}
 
-      <div ref={scrollRef} className="glass flex max-h-[52vh] min-h-[320px] flex-col gap-3.5 overflow-y-auto rounded-[var(--r-card)] p-6">
-        {messages.map((m) => (
-          <Bubble key={m.id} message={m} reduce={!!reduce} />
-        ))}
-
-        {streaming && (
-          <div className="self-start" style={{ maxWidth: "88%" }}>
-            <p className="mb-1 text-[11px] font-semibold tracking-wide text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>Placedon</p>
-            <div className="rounded-2xl px-4 py-2.5 text-[14px] leading-relaxed" style={{ background: "#fff", color: "var(--ink)", border: "1px solid var(--glass-line)" }}>
-              {streaming}
-              <span className="ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[2px] animate-pulse" style={{ background: "var(--iris)" }} />
-            </div>
-          </div>
-        )}
-
-        {status === "thinking" && !streaming && (
-          <div className="self-start rounded-2xl bg-white px-4 py-3.5" style={{ border: "1px solid var(--glass-line)" }}>
-            <span className="flex gap-1">
-              {[0, 1, 2].map((d) => (
-                <motion.span key={d} className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--ink-3)" }} animate={reduce ? undefined : { opacity: [0.3, 1, 0.3], y: [0, -2, 0] }} transition={{ duration: 0.9, repeat: Infinity, delay: d * 0.15 }} />
-              ))}
-            </span>
-          </div>
-        )}
-      </div>
-
-      <div
-        className="glass rounded-[var(--r-card)] p-3 transition-[box-shadow] duration-300"
-        style={speech.listening ? { boxShadow: "0 0 0 2px var(--iris-line), var(--shadow-sm)" } : undefined}
-      >
-        <textarea
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={onKeyDown}
-          disabled={!canAnswer}
-          rows={3}
-          placeholder={
-            reconnecting
-              ? "Reconnecting… your answer is safe here."
-              : !canAnswer
-                ? "Listening…"
-                : speech.supported
-                  ? "Speak or type — answer in your own words, take your time."
-                  : "Answer in your own words — take your time."
-          }
-          aria-label="Your answer"
-          className="w-full resize-none bg-transparent px-3 py-2 text-[14.5px] leading-relaxed text-[var(--ink)] outline-none placeholder:text-[var(--ink-3)] disabled:opacity-60"
-        />
-
-        {/* live interim transcript — the words appearing as you speak, greyed
-            until finalised, so speaking feels responsive */}
-        {speech.listening && speech.interim && (
-          <p className="px-3 pb-1 text-[14px] italic leading-relaxed text-[var(--ink-3)]" aria-live="polite">
-            {speech.interim}…
-          </p>
-        )}
-
-        <div className="mt-1 flex items-center justify-between gap-3 px-1">
-          <div className="flex items-center gap-2.5">
-            {speech.supported && (
+      {/* ── The current question: the single focal point ── */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={focusKey}
+          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={reduce ? { opacity: 0 } : { opacity: 0, y: -8, filter: "blur(4px)" }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="glass relative overflow-hidden rounded-[var(--r-card)] p-6 md:p-8"
+        >
+          {/* soft iris wash at the top edge */}
+          <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-24" style={{ background: "radial-gradient(120% 100% at 50% 0%, var(--iris-ghost), transparent 70%)" }} />
+          <div className="relative flex items-center justify-between gap-3">
+            <p className="eyebrow">Placedon asks</p>
+            {tts.supported && currentQuestion && !streaming && !thinking && (
               <button
                 type="button"
-                onClick={toggleMic}
-                disabled={!canAnswer}
-                aria-pressed={speech.listening}
-                aria-label={speech.listening ? "Stop speaking" : "Answer by speaking"}
-                className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold transition-transform active:scale-[0.96] disabled:opacity-45"
-                style={
-                  speech.listening
-                    ? { borderColor: "var(--iris)", background: "var(--iris-ghost)", color: "var(--iris-ink)" }
-                    : { borderColor: "var(--glass-line-hi)", color: "var(--ink-2)" }
-                }
+                onClick={() => tts.speak(currentQuestion.text)}
+                aria-label="Read this question aloud"
+                className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-semibold text-[var(--iris-ink)] transition-colors hover:bg-[var(--iris-ghost)]"
               >
-                {speech.listening ? (
-                  <>
-                    <motion.span
-                      className="h-2 w-2 rounded-full"
-                      style={{ background: "var(--iris)" }}
-                      animate={reduce ? undefined : { scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-                      transition={reduce ? undefined : { duration: 1, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                    Listening
-                  </>
-                ) : (
-                  <>
-                    <Mic size={14} /> Speak
-                  </>
-                )}
+                <Volume2 size={13} /> Hear it
               </button>
             )}
-            <span className="hidden text-[11.5px] text-[var(--ink-3)] sm:inline">Enter to send · Shift+Enter for a new line</span>
           </div>
+
+          <div className="relative mt-3 min-h-[3.2em]">
+            {streaming ? (
+              <p className="text-[clamp(1.2rem,1.05rem+0.9vw,1.7rem)] font-semibold leading-snug tracking-[-0.01em] text-[var(--ink)]">
+                {streaming}
+                <span className="ml-0.5 inline-block h-[1.05em] w-[3px] translate-y-[3px] animate-pulse" style={{ background: "var(--iris)" }} />
+              </p>
+            ) : thinking ? (
+              <span className="flex items-center gap-1.5" aria-label="Thinking">
+                {[0, 1, 2].map((d) => (
+                  <motion.span key={d} className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--iris)" }} animate={reduce ? undefined : { opacity: [0.3, 1, 0.3], y: [0, -3, 0] }} transition={{ duration: 0.9, repeat: Infinity, delay: d * 0.15 }} />
+                ))}
+              </span>
+            ) : (
+              <p className="text-[clamp(1.2rem,1.05rem+0.9vw,1.7rem)] font-semibold leading-snug tracking-[-0.01em] text-[var(--ink)]">
+                {currentQuestion?.text ?? "Let's begin — tell me a bit about the work you're proudest of."}
+              </p>
+            )}
+          </div>
+
+          {/* your previous answer, recessed for continuity */}
+          {lastAnswer && !streaming && !thinking && (
+            <p className="relative mt-4 border-l-2 pl-3 text-[13px] leading-relaxed text-[var(--ink-3)]" style={{ borderColor: "var(--iris-line)" }}>
+              <span className="font-semibold text-[var(--ink-2)]">You:</span>{" "}
+              {lastAnswer.text.length > 160 ? `${lastAnswer.text.slice(0, 160)}…` : lastAnswer.text}
+            </p>
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* history disclosure — the full conversation, out of the way */}
+      {messages.length > 1 && (
+        <div>
+          <button
+            type="button"
+            onClick={() => setShowHistory((v) => !v)}
+            aria-expanded={showHistory}
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]"
+          >
+            <ChevronDown size={14} className="transition-transform" style={{ transform: showHistory ? "rotate(180deg)" : "none" }} />
+            {showHistory ? "Hide conversation" : `Conversation so far · ${interviewerMsgs.length} question${interviewerMsgs.length === 1 ? "" : "s"}`}
+          </button>
+          {showHistory && (
+            <div ref={scrollRef} className="glass mt-2 flex max-h-[40vh] flex-col gap-3.5 overflow-y-auto rounded-[var(--r-card)] p-5">
+              {messages.map((m) => (
+                <Bubble key={m.id} message={m} reduce={!!reduce} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── Composer: mic is first-class, text always available ── */}
+      <div
+        className="glass rounded-[var(--r-card)] p-4 transition-[box-shadow] duration-300"
+        style={speech.listening ? { boxShadow: "0 0 0 2px var(--iris-line), var(--shadow-sm)" } : undefined}
+      >
+        <div className="flex items-start gap-3">
+          {speech.supported && (
+            <button
+              type="button"
+              onClick={toggleMic}
+              disabled={!canAnswer}
+              aria-pressed={speech.listening}
+              aria-label={speech.listening ? "Stop speaking" : "Answer by speaking"}
+              className="relative grid size-12 shrink-0 place-items-center rounded-full transition-transform active:scale-[0.94] disabled:opacity-40"
+              style={
+                speech.listening
+                  ? { background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", color: "#fff", boxShadow: "var(--shadow-iris)" }
+                  : { background: "var(--glass-hi)", border: "1px solid var(--glass-line-hi)", color: "var(--iris-ink)" }
+              }
+            >
+              {speech.listening && !reduce && (
+                <motion.span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full"
+                  style={{ border: "2px solid var(--iris)" }}
+                  animate={{ scale: [1, 1.35], opacity: [0.6, 0] }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
+                />
+              )}
+              <Mic size={19} />
+            </button>
+          )}
+          <div className="min-w-0 flex-1">
+            <textarea
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={onKeyDown}
+              disabled={!canAnswer}
+              rows={3}
+              placeholder={
+                reconnecting
+                  ? "Reconnecting… your answer is safe here."
+                  : !canAnswer
+                    ? "Listening…"
+                    : speech.supported
+                      ? "Speak or type — answer in your own words, take your time."
+                      : "Answer in your own words — take your time."
+              }
+              aria-label="Your answer"
+              className="w-full resize-none bg-transparent px-1 py-1.5 text-[14.5px] leading-relaxed text-[var(--ink)] outline-none placeholder:text-[var(--ink-3)] disabled:opacity-60"
+            />
+            {/* live interim transcript — words appearing as you speak */}
+            {speech.listening && speech.interim && (
+              <p className="px-1 pb-1 text-[14px] italic leading-relaxed text-[var(--ink-3)]" aria-live="polite">
+                {speech.interim}…
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-2 flex items-center justify-between gap-3 border-t pt-2.5" style={{ borderColor: "var(--glass-line)" }}>
+          <span className="text-[11.5px] text-[var(--ink-3)]">
+            {speech.listening ? "Listening — tap the mic to stop" : "Enter to send · Shift+Enter for a new line"}
+          </span>
           <button type="button" onClick={submit} disabled={!canAnswer || !draft.trim()} className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-2.5 text-[14px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-45" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}>
             Send <Send size={15} />
           </button>
         </div>
 
         {speech.error && (
-          <p className="mt-1.5 px-3 text-[12px] font-medium text-[#b45309]" aria-live="polite">
+          <p className="mt-1.5 px-1 text-[12px] font-medium text-[#b45309]" aria-live="polite">
             {speech.error}
           </p>
         )}
       </div>
+
+      {!live && (
+        <p className="rounded-[var(--r-card)] px-4 py-3 text-[13px] leading-relaxed" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
+          Demo mode runs a short scripted interview so you can feel the flow. Connect a backend for a live, adaptive AI interview.
+        </p>
+      )}
 
       {/* Optional whiteboard — solve visibly; we capture only what you produce, never your face. */}
       <div>
