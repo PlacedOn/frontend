@@ -4,11 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
-import { useProfileBuilder } from "./useProfileBuilder";
+import { useProfileBuilder, profileGaps } from "./useProfileBuilder";
+import { ProfileReadiness } from "./ProfileReadiness";
 import { IdentitySection } from "./IdentitySection";
 import { IntentSection } from "./IntentSection";
 import { SkillsSection } from "./SkillsSection";
 import { HighlightsSection } from "./HighlightsSection";
+import { TimelineSection } from "./TimelineSection";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -16,7 +18,8 @@ const STEPS = [
   { id: "identity", label: "You", hint: "Who you are", Comp: IdentitySection },
   { id: "intent", label: "Goals", hint: "What you're looking for", Comp: IntentSection },
   { id: "skills", label: "Skills", hint: "What you'd claim", Comp: SkillsSection },
-  { id: "highlights", label: "Work", hint: "What you've shipped", Comp: HighlightsSection },
+  { id: "highlights", label: "Stories", hint: "What you've shipped", Comp: HighlightsSection },
+  { id: "timeline", label: "History", hint: "Your background", Comp: TimelineSection },
 ] as const;
 
 /**
@@ -79,6 +82,8 @@ export function GuidedProfileFlow() {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-5">
+      <ProfileReadiness momentum={momentum} gaps={profileGaps(profile)} onJump={setStep} />
+
       {/* Progress */}
       <div>
         <div className="flex items-center justify-between gap-3">

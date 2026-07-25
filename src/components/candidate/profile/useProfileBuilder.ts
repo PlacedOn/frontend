@@ -40,6 +40,22 @@ export function verifyTargets(p: CandidateProfile): ClaimedSkill[] {
   return p.claimed_skills.filter((s) => s.wants_to_verify);
 }
 
+/** Actionable "gaps to close" — the specific missing pieces, each mapped to the
+ *  step that fixes it. On-brand: completeness, never a talent score. */
+export function profileGaps(p: CandidateProfile): { label: string; step: number }[] {
+  const gaps: { label: string; step: number }[] = [];
+  if (!p.headline.trim()) gaps.push({ label: "Write a one-line headline", step: 0 });
+  if (!p.summary.trim()) gaps.push({ label: "Add a short intro", step: 0 });
+  if (p.target_roles.length === 0) gaps.push({ label: "Pick the roles you want", step: 1 });
+  if (p.work_types.length === 0) gaps.push({ label: "Set your work type", step: 1 });
+  const missingSkills = 3 - p.claimed_skills.length;
+  if (missingSkills > 0) gaps.push({ label: `Add ${missingSkills} more skill${missingSkills === 1 ? "" : "s"} to verify`, step: 2 });
+  if (!p.claimed_skills.some((s) => s.wants_to_verify)) gaps.push({ label: "Flag a skill for your interview to verify", step: 2 });
+  if (p.highlights.length === 0) gaps.push({ label: "Add a story to open your interview", step: 3 });
+  if ((p.work_history ?? []).length === 0) gaps.push({ label: "Add your work history", step: 4 });
+  return gaps;
+}
+
 export function useProfileBuilder() {
   const live = isLiveBackend();
   const [profile, setProfile] = useState<CandidateProfile>(MOCK_CANDIDATE_PROFILE);
@@ -83,7 +99,10 @@ export function useProfileBuilder() {
       setSaveState("saving");
       try {
         const saved = await v1.putProfile(payload);
-        setProfile(saved);
+        // Preserve the structured timeline across the round-trip: the backend
+        // doesn't persist work_history/education yet (follow-up), so re-apply the
+        // local values instead of letting the server response drop them.
+        setProfile({ ...saved, work_history: payload.work_history, education: payload.education });
         setSaveState("saved");
       } catch {
         setSaveState("error");
