@@ -39,7 +39,7 @@ const BAND_LIGHT: Record<Band, { label: string; fg: string; bg: string }> = {
 };
 const BAND_DARK: Record<Band, { label: string; fg: string; bg: string }> = {
   high: { label: "Strong", fg: "#5eead4", bg: "rgba(16,185,129,0.16)" },
-  emerging: { label: "Emerging", fg: "#c4b5ff", bg: "rgba(139,84,255,0.22)" },
+  emerging: { label: "Emerging", fg: "#C6C6CA", bg: "rgba(255,255,255,0.12)" },
   needs_review: { label: "Needs more", fg: "#fcd34d", bg: "rgba(245,158,11,0.16)" },
 };
 
@@ -200,7 +200,7 @@ export function PublicProfileShell({ data, preview = false }: { data: PublicProf
                     <span className="text-[15px] font-bold" style={{ color: "#fff" }}>{t.label}</span>
                     <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold" style={{ background: b.bg, color: b.fg }}>{b.label}</span>
                   </div>
-                  <blockquote className="mt-3 border-l-2 pl-3 text-[13.5px] leading-relaxed text-white/70" style={{ borderColor: "rgba(139,84,255,0.6)" }}>
+                  <blockquote className="mt-3 border-l-2 pl-3 text-[13.5px] leading-relaxed text-white/70" style={{ borderColor: "rgba(255,255,255,0.4)" }}>
                     “{t.quote}”
                   </blockquote>
                   <p className="mt-2.5 flex items-center gap-1.5 text-[11.5px] font-semibold" style={{ color: "#c4b5ff" }}>

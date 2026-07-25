@@ -20,7 +20,7 @@ export type TraitBand = "high" | "emerging" | "needs_review";
 export type PassportTrait = { label: string; band: TraitBand };
 
 const BAND: Record<TraitBand, { text: string; fill: number; fg: string }> = {
-  high: { text: "High evidence", fill: 1, fg: "#8B54FF" },
+  high: { text: "High evidence", fill: 1, fg: "var(--ink)" },
   emerging: { text: "Emerging", fill: 0.62, fg: "#B79BFF" },
   needs_review: { text: "Needs review", fill: 0.34, fg: "rgba(255,255,255,0.5)" },
 };

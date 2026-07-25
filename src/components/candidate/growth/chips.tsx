@@ -12,7 +12,7 @@ export const FIT_BAND_LABEL: Record<FitBand, string> = {
 
 const FIT_BAND_STYLE: Record<FitBand, { bg: string; fg: string }> = {
   strong_fit: { bg: "var(--iris-ghost)", fg: "var(--iris-ink)" },
-  developing_fit: { bg: "rgba(139,84,255,0.10)", fg: "var(--iris-ink)" },
+  developing_fit: { bg: "rgba(16,16,18,0.08)", fg: "var(--iris-ink)" },
   stretch: { bg: "var(--mist)", fg: "var(--ink-3)" },
 };
 
