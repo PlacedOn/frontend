@@ -22,6 +22,9 @@ export interface InterviewMessage {
   role: Speaker;
   text: string;
   turn?: number;
+  /** Which Role-DNA requirement this question explores (live sessions bound to
+   *  a job only). Surfaced for transparency; absent for demo / unbound. */
+  signal?: { text: string; kind?: string };
 }
 
 export type InterviewStatus =

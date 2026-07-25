@@ -16,6 +16,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { liveInterviewSocketUrl } from "@/lib/api";
 import { v1 } from "@/lib/v1";
 import type { InterviewMessage, InterviewStatus } from "./useInterviewSession";
+import type { WhiteboardEvidence } from "@/lib/interview";
 
 const MAX_RECONNECT = 3; // then offer REST fallback (plan §11 reconnect contract)
 
@@ -39,14 +40,14 @@ export function useLiveInterview(sessionId: string, token: string) {
   const attemptsRef = useRef(0);
   const reconnectRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const finalizeQuestion = useCallback((text: string, questionTurn?: number) => {
+  const finalizeQuestion = useCallback((text: string, questionTurn?: number, signal?: InterviewMessage["signal"]) => {
     pendingQuestionRef.current = text;
     setMessages((prev) => {
       const last = prev[prev.length - 1];
       if (questionTurn != null && last && last.role === "ai" && last.turn === questionTurn) {
-        return prev.map((m, i) => (i === prev.length - 1 ? { ...m, text } : m));
+        return prev.map((m, i) => (i === prev.length - 1 ? { ...m, text, signal } : m));
       }
-      return [...prev, { id: newId("ai"), role: "ai", text, turn: questionTurn }];
+      return [...prev, { id: newId("ai"), role: "ai", text, turn: questionTurn, signal }];
     });
     setStreaming("");
     bufRef.current = "";
@@ -70,7 +71,7 @@ export function useLiveInterview(sessionId: string, token: string) {
     };
 
     ws.onmessage = (ev: MessageEvent) => {
-      let msg: { type?: string; content?: string; turn?: number; code?: string };
+      let msg: { type?: string; content?: string; turn?: number; code?: string; signal?: { id?: string; text?: string; kind?: string } };
       try {
         msg = JSON.parse(ev.data as string);
       } catch {
@@ -84,7 +85,11 @@ export function useLiveInterview(sessionId: string, token: string) {
           break;
         case "question":
           if (typeof msg.turn === "number") setTurn(msg.turn + 1);
-          finalizeQuestion(msg.content ?? bufRef.current, msg.turn);
+          finalizeQuestion(
+            msg.content ?? bufRef.current,
+            msg.turn,
+            msg.signal?.text ? { text: msg.signal.text, kind: msg.signal.kind } : undefined,
+          );
           break;
         case "ack":
           setSaved(true);
@@ -144,7 +149,7 @@ export function useLiveInterview(sessionId: string, token: string) {
   }, [connect]);
 
   const sendAnswer = useCallback(
-    async (text: string) => {
+    async (text: string, whiteboard?: WhiteboardEvidence) => {
       const trimmed = text.trim();
       if (!trimmed || status !== "awaiting") return;
       setMessages((m) => [...m, { id: newId("you"), role: "you", text: trimmed }]);
@@ -153,9 +158,20 @@ export function useLiveInterview(sessionId: string, token: string) {
       setStreaming("");
       bufRef.current = "";
 
+      // Only attach whiteboard evidence when the candidate actually drew — a
+      // surveillance-free "show your work" signal. Backend ignores it until the
+      // WS handler consumes it (safe extra field).
+      const hasBoard = Boolean(whiteboard && whiteboard.whiteboard_strokes > 0);
+
       const ws = wsRef.current;
       if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ v: 1, type: "answer_text", message_id: newId("msg"), content: trimmed }));
+        ws.send(JSON.stringify({
+          v: 1,
+          type: "answer_text",
+          message_id: newId("msg"),
+          content: trimmed,
+          ...(hasBoard ? { whiteboard } : {}),
+        }));
         return;
       }
       // REST fallback — socket is down; persist so the answer is never lost.
