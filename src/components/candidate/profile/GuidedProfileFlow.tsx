@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
-import { useProfileBuilder } from "./useProfileBuilder";
+import { useProfileBuilder, profileGaps } from "./useProfileBuilder";
+import { ProfileReadiness } from "./ProfileReadiness";
 import { IdentitySection } from "./IdentitySection";
 import { IntentSection } from "./IntentSection";
 import { SkillsSection } from "./SkillsSection";
@@ -81,6 +82,8 @@ export function GuidedProfileFlow() {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-5">
+      <ProfileReadiness momentum={momentum} gaps={profileGaps(profile)} onJump={setStep} />
+
       {/* Progress */}
       <div>
         <div className="flex items-center justify-between gap-3">
