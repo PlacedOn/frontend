@@ -14,7 +14,7 @@ import { useEffect, useRef } from "react";
 type Node = { x: number; y: number; vx: number; vy: number; r: number };
 
 const LINK_DIST = 150; // px within which two nodes are linked
-const IRIS = "150,120,250";
+const IRIS = "70,70,76";
 
 export function SignalField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -136,7 +136,7 @@ export function SignalField() {
         className="sf-aurora absolute inset-[-45%]"
         style={{
           background:
-            "linear-gradient(120deg, rgba(139,84,255,0.22), rgba(120,178,255,0.14) 34%, rgba(255,196,132,0.08) 55%, rgba(105,34,245,0.20) 78%, rgba(139,84,255,0.22))",
+            "linear-gradient(120deg, rgba(16,16,18,0.05), rgba(16,16,18,0.03) 34%, rgba(16,16,18,0.02) 55%, rgba(16,16,18,0.05) 78%, rgba(16,16,18,0.05))",
           filter: "blur(64px)",
           willChange: "transform",
         }}

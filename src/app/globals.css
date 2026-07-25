@@ -8,35 +8,46 @@
    ══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ── surfaces ─────────────────────────────── */
-  --porcelain:   #EEF1FA;          /* page ground */
-  --porcelain-2: #F7F9FE;          /* raised ground */
-  --mist:        #E4E9F6;          /* muted fill */
+  /* ── surfaces — Ink & Paper: neutral paper, not blue porcelain ─ */
+  --porcelain:   #F4F4F2;          /* page ground (paper) */
+  --porcelain-2: #FAFAF9;          /* raised ground */
+  --mist:        #EAEAE7;          /* muted fill */
   --white:       #FFFFFF;
+  --paper:   #FFFFFF;              /* semantic aliases for the new system */
+  --paper-2: #F6F6F5;
+  --paper-3: #ECECEA;
 
-  /* ── ink ──────────────────────────────────── */
-  --ink:    #0E1020;               /* primary text */
-  --ink-2:  #474D63;               /* secondary text */
-  --ink-3:  #7B8299;               /* tertiary / labels */
+  /* ── ink — true near-black, neutral grays (no blue tint) ────── */
+  --ink:    #101012;               /* primary text */
+  --ink-2:  #52525A;               /* secondary text */
+  --ink-3:  #8A8A90;               /* tertiary / labels */
+  --line:   rgba(16, 16, 18, 0.10);   /* editorial hairline */
+  --line-2: rgba(16, 16, 18, 0.16);
 
-  /* ── brand accent (from logo: placedon_mark.svg #6922F5) ─── */
-  --iris:        #6922F5;          /* brand violet — 6.6:1 on white */
-  --iris-soft:   #8B54FF;          /* lighter accent for gradients */
-  --iris-ink:    #5314C9;          /* deeper tone for small text (7:1+) */
-  --iris-ghost:  rgba(105, 34, 245, 0.10);
-  --iris-line:   rgba(105, 34, 245, 0.22);
+  /* ── accent — violet, now SCARCE. The old --iris* tokens are
+        re-pointed to ink/graphite so the 250+ existing references
+        render MONOCHROME automatically; --accent is the one true
+        violet, spent deliberately (focus ring + rare marks). ───── */
+  --accent:       #6922F5;         /* the one true brand violet */
+  --accent-ink:   #5314C9;
+  --accent-ghost: rgba(105, 34, 245, 0.10);
+  --iris:        #101012;          /* → ink (was brand violet) */
+  --iris-soft:   #3A3A42;          /* → graphite (gradient light) */
+  --iris-ink:    #1A1A1E;          /* → deep ink for small text */
+  --iris-ghost:  rgba(16, 16, 18, 0.05);
+  --iris-line:   rgba(16, 16, 18, 0.12);
 
-  /* ── scarce warm signal / "ember" (live proof moments only) ─ */
+  /* ── scarce warm signal / "ember" (live proof dot only) ─────── */
   --signal:      #F5860B;
   --signal-soft: #FFB454;
 
   /* ── workshop material registers (Fable "Workshop" vision) ─ */
   --specimen:      #F7F2E9;          /* warm artifact stock — shipped work reads as "made" */
   --specimen-line: #E7DECB;
-  --instrument:      #0E1020;        /* dark evidence-world ground (register-switch = meaning) */
-  --instrument-2:    #15173a;
-  --instrument-ink:  #A9A7C8;        /* body text inside the instrument register */
-  --instrument-ink-2:#7F7DA0;        /* labels / specimen numbers on dark */
+  --instrument:      #0B0B0C;        /* dark register — true near-black */
+  --instrument-2:    #17171A;
+  --instrument-ink:  #B6B6BA;        /* body text inside the instrument register */
+  --instrument-ink-2:#86868C;        /* labels / specimen numbers on dark */
   --instrument-line: rgba(255, 255, 255, 0.10);
   --vitrine:         rgba(255, 255, 255, 0.05);  /* display-case fill for unrolled facets */
 
@@ -45,15 +56,15 @@
   /* ── glass primitive ──────────────────────── */
   --glass:      rgba(255, 255, 255, 0.62);
   --glass-hi:   rgba(255, 255, 255, 0.82);
-  --glass-line: rgba(14, 16, 32, 0.09);
-  --glass-line-hi: rgba(14, 16, 32, 0.14);
+  --glass-line: rgba(16, 16, 18, 0.09);
+  --glass-line-hi: rgba(16, 16, 18, 0.14);
   --blur: 26px;
 
   /* ── shadows (soft, layered, light-world) ─── */
-  --shadow-sm: 0 1px 2px rgba(14, 16, 32, 0.05), 0 4px 12px rgba(14, 16, 32, 0.05);
-  --shadow-md: 0 2px 6px rgba(14, 16, 32, 0.06), 0 18px 40px -12px rgba(14, 16, 32, 0.14);
-  --shadow-lg: 0 8px 24px rgba(14, 16, 32, 0.08), 0 40px 80px -24px rgba(23, 26, 90, 0.22);
-  --shadow-iris: 0 12px 34px -10px rgba(58, 61, 224, 0.45);
+  --shadow-sm: 0 1px 2px rgba(16, 16, 18, 0.05), 0 4px 12px rgba(16, 16, 18, 0.05);
+  --shadow-md: 0 2px 6px rgba(16, 16, 18, 0.06), 0 18px 40px -12px rgba(16, 16, 18, 0.12);
+  --shadow-lg: 0 8px 24px rgba(16, 16, 18, 0.08), 0 40px 80px -24px rgba(16, 16, 18, 0.18);
+  --shadow-iris: 0 12px 34px -10px rgba(16, 16, 18, 0.22);   /* neutralized (was violet glow) */
 
   /* ── motion ───────────────────────────────── */
   --d-micro: 160ms;
@@ -91,9 +102,8 @@ body {
   margin: 0;
   min-height: 100dvh;
   background:
-    radial-gradient(1200px 700px at 12% -8%, #FFFFFF 0%, transparent 55%),
-    radial-gradient(1000px 620px at 92% 0%, #E9ECFF 0%, transparent 58%),
-    radial-gradient(900px 900px at 50% 118%, #EAF3FF 0%, transparent 60%),
+    radial-gradient(1200px 700px at 12% -8%, #FFFFFF 0%, transparent 60%),
+    radial-gradient(1000px 900px at 92% 2%, #FAFAF9 0%, transparent 62%),
     var(--porcelain);
   background-attachment: fixed;
   color: var(--ink);
@@ -172,7 +182,7 @@ h1, h2, h3, h4 {
 
 /* gradient accent text */
 .grad-iris {
-  background: linear-gradient(100deg, var(--iris) 0%, var(--iris-soft) 58%, #B79BFF 100%);
+  background: linear-gradient(100deg, var(--iris) 0%, var(--iris-soft) 58%, #6A6A72 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
 }
@@ -183,7 +193,7 @@ h1, h2, h3, h4 {
     100deg,
     var(--iris) 0%,
     var(--iris-soft) 34%,
-    #E7DBFF 50%,
+    #EAEAE8 50%,
     var(--iris-soft) 66%,
     var(--iris) 100%
   );
@@ -212,7 +222,7 @@ h1, h2, h3, h4 {
   top: 0.06em; bottom: 0.02em;
   z-index: 0;
   border-radius: 0.28em;
-  background: linear-gradient(100deg, rgba(154,107,255,0.42), rgba(120,74,240,0.5));
+  background: linear-gradient(100deg, rgba(16,16,18,0.11), rgba(16,16,18,0.16));
   transform: scaleX(var(--hl, 0));
   transform-origin: left center;
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
@@ -221,7 +231,7 @@ h1, h2, h3, h4 {
 
 /* focus ring — accessible, consistent */
 :where(a, button, input, [tabindex]):focus-visible {
-  outline: 2px solid var(--iris);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 6px;
 }

@@ -55,16 +55,16 @@ export function Button({
           // Vibrant appealing violet with a glossy glass sheen — clean and
           // saturated, not muddy. Bright inset top highlight reads as glass.
           background:
-            "linear-gradient(135deg, #9a6bff 0%, #7d47f0 55%, #6b36e6 120%)",
-          border: "1px solid rgba(255,255,255,0.26)",
+            "linear-gradient(180deg, #2A2A30 0%, #101012 100%)",
+          border: "1px solid rgba(255,255,255,0.10)",
           boxShadow:
-            "0 16px 36px -12px rgba(123,69,240,0.62), inset 0 1.5px 0 rgba(255,255,255,0.55), inset 0 -12px 24px -14px rgba(70,30,160,0.55)",
+            "0 16px 36px -12px rgba(16,16,18,0.38), inset 0 1.5px 0 rgba(255,255,255,0.14), inset 0 -12px 24px -14px rgba(0,0,0,0.45)",
         }
       : {
           // Frosted clear glass for secondary actions.
           background:
-            "linear-gradient(158deg, rgba(255,255,255,0.80), rgba(244,242,255,0.56) 72%)",
-          border: "1px solid rgba(255,255,255,0.72)",
+            "linear-gradient(158deg, rgba(255,255,255,0.86), rgba(246,246,245,0.60) 72%)",
+          border: "1px solid var(--line-2)",
           backdropFilter: "blur(16px) saturate(1.3)",
           WebkitBackdropFilter: "blur(16px) saturate(1.3)",
           boxShadow:

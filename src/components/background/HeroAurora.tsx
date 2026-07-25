@@ -33,12 +33,12 @@ uniform float u_time;
 uniform vec2 u_mouse;
 
 // Placedon palette
-const vec3 PORCELAIN = vec3(0.933, 0.945, 0.980);
-const vec3 LAV       = vec3(0.870, 0.850, 0.985);
-const vec3 IRIS      = vec3(0.412, 0.133, 0.961);
-const vec3 IRIS_SOFT = vec3(0.620, 0.470, 1.000);
-const vec3 GLOW      = vec3(0.820, 0.760, 1.000);
-const vec3 LILAC     = vec3(0.700, 0.585, 0.980);
+const vec3 PORCELAIN = vec3(0.957, 0.957, 0.949);
+const vec3 LAV       = vec3(0.925, 0.925, 0.918);
+const vec3 IRIS      = vec3(0.300, 0.300, 0.320);
+const vec3 IRIS_SOFT = vec3(0.520, 0.520, 0.540);
+const vec3 GLOW      = vec3(0.900, 0.900, 0.895);
+const vec3 LILAC     = vec3(0.720, 0.720, 0.725);
 
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
@@ -251,7 +251,7 @@ export function HeroAurora({ className = "" }: { className?: string }) {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 22%, #E7E2FF 0%, rgba(231,226,255,0) 55%), radial-gradient(90% 70% at 78% 30%, rgba(139,84,255,0.28), transparent 60%), radial-gradient(80% 70% at 20% 40%, rgba(105,34,245,0.20), transparent 60%), var(--porcelain)",
+            "radial-gradient(120% 90% at 50% 22%, #FAFAF9 0%, rgba(250,250,249,0) 55%), radial-gradient(90% 70% at 78% 30%, rgba(16,16,18,0.05), transparent 60%), radial-gradient(80% 70% at 20% 40%, rgba(16,16,18,0.04), transparent 60%), var(--porcelain)",
         }}
       />
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
