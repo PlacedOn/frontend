@@ -20,6 +20,7 @@ import {
   type ResumeParseResult,
 } from "@/lib/v1";
 import { MOCK_RESUME_PARSE } from "@/lib/mock/resumeParse";
+import { extractPdfText } from "@/lib/pdf";
 import { SectionCard, INPUT_CLS, INPUT_STYLE } from "./kit";
 
 const TEXT_FILE = /\.(txt|md|markdown|text)$/i;
@@ -39,18 +40,34 @@ export function ResumeIngest({
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ResumeParseResult | null>(null);
   const [added, setAdded] = useState(0);
+  const [reading, setReading] = useState(false);
 
-  const onFile = (e: ChangeEvent<HTMLInputElement>) => {
+  const onFile = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = ""; // allow re-selecting the same file
     if (!file) return;
-    if (!TEXT_FILE.test(file.name)) {
-      setError("For PDF or Word files, paste the text below — we don't upload your file.");
+    setError(null);
+    if (TEXT_FILE.test(file.name)) {
+      const reader = new FileReader();
+      reader.onload = () => setText(String(reader.result ?? ""));
+      reader.readAsText(file);
       return;
     }
-    const reader = new FileReader();
-    reader.onload = () => setText(String(reader.result ?? ""));
-    reader.readAsText(file);
-    setError(null);
+    if (/\.pdf$/i.test(file.name)) {
+      // Parsed IN the browser — the file itself is never uploaded.
+      setReading(true);
+      try {
+        const extracted = await extractPdfText(file);
+        if (extracted) setText(extracted);
+        else setError("That PDF looks scanned (no selectable text) — paste the text below instead.");
+      } catch {
+        setError("Couldn't read that PDF in your browser — paste the text below instead.");
+      } finally {
+        setReading(false);
+      }
+      return;
+    }
+    setError("Word files aren't supported yet — export to PDF, or paste the text below.");
   };
 
   // Merge extracted claims/highlights into the builder, de-duped by label/title.
@@ -99,11 +116,11 @@ export function ResumeIngest({
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={6}
-            placeholder="Paste your resume text here…"
+            placeholder="Paste your resume text here — or upload a PDF (read in your browser, never uploaded)…"
             className={`${INPUT_CLS} resize-y leading-6`}
             style={INPUT_STYLE}
           />
-          <input ref={fileRef} type="file" accept=".txt,.md,.markdown,.text" onChange={onFile} className="hidden" />
+          <input ref={fileRef} type="file" accept=".txt,.md,.markdown,.text,.pdf" onChange={onFile} className="hidden" />
           <div className="mt-3 flex flex-wrap items-center gap-2.5">
             <button
               type="button"
@@ -118,10 +135,12 @@ export function ResumeIngest({
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
-              className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] border px-4 py-2.5 text-[13.5px] font-semibold text-[var(--ink-2)] transition-colors hover:bg-white"
+              disabled={reading}
+              className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] border px-4 py-2.5 text-[13.5px] font-semibold text-[var(--ink-2)] transition-colors hover:bg-white disabled:opacity-50"
               style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass)" }}
             >
-              <Upload className="h-4 w-4" /> Upload .txt
+              {reading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+              {reading ? "Reading PDF…" : "Upload PDF or text"}
             </button>
           </div>
           {error && <p className="mt-3 text-[13px] font-semibold text-[#b45309]">{error}</p>}
