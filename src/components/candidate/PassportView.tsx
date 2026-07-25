@@ -7,9 +7,9 @@
  * never a person-score. Live backend only (needs the signing key).
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShieldCheck, Copy, Check, Loader2, BadgeCheck, ArrowRight } from "lucide-react";
+import { ShieldCheck, Copy, Check, Loader2, BadgeCheck, ArrowRight, Link2 } from "lucide-react";
 import { v1, V1Error, isLiveBackend, type IssuedPassport, type Band } from "@/lib/v1";
 
 const BAND: Record<Band, { label: string; fg: string }> = {
@@ -24,6 +24,21 @@ export function PassportView() {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [copiedShare, setCopiedShare] = useState<string | null>(null);
+  const [origin, setOrigin] = useState("https://placedon.com");
+  useEffect(() => {
+    if (typeof window !== "undefined") setOrigin(window.location.origin);
+  }, []);
+
+  const copyShare = async (what: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedShare(what);
+      setTimeout(() => setCopiedShare(null), 1800);
+    } catch {
+      /* clipboard blocked */
+    }
+  };
 
   const mint = async () => {
     setBusy(true);
@@ -113,6 +128,36 @@ export function PassportView() {
               </li>
             ))}
           </ul>
+
+          {(() => {
+            const verifyUrl = `${origin}/passport/verify`;
+            const badgeSnippet = `✓ Verified by Placedon — evidence-backed skills, not a résumé. Verify: ${verifyUrl}`;
+            return (
+              <div className="mt-5 rounded-[var(--r-btn)] border p-4" style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass-hi)" }}>
+                <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[var(--ink-3)]">Show it off</p>
+                <div className="mt-3 flex flex-wrap items-center gap-3">
+                  <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-bold" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)", border: "1px solid var(--iris-line)" }}>
+                    <BadgeCheck size={14} aria-hidden /> Verified by Placedon
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => copyShare("badge", badgeSnippet)}
+                    className="inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--r-btn)] border px-3.5 py-2 text-[13px] font-semibold text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]"
+                    style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass)" }}
+                  >
+                    {copiedShare === "badge" ? <Check size={14} /> : <Copy size={14} />} {copiedShare === "badge" ? "Copied" : "Copy badge for LinkedIn"}
+                  </button>
+                </div>
+                <div className="mt-3 flex items-center gap-2 rounded-[var(--r-btn)] border px-3 py-2" style={{ borderColor: "var(--glass-line)" }}>
+                  <Link2 size={14} className="shrink-0 text-[var(--ink-3)]" aria-hidden />
+                  <input readOnly value={verifyUrl} onFocus={(e) => e.currentTarget.select()} aria-label="Shareable verify link" className="min-w-0 flex-1 bg-transparent text-[12.5px] text-[var(--ink-2)] outline-none" />
+                  <button type="button" onClick={() => copyShare("link", verifyUrl)} className="shrink-0 cursor-pointer text-[12.5px] font-semibold text-[var(--iris-ink)]">
+                    {copiedShare === "link" ? "Copied" : "Copy link"}
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
 
           <p className="mt-4 text-[12px] text-[var(--ink-3)]">
             Recipients verify authenticity at{" "}
