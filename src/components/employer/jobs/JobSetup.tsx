@@ -23,6 +23,15 @@ const KIND_LABEL: Record<SignalKind, string> = {
   nice_to_have: "Nice-to-have",
 };
 
+/** A readable sample interview probe derived from a signal — so HR can see how
+ *  their requirements become questions. The live interview adapts per candidate;
+ *  this is only a preview. */
+function sampleProbe(s: RoleDnaSignal): string {
+  const text = s.signal.trim();
+  if (!text) return "";
+  return `Walk me through a specific time this was true of you — “${text}.”`;
+}
+
 const emptySignal = (kind: SignalKind = "success_signal"): RoleDnaSignal => ({
   kind,
   signal: "",
@@ -240,6 +249,28 @@ export function JobSetup({ jobId }: { jobId: string }) {
               </li>
             ))}
           </ul>
+
+          {/* Preview: how these signals become interview questions */}
+          {signals.some((s) => s.signal.trim()) && (
+            <div className="mt-4 rounded-[var(--r-btn)] border p-3.5" style={{ borderColor: "var(--iris-line)", background: "var(--iris-ghost)" }}>
+              <p className="flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.08em] text-[var(--iris-ink)]">
+                <Sparkles size={13} /> What the AI will ask · preview
+              </p>
+              <p className="mt-1 text-[12.5px] text-[var(--ink-2)]">
+                Sample probes generated from your signals. The live interview adapts to each candidate — this is just a preview.
+              </p>
+              <ul className="mt-3 space-y-2">
+                {signals.filter((s) => s.signal.trim()).slice(0, 5).map((s, i) => (
+                  <li key={i} className="rounded-[10px] bg-[var(--white)] px-3 py-2" style={{ border: "1px solid var(--glass-line)" }}>
+                    <p className="text-[13px] font-semibold text-[var(--ink)]">{sampleProbe(s)}</p>
+                    {s.required_evidence?.trim() && (
+                      <p className="mt-0.5 text-[11.5px] text-[var(--ink-3)]">Looking for: {s.required_evidence}</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <label className="mt-5 block">
             <span className="text-[13px] font-semibold text-[var(--ink-2)]">Suggested human follow-up</span>
