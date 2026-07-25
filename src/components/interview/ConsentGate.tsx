@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ShieldCheck, FileText, Type, Trash2, EyeOff, ArrowRight, LogIn } from "lucide-react";
 import { v1, V1Error, isLiveBackend } from "@/lib/v1";
+import { markInterviewInProgress } from "@/lib/interview/resume";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 /**
@@ -64,6 +65,7 @@ export function ConsentGate({
         mode_default: "text",
         consent: { kind: "interview", audio_retention: "none" },
       });
+      markInterviewInProgress(session.id, roleFamily); // enable "resume where you left off"
       router.push(`/interview?session=${session.id}`);
     } catch (err) {
       // A stale/expired session lands here too — route to sign in, don't dead-end.
