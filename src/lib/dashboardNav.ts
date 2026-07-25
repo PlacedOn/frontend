@@ -12,6 +12,7 @@ import {
   BadgeCheck,
   Radar,
   Hexagon,
+  Accessibility,
   Sparkle,
   type LucideIcon,
 } from "lucide-react";
@@ -57,6 +58,7 @@ const CANDIDATE_NAV: NavGroups = {
     { label: "Applications", href: "/candidate/applications", icon: Send },
     { label: "Network", href: "/candidate/network", icon: Radar },
     { label: "Profile", href: "/candidate/profile", icon: UserRound },
+    { label: "Accommodations", href: "/accommodations", icon: Accessibility },
     { label: "Preferences", href: "/candidate/preferences", icon: SlidersHorizontal },
   ],
 };
