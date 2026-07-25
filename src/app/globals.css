@@ -234,3 +234,14 @@ h1, h2, h3, h4 {
     scroll-behavior: auto !important;
   }
 }
+
+/* Manual "reduce motion" — Accommodations toggle sets data-reduce-motion="on"
+   on <html>, mirroring the OS setting for candidates who want it just here. */
+:root[data-reduce-motion="on"] *,
+:root[data-reduce-motion="on"] *::before,
+:root[data-reduce-motion="on"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
