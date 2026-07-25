@@ -5,8 +5,9 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   Search, MapPin, BriefcaseBusiness, Sparkles, ArrowRight, Mic, CheckCircle2,
-  Eye, Lock, Target, Handshake,
+  Eye, Lock, Target, Handshake, Bookmark, BookmarkCheck,
 } from "lucide-react";
+import { useSavedJobs } from "@/lib/candidate/savedJobs";
 import { getCandidateSnapshot, loadCandidateDashboard, type CandidateDashboardMode } from "@/lib/mock/candidate";
 import { OPEN_ROLES, WORK_FILTERS, type OpenRole } from "@/lib/candidate/openRoles";
 import { WORK_TYPE_LABEL } from "@/components/candidate/profile/kit";
@@ -46,12 +47,15 @@ export function CandidateHub({ mode }: { mode: CandidateDashboardMode }) {
 
 function JobBoard({ interviewDone }: { interviewDone: boolean }) {
   const reduce = useReducedMotion();
+  const { saved, isSaved, toggle } = useSavedJobs();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<(typeof WORK_FILTERS)[number]["id"]>("all");
+  const [savedOnly, setSavedOnly] = useState(false);
 
   const roles = useMemo(() => {
     const q = query.trim().toLowerCase();
     return OPEN_ROLES.filter((r) => {
+      if (savedOnly && !saved.includes(r.id)) return false;
       if (filter !== "all" && r.workType !== filter) return false;
       if (!q) return true;
       return (
@@ -61,7 +65,7 @@ function JobBoard({ interviewDone }: { interviewDone: boolean }) {
         r.skills.some((s) => s.toLowerCase().includes(q))
       );
     });
-  }, [query, filter]);
+  }, [query, filter, savedOnly, saved]);
 
   return (
     <section aria-labelledby="board-heading">
@@ -121,6 +125,17 @@ function JobBoard({ interviewDone }: { interviewDone: boolean }) {
               </button>
             );
           })}
+          <button
+            type="button"
+            onClick={() => setSavedOnly((v) => !v)}
+            aria-pressed={savedOnly}
+            className="inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-[13px] font-semibold transition-colors"
+            style={savedOnly
+              ? { borderColor: "var(--iris)", background: "var(--iris-ghost)", color: "var(--iris-ink)" }
+              : { borderColor: "var(--glass-line-hi)", color: "var(--ink-2)", background: "var(--glass)" }}
+          >
+            <Bookmark size={13} aria-hidden /> Saved{saved.length ? ` (${saved.length})` : ""}
+          </button>
         </div>
       </div>
 
@@ -128,7 +143,7 @@ function JobBoard({ interviewDone }: { interviewDone: boolean }) {
       <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <AnimatePresence mode="popLayout">
           {roles.map((role, i) => (
-            <RoleCard key={role.id} role={role} index={i} reduce={!!reduce} interviewDone={interviewDone} />
+            <RoleCard key={role.id} role={role} index={i} reduce={!!reduce} interviewDone={interviewDone} saved={isSaved(role.id)} onToggleSave={() => toggle(role.id)} />
           ))}
         </AnimatePresence>
       </div>
@@ -142,7 +157,7 @@ function JobBoard({ interviewDone }: { interviewDone: boolean }) {
   );
 }
 
-function RoleCard({ role, index, reduce, interviewDone }: { role: OpenRole; index: number; reduce: boolean; interviewDone: boolean }) {
+function RoleCard({ role, index, reduce, interviewDone, saved, onToggleSave }: { role: OpenRole; index: number; reduce: boolean; interviewDone: boolean; saved: boolean; onToggleSave: () => void }) {
   return (
     <motion.article
       layout
@@ -164,11 +179,23 @@ function RoleCard({ role, index, reduce, interviewDone }: { role: OpenRole; inde
             </div>
           </div>
         </div>
-        {role.fresh && (
-          <span className="shrink-0 rounded-full px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-[0.06em]" style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}>
-            New
-          </span>
-        )}
+        <div className="flex shrink-0 items-center gap-1.5">
+          {role.fresh && (
+            <span className="rounded-full px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-[0.06em]" style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}>
+              New
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={onToggleSave}
+            aria-pressed={saved}
+            aria-label={saved ? `Unsave ${role.title}` : `Save ${role.title}`}
+            className="grid size-8 place-items-center rounded-lg transition-colors"
+            style={saved ? { color: "var(--iris-ink)", background: "var(--iris-ghost)" } : { color: "var(--ink-3)" }}
+          >
+            {saved ? <BookmarkCheck size={16} aria-hidden /> : <Bookmark size={16} aria-hidden />}
+          </button>
+        </div>
       </div>
 
       <h3 className="mt-3.5 text-[17px] font-bold leading-snug text-[var(--ink)]">{role.title}</h3>
