@@ -574,6 +574,22 @@ export interface ExperienceHighlight {
   context: string; // 1–2 lines the candidate wants to talk about
   role_family_hint: string | null;
 }
+// Structured timeline (Naukri/LinkedIn parity). Context for the candidate + a
+// seed for the interview — never taken as proof (pedigree stays out of scoring).
+export interface WorkEntry {
+  id: string;
+  role: string;
+  company: string;
+  start: string; // free text, e.g. "2021" or "Jan 2021"
+  end: string | null; // null = currently here
+  summary: string;
+}
+export interface EducationEntry {
+  id: string;
+  school: string;
+  credential: string; // "B.Tech · Computer Science"
+  year: string;
+}
 export interface CandidateProfile {
   display_name: string;
   headline: string; // self-written one-liner
@@ -587,6 +603,8 @@ export interface CandidateProfile {
   comp_expectation: string | null;
   claimed_skills: ClaimedSkill[]; // Card A claims the interview will verify
   highlights: ExperienceHighlight[]; // seeds the interview's opening questions
+  work_history?: WorkEntry[]; // structured timeline (optional; backend persistence is a follow-up)
+  education?: EducationEntry[];
   linked_accounts: LinkedAccount[]; // connected platforms — work → evidence, social → presentation
   completeness: number; // 0–100 engagement momentum, NOT a talent score
   updated_at: string | null;

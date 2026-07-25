@@ -9,6 +9,7 @@ import { IdentitySection } from "./IdentitySection";
 import { IntentSection } from "./IntentSection";
 import { SkillsSection } from "./SkillsSection";
 import { HighlightsSection } from "./HighlightsSection";
+import { TimelineSection } from "./TimelineSection";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -16,7 +17,8 @@ const STEPS = [
   { id: "identity", label: "You", hint: "Who you are", Comp: IdentitySection },
   { id: "intent", label: "Goals", hint: "What you're looking for", Comp: IntentSection },
   { id: "skills", label: "Skills", hint: "What you'd claim", Comp: SkillsSection },
-  { id: "highlights", label: "Work", hint: "What you've shipped", Comp: HighlightsSection },
+  { id: "highlights", label: "Stories", hint: "What you've shipped", Comp: HighlightsSection },
+  { id: "timeline", label: "History", hint: "Your background", Comp: TimelineSection },
 ] as const;
 
 /**

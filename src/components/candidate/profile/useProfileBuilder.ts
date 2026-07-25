@@ -83,7 +83,10 @@ export function useProfileBuilder() {
       setSaveState("saving");
       try {
         const saved = await v1.putProfile(payload);
-        setProfile(saved);
+        // Preserve the structured timeline across the round-trip: the backend
+        // doesn't persist work_history/education yet (follow-up), so re-apply the
+        // local values instead of letting the server response drop them.
+        setProfile({ ...saved, work_history: payload.work_history, education: payload.education });
         setSaveState("saved");
       } catch {
         setSaveState("error");
