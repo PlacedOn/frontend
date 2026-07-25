@@ -71,6 +71,22 @@ export interface JobCreate {
   level?: string | null;
   company_name?: string | null;
 }
+// Candidate-browsable open role (GET /v1/jobs/open). Company identity is
+// deliberately omitted server-side (hidden until a consented intro).
+export interface OpenJob {
+  id: string;
+  title: string;
+  level: string | null;
+  work_mode: WorkMode | null;
+  location: string | null;
+  compensation_range: string | null;
+  response_sla: string | null;
+  team_context: string | null;
+  business_problem: string | null;
+  first_90_day_outcome: string | null;
+  signals: string[];
+  signal_count: number;
+}
 
 // ── Slice 2: candidate preferences, interview sessions, consent ──
 export type InterviewMode = "text" | "voice";
@@ -732,6 +748,7 @@ export const v1 = {
   employerDashboard: () => authFetch<JobSummary[]>("/v1/employer/dashboard", { method: "GET" }),
   employerOverview: () => authFetch<EmployerOverview>("/v1/employer/overview", { method: "GET" }),
   getJob: (id: string) => authFetch<JobDetail>(`/v1/jobs/${id}`, { method: "GET" }),
+  listOpenJobs: () => authFetch<OpenJob[]>("/v1/jobs/open", { method: "GET" }),
   generateRoleDna: (id: string, description: string) =>
     authFetch<RoleDnaGenResult>(`/v1/jobs/${id}/role-dna/generate`, {
       method: "POST",

@@ -13,6 +13,7 @@
  */
 
 import type { SignalKind, WorkMode, WorkType } from "@/lib/v1";
+import { v1, type OpenJob } from "@/lib/v1";
 import { isLiveBackend } from "@/lib/api";
 
 export interface JobSignal {
@@ -182,19 +183,57 @@ const LISTINGS: readonly JobListing[] = [
 
 const delay = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
 
-/** Returns the browsable job board (live backend or mock). */
+/** Map a backend OpenJob to the richer UI JobListing. Company identity stays an
+ *  archetype (hidden until a consented intro); work_type isn't modeled server
+ *  side, so it defaults to full_time. */
+function mapOpenJob(j: OpenJob): JobListing {
+  const roleFamily =
+    j.title.toLowerCase().trim().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 64) || "general";
+  return {
+    id: j.id,
+    title: j.title,
+    company: "A hiring team",
+    roleFamily,
+    workType: "full_time",
+    workMode: (j.work_mode ?? "remote") as WorkMode,
+    level: j.level ?? "—",
+    location: j.location ?? "Remote",
+    compRange: j.compensation_range ?? "—",
+    skills: j.signals.slice(0, 3),
+    summary: j.business_problem ?? "",
+    outcome: j.first_90_day_outcome ?? "",
+    signals: j.signals.map((s) => ({ kind: "success_signal" as SignalKind, signal: s, evidence: "" })),
+    reality: { teamContext: j.team_context ?? "", process: "", responseSla: j.response_sla ?? "" },
+    coveredSignals: 0,
+  };
+}
+
+/** Returns the browsable job board (live backend or illustrative pool). */
 export async function getJobListings(): Promise<JobListing[]> {
-  // TODO(live): when isLiveBackend(), map v1.listOpenJobs()/openings here.
   if (isLiveBackend()) {
-    // Intentionally falls through to the illustrative pool until the live
-    // openings endpoint is wired — keeps the board populated in every env.
+    try {
+      const rows = await v1.listOpenJobs();
+      if (rows.length) return rows.map(mapOpenJob);
+    } catch {
+      // fall through to the illustrative pool so the board is never empty
+    }
   }
   await delay(320);
   return LISTINGS.map((l) => ({ ...l }));
 }
 
-/** Returns one listing by id, or null. */
+/** Returns one listing by id, or null. Candidates can't read a single job via
+ *  RLS, so live detail is resolved from the open-jobs feed. */
 export async function getJobListing(id: string): Promise<JobListing | null> {
+  if (isLiveBackend()) {
+    try {
+      const rows = await v1.listOpenJobs();
+      const hit = rows.find((r) => r.id === id);
+      if (hit) return mapOpenJob(hit);
+    } catch {
+      // fall through to the illustrative pool
+    }
+  }
   await delay(220);
   const found = LISTINGS.find((l) => l.id === id);
   return found ? { ...found } : null;
