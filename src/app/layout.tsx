@@ -3,6 +3,7 @@ import { Sora, Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { DemoDialogProvider } from "@/components/demo/DemoDialogProvider";
+import { CommandPalette } from "@/components/ui/CommandPalette";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <DemoDialogProvider>{children}</DemoDialogProvider>
+          <CommandPalette />
         </AuthProvider>
       </body>
     </html>
