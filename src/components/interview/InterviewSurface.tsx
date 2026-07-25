@@ -27,7 +27,7 @@ export interface InterviewSurfaceProps {
   status: InterviewStatus;
   turn: number;
   error: string | null;
-  onSend: (text: string) => void;
+  onSend: (text: string, whiteboard?: WhiteboardEvidence) => void;
   onEnd: () => void;
   onRetry?: () => void;
   /** Where "Review your profile" points after the interview ends. */
@@ -50,7 +50,7 @@ export function InterviewSurface({
   const [draft, setDraft] = useState("");
   const [showBoard, setShowBoard] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const [, setBoardEvidence] = useState<WhiteboardEvidence>(emptyEvidence);
+  const [boardEvidence, setBoardEvidence] = useState<WhiteboardEvidence>(emptyEvidence);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const canAnswer = status === "awaiting";
@@ -101,7 +101,7 @@ export function InterviewSurface({
   const submit = () => {
     if (!canAnswer || !draft.trim()) return;
     if (speech.listening) speech.stop();
-    onSend(draft);
+    onSend(draft, boardEvidence);
     setDraft("");
     speech.reset();
   };
@@ -242,6 +242,12 @@ export function InterviewSurface({
               </button>
             )}
           </div>
+
+          {currentQuestion?.signal && !streaming && !thinking && (
+            <p className="relative mt-2 inline-flex w-fit items-center rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--ink-3)]" style={{ borderColor: "var(--line-2)", background: "var(--paper-3)" }}>
+              Exploring · {currentQuestion.signal.text}
+            </p>
+          )}
 
           <div className="relative mt-3 min-h-[3.2em]">
             {streaming ? (
