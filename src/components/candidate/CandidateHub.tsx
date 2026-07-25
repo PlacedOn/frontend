@@ -11,6 +11,7 @@ import { getCandidateSnapshot, loadCandidateDashboard, type CandidateDashboardMo
 import { OPEN_ROLES, WORK_FILTERS, type OpenRole } from "@/lib/candidate/openRoles";
 import { WORK_TYPE_LABEL } from "@/components/candidate/profile/kit";
 import { ConnectedGreeting } from "@/components/candidate/ConnectedGreeting";
+import { OnboardingChecklist } from "@/components/candidate/OnboardingChecklist";
 import { IconTile } from "@/components/ui/IconTile";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -33,6 +34,11 @@ export function CandidateHub({ mode }: { mode: CandidateDashboardMode }) {
 
   return (
     <div className="space-y-9">
+      <OnboardingChecklist
+        interviewDone={snapshot.interview.status === "complete"}
+        matchCount={snapshot.matches.length}
+        visible={snapshot.profile.employerVisible}
+      />
       <ConnectedGreeting snapshot={snapshot} />
       <JobBoard interviewDone={snapshot.interview.status === "complete"} />
       <EvidenceStrip
