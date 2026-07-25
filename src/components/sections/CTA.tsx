@@ -22,8 +22,8 @@ export function CTA() {
             className="relative overflow-hidden rounded-[calc(var(--r-card)+12px)] px-8 py-14 md:px-16 md:py-20"
             style={{
               background:
-                "linear-gradient(118deg, #8f61f7 0%, #7c48f1 46%, #6b38e6 108%)",
-              boxShadow: "0 34px 80px -34px rgba(110,60,230,0.55)",
+                "linear-gradient(118deg, #2A2A30 0%, #17171A 46%, #0B0B0C 108%)",
+              boxShadow: "0 34px 80px -34px rgba(16,16,18,0.5)",
             }}
           >
             {/* rotating globe motion graphic, behind the copy on the right */}

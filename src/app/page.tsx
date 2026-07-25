@@ -1,18 +1,23 @@
 import { SignalField } from "@/components/background/SignalField";
 import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
-import { KineticMarquee } from "@/components/motion/KineticMarquee";
-import { VisionReel } from "@/components/sections/VisionReel";
-import { VerifiedCompanies } from "@/components/sections/VerifiedCompanies";
+import { DualPath } from "@/components/sections/DualPath";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FeaturedSurfaces } from "@/components/sections/FeaturedSurfaces";
+import { TrustBand } from "@/components/sections/TrustBand";
+import { StatsBand } from "@/components/sections/StatsBand";
 import { GlobalReach } from "@/components/sections/GlobalReach";
-import { SignalAccordion } from "@/components/sections/SignalAccordion";
-import { Testimonials } from "@/components/sections/Testimonials";
 import { Audiences } from "@/components/sections/Audiences";
+import { Faq } from "@/components/sections/Faq";
 import { CTA } from "@/components/sections/CTA";
 import { Footer } from "@/components/sections/Footer";
 
+/**
+ * Landing — "Ink & Paper" editorial flow. Filler/AI-slop sections removed
+ * (KineticMarquee slogan wall, VerifiedCompanies placeholder marquee, fictional
+ * Testimonials, VisionReel), replaced with substantive information: a clear
+ * dual-path, a real trust/compliance band, honest product numbers, and an FAQ.
+ */
 export default function Home() {
   return (
     <>
@@ -20,15 +25,14 @@ export default function Home() {
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <Hero />
-        <VerifiedCompanies />
-        <SignalAccordion />
-        <KineticMarquee />
-        <VisionReel />
+        <DualPath />
         <HowItWorks />
         <FeaturedSurfaces />
+        <TrustBand />
+        <StatsBand />
         <GlobalReach />
-        <Testimonials />
         <Audiences />
+        <Faq />
         <CTA />
       </main>
       <Footer />

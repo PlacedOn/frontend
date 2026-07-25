@@ -13,7 +13,9 @@ type Size = "sm" | "md" | "lg";
  */
 const TONE: Record<Tone, { fg: string; bg: string; border: string }> = {
   ink: { fg: "var(--ink-2)", bg: "var(--glass-hi)", border: "var(--glass-line-hi)" },
-  iris: { fg: "var(--iris-ink)", bg: "rgba(105,34,245,0.06)", border: "var(--iris-line)" },
+  // "iris" tone is now monochrome graphite (near-pure B&W direction) — a touch
+  // stronger than `ink` for hierarchy, no violet. --accent stays for rare marks.
+  iris: { fg: "var(--ink)", bg: "var(--paper-3)", border: "var(--line-2)" },
   green: { fg: "#047857", bg: "rgba(16,185,129,0.07)", border: "rgba(16,185,129,0.22)" },
   amber: { fg: "#B45309", bg: "rgba(245,134,11,0.08)", border: "rgba(245,134,11,0.24)" },
 };
