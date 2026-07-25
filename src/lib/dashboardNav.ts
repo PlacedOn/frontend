@@ -11,6 +11,7 @@ import {
   Plus,
   BadgeCheck,
   Radar,
+  Dumbbell,
   Hexagon,
   Sparkle,
   type LucideIcon,
@@ -53,6 +54,7 @@ const CANDIDATE_NAV: NavGroups = {
     { label: "Passport", href: "/candidate/passport", icon: BadgeCheck },
   ],
   secondary: [
+    { label: "Practice", href: "/practice", icon: Dumbbell },
     { label: "Growth", href: "/candidate/growth", icon: Sparkles },
     { label: "Applications", href: "/candidate/applications", icon: Send },
     { label: "Network", href: "/candidate/network", icon: Radar },
