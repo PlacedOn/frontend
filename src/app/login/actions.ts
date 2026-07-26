@@ -41,8 +41,27 @@ const signUpSchema = z.object({
   }),
 });
 
+const forgotSchema = z.object({ email: emailSchema });
+
+const updatePasswordSchema = z
+  .object({
+    password: passwordSchema,
+    confirm: z.string(),
+  })
+  .refine((v) => v.password === v.confirm, {
+    path: ["confirm"],
+    message: "Those passwords don't match.",
+  });
+
 function dashboardFor(role: string | null | undefined): string {
   return role === "employer" ? "/employer" : "/candidate";
+}
+
+/** Our own origin, resolved from the request so links are correct per-environment.
+ *  Falls back to the configured site URL, then production. */
+async function requestOrigin(): Promise<string> {
+  const hdrs = await headers();
+  return hdrs.get("origin") ?? process.env.NEXT_PUBLIC_SITE_URL ?? "https://placedon.com";
 }
 
 /** Return-to path after auth — internal relative paths only, so a crafted
@@ -98,10 +117,8 @@ export async function signUp(formData: FormData): Promise<AuthResult> {
   const { email, password, fullName, role } = parsed.data;
   const supabase = await createClient();
   // The confirmation link must return to our callback route (which exchanges the
-  // code for a session), not Supabase's default Site URL. Origin comes from the
-  // request so it's correct in every environment.
-  const hdrs = await headers();
-  const origin = hdrs.get("origin") ?? process.env.NEXT_PUBLIC_SITE_URL ?? "https://placedon.com";
+  // code for a session), not Supabase's default Site URL.
+  const origin = await requestOrigin();
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -131,6 +148,59 @@ export async function signUp(formData: FormData): Promise<AuthResult> {
   }
 
   return { needsConfirmation: true };
+}
+
+/**
+ * Send a password-reset email. The link returns to our callback route, which
+ * exchanges the code for a short-lived recovery session and forwards to
+ * /reset-password where the user sets a new password.
+ *
+ * Always reports success: revealing whether an email is registered would leak
+ * account existence — the same reason signUp obfuscates taken emails.
+ */
+export async function requestPasswordReset(formData: FormData): Promise<AuthResult> {
+  const parsed = forgotSchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) return { error: firstIssue(parsed.error) };
+
+  const supabase = await createClient();
+  const origin = await requestOrigin();
+  await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+    redirectTo: `${origin}/auth/callback?next=${encodeURIComponent("/reset-password")}`,
+  });
+
+  // Deliberately not surfacing any error — success either way (anti-enumeration).
+  return { needsConfirmation: true };
+}
+
+/**
+ * Set a new password. Requires the recovery session established by the callback
+ * (the user arrived from a valid reset link). On success they're signed in, so
+ * we send them straight to their dashboard.
+ */
+export async function updatePassword(formData: FormData): Promise<AuthResult> {
+  const parsed = updatePasswordSchema.safeParse({
+    password: formData.get("password"),
+    confirm: formData.get("confirm"),
+  });
+  if (!parsed.success) return { error: firstIssue(parsed.error) };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { error: "This reset link has expired. Please request a new one." };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
+  if (error) {
+    if (error.code === "weak_password" || error.code === "same_password") {
+      return { error: "Please choose a stronger password that you haven't used here before." };
+    }
+    return { error: "We couldn't update your password just now. Please try again in a moment." };
+  }
+
+  redirect(dashboardFor(await roleOf(supabase, user.id)));
 }
 
 export async function signOut(): Promise<void> {
