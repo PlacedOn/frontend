@@ -14,11 +14,15 @@ export const metadata: Metadata = {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; error?: string }>;
 }) {
-  const { next } = await searchParams;
+  const { next, error } = await searchParams;
   // internal relative paths only (open-redirect guard)
   const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : undefined;
+  const initialError =
+    error === "confirm"
+      ? "That confirmation link has expired or was already used. Sign in below, or sign up again for a fresh link."
+      : undefined;
 
   const supabase = await createClient();
   const {
@@ -40,7 +44,7 @@ export default async function LoginPage({
       <main className="relative min-h-[100svh]" style={{ zIndex: "var(--z-base)" }}>
         <div className="shell grid min-h-[100svh] content-center items-center gap-10 py-10 md:py-14 lg:grid-cols-[1.05fr_minmax(0,470px)] lg:gap-16">
           <AuthAside />
-          <AuthPanel next={safeNext} />
+          <AuthPanel next={safeNext} initialError={initialError} />
         </div>
       </main>
     </>
