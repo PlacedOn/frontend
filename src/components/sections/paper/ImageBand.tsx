@@ -16,7 +16,7 @@ export function ImageBand() {
           style={{
             backgroundColor: "var(--ink)",
             backgroundImage:
-              "linear-gradient(90deg, rgba(20,20,18,0.88) 0%, rgba(20,20,18,0.5) 48%, rgba(20,20,18,0.18) 100%), url(/img/team.png)",
+              "linear-gradient(90deg, rgba(20,20,18,0.88) 0%, rgba(20,20,18,0.5) 48%, rgba(20,20,18,0.18) 100%), url(/img/team.jpg)",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
