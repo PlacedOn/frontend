@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { v1, isLiveBackend, type EmployerOverview } from "@/lib/v1";
+import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
 
 const SAMPLE: EmployerOverview = { active_roles: 3, total_roles: 5, candidates_in_pipeline: 12, intros_open: 2, hires: 1 };
 
@@ -37,7 +38,7 @@ export function EmployerStats() {
         <p className="eyebrow">Pipeline</p>
         <div className="mt-2 flex items-end gap-3">
           <span className="text-[52px] font-bold leading-[0.9] tabular-nums text-[var(--ink)]" style={{ fontFamily: "var(--font-mono)" }}>
-            {data ? data.candidates_in_pipeline : "—"}
+            {data ? <AnimatedNumber value={data.candidates_in_pipeline} /> : "—"}
           </span>
           <span className="pb-1.5 text-[14px] font-semibold text-[var(--ink-2)]">candidates in play</span>
         </div>
@@ -48,7 +49,9 @@ export function EmployerStats() {
             <span className="text-[var(--ink-2)]">
               <span className="font-semibold text-[var(--ink)]">{data ? data.active_roles : "—"}</span> of {data ? data.total_roles : "—"} roles active
             </span>
-            <span className="font-semibold tabular-nums text-[var(--ink)]">{rolePct}%</span>
+            <span className="font-semibold tabular-nums text-[var(--ink)]">
+              {data ? <AnimatedNumber value={rolePct} /> : "—"}%
+            </span>
           </div>
           <div className="mt-1.5 h-2 overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
             <div className="h-full rounded-full transition-[width] duration-700" style={{ width: `${rolePct}%`, background: "var(--iris)" }} />
@@ -68,18 +71,18 @@ export function EmployerStats() {
       </div>
 
       {/* Secondary tiles — lighter weight, clear rhythm */}
-      <SecondaryTile value={data ? `${data.active_roles}` : "—"} label="Active roles" sub={data ? `of ${data.total_roles} total` : ""} />
-      <SecondaryTile value={data ? `${data.intros_open}` : "—"} label="Open intros" sub="awaiting a response" />
-      <SecondaryTile value={data ? `${data.hires}` : "—"} label="Hires" sub="positive outcomes" />
+      <SecondaryTile value={data ? data.active_roles : null} label="Active roles" sub={data ? `of ${data.total_roles} total` : ""} />
+      <SecondaryTile value={data ? data.intros_open : null} label="Open intros" sub="awaiting a response" />
+      <SecondaryTile value={data ? data.hires : null} label="Hires" sub="positive outcomes" />
     </div>
   );
 }
 
-function SecondaryTile({ value, label, sub }: { value: string; label: string; sub: string }) {
+function SecondaryTile({ value, label, sub }: { value: number | null; label: string; sub: string }) {
   return (
     <div className="glass flex flex-col justify-end rounded-[var(--r-card)] p-5 lg:col-span-1">
       <p className="text-[26px] font-bold leading-none tabular-nums text-[var(--ink)]" style={{ fontFamily: "var(--font-mono)" }}>
-        {value}
+        {value === null ? "—" : <AnimatedNumber value={value} />}
       </p>
       <p className="mt-2 text-[12.5px] font-semibold text-[var(--ink-2)]">{label}</p>
       {sub && <p className="text-[11.5px] text-[var(--ink-3)]">{sub}</p>}
