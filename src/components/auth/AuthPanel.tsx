@@ -216,17 +216,28 @@ export function AuthPanel({ next, initialError }: { next?: string; initialError?
             error={fieldErrors.email}
             onValueChange={() => clearField("email")}
           />
-          <AuthField
-            id="auth-password"
-            name="password"
-            label="Password"
-            icon={Lock}
-            type="password"
-            autoComplete={isSignup ? "new-password" : "current-password"}
-            placeholder={isSignup ? "At least 8 characters" : "Your password"}
-            error={fieldErrors.password}
-            onValueChange={() => clearField("password")}
-          />
+          <div className="flex flex-col gap-1.5">
+            <AuthField
+              id="auth-password"
+              name="password"
+              label="Password"
+              icon={Lock}
+              type="password"
+              autoComplete={isSignup ? "new-password" : "current-password"}
+              placeholder={isSignup ? "At least 8 characters" : "Your password"}
+              error={fieldErrors.password}
+              onValueChange={() => clearField("password")}
+            />
+            {!isSignup && (
+              <Link
+                href="/forgot-password"
+                className="self-end text-[13px] font-semibold transition-colors duration-[var(--d-micro)] hover:underline"
+                style={{ color: "var(--iris-ink)" }}
+              >
+                Forgot password?
+              </Link>
+            )}
+          </div>
 
           {formError && (
             <p
