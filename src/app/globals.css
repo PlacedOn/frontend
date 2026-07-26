@@ -1,30 +1,31 @@
 @import "tailwindcss";
 
 /* ══════════════════════════════════════════════════════════════
-   Placedon — Frost Luxe design system
-   Single source of truth. One light world: porcelain + frosted
-   glass, a single iris accent, and one scarce warm signal.
-   Swap --iris + --iris-soft to match the brand logo.
+   Placedon — "Paper" design system
+   Single source of truth. Calm and typographic: warm paper, flat
+   hairline surfaces, one restrained violet accent used sparingly.
+   Typography and whitespace carry hierarchy — not effects.
+   See docs/DESIGN-DIRECTION.md.
    ══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ── surfaces ─────────────────────────────── */
-  --porcelain:   #EEF1FA;          /* page ground */
-  --porcelain-2: #F7F9FE;          /* raised ground */
-  --mist:        #E4E9F6;          /* muted fill */
+  /* ── surfaces (warm paper, no blue) ───────── */
+  --porcelain:   #FBFAF9;          /* page ground — warm paper */
+  --porcelain-2: #FFFFFF;          /* raised ground */
+  --mist:        #F1F0EC;          /* muted fill */
   --white:       #FFFFFF;
 
-  /* ── ink ──────────────────────────────────── */
-  --ink:    #0E1020;               /* primary text */
-  --ink-2:  #474D63;               /* secondary text */
-  --ink-3:  #7B8299;               /* tertiary / labels */
+  /* ── ink (warm near-black neutrals) ───────── */
+  --ink:    #191917;               /* primary text */
+  --ink-2:  #56554E;               /* secondary text */
+  --ink-3:  #8B8A80;               /* tertiary / labels */
 
-  /* ── brand accent (from logo: placedon_mark.svg #6922F5) ─── */
-  --iris:        #6922F5;          /* brand violet — 6.6:1 on white */
-  --iris-soft:   #8B54FF;          /* lighter accent for gradients */
-  --iris-ink:    #5314C9;          /* deeper tone for small text (7:1+) */
-  --iris-ghost:  rgba(105, 34, 245, 0.10);
-  --iris-line:   rgba(105, 34, 245, 0.22);
+  /* ── brand accent — one solid mark, used sparingly ─── */
+  --iris:        #5B34E0;          /* brand violet — solid only, never a wash */
+  --iris-soft:   #7A52F0;          /* hover / small lift */
+  --iris-ink:    #4A22C0;          /* deeper tone for small text (7:1+) */
+  --iris-ghost:  rgba(91, 52, 224, 0.07);
+  --iris-line:   rgba(91, 52, 224, 0.18);
 
   /* ── scarce warm signal / "ember" (live proof moments only) ─ */
   --signal:      #F5860B;
@@ -42,18 +43,18 @@
 
   --danger: #E5484D;
 
-  /* ── glass primitive ──────────────────────── */
-  --glass:      rgba(255, 255, 255, 0.62);
-  --glass-hi:   rgba(255, 255, 255, 0.82);
-  --glass-line: rgba(14, 16, 32, 0.09);
-  --glass-line-hi: rgba(14, 16, 32, 0.14);
-  --blur: 26px;
+  /* ── surface primitive (flat paper, no glass) ─ */
+  --glass:      #FFFFFF;
+  --glass-hi:   #FFFFFF;
+  --glass-line: rgba(25, 25, 23, 0.10);
+  --glass-line-hi: rgba(25, 25, 23, 0.15);
+  --blur: 0px;
 
-  /* ── shadows (soft, layered, light-world) ─── */
-  --shadow-sm: 0 1px 2px rgba(14, 16, 32, 0.05), 0 4px 12px rgba(14, 16, 32, 0.05);
-  --shadow-md: 0 2px 6px rgba(14, 16, 32, 0.06), 0 18px 40px -12px rgba(14, 16, 32, 0.14);
-  --shadow-lg: 0 8px 24px rgba(14, 16, 32, 0.08), 0 40px 80px -24px rgba(23, 26, 90, 0.22);
-  --shadow-iris: 0 12px 34px -10px rgba(58, 61, 224, 0.45);
+  /* ── shadows (near-flat, barely there) ────── */
+  --shadow-sm: 0 1px 2px rgba(25, 25, 23, 0.04);
+  --shadow-md: 0 1px 3px rgba(25, 25, 23, 0.05), 0 8px 24px -18px rgba(25, 25, 23, 0.16);
+  --shadow-lg: 0 2px 8px rgba(25, 25, 23, 0.06), 0 24px 48px -28px rgba(25, 25, 23, 0.18);
+  --shadow-iris: 0 8px 22px -12px rgba(91, 52, 224, 0.28);
 
   /* ── motion ───────────────────────────────── */
   --d-micro: 160ms;
@@ -62,11 +63,11 @@
   --ease-out:    cubic-bezier(0.22, 0.68, 0.31, 1);
   --ease-spring: cubic-bezier(0.34, 1.45, 0.5, 1);
 
-  /* ── geometry ─────────────────────────────── */
-  --r-card: 24px;
-  --r-btn:  14px;
+  /* ── geometry (tighter, enterprise) ───────── */
+  --r-card: 14px;
+  --r-btn:  10px;
   --r-chip: 999px;
-  --max:    1180px;
+  --max:    1120px;
 
   /* ── fonts (wired via next/font) ──────────── */
   --font-display: var(--font-sora), "Segoe UI", system-ui, sans-serif;
@@ -90,12 +91,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   min-height: 100dvh;
-  background:
-    radial-gradient(1200px 700px at 12% -8%, #FFFFFF 0%, transparent 55%),
-    radial-gradient(1000px 620px at 92% 0%, #E9ECFF 0%, transparent 58%),
-    radial-gradient(900px 900px at 50% 118%, #EAF3FF 0%, transparent 60%),
-    var(--porcelain);
-  background-attachment: fixed;
+  background: var(--porcelain);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 16px;
@@ -105,7 +101,7 @@ body {
   overflow-x: hidden;
 }
 
-::selection { background: var(--iris); color: #fff; }
+::selection { background: rgba(91, 52, 224, 0.14); color: var(--ink); }
 
 /* In @layer base so Tailwind text-* utilities can override link color.
    Unlayered, this rule would beat every text-white on an <a> (cascade
@@ -138,23 +134,20 @@ h1, h2, h3, h4 {
   color: var(--ink-3);
 }
 
-/* glass primitive ─ high opacity for light-mode legibility */
+/* surface primitive ─ flat paper card, hairline border, barely-there shadow.
+   (Class name kept as .glass so the whole app inherits the flatter look.) */
 .glass {
-  background: linear-gradient(158deg, var(--glass-hi), var(--glass) 72%);
+  background: var(--glass);
   border: 1px solid var(--glass-line);
-  backdrop-filter: blur(var(--blur)) saturate(160%);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
-  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: var(--shadow-sm);
 }
 
 .chip {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 7px 14px; border-radius: var(--r-chip);
-  background: var(--glass-hi);
+  padding: 6px 13px; border-radius: var(--r-chip);
+  background: var(--white);
   border: 1px solid var(--glass-line);
-  backdrop-filter: blur(12px);
   font-size: 13px; font-weight: 500; color: var(--ink-2);
-  box-shadow: var(--shadow-sm);
 }
 
 /* live dot — the one place --signal is allowed */
@@ -170,31 +163,12 @@ h1, h2, h3, h4 {
   100% { box-shadow: 0 0 0 0 rgba(245, 134, 11, 0); }
 }
 
-/* gradient accent text */
-.grad-iris {
-  background: linear-gradient(100deg, var(--iris) 0%, var(--iris-soft) 58%, #B79BFF 100%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
-}
-
-/* animated shimmer accent — a live sheen travels across the gradient text */
+/* Accent text — retired from gradient/shimmer to a solid, calm accent.
+   (Class names kept so existing usages stay valid but stop shimmering.) */
+.grad-iris,
 .grad-iris-shimmer {
-  background: linear-gradient(
-    100deg,
-    var(--iris) 0%,
-    var(--iris-soft) 34%,
-    #E7DBFF 50%,
-    var(--iris-soft) 66%,
-    var(--iris) 100%
-  );
-  background-size: 220% 100%;
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
-  animation: irisShimmer 6.5s linear infinite;
-}
-@keyframes irisShimmer {
-  0%   { background-position: 140% 0; }
-  100% { background-position: -40% 0; }
+  color: var(--iris-ink);
+  -webkit-text-fill-color: currentColor;
 }
 
 /* editorial highlighter marker (statement section) */

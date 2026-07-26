@@ -1,35 +1,23 @@
-import { SignalField } from "@/components/background/SignalField";
 import { Nav } from "@/components/sections/Nav";
-import { Hero } from "@/components/sections/Hero";
-import { KineticMarquee } from "@/components/motion/KineticMarquee";
-import { VisionReel } from "@/components/sections/VisionReel";
-import { VerifiedCompanies } from "@/components/sections/VerifiedCompanies";
-import { HowItWorks } from "@/components/sections/HowItWorks";
-import { FeaturedSurfaces } from "@/components/sections/FeaturedSurfaces";
-import { GlobalReach } from "@/components/sections/GlobalReach";
-import { SignalAccordion } from "@/components/sections/SignalAccordion";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { Audiences } from "@/components/sections/Audiences";
-import { CTA } from "@/components/sections/CTA";
+import { PaperHero } from "@/components/sections/paper/PaperHero";
+import { PaperSteps } from "@/components/sections/paper/PaperSteps";
+import { PaperDualPath } from "@/components/sections/paper/PaperDualPath";
+import { PaperTrust } from "@/components/sections/paper/PaperTrust";
+import { PaperFaq } from "@/components/sections/paper/PaperFaq";
+import { PaperCta } from "@/components/sections/paper/PaperCta";
 import { Footer } from "@/components/sections/Footer";
 
 export default function Home() {
   return (
     <>
-      <SignalField />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
-        <Hero />
-        <VerifiedCompanies />
-        <SignalAccordion />
-        <KineticMarquee />
-        <VisionReel />
-        <HowItWorks />
-        <FeaturedSurfaces />
-        <GlobalReach />
-        <Testimonials />
-        <Audiences />
-        <CTA />
+        <PaperHero />
+        <PaperSteps />
+        <PaperDualPath />
+        <PaperTrust />
+        <PaperFaq />
+        <PaperCta />
       </main>
       <Footer />
     </>
