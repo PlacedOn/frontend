@@ -20,6 +20,7 @@ import { ProductPreview } from "@/components/sections/paper/ProductPreview";
 import { PaperDualPath } from "@/components/sections/paper/PaperDualPath";
 import { PaperTrust } from "@/components/sections/paper/PaperTrust";
 import { PaperFaq } from "@/components/sections/paper/PaperFaq";
+import { EvidenceFlow } from "@/components/sections/paper/EvidenceFlow";
 import { ImageBand } from "@/components/sections/paper/ImageBand";
 import { PaperCta } from "@/components/sections/paper/PaperCta";
 import { Footer } from "@/components/sections/Footer";
@@ -33,9 +34,10 @@ export default function Home() {
         <Reveal><PaperSteps /></Reveal>
         <ProductPreview />
         <Reveal><PaperDualPath /></Reveal>
+        <EvidenceFlow />
         <Reveal><PaperTrust /></Reveal>
-        <ImageBand />
         <Reveal><PaperFaq /></Reveal>
+        <ImageBand />
         <Reveal><PaperCta /></Reveal>
       </main>
       <Footer />
