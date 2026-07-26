@@ -27,7 +27,7 @@ export function Button({
   ariaLabel,
 }: Props) {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] px-5 py-3 text-[15px] font-semibold cursor-pointer select-none transition-colors duration-[var(--d-micro)]";
+    "inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] px-5 py-3 text-[15px] font-semibold cursor-pointer select-none transition-[color,background-color,border-color,transform] duration-[var(--d-hover)] ease-[var(--ease-standard)] active:scale-[0.98] motion-reduce:active:scale-100";
 
   const styles: Record<Variant, string> = {
     primary: "bg-[var(--ink)] text-[var(--white)] hover:bg-[color-mix(in_oklab,var(--ink),#000_14%)]",

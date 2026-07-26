@@ -12,7 +12,7 @@ export function PaperHero() {
       <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
         <Reveal>
           <div className="max-w-xl">
-            <p className="eyebrow">Hiring, on the evidence</p>
+            <p className="eyebrow">AI interviews for hiring teams</p>
 
             <h1 className="mt-5 text-[clamp(2.5rem,1.4rem+4.2vw,4.4rem)] font-bold leading-[1.03] tracking-[-0.03em] text-[var(--ink)]">
               Built for Talent.
@@ -20,17 +20,21 @@ export function PaperHero() {
               Powered by Precision.
             </h1>
 
-            <p className="mt-6 max-w-xl text-[clamp(1.05rem,0.98rem+0.4vw,1.3rem)] leading-relaxed text-[var(--ink-2)]">
-              PlacedOn runs one honest interview, then shows employers what a person can actually do —
-              with the evidence to back it up. No single score. No pedigree filter.
+            <p className="mt-5 max-w-xl text-[clamp(1.2rem,1rem+0.8vw,1.6rem)] font-semibold leading-snug tracking-[-0.01em] text-[var(--ink)]">
+              Stop hiring by paper. Start hiring by people.
+            </p>
+
+            <p className="mt-4 max-w-xl text-[clamp(1rem,0.96rem+0.3vw,1.15rem)] leading-relaxed text-[var(--ink-2)]">
+              PlacedOn interviews every candidate with adaptive AI, then shows you what they can
+              actually do — backed by the evidence behind it. No single score. No pedigree filter.
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Button href="/pre-interview" className="!px-6 !py-3.5">
-                Take the interview
+              <Button href="/companies" className="!px-6 !py-3.5">
+                Book a demo
               </Button>
-              <Button href="/companies" variant="ghost" className="!px-6 !py-3.5">
-                For hiring teams
+              <Button href="/pre-interview" variant="ghost" className="!px-6 !py-3.5">
+                Try the interview
               </Button>
             </div>
 

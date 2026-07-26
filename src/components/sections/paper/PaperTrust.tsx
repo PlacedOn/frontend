@@ -38,7 +38,7 @@ export function PaperTrust() {
 
       <div className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-3">
         {POINTS.map((p) => (
-          <div key={p.title} className="border-t border-[var(--ink)] pt-5">
+          <div key={p.title} className="lift rounded-[var(--r-card)] border-t border-[var(--ink)] bg-[var(--white)] p-5">
             <h3 className="text-[1.1rem] font-semibold tracking-[-0.01em] text-[var(--ink)]">{p.title}</h3>
             <p className="mt-2.5 text-[14.5px] leading-relaxed text-[var(--ink-2)]">{p.body}</p>
             <Link

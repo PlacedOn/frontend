@@ -56,12 +56,26 @@
   --shadow-lg: 0 2px 8px rgba(25, 25, 23, 0.06), 0 24px 48px -28px rgba(25, 25, 23, 0.18);
   --shadow-iris: 0 8px 22px -12px rgba(91, 52, 224, 0.28);
 
-  /* ── motion ───────────────────────────────── */
-  --d-micro: 160ms;
-  --d-std:   320ms;
-  --d-sig:   620ms;
-  --ease-out:    cubic-bezier(0.22, 0.68, 0.31, 1);
-  --ease-spring: cubic-bezier(0.34, 1.45, 0.5, 1);
+  /* ── motion system (one timing language, documented) ──────────
+     Durations by intent — reuse these, never ad-hoc numbers.
+       hover/press  → 180ms   section reveal → 600ms
+       modal/overlay→ 320ms   hero/entrance  → 800ms
+     Easing by role:
+       --ease-out      elements entering (decelerate, no bounce)
+       --ease-in       elements leaving (accelerate)
+       --ease-standard movement between points (default) */
+  --d-hover:   180ms;
+  --d-section: 600ms;
+  --d-modal:   320ms;
+  --d-enter:   800ms;
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:       cubic-bezier(0.4, 0, 1, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.45, 0.5, 1);
+  /* legacy aliases (kept so existing refs stay valid) */
+  --d-micro: var(--d-hover);
+  --d-std:   var(--d-modal);
+  --d-sig:   var(--d-section);
 
   /* ── geometry (tighter, enterprise) ───────── */
   --r-card: 14px;
@@ -224,6 +238,22 @@ h1, h2, h3, h4 {
 @keyframes capPulse {
   0%, 100% { opacity: 0.5; transform: scale(1); }
   50%      { opacity: 0.14; transform: scale(1.14); }
+}
+
+/* card micro-interaction — a calm lift on hover. Compositor-friendly
+   (transform + shadow only). Reduced-motion removes the movement entirely. */
+.lift {
+  transition:
+    transform var(--d-hover) var(--ease-standard),
+    box-shadow var(--d-hover) var(--ease-standard),
+    border-color var(--d-hover) var(--ease-standard);
+}
+.lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lift:hover { transform: none; }
 }
 
 /* focus ring — accessible, consistent */
