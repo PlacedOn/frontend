@@ -64,6 +64,7 @@ const CANDIDATE_NAV: NavGroups = {
 const EMPLOYER_NAV: NavGroups = {
   primary: [
     { label: "Overview", href: "/employer", icon: LayoutDashboard },
+    { label: "Assistant", href: "/employer/assistant", icon: Sparkle },
     { label: "Search", href: "/employer/search", icon: Search },
     { label: "Team", href: "/employer/team", icon: Users },
     { label: "Introductions", href: "/intros", icon: MessagesSquare },

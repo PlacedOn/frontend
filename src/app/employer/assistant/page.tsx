@@ -3,19 +3,19 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { BeamsField } from "@/components/background/BeamsField";
-import { CandidateAiChat } from "@/components/assistant/CandidateAiChat";
+import { EmployerAiChat } from "@/components/assistant/EmployerAiChat";
 
 export const metadata: Metadata = {
-  title: "Assistant — Placedon",
+  title: "Hiring assistant — Placedon",
   description:
-    "Placedon's AI assistant. Ask about your fit, your gaps, and your next step — grounded in your own evidence, never a score.",
+    "Describe the work and surface evidence-backed candidates — ranked on evidenced work only, behind a fairness firewall. Never a résumé, a school, or a person-score.",
 };
 
 /**
- * The AI assistant as a first-class, full-screen surface (claude.ai/new pattern).
- * Deliberately free of dashboard chrome so the conversation is the whole page.
+ * The hiring assistant as a first-class, full-screen surface (claude.ai/new
+ * pattern) — the employer half of the two-sided core assistant.
  */
-export default function AssistantPage() {
+export default function EmployerAssistantPage() {
   return (
     <>
       <BeamsField />
@@ -25,7 +25,7 @@ export default function AssistantPage() {
             <Logo />
           </Link>
           <Link
-            href="/candidate"
+            href="/employer"
             className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[13.5px] font-medium text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]"
           >
             <ArrowLeft size={15} /> Dashboard
@@ -34,7 +34,7 @@ export default function AssistantPage() {
 
         <main className="flex flex-1 flex-col px-5 pb-4">
           <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col">
-            <CandidateAiChat />
+            <EmployerAiChat />
           </div>
         </main>
       </div>

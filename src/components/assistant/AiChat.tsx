@@ -3,21 +3,33 @@
 /**
  * The AI assistant as Placedon's core surface — a claude.ai/new-style chat.
  * Empty state first (one centered greeting + a big input + suggested prompts),
- * then a streamed conversation. Answers are grounded in the user's own
- * GrowthReport via the shared engine in `lib/candidate/assistant` — never
- * invented, never a person-score. Today the engine is deterministic; the LLM
- * swaps in behind the same `answer()` seam (see docs/AI-ASSISTANT-ARCHITECTURE.md).
+ * then a streamed conversation.
+ *
+ * This is the *presentation* layer only: it's engine-agnostic. Both sides of
+ * the marketplace drive it through a `ChatConfig` — the candidate assistant
+ * (grounded in the user's own evidence) and the hiring assistant (grounded in
+ * the evidence-backed candidate pool, behind the fairness firewall). Answers
+ * are always grounded, never invented, never a person-score. See
+ * docs/AI-ASSISTANT-ARCHITECTURE.md.
  */
 
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Sparkles, ArrowUp, ShieldCheck } from "lucide-react";
-import { v1, V1Error, isLiveBackend, type GrowthReport } from "@/lib/v1";
-import { MOCK_GROWTH_REPORT } from "@/lib/mock/growthReport";
-import { answer, matchIntent, SUGGESTED, type AssistantAnswer } from "@/lib/candidate/assistant";
+import type { AssistantAnswer } from "@/lib/candidate/assistant";
 
 const STREAM_MS = 26; // per-word reveal — a calm typing feel, not a spinner
 const STREAM_LEAD_MS = 200; // brief "thinking" beat before the first word
+
+/** What an assistant surface must supply to drive the chat. */
+export type ChatConfig = {
+  greetingTitle: string;
+  greetingSubtitle: string;
+  suggestions: string[]; // shown as chips; the label is also sent as the message
+  respond: (text: string) => AssistantAnswer; // bound to already-loaded, grounded context
+  footerNote: string;
+  badge?: string | null; // e.g. "Preview · sample data"
+};
 
 type Msg =
   | { id: string; role: "you"; text: string }
@@ -26,24 +38,13 @@ type Msg =
 let seq = 0;
 const nid = () => `m${(seq += 1)}`;
 
-export function AiChat() {
+export function AiChat({ config }: { config: ChatConfig }) {
   const reduce = useReducedMotion();
-  const live = isLiveBackend();
-  const [report, setReport] = useState<GrowthReport | null>(live ? null : MOCK_GROWTH_REPORT);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
-
-  useEffect(() => {
-    if (!live) return;
-    v1.growthReport()
-      .then(setReport)
-      .catch((e: unknown) => {
-        if (!(e instanceof V1Error)) return; // network/backend hiccup → stay on null (honest empty grounding)
-      });
-  }, [live]);
 
   // Clear any in-flight stream timers on unmount.
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
@@ -61,7 +62,7 @@ export function AiChat() {
     setDraft("");
     setBusy(true);
 
-    const ans = answer(matchIntent(q), report);
+    const ans = config.respond(q);
     const aiId = nid();
     const totalWords = ans.text.split(/\s+/).length;
 
@@ -78,21 +79,19 @@ export function AiChat() {
 
     // Stream the answer word by word for the claude-style typing reveal.
     let shown = 0;
-    const step = () => {
+    const stepWord = () => {
       shown += 1;
       const done = shown >= totalWords;
       setMessages((prev) =>
-        prev.map((m) =>
-          m.id === aiId && m.role === "ai" ? { ...m, shownWords: shown, done } : m,
-        ),
+        prev.map((m) => (m.id === aiId && m.role === "ai" ? { ...m, shownWords: shown, done } : m)),
       );
       if (done) {
         setBusy(false);
         return;
       }
-      timers.current.push(setTimeout(step, STREAM_MS));
+      timers.current.push(setTimeout(stepWord, STREAM_MS));
     };
-    timers.current.push(setTimeout(step, STREAM_LEAD_MS));
+    timers.current.push(setTimeout(stepWord, STREAM_LEAD_MS));
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -109,8 +108,7 @@ export function AiChat() {
       {isEmpty ? (
         <EmptyState
           reduce={!!reduce}
-          report={report}
-          live={live}
+          config={config}
           draft={draft}
           setDraft={setDraft}
           onKeyDown={onKeyDown}
@@ -146,7 +144,7 @@ export function AiChat() {
             />
             <p className="mt-2 flex items-center justify-center gap-1.5 text-center text-[11.5px] text-[var(--ink-3)]">
               <ShieldCheck size={12} className="shrink-0" />
-              Grounded in your approved evidence — never a score, never shared without your say-so.
+              {config.footerNote}
             </p>
           </div>
         </>
@@ -157,8 +155,7 @@ export function AiChat() {
 
 function EmptyState({
   reduce,
-  report,
-  live,
+  config,
   draft,
   setDraft,
   onKeyDown,
@@ -166,8 +163,7 @@ function EmptyState({
   onSuggest,
 }: {
   reduce: boolean;
-  report: GrowthReport | null;
-  live: boolean;
+  config: ChatConfig;
   draft: string;
   setDraft: (v: string) => void;
   onKeyDown: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
@@ -190,12 +186,10 @@ function EmptyState({
 
       <div className="space-y-3">
         <h1 className="text-[clamp(1.6rem,1.15rem+1.8vw,2.5rem)] font-extrabold leading-tight tracking-tight text-[var(--ink)]">
-          What can I help you figure out?
+          {config.greetingTitle}
         </h1>
         <p className="mx-auto max-w-md text-[14.5px] leading-relaxed text-[var(--ink-2)]">
-          {report
-            ? `Ask about your fit, your gaps, or your next step. ${report.headline} I answer from your real evidence — grounded, never invented, never a score.`
-            : "Ask about your fit, your gaps, or your next step. I answer from your real evidence — grounded, never invented, never a score. Take the interview and there's more for me to work with."}
+          {config.greetingSubtitle}
         </p>
       </div>
 
@@ -204,25 +198,25 @@ function EmptyState({
       </div>
 
       <div className="flex flex-wrap justify-center gap-2">
-        {SUGGESTED.map((s) => (
+        {config.suggestions.map((label) => (
           <button
-            key={s.intent}
+            key={label}
             type="button"
-            onClick={() => onSuggest(s.label)}
+            onClick={() => onSuggest(label)}
             className="rounded-full border px-3.5 py-2 text-[13px] font-semibold text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]"
             style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass-hi)" }}
           >
-            {s.label}
+            {label}
           </button>
         ))}
       </div>
 
-      {!live && (
+      {config.badge && (
         <span
           className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11.5px] font-semibold"
           style={{ borderColor: "var(--iris-line)", background: "var(--iris-ghost)", color: "var(--iris-ink)" }}
         >
-          Preview · sample evidence
+          {config.badge}
         </span>
       )}
     </motion.div>
@@ -245,16 +239,13 @@ function Composer({
   big?: boolean;
 }) {
   return (
-    <div
-      className="glass flex items-end gap-2 rounded-[var(--r-card)] p-2.5"
-      style={{ boxShadow: "var(--shadow-md)" }}
-    >
+    <div className="glass flex items-end gap-2 rounded-[var(--r-card)] p-2.5" style={{ boxShadow: "var(--shadow-md)" }}>
       <textarea
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
         onKeyDown={onKeyDown}
         rows={1}
-        placeholder="Ask about your fit, gaps, or next step…"
+        placeholder="Ask anything…"
         aria-label="Message the assistant"
         className={`w-full resize-none bg-transparent px-2.5 py-2 leading-relaxed text-[var(--ink)] outline-none placeholder:text-[var(--ink-3)] ${
           big ? "max-h-40 min-h-[3rem] text-[15.5px]" : "max-h-32 min-h-[2.4rem] text-[14.5px]"
@@ -274,13 +265,7 @@ function Composer({
   );
 }
 
-function AiBubble({
-  msg,
-  reduce,
-}: {
-  msg: Extract<Msg, { role: "ai" }>;
-  reduce: boolean;
-}) {
+function AiBubble({ msg, reduce }: { msg: Extract<Msg, { role: "ai" }>; reduce: boolean }) {
   const words = msg.answer.text.split(/\s+/);
   const shownText = words.slice(0, msg.shownWords).join(" ");
 
@@ -297,10 +282,7 @@ function AiBubble({
       >
         <Sparkles size={14} aria-hidden />
       </span>
-      <div
-        className="max-w-[88%] rounded-2xl px-4 py-3"
-        style={{ background: "#fff", border: "1px solid var(--glass-line)" }}
-      >
+      <div className="max-w-[88%] rounded-2xl px-4 py-3" style={{ background: "#fff", border: "1px solid var(--glass-line)" }}>
         <p className="text-[14.5px] leading-relaxed text-[var(--ink)]">
           {shownText}
           {!msg.done && (
