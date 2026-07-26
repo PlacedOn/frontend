@@ -240,6 +240,14 @@ h1, h2, h3, h4 {
   50%      { opacity: 0.14; transform: scale(1.14); }
 }
 
+/* floating evidence chips — slow vertical drift at their own Z-depth.
+   Only the inner element moves so the parent's translateZ (depth) is kept. */
+@keyframes capFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+.capstage--animate .cap-float { animation: capFloat 6s var(--ease-standard) infinite; }
+
 /* card micro-interaction — a calm lift on hover. Compositor-friendly
    (transform + shadow only). Reduced-motion removes the movement entirely. */
 .lift {
