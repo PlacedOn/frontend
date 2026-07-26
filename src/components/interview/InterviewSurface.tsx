@@ -9,6 +9,7 @@ import type { InterviewMessage, InterviewStatus } from "@/lib/interview/useInter
 import { useSpeechInput } from "@/lib/interview/useSpeechInput";
 import { useSpeechOutput } from "@/lib/interview/useSpeechOutput";
 import { Whiteboard } from "./Whiteboard";
+import { InterviewProgress } from "./InterviewProgress";
 import { emptyEvidence, type WhiteboardEvidence } from "@/lib/interview";
 
 /**
@@ -173,22 +174,6 @@ export function InterviewSurface({
           <span className="chip !px-2.5 !py-1 !text-[11px]">
             <span className="livedot" /> {live ? "Live · adaptive" : "Demo"}
           </span>
-          <div className="flex items-center gap-1.5" aria-label={`Question ${questionCount}`}>
-            {Array.from({ length: Math.min(questionCount, 7) }).map((_, i) => (
-              <span
-                key={i}
-                className="h-1.5 rounded-full transition-all"
-                style={{
-                  width: i === questionCount - 1 ? 18 : 6,
-                  background: i <= questionCount - 1 ? "var(--iris)" : "var(--mist)",
-                  opacity: i === questionCount - 1 ? 1 : 0.5,
-                }}
-              />
-            ))}
-            <span className="ml-1 text-[12px] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
-              Q{questionCount}
-            </span>
-          </div>
         </div>
         <div className="flex items-center gap-2">
           {tts.supported && (
@@ -209,6 +194,16 @@ export function InterviewSurface({
           </button>
         </div>
       </div>
+
+      {/* Adaptive progress rail — explains the loop, not just a counter */}
+      {!ended && (
+        <InterviewProgress
+          questionCount={questionCount}
+          awaiting={canAnswer}
+          analyzing={thinking || !!streaming}
+          reduce={!!reduce}
+        />
+      )}
 
       {reconnecting && (
         <div role="status" aria-live="polite" className="flex items-center gap-2.5 rounded-[var(--r-card)] px-4 py-3 text-[13px] font-medium" style={{ background: "var(--mist)", color: "var(--ink-2)" }}>

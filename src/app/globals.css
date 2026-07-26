@@ -248,6 +248,15 @@ h1, h2, h3, h4 {
 }
 .capstage--animate .cap-float { animation: capFloat 6s var(--ease-standard) infinite; }
 
+/* interview "analyzing" scan — the active question segment sweeps while the AI
+   reads the last answer for evidence. Reduced-motion falls back to solid accent. */
+@keyframes interviewScan { 0% { background-position: -120% 0; } 100% { background-position: 220% 0; } }
+.interview-scan {
+  background-image: linear-gradient(90deg, var(--iris-soft) 0%, var(--iris) 45%, var(--iris-soft) 90%);
+  background-size: 220% 100%;
+  animation: interviewScan 1.15s linear infinite;
+}
+
 /* card micro-interaction — a calm lift on hover. Compositor-friendly
    (transform + shadow only). Reduced-motion removes the movement entirely. */
 .lift {
