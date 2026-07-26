@@ -1,53 +1,40 @@
-import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/motion/Reveal";
-import { CapabilityGraph } from "./CapabilityGraph";
+import { HeroPrompt } from "./HeroPrompt";
 
 /**
- * Landing hero — one clear promise beside the signature capability graph.
- * Typography leads; the graph shows, rather than tells, what we do.
+ * Landing hero — the promise, then a working product surface. Describe who you
+ * want to hire and get evidence-ranked candidates right here (OpenAI/Scale
+ * "describe → results" pattern). The product is the hero, not a picture of it.
  */
 export function PaperHero() {
   return (
-    <section className="shell pt-32 pb-20 sm:pt-40 sm:pb-28">
-      <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
-        <Reveal>
-          <div className="max-w-xl">
-            <p className="eyebrow">AI interviews for hiring teams</p>
+    <section className="shell pt-32 pb-24 text-center sm:pt-40">
+      <Reveal className="mx-auto max-w-3xl">
+        <p className="eyebrow">AI interviews for hiring teams</p>
 
-            <h1 className="mt-5 text-[clamp(2.5rem,1.4rem+4.2vw,4.4rem)] font-bold leading-[1.03] tracking-[-0.03em] text-[var(--ink)]">
-              Built for Talent.
-              <br />
-              Powered by Precision.
-            </h1>
+        <h1 className="mx-auto mt-5 max-w-3xl text-[clamp(2.6rem,1.4rem+4.4vw,4.6rem)] font-bold leading-[1.02] tracking-[-0.03em] text-[var(--ink)]">
+          Built for Talent. Powered by Precision.
+        </h1>
 
-            <p className="mt-5 max-w-xl text-[clamp(1.2rem,1rem+0.8vw,1.6rem)] font-semibold leading-snug tracking-[-0.01em] text-[var(--ink)]">
-              Stop hiring by paper. Start hiring by people.
-            </p>
+        <p className="mx-auto mt-5 max-w-xl text-[clamp(1.15rem,1rem+0.7vw,1.5rem)] font-semibold leading-snug tracking-[-0.01em] text-[var(--ink)]">
+          Stop hiring by paper. Start hiring by people.
+        </p>
 
-            <p className="mt-4 max-w-xl text-[clamp(1rem,0.96rem+0.3vw,1.15rem)] leading-relaxed text-[var(--ink-2)]">
-              PlacedOn interviews every candidate with adaptive AI, then shows you what they can
-              actually do — backed by the evidence behind it. No single score. No pedigree filter.
-            </p>
+        <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-[var(--ink-2)]">
+          Describe who you&rsquo;re looking for. We&rsquo;ll surface people by what they can actually
+          do — evidence, not resumes.
+        </p>
+      </Reveal>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Button href="/companies" className="!px-6 !py-3.5">
-                Book a demo
-              </Button>
-              <Button href="/pre-interview" variant="ghost" className="!px-6 !py-3.5">
-                Try the interview
-              </Button>
-            </div>
+      <Reveal delay={0.12} className="mt-9">
+        <HeroPrompt />
+      </Reveal>
 
-            <p className="mt-8 text-[13.5px] text-[var(--ink-3)]">
-              Bias-audited to NYC Local Law 144 and the EU AI Act. You approve every introduction.
-            </p>
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.15} className="lg:pl-6">
-          <CapabilityGraph />
-        </Reveal>
-      </div>
+      <Reveal delay={0.2}>
+        <p className="mx-auto mt-9 max-w-md text-[13px] text-[var(--ink-3)]">
+          Bias-audited to NYC Local Law 144 and the EU AI Act. You approve every introduction.
+        </p>
+      </Reveal>
     </section>
   );
 }
