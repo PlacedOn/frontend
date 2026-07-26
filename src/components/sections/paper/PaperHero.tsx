@@ -1,5 +1,6 @@
 import { Reveal } from "@/components/motion/Reveal";
 import { HeroPrompt } from "./HeroPrompt";
+import { HeroField } from "./HeroField";
 
 /**
  * Landing hero — the promise, then a working product surface. Describe who you
@@ -8,7 +9,9 @@ import { HeroPrompt } from "./HeroPrompt";
  */
 export function PaperHero() {
   return (
-    <section className="shell pt-32 pb-24 text-center sm:pt-40">
+    <section className="relative overflow-hidden pt-32 pb-24 text-center sm:pt-40">
+      <HeroField />
+      <div className="shell relative">
       <Reveal className="mx-auto max-w-3xl">
         <p className="eyebrow">AI interviews for hiring teams</p>
 
@@ -35,6 +38,7 @@ export function PaperHero() {
           Bias-audited to NYC Local Law 144 and the EU AI Act. You approve every introduction.
         </p>
       </Reveal>
+      </div>
     </section>
   );
 }

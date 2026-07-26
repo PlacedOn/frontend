@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     description:
       "AI interviews that surface what candidates can actually do — evidence, not resumes. Bias-audited to NYC Local Law 144 and the EU AI Act.",
     type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "PlacedOn — Built for Talent. Powered by Precision." }],
   },
 };
 import { PaperHero } from "@/components/sections/paper/PaperHero";
@@ -19,6 +20,7 @@ import { ProductPreview } from "@/components/sections/paper/ProductPreview";
 import { PaperDualPath } from "@/components/sections/paper/PaperDualPath";
 import { PaperTrust } from "@/components/sections/paper/PaperTrust";
 import { PaperFaq } from "@/components/sections/paper/PaperFaq";
+import { ImageBand } from "@/components/sections/paper/ImageBand";
 import { PaperCta } from "@/components/sections/paper/PaperCta";
 import { Footer } from "@/components/sections/Footer";
 
@@ -32,6 +34,7 @@ export default function Home() {
         <ProductPreview />
         <Reveal><PaperDualPath /></Reveal>
         <Reveal><PaperTrust /></Reveal>
+        <ImageBand />
         <Reveal><PaperFaq /></Reveal>
         <Reveal><PaperCta /></Reveal>
       </main>

@@ -248,6 +248,13 @@ h1, h2, h3, h4 {
 }
 .capstage--animate .cap-float { animation: capFloat 6s var(--ease-standard) infinite; }
 
+/* hero capability field — a barely-there constellation that twinkles and drifts
+   behind the hero. Calm, GPU-only, opt-in via class so reduced-motion is static. */
+@keyframes fieldTwinkle { 0%, 100% { opacity: 0.05; } 50% { opacity: 0.16; } }
+@keyframes fieldDrift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.herofield--animate .hf-group { animation: fieldDrift 16s var(--ease-standard) infinite; }
+.herofield--animate .hf-dot { animation: fieldTwinkle 5.5s var(--ease-standard) infinite; }
+
 /* interview "analyzing" scan — the active question segment sweeps while the AI
    reads the last answer for evidence. Reduced-motion falls back to solid accent. */
 @keyframes interviewScan { 0% { background-position: -120% 0; } 100% { background-position: 220% 0; } }
