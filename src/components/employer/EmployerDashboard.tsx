@@ -121,33 +121,41 @@ function MockEmployerBoard() {
           <button
             type="button"
             onClick={() => setShowCreate(true)}
-            className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-[var(--r-btn)] bg-[var(--ink)] px-5 py-2.5 text-[14px] font-semibold text-[var(--white)] transition-colors hover:bg-[color-mix(in_oklab,var(--ink),#000_14%)]"
+            className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-2.5 text-[14px] font-bold text-white"
+            style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
           >
             <Plus size={16} /> Add role
           </button>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
-          {jobs.map((j) => (
-            <div key={j.id} className="glass flex flex-col rounded-[var(--r-card)] p-5 transition-colors hover:bg-[var(--mist)]">
+          {jobs.map((j) => {
+            const accent = j.status === "Active" ? "#047857" : "var(--ink-3)";
+            return (
+            <div key={j.id} className="glass relative flex flex-col overflow-hidden rounded-[var(--r-card)] p-5 transition-transform duration-[var(--d-std)] hover:-translate-y-1">
+              <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: `linear-gradient(90deg, ${accent}, transparent)` }} />
               <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[var(--ink-2)]">
-                  {j.status === "Active" && <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[var(--ink)]" />}
+                <span
+                  className="rounded-full px-2.5 py-1 text-[11.5px] font-semibold"
+                  style={j.status === "Active" ? { background: "rgba(16,185,129,0.12)", color: "#047857" } : { background: "var(--mist)", color: "var(--ink-3)" }}
+                >
                   {j.status}
                 </span>
-                <span className="text-[13px] font-semibold tabular-nums text-[var(--ink)]">{j.candidateCount} matches</span>
+                <span className="text-[13px] font-semibold text-[var(--iris-ink)]">{j.candidateCount} matches</span>
               </div>
-              <h3 className="mt-3 text-[16px] font-semibold tracking-[-0.01em] text-[var(--ink)]">{j.title}</h3>
+              <h3 className="mt-3 text-[16px] font-bold text-[var(--ink)]">{j.title}</h3>
               <p className="mt-1 flex items-center gap-1.5 text-[13px] text-[var(--ink-3)]">
                 <MapPin size={13} /> {j.location}
               </p>
               <a
                 href="#feed"
-                className="mt-4 inline-flex w-fit cursor-pointer items-center gap-1.5 text-[13px] font-semibold text-[var(--ink)] transition-colors hover:text-[var(--iris-ink)]"
+                className="mt-4 inline-flex w-fit cursor-pointer items-center gap-1.5 text-[13px] font-semibold transition-opacity hover:opacity-70"
+                style={{ color: "var(--iris-ink)" }}
               >
                 Review candidates <ArrowRight size={14} />
               </a>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -198,7 +206,7 @@ function MockEmployerBoard() {
             <motion.div className="fixed inset-x-0 bottom-6 z-[80] flex justify-center px-4" initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }} transition={{ duration: 0.22, ease: EASE }}>
               <div className="glass flex items-center gap-4 rounded-full py-2.5 pl-5 pr-2.5 text-[13.5px]" style={{ boxShadow: "var(--shadow-md)" }}>
                 <span className="text-[var(--ink-2)]">Passed on <span className="font-semibold text-[var(--ink)]">{undo.cand.initials}</span></span>
-                <button type="button" onClick={handleUndo} className="cursor-pointer rounded-full bg-[var(--ink)] px-3.5 py-1.5 font-semibold text-[var(--white)]">Undo</button>
+                <button type="button" onClick={handleUndo} className="cursor-pointer rounded-full px-3.5 py-1.5 font-semibold text-white" style={{ background: "var(--iris)" }}>Undo</button>
               </div>
             </motion.div>
           )}
@@ -230,13 +238,13 @@ function CreateRoleDialog({ onClose, onSave, reduce }: { onClose: () => void; on
     });
   };
 
-  const inputClass = "rounded-[var(--r-btn)] border px-3.5 py-2.5 text-[14px] text-[var(--ink)] outline-none transition-colors focus:border-[var(--ink)]";
-  const inputStyle = { borderColor: "var(--glass-line-hi)", background: "var(--white)" } as const;
+  const inputClass = "rounded-xl border px-3.5 py-2.5 text-[14px] text-[var(--ink)] outline-none transition-colors focus:border-[var(--iris)]";
+  const inputStyle = { borderColor: "var(--glass-line-hi)", background: "rgba(255,255,255,.7)" } as const;
 
   return (
     <Portal>
       <div className="fixed inset-0 z-[75] grid place-items-center p-4">
-        <button aria-label="Close" onClick={onClose} className="absolute inset-0 cursor-default" style={{ background: "rgba(25,25,23,0.40)" }} tabIndex={-1} />
+        <button aria-label="Close" onClick={onClose} className="absolute inset-0 cursor-default" style={{ background: "rgba(14,16,32,0.42)", backdropFilter: "blur(6px)" }} tabIndex={-1} />
         <motion.div role="dialog" aria-modal="true" className="glass relative w-full max-w-[460px] rounded-[var(--r-card)] p-7" initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.26, ease: EASE }}>
           <button onClick={onClose} aria-label="Close" className="absolute right-4 top-4 grid h-8 w-8 cursor-pointer place-items-center rounded-full text-[var(--ink-3)] transition-colors hover:bg-white/70 hover:text-[var(--ink)]"><X size={17} /></button>
           <p className="eyebrow">New role</p>
@@ -255,18 +263,18 @@ function CreateRoleDialog({ onClose, onSave, reduce }: { onClose: () => void; on
               <input value={skills} onChange={(e) => setSkills(e.target.value)} placeholder="React, API integration" className={inputClass} style={inputStyle} />
             </label>
 
-            <button type="button" onClick={generate} className="inline-flex w-fit cursor-pointer items-center gap-1.5 text-[13px] font-semibold text-[var(--ink)] transition-colors hover:text-[var(--iris-ink)]">
+            <button type="button" onClick={generate} className="inline-flex w-fit cursor-pointer items-center gap-1.5 text-[13px] font-semibold" style={{ color: "var(--iris-ink)" }}>
               <Sparkles size={14} /> Generate signals
             </button>
             {signals.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
                 {signals.map((s) => (
-                  <span key={s} className="rounded-full px-2.5 py-1 text-[12px] font-medium text-[var(--ink-2)]" style={{ background: "var(--mist)" }}>{s}</span>
+                  <span key={s} className="rounded-full px-2.5 py-1 text-[12px] font-medium" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>{s}</span>
                 ))}
               </div>
             )}
 
-            <button type="button" onClick={save} disabled={!title.trim()} className="mt-1 inline-flex cursor-pointer items-center justify-center gap-2 rounded-[var(--r-btn)] bg-[var(--ink)] py-3 text-[15px] font-semibold text-[var(--white)] transition-colors hover:bg-[color-mix(in_oklab,var(--ink),#000_14%)] disabled:opacity-50">
+            <button type="button" onClick={save} disabled={!title.trim()} className="mt-1 inline-flex cursor-pointer items-center justify-center gap-2 rounded-[var(--r-btn)] py-3 text-[15px] font-bold text-white disabled:opacity-50" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}>
               Save role
             </button>
           </div>

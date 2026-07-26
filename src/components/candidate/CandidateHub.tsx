@@ -3,24 +3,23 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Search, MapPin, ArrowRight, Lock } from "lucide-react";
+import {
+  Search, MapPin, BriefcaseBusiness, Sparkles, ArrowRight, Mic, CheckCircle2,
+  Eye, Lock, Target, Handshake,
+} from "lucide-react";
 import { getCandidateSnapshot, loadCandidateDashboard, type CandidateDashboardMode } from "@/lib/mock/candidate";
 import { OPEN_ROLES, WORK_FILTERS, type OpenRole } from "@/lib/candidate/openRoles";
 import { WORK_TYPE_LABEL } from "@/components/candidate/profile/kit";
 import { ConnectedGreeting } from "@/components/candidate/ConnectedGreeting";
+import { IconTile } from "@/components/ui/IconTile";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-// Shared action styles — matches the Button primitive (solid ink / hairline).
-const SOLID =
-  "inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] font-semibold text-[var(--white)] bg-[var(--ink)] transition-colors hover:bg-[color-mix(in_oklab,var(--ink),#000_14%)]";
-const HAIRLINE =
-  "inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] font-semibold text-[var(--ink)] bg-[var(--white)] border border-[var(--glass-line)] transition-colors hover:bg-[var(--mist)]";
-
 /**
- * Candidate home — a job-board hub: find a role → take one AI interview built
- * from that role → get matched. Paper system: typographic, flat surfaces, one
- * restrained accent (the readiness bar), no decorative icons.
+ * Candidate home, redeveloped as a job-board hub: find a role → take the AI
+ * interview built from that role's data → get matched. The warm status greeting
+ * stays on top; the board is the centre of gravity. Icons use the new keyline
+ * IconTile treatment (pilot for the app-wide refresh).
  */
 export function CandidateHub({ mode }: { mode: CandidateDashboardMode }) {
   const [snapshot, setSnapshot] = useState(() => getCandidateSnapshot(mode));
@@ -33,7 +32,7 @@ export function CandidateHub({ mode }: { mode: CandidateDashboardMode }) {
   }, [mode]);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-9">
       <ConnectedGreeting snapshot={snapshot} />
       <JobBoard interviewDone={snapshot.interview.status === "complete"} />
       <EvidenceStrip
@@ -69,34 +68,33 @@ function JobBoard({ interviewDone }: { interviewDone: boolean }) {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="eyebrow">Your matches</p>
-          <h2 id="board-heading" className="mt-2 text-[clamp(1.5rem,1.2rem+1.2vw,2rem)] font-bold tracking-[-0.02em] text-[var(--ink)]">
+          <h2 id="board-heading" className="mt-1.5 text-[clamp(1.5rem,1.2rem+1.2vw,2rem)] font-extrabold tracking-tight text-[var(--ink)]">
             {interviewDone ? "Roles matched to your evidence." : "Roles you'll match."}
           </h2>
         </div>
-        <p className="max-w-xs text-[13px] leading-relaxed text-[var(--ink-3)]">
-          One honest interview — your evidence is matched to every open role. No re-interviewing.
-        </p>
+        <p className="max-w-xs text-[13px] text-[var(--ink-3)]">One honest interview — your evidence is matched to every open role. No re-interviewing.</p>
       </div>
 
       {/* One-interview lead — the whole hub hinges on this single conversation */}
       {!interviewDone && (
-        <div className="mt-6 flex flex-col items-start gap-4 rounded-[var(--r-card)] border border-[var(--ink)] p-6 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-[15.5px] font-semibold text-[var(--ink)]">Take your one honest interview</p>
-            <p className="mt-1 text-[13.5px] leading-relaxed text-[var(--ink-2)]">
-              One conversation unlocks every role below that your evidence matches.
-            </p>
+        <div className="glass mt-5 flex flex-col items-start gap-4 rounded-[20px] p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <IconTile icon={Mic} tone="iris" size="lg" />
+            <div>
+              <p className="text-[15px] font-bold text-[var(--ink)]">Take your one honest interview</p>
+              <p className="text-[13px] text-[var(--ink-2)]">One conversation unlocks every role below that your evidence matches.</p>
+            </div>
           </div>
-          <Link href="/pre-interview" className={`${SOLID} shrink-0 px-5 py-3 text-[14px]`}>
+          <Link href="/pre-interview" className="inline-flex shrink-0 items-center gap-2 rounded-[var(--r-btn)] px-5 py-3 text-[14px] font-bold text-white transition-transform active:scale-[0.98]" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}>
             Begin interview <ArrowRight size={15} />
           </Link>
         </div>
       )}
 
       {/* search + filters */}
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="flex flex-1 items-center gap-2 rounded-[var(--r-btn)] border bg-[var(--white)] px-3 py-2.5 transition-colors focus-within:border-[var(--ink)]" style={{ borderColor: "var(--glass-line)" }}>
-          <Search size={16} className="text-[var(--ink-3)]" aria-hidden />
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex flex-1 items-center gap-2 rounded-[var(--r-btn)] border bg-[var(--glass)] px-3 py-2.5 transition-colors focus-within:border-[var(--iris)]" style={{ borderColor: "var(--glass-line-hi)" }}>
+          <Search size={17} className="text-[var(--ink-3)]" aria-hidden />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -116,8 +114,8 @@ function JobBoard({ interviewDone }: { interviewDone: boolean }) {
                 aria-pressed={active}
                 className="rounded-full border px-3.5 py-2 text-[13px] font-semibold transition-colors"
                 style={active
-                  ? { borderColor: "var(--ink)", background: "var(--ink)", color: "var(--white)" }
-                  : { borderColor: "var(--glass-line)", color: "var(--ink-2)", background: "var(--white)" }}
+                  ? { borderColor: "var(--iris)", background: "var(--iris-ghost)", color: "var(--iris-ink)" }
+                  : { borderColor: "var(--glass-line-hi)", color: "var(--ink-2)", background: "var(--glass)" }}
               >
                 {f.label}
               </button>
@@ -148,69 +146,82 @@ function RoleCard({ role, index, reduce, interviewDone }: { role: OpenRole; inde
   return (
     <motion.article
       layout
-      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
+      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.32, delay: reduce ? 0 : Math.min(index * 0.04, 0.2), ease: EASE }}
-      className="glass flex flex-col rounded-[var(--r-card)] p-5"
+      exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.34, delay: reduce ? 0 : Math.min(index * 0.04, 0.2), ease: EASE }}
+      className="glass flex flex-col rounded-[20px] p-5"
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2 min-w-0">
-          <p className="truncate text-[13px] font-semibold text-[var(--ink-3)]">{role.company}</p>
-          <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold text-[var(--ink-2)]" style={{ borderColor: "var(--glass-line)" }}>
-            {WORK_TYPE_LABEL[role.workType]}
-          </span>
+        <div className="flex items-center gap-3 min-w-0">
+          <IconTile icon={BriefcaseBusiness} tone="iris" size="md" className="shrink-0" />
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="truncate text-[13px] font-semibold text-[var(--ink-3)]">{role.company}</p>
+              <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: "var(--mist)", color: "var(--ink-2)" }}>
+                {WORK_TYPE_LABEL[role.workType]}
+              </span>
+            </div>
+          </div>
         </div>
         {role.fresh && (
-          <span className="shrink-0 text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[var(--ink-3)]">New</span>
+          <span className="shrink-0 rounded-full px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-[0.06em]" style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}>
+            New
+          </span>
         )}
       </div>
 
-      <h3 className="mt-3 text-[17px] font-semibold leading-snug tracking-[-0.01em] text-[var(--ink)]">{role.title}</h3>
-      <p className="mt-1.5 flex items-center gap-1.5 text-[12.5px] text-[var(--ink-3)]">
+      <h3 className="mt-3.5 text-[17px] font-bold leading-snug text-[var(--ink)]">{role.title}</h3>
+      <p className="mt-1 flex items-center gap-1.5 text-[12.5px] text-[var(--ink-3)]">
         <MapPin size={13} strokeWidth={1.75} aria-hidden /> {role.location}
       </p>
 
-      {/* readiness — the one accent on this surface */}
+      {/* readiness */}
       <div className="mt-4">
         <div className="flex items-baseline justify-between">
           <span className="text-[12px] font-semibold text-[var(--ink-2)]">Your readiness</span>
-          <span className="text-[12.5px] font-semibold tabular-nums text-[var(--ink)]">{role.readiness}%</span>
+          <span className="text-[12.5px] font-bold text-[var(--iris-ink)]">{role.readiness}%</span>
         </div>
         <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
-          <span className="block h-full rounded-full" style={{ width: `${role.readiness}%`, background: "var(--iris)" }} />
+          <span className="block h-full rounded-full" style={{ width: `${role.readiness}%`, background: "linear-gradient(90deg,var(--iris-soft),var(--iris))" }} />
         </div>
       </div>
 
-      {/* skills — neutral, not decorative colour */}
-      <div className="mt-4 flex flex-wrap gap-1.5">
+      {/* skills */}
+      <div className="mt-3.5 flex flex-wrap gap-1.5">
         {role.skills.map((s) => (
-          <span key={s} className="rounded-full px-2.5 py-0.5 text-[11.5px] font-medium text-[var(--ink-2)]" style={{ background: "var(--mist)" }}>
+          <span key={s} className="rounded-full px-2.5 py-0.5 text-[11.5px] font-semibold" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
             {s}
           </span>
         ))}
       </div>
 
-      <p className="mt-3.5 text-[12px] leading-relaxed text-[var(--ink-3)]">
+      <p className="mt-3 flex items-start gap-1.5 text-[12px] leading-relaxed text-[var(--ink-3)]">
+        <Target size={13} strokeWidth={1.75} className="mt-0.5 shrink-0" aria-hidden />
         Close first: <span className="font-semibold text-[var(--ink-2)]">{role.topGap}</span>
       </p>
 
       <div className="mt-4 flex items-center gap-2 pt-1">
         {interviewDone ? (
           <>
-            <Link href="/candidate/matches" className={`${SOLID} flex-1 px-4 py-2.5 text-[13.5px]`}>
-              Express interest
+            <Link
+              href="/candidate/matches"
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-[var(--r-btn)] px-4 py-2.5 text-[13.5px] font-bold text-white transition-transform active:scale-[0.98]"
+              style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
+            >
+              <Handshake size={15} strokeWidth={2} /> Express interest
             </Link>
             <Link
               href="/candidate/matches"
-              className={`${HAIRLINE} px-3 py-2.5 text-[13px]`}
+              className="inline-flex items-center gap-1 rounded-[var(--r-btn)] border px-3 py-2.5 text-[13px] font-semibold text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]"
+              style={{ borderColor: "var(--glass-line-hi)" }}
               aria-label={`Why you fit ${role.title}`}
             >
               Why <ArrowRight size={14} />
             </Link>
           </>
         ) : (
-          <span className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-[var(--r-btn)] border px-4 py-2.5 text-[12.5px] font-semibold text-[var(--ink-3)]" style={{ borderColor: "var(--glass-line)", background: "var(--white)" }}>
+          <span className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-[var(--r-btn)] border px-4 py-2.5 text-[12.5px] font-semibold text-[var(--ink-3)]" style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass)" }}>
             <Lock size={13} /> Matches once you interview
           </span>
         )}
@@ -223,16 +234,22 @@ function EvidenceStrip({ interviewDone, matchCount, visible }: { interviewDone: 
   const items = [
     {
       href: "/pre-interview",
+      icon: interviewDone ? CheckCircle2 : Mic,
+      tone: (interviewDone ? "green" : "amber") as "green" | "amber",
       label: "Your interview",
       value: interviewDone ? "Complete" : "Waiting for you",
     },
     {
       href: "/candidate/matches",
+      icon: BriefcaseBusiness,
+      tone: "iris" as const,
       label: "Roles you fit",
       value: matchCount > 0 ? `${matchCount} matched` : "Interview to unlock",
     },
     {
       href: "/candidate/preferences",
+      icon: visible ? Eye : Lock,
+      tone: (visible ? "green" : "ink") as "green" | "ink",
       label: "Visibility",
       value: visible ? "On — employers can find you" : "Private — you choose",
     },
@@ -243,11 +260,12 @@ function EvidenceStrip({ interviewDone, matchCount, visible }: { interviewDone: 
         <Link
           key={it.label}
           href={it.href}
-          className="glass flex items-center gap-3 rounded-[var(--r-card)] p-4 transition-colors hover:bg-[var(--mist)]"
+          className="glass flex items-center gap-3 rounded-[16px] p-4 transition-transform hover:-translate-y-0.5"
         >
+          <IconTile icon={it.icon} tone={it.tone} size="md" />
           <div className="min-w-0">
             <p className="text-[12px] font-semibold text-[var(--ink-3)]">{it.label}</p>
-            <p className="truncate text-[13.5px] font-semibold text-[var(--ink)]">{it.value}</p>
+            <p className="truncate text-[13.5px] font-bold text-[var(--ink)]">{it.value}</p>
           </div>
           <ArrowRight size={15} className="ml-auto text-[var(--ink-3)]" aria-hidden />
         </Link>

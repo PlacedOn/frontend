@@ -65,7 +65,7 @@ function TopHairline() {
     <span
       aria-hidden
       className="absolute left-0 top-0 h-[3px] w-12 rounded-full transition-all duration-[var(--d-std)] group-hover:w-full"
-      style={{ background: "var(--iris)" }}
+      style={{ background: "linear-gradient(90deg, #8B54FF, #B79BFF)" }}
     />
   );
 }
@@ -297,7 +297,7 @@ export function PreInterviewBody() {
             style={{
               ...glassCard,
               background:
-                "var(--white)",
+                "linear-gradient(158deg, rgba(246,242,255,0.95), rgba(235,228,255,0.62) 74%)",
             }}
           >
             <TopHairline />
@@ -392,7 +392,7 @@ export function PreInterviewBody() {
                 <span
                   className="relative z-[1] grid h-12 w-12 place-items-center rounded-full text-white"
                   style={{
-                    background: "var(--ink)",
+                    background: "linear-gradient(135deg, #9A6BFF, #7C48F1)",
                     boxShadow: "0 12px 28px -12px rgba(120,74,240,0.6)",
                   }}
                 >

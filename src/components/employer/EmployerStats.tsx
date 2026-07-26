@@ -2,18 +2,16 @@
 
 /**
  * Employer command band — the at-a-glance header from GET /v1/employer/overview.
- * One dominant "pipeline" card carries the hero number, an honest active-roles
- * bar, and the single most useful next action; three lighter tiles sit beside it.
- * Paper system: flat cards, one restrained accent (the bar), no decorative icons.
- * Counts only, never a score.
+ * Deliberately NOT four uniform boxes: one dominant "pipeline" card carries the
+ * hero number + an honest active-roles bar + the single most useful next action
+ * (open intros), with three lighter secondary tiles beside it. Counts only, never
+ * a score. Live on the team dashboard; labeled sample on mocks.
  */
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { BriefcaseBusiness, MessagesSquare, CircleCheckBig, ArrowRight } from "lucide-react";
 import { v1, isLiveBackend, type EmployerOverview } from "@/lib/v1";
-import { AnimatedNumber } from "@/components/motion/AnimatedNumber";
-import { TiltCard } from "@/components/motion/TiltCard";
 
 const SAMPLE: EmployerOverview = { active_roles: 3, total_roles: 5, candidates_in_pipeline: 12, intros_open: 2, hires: 1 };
 
@@ -35,12 +33,25 @@ export function EmployerStats() {
   return (
     <div className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-6">
       {/* Hero — the volume you're actually working */}
-      <TiltCard max={4} className="md:col-span-2 lg:col-span-3">
-      <div className="glass flex h-full flex-col rounded-[var(--r-card)] p-6">
-        <p className="eyebrow">Pipeline</p>
+      <div
+        className="relative flex flex-col overflow-hidden rounded-[var(--r-card)] p-6 md:col-span-2 lg:col-span-3"
+        style={{
+          background: "linear-gradient(135deg, rgba(139,84,255,0.10), rgba(105,34,245,0.04))",
+          border: "1px solid var(--iris-line)",
+          boxShadow: "var(--shadow-md)",
+        }}
+      >
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(139,84,255,0.20), transparent 68%)", filter: "blur(8px)" }}
+        />
+        <p className="text-[12px] font-semibold uppercase tracking-wider text-[var(--iris-ink)]" style={{ fontFamily: "var(--font-mono)" }}>
+          Pipeline
+        </p>
         <div className="mt-2 flex items-end gap-3">
-          <span className="text-[52px] font-bold leading-[0.9] tabular-nums text-[var(--ink)]" style={{ fontFamily: "var(--font-mono)" }}>
-            {data ? <AnimatedNumber value={data.candidates_in_pipeline} /> : "—"}
+          <span className="text-[52px] font-extrabold leading-[0.9] text-[var(--ink)]" style={{ fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>
+            {data ? data.candidates_in_pipeline : "—"}
           </span>
           <span className="pb-1.5 text-[14px] font-semibold text-[var(--ink-2)]">candidates in play</span>
         </div>
@@ -49,21 +60,20 @@ export function EmployerStats() {
         <div className="mt-5">
           <div className="flex items-center justify-between text-[12.5px]">
             <span className="text-[var(--ink-2)]">
-              <span className="font-semibold text-[var(--ink)]">{data ? data.active_roles : "—"}</span> of {data ? data.total_roles : "—"} roles active
+              <span className="font-bold text-[var(--ink)]">{data ? data.active_roles : "—"}</span> of {data ? data.total_roles : "—"} roles active
             </span>
-            <span className="font-semibold tabular-nums text-[var(--ink)]">
-              {data ? <AnimatedNumber value={rolePct} /> : "—"}%
-            </span>
+            <span className="font-semibold text-[var(--iris-ink)]" style={{ fontVariantNumeric: "tabular-nums" }}>{rolePct}%</span>
           </div>
           <div className="mt-1.5 h-2 overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
-            <div className="h-full rounded-full transition-[width] duration-700" style={{ width: `${rolePct}%`, background: "var(--iris)" }} />
+            <div className="h-full rounded-full transition-[width] duration-700" style={{ width: `${rolePct}%`, background: "linear-gradient(90deg,var(--iris-soft),var(--iris))" }} />
           </div>
         </div>
 
         {/* the single most useful next action */}
         <Link
           href="/intros"
-          className="mt-auto inline-flex w-fit items-center gap-1.5 pt-5 text-[13.5px] font-semibold text-[var(--ink)] transition-colors hover:text-[var(--iris-ink)]"
+          className="mt-auto inline-flex w-fit items-center gap-1.5 pt-5 text-[13.5px] font-semibold transition-opacity hover:opacity-70"
+          style={{ color: "var(--iris-ink)" }}
         >
           {data && data.intros_open > 0
             ? `${data.intros_open} intro${data.intros_open === 1 ? "" : "s"} awaiting your response`
@@ -71,26 +81,36 @@ export function EmployerStats() {
           <ArrowRight size={14} />
         </Link>
       </div>
-      </TiltCard>
 
       {/* Secondary tiles — lighter weight, clear rhythm */}
-      <SecondaryTile value={data ? data.active_roles : null} label="Active roles" sub={data ? `of ${data.total_roles} total` : ""} />
-      <SecondaryTile value={data ? data.intros_open : null} label="Open intros" sub="awaiting a response" />
-      <SecondaryTile value={data ? data.hires : null} label="Hires" sub="positive outcomes" />
+      <SecondaryTile icon={BriefcaseBusiness} value={data ? `${data.active_roles}` : "—"} label="Active roles" sub={data ? `of ${data.total_roles} total` : ""} />
+      <SecondaryTile icon={MessagesSquare} value={data ? `${data.intros_open}` : "—"} label="Open intros" sub="awaiting a response" />
+      <SecondaryTile icon={CircleCheckBig} value={data ? `${data.hires}` : "—"} label="Hires" sub="positive outcomes" />
     </div>
   );
 }
 
-function SecondaryTile({ value, label, sub }: { value: number | null; label: string; sub: string }) {
+function SecondaryTile({
+  icon: Icon,
+  value,
+  label,
+  sub,
+}: {
+  icon: typeof BriefcaseBusiness;
+  value: string;
+  label: string;
+  sub: string;
+}) {
   return (
-    <TiltCard max={6} className="lg:col-span-1">
-      <div className="glass flex h-full flex-col justify-end rounded-[var(--r-card)] p-5">
-        <p className="text-[26px] font-bold leading-none tabular-nums text-[var(--ink)]" style={{ fontFamily: "var(--font-mono)" }}>
-          {value === null ? "—" : <AnimatedNumber value={value} />}
-        </p>
-        <p className="mt-2 text-[12.5px] font-semibold text-[var(--ink-2)]">{label}</p>
-        {sub && <p className="text-[11.5px] text-[var(--ink-3)]">{sub}</p>}
-      </div>
-    </TiltCard>
+    <div className="glass flex flex-col rounded-[var(--r-card)] p-5 lg:col-span-1">
+      <span className="grid h-9 w-9 place-items-center rounded-xl text-[var(--iris-ink)]" style={{ background: "var(--iris-ghost)" }}>
+        <Icon size={17} />
+      </span>
+      <p className="mt-3 text-[26px] font-extrabold leading-none text-[var(--ink)]" style={{ fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>
+        {value}
+      </p>
+      <p className="mt-1.5 text-[12.5px] font-semibold text-[var(--ink-2)]">{label}</p>
+      {sub && <p className="text-[11.5px] text-[var(--ink-3)]">{sub}</p>}
+    </div>
   );
 }
