@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { AnimateIcon, ArrowRight, ScrollText, Scale, Gavel, ShieldCheck } from "@/components/ui/icons";
+import { ArrowRight, ScrollText, Scale, Gavel, ShieldCheck } from "@/components/ui/icons";
 
-import { PlasmaVeil } from "@/components/background/PlasmaVeil";
 import { Nav } from "@/components/sections/Nav";
 import { Footer } from "@/components/sections/Footer";
-import { Testimonials } from "@/components/sections/Testimonials";
 
 import { CompaniesHero } from "@/components/companies/CompaniesHero";
 import { ResumeTriage } from "@/components/companies/ResumeTriage";
@@ -38,7 +36,7 @@ function TrustStrip() {
         <span className="text-[12.5px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">Defensible hiring</span>
         {STRIP.map(({ icon: Icon, label }) => (
           <span key={label} className="inline-flex items-center gap-2 text-[13.5px] font-medium text-[var(--ink-2)]">
-            <Icon size={16} animateOnView style={{ color: "var(--iris-ink)" }} /> {label}
+            <Icon size={16} style={{ color: "var(--ink-3)" }} /> {label}
           </span>
         ))}
       </div>
@@ -64,14 +62,14 @@ function ComplianceBlock() {
           <a
             key={title}
             href={href}
-            className="glass group rounded-[var(--r-card)] p-6 transition-shadow hover:shadow-[var(--shadow-md)]"
+            className="glass group rounded-[var(--r-card)] p-6 transition-colors hover:bg-[var(--mist)]"
           >
-            <span className="mb-4 inline-grid h-11 w-11 place-items-center rounded-[0.85rem]" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-              <Icon size={20} animateOnView animateOnHover />
+            <span className="mb-4 inline-grid h-11 w-11 place-items-center rounded-[0.85rem] border" style={{ borderColor: "var(--glass-line-hi)", color: "var(--ink-2)" }}>
+              <Icon size={20} />
             </span>
             <h3 className="font-[var(--font-display)] text-[16.5px] font-semibold text-[var(--ink)]">{title}</h3>
             <p className="mt-2 text-[14px] leading-relaxed text-[var(--ink-2)]">{body}</p>
-            <span className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold" style={{ color: "var(--iris-ink)" }}>
+            <span className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold text-[var(--ink)]">
               Learn more <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
             </span>
           </a>
@@ -83,53 +81,32 @@ function ComplianceBlock() {
 
 function FinalCta() {
   return (
-    <section className="relative py-20 md:py-28">
-      <div className="shell">
-        <div
-          className="relative overflow-hidden rounded-[calc(var(--r-card)+10px)] px-8 py-14 text-center md:px-16 md:py-20"
-          style={{
-            background: "linear-gradient(118deg, #8f61f7 0%, #7c48f1 46%, #6b38e6 108%)",
-            boxShadow: "0 34px 80px -34px rgba(110,60,230,0.55)",
-          }}
-        >
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{ background: "radial-gradient(700px circle at 50% -20%, rgba(255,255,255,.28), transparent 55%)" }}
-          />
-          <div className="relative mx-auto max-w-xl">
-            <p className="text-[12px] uppercase tracking-[0.16em]" style={{ fontFamily: "var(--font-mono)", color: "rgba(255,255,255,.7)" }}>
-              No setup fee · cancel anytime
-            </p>
-            <h2 className="mt-4 text-[clamp(2rem,1.3rem+3vw,3.4rem)]" style={{ color: "#fff" }}>
-              Stop guessing from resumes.
-            </h2>
-            <p className="mt-5 text-[16.5px] leading-relaxed" style={{ color: "rgba(255,255,255,.82)" }}>
-              Give one team one week. Watch how fast &ldquo;who should we talk to?&rdquo; gets an honest answer.
-            </p>
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <AnimateIcon animateOnHover>
-                <a
-                  href="/demo"
-                  className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] bg-white px-6 py-3.5 text-[15px] font-semibold transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
-                  style={{ color: "var(--iris-ink)", boxShadow: "0 12px 30px -10px rgba(0,0,0,.35)" }}
-                >
-                  Book a demo <ArrowRight size={17} />
-                </a>
-              </AnimateIcon>
-              <a
-                href="/employer"
-                className="inline-flex cursor-pointer items-center rounded-[var(--r-btn)] px-6 py-3.5 text-[15px] font-semibold text-white transition-colors duration-[var(--d-micro)]"
-                style={{ border: "1px solid rgba(255,255,255,.45)", background: "rgba(255,255,255,.06)" }}
-              >
-                See the dashboard
-              </a>
-            </div>
-            <p className="mt-6 flex items-center justify-center gap-2 text-[13px]" style={{ color: "rgba(255,255,255,.6)" }}>
-              <ShieldCheck size={14} animateOnView /> Every score is bias-audited and contestable.
-            </p>
-          </div>
+    <section className="shell border-t border-[var(--glass-line)] py-24 md:py-32">
+      <div className="max-w-2xl">
+        <p className="eyebrow">No setup fee · cancel anytime</p>
+        <h2 className="mt-4 text-[clamp(2rem,1.3rem+3vw,3.4rem)] font-bold leading-[1.05] tracking-[-0.03em] text-[var(--ink)]">
+          Stop guessing from resumes.
+        </h2>
+        <p className="mt-5 text-[17px] leading-relaxed text-[var(--ink-2)]">
+          Give one team one week. Watch how fast &ldquo;who should we talk to?&rdquo; gets an honest answer.
+        </p>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a
+            href="/demo"
+            className="inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] bg-[var(--ink)] px-6 py-3.5 text-[15px] font-semibold text-[var(--white)] transition-colors hover:bg-[color-mix(in_oklab,var(--ink),#000_14%)]"
+          >
+            Book a demo <ArrowRight size={16} />
+          </a>
+          <a
+            href="/employer"
+            className="inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] border border-[var(--glass-line)] bg-[var(--white)] px-6 py-3.5 text-[15px] font-semibold text-[var(--ink)] transition-colors hover:bg-[var(--mist)]"
+          >
+            See the dashboard
+          </a>
         </div>
+        <p className="mt-6 flex items-center gap-2 text-[13px] text-[var(--ink-3)]">
+          <ShieldCheck size={14} /> Every score is bias-audited and contestable.
+        </p>
       </div>
     </section>
   );
@@ -138,7 +115,6 @@ function FinalCta() {
 export default function CompaniesPage() {
   return (
     <>
-      <PlasmaVeil />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <CompaniesHero />
@@ -148,7 +124,6 @@ export default function CompaniesPage() {
         <TeamJourneySteps />
         <CandidateMatchCarousel />
         <ComplianceBlock />
-        <Testimonials />
         <CompaniesFaq />
         <FinalCta />
       </main>
