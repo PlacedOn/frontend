@@ -15,7 +15,6 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Menu, X, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { SignOutButton } from "@/components/auth/SignOutButton";
-import { AuroraMesh } from "@/components/background/AuroraMesh";
 import { NotificationsBell } from "./NotificationsBell";
 import { NAV, PRIMARY_CTA, ROLE_LABEL, isNavActive, type DashboardRole, type NavItem } from "@/lib/dashboardNav";
 
@@ -207,7 +206,6 @@ export function DashboardShellClient({
 
   return (
     <div style={{ "--sb": width } as React.CSSProperties}>
-      <AuroraMesh />
 
       {/* Desktop sidebar */}
       <aside

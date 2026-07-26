@@ -193,6 +193,39 @@ h1, h2, h3, h4 {
 }
 .hl-marker.lit::before { --hl: 1; }
 
+/* ══════════════ capability graph — the signature visual ══════════════
+   An original semantic network: a candidate's evidenced capabilities
+   connecting to a role. Motion explains the product (understanding beyond
+   the Resume), never decorates. Static by default (reduced-motion safe);
+   the .capgraph--animate class opts each element into a calm reveal. */
+.capgraph [data-node] { transform-box: fill-box; transform-origin: center; }
+.capgraph .cap-edge { stroke-dashoffset: 0; }              /* default: drawn */
+.capgraph .cap-signal { opacity: 0; }                       /* default: hidden */
+
+.capgraph--animate .cap-edge {
+  stroke-dashoffset: 1;
+  animation: capDraw 1.1s var(--ease-out) forwards;
+}
+.capgraph--animate [data-node] {
+  opacity: 0;
+  animation: capNodeIn 0.6s var(--ease-out) forwards;
+}
+.capgraph--animate .cap-signal { animation: capSignal 3.6s var(--ease-out) infinite; }
+.capgraph--animate .cap-ring { animation: capPulse 3.8s var(--ease-out) infinite; }
+
+@keyframes capDraw { to { stroke-dashoffset: 0; } }
+@keyframes capNodeIn { from { opacity: 0; transform: scale(0.86); } to { opacity: 1; transform: scale(1); } }
+@keyframes capSignal {
+  0%   { offset-distance: 0%; opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+@keyframes capPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 0.14; transform: scale(1.14); }
+}
+
 /* focus ring — accessible, consistent */
 :where(a, button, input, [tabindex]):focus-visible {
   outline: 2px solid var(--iris);

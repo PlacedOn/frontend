@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AuroraMesh } from "@/components/background/AuroraMesh";
 import { RouteHeader } from "@/components/layout/RouteHeader";
 import { Footer } from "@/components/sections/Footer";
 import { PreInterviewBody } from "@/components/pre-interview/PreInterviewBody";
@@ -13,7 +12,6 @@ export const metadata: Metadata = {
 export default function PreInterviewPage() {
   return (
     <>
-      <AuroraMesh />
       <RouteHeader />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <PreInterviewBody />

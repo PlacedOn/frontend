@@ -129,7 +129,7 @@ export function ConsentGate({
         onClick={begin}
         disabled={!agreed || busy || authLoading}
         className="mt-6 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-[var(--r-btn)] px-6 py-4 text-[15px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
-        style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}
+        style={{ background: "var(--ink)", boxShadow: "var(--shadow-sm)" }}
       >
         {busy ? (
           "Starting…"

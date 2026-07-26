@@ -1,4 +1,5 @@
 import { Nav } from "@/components/sections/Nav";
+import { Reveal } from "@/components/motion/Reveal";
 import { PaperHero } from "@/components/sections/paper/PaperHero";
 import { PaperSteps } from "@/components/sections/paper/PaperSteps";
 import { PaperDualPath } from "@/components/sections/paper/PaperDualPath";
@@ -13,11 +14,11 @@ export default function Home() {
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <PaperHero />
-        <PaperSteps />
-        <PaperDualPath />
-        <PaperTrust />
-        <PaperFaq />
-        <PaperCta />
+        <Reveal><PaperSteps /></Reveal>
+        <Reveal><PaperDualPath /></Reveal>
+        <Reveal><PaperTrust /></Reveal>
+        <Reveal><PaperFaq /></Reveal>
+        <Reveal><PaperCta /></Reveal>
       </main>
       <Footer />
     </>

@@ -122,7 +122,7 @@ export function InterviewSurface({
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           {onRetry && (
-            <button type="button" onClick={onRetry} className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-3 text-[14px] font-bold text-white" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))" }}>
+            <button type="button" onClick={onRetry} className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-3 text-[14px] font-bold text-white" style={{ background: "var(--ink)" }}>
               <RefreshCw size={15} /> Retry connection
             </button>
           )}
@@ -146,7 +146,7 @@ export function InterviewSurface({
           We&rsquo;re turning your conversation into evidence-backed traits. You review every one before any employer sees it — nothing is shared by default.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Link href={reviewHref} className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-6 py-3.5 text-[15px] font-bold text-white" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}>
+          <Link href={reviewHref} className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-6 py-3.5 text-[15px] font-bold text-white" style={{ background: "var(--ink)", boxShadow: "var(--shadow-sm)" }}>
             Review your evidence <ArrowRight size={16} />
           </Link>
           <Link href="/candidate" className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] border px-6 py-3.5 text-[15px] font-semibold text-[var(--ink)]" style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass)" }}>
@@ -211,7 +211,7 @@ export function InterviewSurface({
       </div>
 
       {reconnecting && (
-        <div role="status" aria-live="polite" className="flex items-center gap-2.5 rounded-[var(--r-card)] px-4 py-3 text-[13px] font-medium" style={{ background: "rgba(245,134,11,0.12)", color: "#B45309" }}>
+        <div role="status" aria-live="polite" className="flex items-center gap-2.5 rounded-[var(--r-card)] px-4 py-3 text-[13px] font-medium" style={{ background: "var(--mist)", color: "var(--ink-2)" }}>
           <RefreshCw size={15} className={reduce ? "" : "animate-spin"} />
           Reconnecting… your answer is saved — nothing is lost.
         </div>
@@ -310,7 +310,7 @@ export function InterviewSurface({
               className="relative grid size-12 shrink-0 place-items-center rounded-full transition-transform active:scale-[0.94] disabled:opacity-40"
               style={
                 speech.listening
-                  ? { background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", color: "#fff", boxShadow: "var(--shadow-iris)" }
+                  ? { background: "var(--ink)", color: "#fff", boxShadow: "var(--shadow-sm)" }
                   : { background: "var(--glass-hi)", border: "1px solid var(--glass-line-hi)", color: "var(--iris-ink)" }
               }
             >
@@ -358,7 +358,7 @@ export function InterviewSurface({
           <span className="text-[11.5px] text-[var(--ink-3)]">
             {speech.listening ? "Listening — tap the mic to stop" : "Enter to send · Shift+Enter for a new line"}
           </span>
-          <button type="button" onClick={submit} disabled={!canAnswer || !draft.trim()} className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-2.5 text-[14px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-45" style={{ background: "linear-gradient(135deg,var(--iris-soft),var(--iris))", boxShadow: "var(--shadow-iris)" }}>
+          <button type="button" onClick={submit} disabled={!canAnswer || !draft.trim()} className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-5 py-2.5 text-[14px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-45" style={{ background: "var(--ink)", boxShadow: "var(--shadow-sm)" }}>
             Send <Send size={15} />
           </button>
         </div>
@@ -419,7 +419,7 @@ function Bubble({ message, reduce }: { message: InterviewMessage; reduce: boolea
         className="rounded-2xl px-4 py-2.5 text-[14px] leading-relaxed"
         style={
           isYou
-            ? { background: "linear-gradient(135deg, var(--iris-soft), var(--iris))", color: "#fff" }
+            ? { background: "var(--ink)", color: "#fff" }
             : { background: "#fff", color: "var(--ink)", border: "1px solid var(--glass-line)" }
         }
       >
