@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 };
 import { PaperHero } from "@/components/sections/paper/PaperHero";
 import { PaperSteps } from "@/components/sections/paper/PaperSteps";
+import { ProductPreview } from "@/components/sections/paper/ProductPreview";
 import { PaperDualPath } from "@/components/sections/paper/PaperDualPath";
 import { PaperTrust } from "@/components/sections/paper/PaperTrust";
 import { PaperFaq } from "@/components/sections/paper/PaperFaq";
@@ -28,6 +29,7 @@ export default function Home() {
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <PaperHero />
         <Reveal><PaperSteps /></Reveal>
+        <ProductPreview />
         <Reveal><PaperDualPath /></Reveal>
         <Reveal><PaperTrust /></Reveal>
         <Reveal><PaperFaq /></Reveal>
