@@ -4,6 +4,7 @@ import { Hero } from "@/components/sections/Hero";
 import { KineticMarquee } from "@/components/motion/KineticMarquee";
 import { VisionReel } from "@/components/sections/VisionReel";
 import { VerifiedCompanies } from "@/components/sections/VerifiedCompanies";
+import { TrustRow } from "@/components/sections/TrustRow";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FeaturedSurfaces } from "@/components/sections/FeaturedSurfaces";
 import { GlobalReach } from "@/components/sections/GlobalReach";
@@ -21,6 +22,7 @@ export default function Home() {
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <Hero />
         <VerifiedCompanies />
+        <TrustRow />
         <SignalAccordion />
         <KineticMarquee />
         <VisionReel />
