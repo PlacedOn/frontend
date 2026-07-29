@@ -14,6 +14,7 @@ import { AnimateIcon, ArrowRight } from "@/components/ui/icons";
 import { Button } from "@/components/ui/Button";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
 import { HeroAurora } from "@/components/background/HeroAurora";
+import { CapabilityGraph } from "@/components/motion/CapabilityGraph";
 import { cn } from "@/lib/cn";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
