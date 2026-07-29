@@ -1,15 +1,9 @@
 import { SignalField } from "@/components/background/SignalField";
 import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
-import { KineticMarquee } from "@/components/motion/KineticMarquee";
-import { VisionReel } from "@/components/sections/VisionReel";
 import { VerifiedCompanies } from "@/components/sections/VerifiedCompanies";
 import { TrustRow } from "@/components/sections/TrustRow";
 import { HowItWorks } from "@/components/sections/HowItWorks";
-import { FeaturedSurfaces } from "@/components/sections/FeaturedSurfaces";
-import { GlobalReach } from "@/components/sections/GlobalReach";
-import { SignalAccordion } from "@/components/sections/SignalAccordion";
-import { Testimonials } from "@/components/sections/Testimonials";
 import { Audiences } from "@/components/sections/Audiences";
 import { CTA } from "@/components/sections/CTA";
 import { Footer } from "@/components/sections/Footer";
@@ -23,13 +17,7 @@ export default function Home() {
         <Hero />
         <VerifiedCompanies />
         <TrustRow />
-        <SignalAccordion />
-        <KineticMarquee />
-        <VisionReel />
         <HowItWorks />
-        <FeaturedSurfaces />
-        <GlobalReach />
-        <Testimonials />
         <Audiences />
         <CTA />
       </main>

@@ -103,15 +103,15 @@ export function Hero() {
           className="mt-6 max-w-[16ch] text-balance text-[clamp(2.7rem,1rem+6.6vw,5.6rem)] leading-[0.98] tracking-[-0.035em] text-[var(--ink)]"
           style={{ fontWeight: 680 }}
         >
-          Defining the future with <span className="grad-iris">smart hiring</span>.
+          See how people actually <span className="grad-iris">work</span>.
         </motion.h1>
 
         <motion.p
           {...rise(0.22)}
-          className="mt-6 max-w-[52ch] text-[clamp(1.05rem,1rem+0.45vw,1.28rem)] leading-relaxed text-[var(--ink-2)]"
+          className="mt-6 max-w-[48ch] text-[clamp(1.05rem,1rem+0.45vw,1.28rem)] leading-relaxed text-[var(--ink-2)]"
         >
-          One honest, adaptive conversation shows how a candidate actually thinks, decides
-          and holds up under pressure — every trait traced back to something they said.
+          Before you hire them. One 22-minute conversation, then a report you can
+          check line by line.
         </motion.p>
 
         <motion.div {...rise(0.32)} className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">

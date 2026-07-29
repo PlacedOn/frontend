@@ -36,8 +36,9 @@ when you finish. These numbers are from the live sites:
 | `<h2>` sections | **4** | 19 (mostly labels) | **10** |
 | Body words | 2,030 | 876 | 1,685 |
 | Page height | 7,638px | 11,310px | **12,818px** |
-| Images | 1 video, 36 inline SVG | 2 videos, 28 inline SVG | 2 images, 106 SVG |
-| Motion libraries shipped | **none** | **none** | Framer Motion, GSAP, three, cobe |
+| Real images (hydrated DOM) | **72** via Sanity CDN | **70** via Sanity CDN | 2 |
+| Hero canvas | **1440x1206 WebGL2** | **1440x900 WebGL2** | 1 WebGL2 (HeroAurora) |
+| Three.js on window | no | **yes** | in deps, tree-shaken out |
 
 Three conclusions follow, and they are not negotiable:
 
@@ -58,10 +59,15 @@ be pasted onto any HR startup on earth. Compare "Practice Made Perfect" — thre
 words, unmistakably about legal practice. A visitor must know what PlacedOn does
 in five seconds. Right now they do not.
 
-**3. Neither reference ships a motion library.** All of Harvey's and Scale's
-motion is CSS transitions — Harvey's dominant duration is 150ms on four
-hand-tuned bezier curves. PlacedOn ships four animation runtimes. That is
-backwards.
+**3. Both references run a full-viewport WebGL hero.** Harvey renders a
+1440x1206 webgl2 canvas; Scale renders 1440x900 and exposes THREE on window.
+Both also serve ~70 real images from a CMS. Keep PlacedOn's `HeroAurora`
+fragment shader — it is the same move, already built, and it is good. What
+PlacedOn lacks is not motion; it is imagery and structure.
+
+Their *UI* motion is still restrained CSS at ~150ms on four hand-tuned curves.
+The split is: one ambient WebGL piece in the hero, plain CSS everywhere else.
+Do not add Framer Motion or GSAP to components.
 
 ---
 
@@ -164,12 +170,13 @@ Then apply the discipline that is currently missing:
 
 ## Motion
 
-Delete the animation runtimes. Rebuild what survives in CSS.
+Keep the WebGL hero. Remove per-component animation libraries.
 
 - Hover/focus/press: 150ms, ease-out, `transform` and `opacity` only.
 - Scroll reveals: fade + 8px rise, 600ms, staggered 60ms. Nothing else.
 - No parallax. No cursor-following. No floating cards. No ambient drift.
-- One diagram may animate, if it explains the product. Everything else is static.
+- The hero keeps its WebGL shader. One diagram may animate if it explains the
+  product. Everything else is static.
 - `prefers-reduced-motion` collapses durations at the token level, not per
   component.
 
@@ -215,7 +222,7 @@ Every one of these must be true. Verify, don't assume:
 - [ ] Page height under 8,000px at 1440
 - [ ] No sentence over 25 words; reading level Grade 7–9
 - [ ] Zero `backdrop-filter` in `src/`
-- [ ] Zero animation libraries in `package.json` dependencies
+- [ ] No Framer Motion / GSAP in component code (the WebGL hero stays)
 - [ ] `token-lint` exits 0
 - [ ] `tsc --noEmit` clean, `pnpm build` clean
 - [ ] All 40 routes return 200
