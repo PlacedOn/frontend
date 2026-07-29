@@ -4,13 +4,11 @@ import { AnimateIcon, ArrowRight, ShieldCheck, ScrollText, Scale, Gavel, Eye, Lo
 import { BeamsField } from "@/components/background/BeamsField";
 import { Nav } from "@/components/sections/Nav";
 import { Footer } from "@/components/sections/Footer";
-import { Testimonials } from "@/components/sections/Testimonials";
 
 import { CandidatesHero } from "@/components/candidates/CandidatesHero";
 import { ApplicationInbox } from "@/components/candidates/ApplicationInbox";
 import { SampleScorecard } from "@/components/candidates/SampleScorecard";
 import { JourneySteps } from "@/components/candidates/JourneySteps";
-import { RoleMatchCarousel } from "@/components/candidates/RoleMatchCarousel";
 import { CandidatesFaq } from "@/components/candidates/CandidatesFaq";
 
 export const metadata: Metadata = {
@@ -185,12 +183,8 @@ export default function CandidatesPage() {
         <CandidatesHero />
         <TrustStrip />
         <ApplicationInbox />
-        <ResumesVsProven />
         <SampleScorecard />
         <JourneySteps />
-        <RoleMatchCarousel />
-        <InControl />
-        <Testimonials />
         <CandidatesFaq />
         <FinalCta />
       </main>

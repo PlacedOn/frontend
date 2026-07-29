@@ -19,11 +19,11 @@ const FAQS = [
   },
   {
     q: "Why don't I get the full transcript?",
-    a: "Off-the-record answers create bias and privacy risk for you, and they stop candidates from being honest. Sealing the transcript and sharing only approved signal protects both sides and keeps your decisions clean.",
+    a: "Off-the-record answers create bias and privacy risk for you, and they stop candidates from being honest. Sealing the transcript and sharing only what the candidate approved protects both sides and keeps your decisions clean.",
   },
   {
     q: "How fast can we start?",
-    a: "Post a role in minutes. Matching candidates arrive already interviewed, so there's no screening backlog to clear before you see real signal.",
+    a: "Post a role in minutes. Matching candidates arrive already interviewed, so there's no screening backlog to clear before you see real work.",
   },
   {
     q: "How does pricing work?",

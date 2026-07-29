@@ -4,7 +4,6 @@ import { AnimateIcon, ArrowRight, ScrollText, Scale, Gavel, ShieldCheck } from "
 import { PlasmaVeil } from "@/components/background/PlasmaVeil";
 import { Nav } from "@/components/sections/Nav";
 import { Footer } from "@/components/sections/Footer";
-import { Testimonials } from "@/components/sections/Testimonials";
 
 import { CompaniesHero } from "@/components/companies/CompaniesHero";
 import { ResumeTriage } from "@/components/companies/ResumeTriage";
@@ -16,7 +15,7 @@ import { CompaniesFaq } from "@/components/companies/CompaniesFaq";
 export const metadata: Metadata = {
   title: "For hiring teams · Placedon",
   description:
-    "Hire on evidence, not resumes. Every candidate arrives pre-interviewed — you see approved, verifiable signals, never a raw transcript. Bias-audited and compliant.",
+    "Hire on evidence, not resumes. Every candidate arrives pre-interviewed — you see what they approved you to see, never a raw transcript. Bias-audited and compliant.",
 };
 
 const COMPLIANCE = [
@@ -148,7 +147,6 @@ export default function CompaniesPage() {
         <TeamJourneySteps />
         <CandidateMatchCarousel />
         <ComplianceBlock />
-        <Testimonials />
         <CompaniesFaq />
         <FinalCta />
       </main>

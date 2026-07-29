@@ -17,13 +17,13 @@ const STEPS: Step[] = [
     icon: PlusCircle,
     title: "Post a role",
     blurb: "Describe the work, not a wishlist of keywords. Setup takes minutes.",
-    bullets: ["No resume parsing", "Define the signals that matter", "Live in minutes"],
+    bullets: ["No resume parsing", "Say what the role really needs", "Live in minutes"],
   },
   {
     icon: Users,
     title: "Candidates arrive pre-interviewed",
     blurb: "Everyone who matches has already done a full interview, so there are no screening calls to schedule.",
-    bullets: ["Zero triage backlog", "No first-round scheduling", "Signal on day one"],
+    bullets: ["Zero triage backlog", "No first-round scheduling", "Useful from day one"],
   },
   {
     icon: ScanSearch,
