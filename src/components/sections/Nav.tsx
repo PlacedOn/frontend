@@ -40,13 +40,15 @@ export function Nav() {
     >
       <nav
         aria-label="Main"
+        /* Transparent at rest so it sits *on* the dark hero rather than as a
+           pill floating over it — Harvey's nav has no chrome until you scroll.
+           The glass pill only appears once the page has moved and the nav is
+           over light content, where it needs the separation. */
         className={cn(
           "flex w-full max-w-[var(--max)] items-center justify-between gap-4 rounded-[var(--r-chip)] px-4 py-2.5 transition-all duration-[var(--d-std)]",
-          scrolled ? "glass" : "border border-transparent",
+          scrolled ? "glass" : "border border-transparent bg-transparent",
         )}
-        style={
-          scrolled ? undefined : { background: "rgba(255,255,255,.35)", backdropFilter: "blur(8px)" }
-        }
+        data-on-dark={!scrolled || undefined}
       >
         <Link href="/" aria-label="Placedon home">
           <Logo />

@@ -30,9 +30,12 @@ export function Logo({ size = 34, showWordmark = true, className }: Props) {
       </svg>
 
       {showWordmark && (
+        // `currentColor` rather than a hardcoded --ink: the mark now appears on
+        // both the light page and the dark hero, and an inline colour here beat
+        // every override the parent could apply. The parent sets the tone.
         <span
-          className="text-[19px] font-bold tracking-tight"
-          style={{ fontFamily: "var(--font-display)", color: "var(--ink)" }}
+          className="text-[19px] font-bold tracking-tight text-[currentColor]"
+          style={{ fontFamily: "var(--font-display)" }}
         >
           Placed<span className="grad-iris">on</span>
         </span>

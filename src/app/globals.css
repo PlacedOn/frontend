@@ -71,6 +71,7 @@
   /* ── fonts (wired via next/font) ──────────── */
   --font-display: var(--font-sora), "Segoe UI", system-ui, sans-serif;
   --font-body:    var(--font-inter), system-ui, sans-serif;
+  --font-serif:   var(--font-serif-src), Georgia, "Times New Roman", serif;
   --font-mono:    ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
 
   /* ── z-scale ──────────────────────────────── */
@@ -234,3 +235,36 @@ h1, h2, h3, h4 {
     scroll-behavior: auto !important;
   }
 }
+
+/* ── nav over the dark hero ─────────────────────────────────────────────
+   The hero is an ink field; at rest the nav sits directly on it, so ink-toned
+   nav text and the wordmark would be invisible. Once scrolled the glass pill
+   returns over light content and these are dropped.
+
+   Scoped by data attribute rather than a route check, so any dark hero gets
+   the same treatment. !important is used only where a Tailwind arbitrary value
+   would otherwise win: nav items carry text-[var(--ink-2)] in the utility
+   layer, and a plain descendant selector loses to it. */
+nav[data-on-dark] { color: rgba(255, 255, 255, 0.9); }
+
+nav[data-on-dark] a,
+nav[data-on-dark] button {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+nav[data-on-dark] a:hover,
+nav[data-on-dark] button:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* The logo stays the logo. The glyph keeps its violet on every ground, and the
+   "on" gradient tail is left alone — it is the brand mark, not chrome, and
+   recolouring it was wrong. Only the "Placed" half inherits the nav tone so it
+   stays legible on ink. */
+nav[data-on-dark] svg { fill: var(--iris) !important; }
+nav[data-on-dark] .grad-iris { -webkit-text-fill-color: transparent; }
+
+/* Drop only the halo. The demo button keeps its violet fill — that is the one
+   accent that earns it — but a bloom against ink reads as neon. */
+nav[data-on-dark] a,
+nav[data-on-dark] button { box-shadow: none !important; }

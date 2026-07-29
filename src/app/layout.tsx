@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Sora, Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { DemoDialogProvider } from "@/components/demo/DemoDialogProvider";
@@ -14,6 +14,17 @@ const sora = Sora({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+});
+
+/* Display serif for the hero. Harvey sets its headline in a serif against a
+   sans body — it is the single clearest signal that a page was art-directed
+   rather than assembled, and it costs one font file. */
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-serif-src",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -33,7 +44,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sora.variable} ${inter.variable}`}>
+    <html lang="en" className={`${sora.variable} ${inter.variable} ${instrumentSerif.variable}`}>
       <body>
         <AuthProvider>
           <DemoDialogProvider>{children}</DemoDialogProvider>
