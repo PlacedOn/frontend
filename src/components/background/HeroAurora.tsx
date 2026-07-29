@@ -32,13 +32,25 @@ uniform vec2 u_res;
 uniform float u_time;
 uniform vec2 u_mouse;
 
-// Placedon palette
-const vec3 PORCELAIN = vec3(0.933, 0.945, 0.980);
-const vec3 LAV       = vec3(0.870, 0.850, 0.985);
-const vec3 IRIS      = vec3(0.412, 0.133, 0.961);
-const vec3 IRIS_SOFT = vec3(0.620, 0.470, 1.000);
-const vec3 GLOW      = vec3(0.820, 0.760, 1.000);
-const vec3 LILAC     = vec3(0.700, 0.585, 0.980);
+/*
+ * Paper field — rebuilt on Harvey's model, measured from their live shader.
+ *
+ * Their hero passes exactly two colour uniforms:
+ *     u_colorFront = rgba(15, 14, 13, 255)   // #0f0e0d, their ink
+ *     u_colorBack  = rgba(0, 0, 0, 0)        // transparent
+ * and shapes it with paper controls — fiber, roughness, crumples, folds
+ * (their live floats: contrast .6, roughness .6, fiber .5, crumples 0, folds 1).
+ *
+ * There is NO brand colour in their hero motion at all. The premium read comes
+ * from a physical material — paper fibre and a fold — not from a colour wash.
+ *
+ * This previously carried six colours, five of them violet, which is what made
+ * the page read as "themed". It now carries two: paper and ink. Violet is
+ * reserved for interface accents — the CTA, links, focus — where it can
+ * actually mean something.
+ */
+const vec3 PAPER = vec3(0.984, 0.980, 0.976);  // #FBFAF9 warm near-white
+const vec3 INK   = vec3(0.063, 0.059, 0.051);  // #100F0D near-black, warm
 
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
@@ -55,74 +67,46 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
   float v = 0.0, a = 0.5;
   mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
-  for (int i = 0; i < 4; i++) {
-    v += a * noise(p);
-    p = m * p;
-    a *= 0.5;
-  }
+  for (int i = 0; i < 5; i++) { v += a * noise(p); p = m * p; a *= 0.5; }
   return v;
 }
 
 void main() {
-  vec2 uv = v_uv; // y = 0 top, 1 bottom
+  vec2 uv = v_uv;
   vec2 p = uv;
   p.x *= u_res.x / max(u_res.y, 1.0);
-  float t = u_time * 0.14;
 
-  // subtle parallax from pointer
-  p += (u_mouse - 0.5) * 0.08;
+  // Very slow drift. The material should feel alive, not animated.
+  float t = u_time * 0.03;
+  p += (u_mouse - 0.5) * 0.02;
 
-  // Directional flow — the whole field sweeps diagonally over time so the
-  // bands visibly travel across the screen (bold, not just in-place morph).
-  vec2 flow = vec2(t * 1.7, t * 0.55);
+  // ── fibre: fine directional grain, the dominant texture ──
+  vec2 fibDir = vec2(p.x * 1.0, p.y * 34.0);
+  float fiber = fbm(fibDir + vec2(t * 0.35, 0.0));
+  fiber = (fiber - 0.5) * 0.5;
 
-  // two-stage domain warp → flowing aurora bands
-  vec2 q = vec2(fbm(p * 1.5 + flow + vec2(0.0, t)),
-                fbm(p * 1.5 + flow + vec2(5.2, -t)));
-  vec2 r = vec2(fbm(p * 2.0 + 2.2 * q + vec2(1.7, 9.2) + t * 0.7),
-                fbm(p * 2.0 + 2.2 * q + vec2(8.3, 2.8) - t * 0.6));
-  float f = fbm(p * 1.8 + 2.6 * r + flow * 0.5);
+  // ── fold: one broad crease, low frequency, sweeping slowly ──
+  float fold = fbm(p * 1.15 + vec2(t, t * 0.4));
+  fold = smoothstep(0.32, 0.78, fold);
 
-  // Fold into distinct ribbons so bright veils separate with clear gaps —
-  // sharp edges read as obvious motion where soft clouds did not.
-  float ribbon = abs(sin(f * 3.14159 + f * 1.5));
-  ribbon = pow(smoothstep(0.1, 0.9, ribbon), 1.2);
-  float aur = smoothstep(0.30, 0.80, f) * mix(0.5, 1.0, ribbon);
-  aur = pow(aur, 0.95);
+  // ── roughness: mid-frequency tooth so the surface is not flat ──
+  float rough = (fbm(p * 6.0 - t * 0.5) - 0.5) * 0.34;
 
-  // presence: richest toward the top, alive across the whole frame
-  float topGlow = smoothstep(0.95, 0.0, uv.y);
-  float field = mix(0.94, 1.26, topGlow);
+  // Combine, then hold the amplitude down. Harvey's field is barely there;
+  // that restraint is the whole effect.
+  float ink = fold * 0.055 + fiber * 0.05 + rough * 0.035;
 
-  // a lighter pocket behind the centred copy keeps text legible
-  float dTx = length((uv - vec2(0.5, 0.42)) / vec2(0.46, 0.32));
-  float pocket = smoothstep(0.65, 1.3, dTx); // 0 inside, 1 outside
+  // Lift the centre so headline copy always sits on clean stock.
+  float d = length((uv - vec2(0.5, 0.42)) / vec2(0.52, 0.40));
+  ink *= smoothstep(0.55, 1.25, d);
 
-  float a = aur * field * mix(0.34, 1.0, pocket);
+  // Settle toward plain paper at the bottom so the hero meets the page.
+  ink *= 1.0 - smoothstep(0.68, 1.0, uv.y);
 
-  vec3 base = mix(PORCELAIN, LAV, mix(0.14, 0.60, topGlow));
-  vec3 col = base;
-  col = mix(col, LILAC, a * 0.98);
-  col = mix(col, IRIS_SOFT, a * a * 0.54);
+  vec3 col = mix(PAPER, INK, clamp(ink, 0.0, 1.0));
 
-  // immersive top-centre bloom + lower-left glow for balance
-  float bloom = exp(-2.6 * length((uv - vec2(0.5, 0.10)) * vec2(0.85, 1.35))) * 0.75;
-  float glowL = exp(-3.4 * length((uv - vec2(0.16, 0.86)) * vec2(1.1, 1.2))) * 0.5;
-  col += GLOW * bloom * 0.5;
-  col += IRIS_SOFT * glowL * 0.22;
-  col += IRIS_SOFT * pow(a, 2.0) * 0.2;
-
-  // gentle deepening at the very top edge to frame the nav
-  col = mix(col, IRIS_SOFT, smoothstep(0.16, 0.0, uv.y) * 0.10 * pocket);
-
-  // lift the text pocket toward porcelain for contrast
-  col = mix(col, PORCELAIN, (1.0 - pocket) * 0.55);
-
-  // fine grain to kill banding
-  col += hash(uv * u_res.xy + t) * 0.024 - 0.012;
-
-  // melt into the porcelain page at the bottom
-  col = mix(col, PORCELAIN, smoothstep(0.72, 1.02, uv.y) * 0.92);
+  // Fine per-pixel grain kills banding on large flat areas.
+  col += (hash(uv * u_res.xy + t) - 0.5) * 0.016;
 
   gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }
