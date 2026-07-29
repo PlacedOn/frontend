@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import {
   MessageCircleQuestion,
@@ -54,6 +55,20 @@ export function TeamOperate() {
   const alignOk = m.alignmentPairs >= ALIGNMENT_MIN_PAIRS;
   const burden = m.activeCandidates > 0 ? m.supplementalRounds / m.activeCandidates : 0;
 
+  // Cleared rows are held locally. There is no endpoint for "I handled this"
+  // yet, so this deliberately does not pretend to persist — it resets on
+  // reload, which is honest for a queue whose backing data is still sample.
+  const [cleared, setCleared] = useState<ReadonlySet<string>>(new Set());
+  const toggle = (id: string) =>
+    setCleared((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
+  const remaining = d.actions.filter((a) => !cleared.has(a.id)).length;
+
   const reveal = (i: number) =>
     reduce
       ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.25 } }
@@ -64,17 +79,21 @@ export function TeamOperate() {
       <div>
         <p className="eyebrow">Operate · today</p>
         <h2 className="mt-1 text-[clamp(1.4rem,1.1rem+1.2vw,2rem)] font-extrabold tracking-tight text-[var(--ink)]">
-          {d.firstName}, {d.promisesDue} candidate {d.promisesDue === 1 ? "promise needs" : "promises need"} an owner today.
+          {remaining === 0
+            ? `${d.firstName}, today's queue is clear.`
+            : `${d.firstName}, ${remaining} candidate ${remaining === 1 ? "promise needs" : "promises need"} an owner today.`}
         </h2>
         <p className="mt-1 text-[14px] text-[var(--ink-2)]">
-          The next respectful action, by person — not a ranking, not a score.
+          {remaining === 0
+            ? "Nothing else is waiting on you. New items land here as candidates move."
+            : "The next respectful action, by person — not a ranking, not a score."}
         </p>
       </div>
 
       {/* Action queue — per person, human actions only */}
       <motion.ul {...reveal(0)} className="glass flex flex-col divide-y rounded-[var(--r-card)] p-2" style={{ borderColor: "var(--glass-line)" }}>
         {d.actions.map((a) => (
-          <ActionRow key={a.id} a={a} />
+          <ActionRow key={a.id} a={a} done={cleared.has(a.id)} onToggle={() => toggle(a.id)} />
         ))}
       </motion.ul>
 
@@ -142,29 +161,60 @@ export function TeamOperate() {
   );
 }
 
-function ActionRow({ a }: { a: ActionItem }) {
+/**
+ * One row of the action queue.
+ *
+ * Previously this was inert text: it told you five things needed doing and gave
+ * you no way to do any of them. Each row now clears from the queue, and the
+ * count in the heading above follows — so the list behaves like the working
+ * queue it reads as.
+ *
+ * Clearing is undoable for as long as the row is on screen; nothing is
+ * destroyed, and there is no confirm dialog for something this reversible.
+ */
+function ActionRow({ a, done, onToggle }: { a: ActionItem; done: boolean; onToggle: () => void }) {
   const Icon = KIND_ICON[a.kind];
-  const overdue = a.due === "overdue";
+  const overdue = a.due === "overdue" && !done;
+
   return (
-    <li className="flex items-center gap-3 p-3">
+    <li className="group flex items-center gap-3 p-3">
       <span
-        className="grid size-9 shrink-0 place-items-center rounded-[11px]"
-        style={{ background: overdue ? "rgba(245,134,11,0.14)" : "var(--iris-ghost)", color: overdue ? "#B45309" : "var(--iris-ink)" }}
+        className="grid size-9 shrink-0 place-items-center rounded-[11px] transition-colors duration-200"
+        style={{
+          background: done ? "var(--mist)" : overdue ? "rgba(245,134,11,0.14)" : "var(--iris-ghost)",
+          color: done ? "var(--ink-3)" : overdue ? "#B45309" : "var(--iris-ink)",
+        }}
       >
         <Icon size={16} aria-hidden />
       </span>
+
       <div className="min-w-0 flex-1">
-        <p className="text-[13.5px] text-[var(--ink-2)]">
-          <span className="font-bold text-[var(--ink)]">{a.ref}</span> {a.text}
+        <p className={`text-[13.5px] transition-colors duration-200 ${done ? "text-[var(--ink-3)] line-through" : "text-[var(--ink-2)]"}`}>
+          <span className={done ? "font-bold" : "font-bold text-[var(--ink)]"}>{a.ref}</span> {a.text}
         </p>
         <p className="text-[11.5px] text-[var(--ink-3)]">{a.owner}</p>
       </div>
-      <span
-        className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold"
-        style={overdue ? { background: "rgba(245,134,11,0.14)", color: "#B45309" } : { background: "var(--mist)", color: "var(--ink-3)" }}
+
+      {!done && (
+        <span
+          className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold"
+          style={overdue ? { background: "rgba(245,134,11,0.14)", color: "#B45309" } : { background: "var(--mist)", color: "var(--ink-3)" }}
+        >
+          {a.due}
+        </span>
+      )}
+
+      {/* Visible on hover and on keyboard focus — focus-within keeps it
+          reachable by tab, which a hover-only control would not be. */}
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-pressed={done}
+        aria-label={done ? `Restore: ${a.ref} ${a.text}` : `Mark done: ${a.ref} ${a.text}`}
+        className="shrink-0 cursor-pointer rounded-full px-3 py-1.5 text-[12px] font-semibold text-[var(--ink-3)] opacity-0 transition-[opacity,color,background-color] duration-200 hover:bg-[var(--mist)] hover:text-[var(--ink)] focus-visible:opacity-100 group-hover:opacity-100"
       >
-        {a.due}
-      </span>
+        {done ? "Undo" : "Done"}
+      </button>
     </li>
   );
 }
