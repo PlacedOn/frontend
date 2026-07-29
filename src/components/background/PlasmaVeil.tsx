@@ -245,7 +245,7 @@ export function PlasmaVeil({ className }: { className?: string }) {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(70% 120% at 42% 8%, rgba(139,84,255,0.34), transparent 55%), radial-gradient(55% 120% at 62% 0%, rgba(105,34,245,0.26), transparent 58%), radial-gradient(80% 90% at 82% 82%, rgba(153,112,255,0.18), transparent 62%), var(--porcelain)",
+            "radial-gradient(70% 120% at 42% 8%, rgba(116,98,213,0.34), transparent 55%), radial-gradient(55% 120% at 62% 0%, rgba(94,70,191,0.26), transparent 58%), radial-gradient(80% 90% at 82% 82%, rgba(141,132,224,0.18), transparent 62%), var(--porcelain)",
         }}
       />
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />

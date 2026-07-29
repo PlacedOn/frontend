@@ -46,7 +46,7 @@ const PANELS: Panel[] = [
 export function Audiences() {
   const { open } = useDemoDialog();
   return (
-    <section className="relative overflow-hidden py-20 md:py-28">
+    <section className="relative overflow-hidden section-rhythm">
       <SectionAurora />
       <div className="shell relative z-[1] grid gap-4 lg:grid-cols-2">
         {PANELS.map((p, i) => (

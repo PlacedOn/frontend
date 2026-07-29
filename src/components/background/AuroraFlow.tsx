@@ -22,8 +22,8 @@ type Blob = {
 };
 
 const BLOBS: Blob[] = [
-  { color: "rgba(139,84,255,0.42)", size: "52vw", left: "2%", top: "-14%", x: [0, 120, -40, 0], y: [0, 60, 120, 0], scale: [1, 1.15, 0.95, 1], duration: 22 },
-  { color: "rgba(105,34,245,0.34)", size: "46vw", left: "54%", top: "6%", x: [0, -110, 60, 0], y: [0, 80, -30, 0], scale: [1.05, 0.9, 1.2, 1.05], duration: 27 },
+  { color: "color-mix(in oklab, var(--iris-soft) 42%, transparent)", size: "52vw", left: "2%", top: "-14%", x: [0, 120, -40, 0], y: [0, 60, 120, 0], scale: [1, 1.15, 0.95, 1], duration: 22 },
+  { color: "color-mix(in oklab, var(--iris) 34%, transparent)", size: "46vw", left: "54%", top: "6%", x: [0, -110, 60, 0], y: [0, 80, -30, 0], scale: [1.05, 0.9, 1.2, 1.05], duration: 27 },
   { color: "rgba(120,178,255,0.32)", size: "42vw", left: "66%", top: "34%", x: [0, -80, 40, 0], y: [0, -60, 40, 0], scale: [0.95, 1.2, 1, 0.95], duration: 30 },
   { color: "rgba(255,196,132,0.20)", size: "40vw", left: "22%", top: "44%", x: [0, 90, -50, 0], y: [0, -40, 60, 0], scale: [1.1, 0.92, 1.15, 1.1], duration: 25 },
 ];
@@ -43,7 +43,7 @@ export function AuroraFlow() {
           marginLeft: "-75vmax",
           marginTop: "-75vmax",
           background:
-            "conic-gradient(from 0deg, rgba(139,84,255,0.14), rgba(120,178,255,0.06), rgba(255,196,132,0.05), rgba(105,34,245,0.14), rgba(139,84,255,0.14))",
+            "conic-gradient(from 0deg, color-mix(in oklab, var(--iris-soft) 14%, transparent), rgba(120,178,255,0.06), rgba(255,196,132,0.05), color-mix(in oklab, var(--iris) 14%, transparent), color-mix(in oklab, var(--iris-soft) 14%, transparent))",
           filter: "blur(50px)",
           willChange: "transform",
         }}

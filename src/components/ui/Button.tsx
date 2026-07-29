@@ -58,12 +58,12 @@ export function Button({
             "linear-gradient(135deg, #9a6bff 0%, #7d47f0 55%, #6b36e6 120%)",
           border: "1px solid rgba(255,255,255,0.26)",
           boxShadow:
-            "0 16px 36px -12px rgba(123,69,240,0.62), inset 0 1.5px 0 rgba(255,255,255,0.55), inset 0 -12px 24px -14px rgba(70,30,160,0.55)",
+            "0 16px 36px -12px color-mix(in oklab, var(--iris) 62%, transparent), inset 0 1.5px 0 rgba(255,255,255,0.55), inset 0 -12px 24px -14px rgba(70,30,160,0.55)",
         }
       : {
           // Frosted clear glass for secondary actions.
           background:
-            "linear-gradient(158deg, rgba(255,255,255,0.80), rgba(244,242,255,0.56) 72%)",
+            "linear-gradient(158deg, rgba(255,255,255,0.80), rgba(244,244,254,0.56) 72%)",
           border: "1px solid rgba(255,255,255,0.72)",
           backdropFilter: "blur(16px) saturate(1.3)",
           WebkitBackdropFilter: "blur(16px) saturate(1.3)",

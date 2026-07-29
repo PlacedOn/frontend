@@ -34,7 +34,7 @@ function Ring({ pct }: { pct: number }) {
       <circle cx="50" cy="50" r={r} fill="none" stroke="var(--mist)" strokeWidth="9" />
       <circle
         cx="50" cy="50" r={r} fill="none" stroke="url(#rg)" strokeWidth="9" strokeLinecap="round"
-        strokeDasharray={c} strokeDashoffset={offset} style={{ transition: "stroke-dashoffset 0.9s cubic-bezier(0.16,1,0.3,1)" }}
+        strokeDasharray={c} strokeDashoffset={offset} style={{ transition: "stroke-dashoffset var(--d-narrate) var(--ease-out)" }}
       />
       <defs>
         <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">

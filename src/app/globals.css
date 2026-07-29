@@ -1,30 +1,74 @@
 @import "tailwindcss";
 
 /* ══════════════════════════════════════════════════════════════
-   Placedon — Frost Luxe design system
-   Single source of truth. One light world: porcelain + frosted
-   glass, a single iris accent, and one scarce warm signal.
-   Swap --iris + --iris-soft to match the brand logo.
+   Placedon — V3 design system
+   Single source of truth. Violet · white · black, balanced.
+
+   ARCHITECTURE (two tiers — see docs/DESIGN-SYSTEM-V3.md):
+     1. PRIMITIVES  --pl-*   what a colour IS. Never referenced
+                             directly by a component.
+     2. SEMANTIC    --bg-*, --fg-*, --border-*, and the legacy
+                             --iris/--ink/--porcelain names, which
+                             all now resolve to primitives.
+
+   Calibrated against harvey.ai and scale.com, measured in OKLCH:
+     · violet hue locked at 287, chroma pulled to Scale's register
+       (0.18 @ L49 vs the old 0.27 — the old ramp read as "themed",
+       not "designed")
+     · neutrals carry a faint warm bias (C ≤ 0.006, hue 90) so the
+       page never feels clinical. Harvey does the same thing.
+     · "black" is near-achromatic. A violet-tinted black leaves
+       nothing to read as an accent.
+
+   THE VIOLET BUDGET: violet may occupy ≲5% of any viewport, and
+   only one violet element may compete for attention per screen.
+   White does the work · black does the structure · violet points.
    ══════════════════════════════════════════════════════════════ */
 
 :root {
+  /* ══ TIER 1 — PRIMITIVES (do not reference from components) ══ */
+
+  /* neutrals — warm bias, hue 90, chroma ≤ 0.006 */
+  --pl-paper:   #FBFAF9;   /* oklch(98.6% .002 90)  page ground   */
+  --pl-paper-2: #F5F4F2;   /* oklch(96.8% .003 90)  toned ground  */
+  --pl-line:    #E2E1DE;   /* oklch(91%   .004 90)  hairline      */
+  --pl-line-2:  #CCCAC7;   /* oklch(84%   .005 90)  divider       */
+  --pl-mute:    #73716E;   /* oklch(55%   .006 90)  4.67:1 — AA   */
+  --pl-body:    #51504D;   /* oklch(43%   .005 90)  7.73:1        */
+  --pl-ink:     #100F0D;   /* oklch(17%   .004 90) 18.38:1        */
+
+  /* violet — hue 287 locked, chroma disciplined to Scale's range */
+  --pl-violet-50:  #F4F4FE;
+  --pl-violet-100: #E6E5FD;
+  --pl-violet-200: #CDCCF8;
+  --pl-violet-300: #ADA8ED;
+  --pl-violet-400: #8D84E0;
+  --pl-violet-500: #7462D5;   /* 4.53:1 on paper · 4.72:1 white-on */
+  --pl-violet-600: #5E46BF;   /* 6.49:1 on paper · 6.76:1 white-on */
+  --pl-violet-700: #4C369E;   /* 8.65:1 on paper — small text safe */
+  --pl-violet-800: #362971;
+  --pl-violet-900: #231B48;
+
+  /* ══ TIER 2 — SEMANTIC ═══════════════════════════════════════ */
+
   /* ── surfaces ─────────────────────────────── */
-  --porcelain:   #EEF1FA;          /* page ground */
-  --porcelain-2: #F7F9FE;          /* raised ground */
-  --mist:        #E4E9F6;          /* muted fill */
+  --porcelain:   var(--pl-paper-2);   /* page ground */
+  --porcelain-2: var(--pl-paper);     /* raised ground */
+  --mist:        var(--pl-line);      /* muted fill */
   --white:       #FFFFFF;
 
   /* ── ink ──────────────────────────────────── */
-  --ink:    #0E1020;               /* primary text */
-  --ink-2:  #474D63;               /* secondary text */
-  --ink-3:  #7B8299;               /* tertiary / labels */
+  --ink:    var(--pl-ink);            /* primary text  — 18.38:1 */
+  --ink-2:  var(--pl-body);           /* secondary     —  7.73:1 */
+  --ink-3:  var(--pl-mute);           /* tertiary      —  4.67:1 */
 
-  /* ── brand accent (from logo: placedon_mark.svg #6922F5) ─── */
-  --iris:        #6922F5;          /* brand violet — 6.6:1 on white */
-  --iris-soft:   #8B54FF;          /* lighter accent for gradients */
-  --iris-ink:    #5314C9;          /* deeper tone for small text (7:1+) */
-  --iris-ghost:  rgba(105, 34, 245, 0.10);
-  --iris-line:   rgba(105, 34, 245, 0.22);
+  /* ── brand accent ─────────────────────────── */
+  --iris:        var(--pl-violet-600); /* primary action — 6.49:1 */
+  --iris-soft:   var(--pl-violet-500); /* gradient partner        */
+  --iris-ink:    var(--pl-violet-700); /* small accent text 8.65:1*/
+  --iris-lift:   var(--pl-violet-300); /* gradient terminus       */
+  --iris-ghost:  color-mix(in oklab, var(--pl-violet-600) 10%, transparent);
+  --iris-line:   color-mix(in oklab, var(--pl-violet-600) 22%, transparent);
 
   /* ── scarce warm signal / "ember" (live proof moments only) ─ */
   --signal:      #F5860B;
@@ -33,10 +77,10 @@
   /* ── workshop material registers (Fable "Workshop" vision) ─ */
   --specimen:      #F7F2E9;          /* warm artifact stock — shipped work reads as "made" */
   --specimen-line: #E7DECB;
-  --instrument:      #0E1020;        /* dark evidence-world ground (register-switch = meaning) */
-  --instrument-2:    #15173a;
-  --instrument-ink:  #A9A7C8;        /* body text inside the instrument register */
-  --instrument-ink-2:#7F7DA0;        /* labels / specimen numbers on dark */
+  --instrument:      #0A0907;        /* dark evidence-world ground (register-switch = meaning) */
+  --instrument-2:    #151411;
+  --instrument-ink:  #BFBEB9;        /* body text inside the instrument register — 10.69:1 */
+  --instrument-ink-2:#878682;        /* labels / specimen numbers on dark   —  5.46:1 */
   --instrument-line: rgba(255, 255, 255, 0.10);
   --vitrine:         rgba(255, 255, 255, 0.05);  /* display-case fill for unrolled facets */
 
@@ -45,22 +89,47 @@
   /* ── glass primitive ──────────────────────── */
   --glass:      rgba(255, 255, 255, 0.62);
   --glass-hi:   rgba(255, 255, 255, 0.82);
-  --glass-line: rgba(14, 16, 32, 0.09);
-  --glass-line-hi: rgba(14, 16, 32, 0.14);
+  --glass-line: rgba(16, 15, 13, 0.09);
+  --glass-line-hi: rgba(16, 15, 13, 0.14);
   --blur: 26px;
 
-  /* ── shadows (soft, layered, light-world) ─── */
-  --shadow-sm: 0 1px 2px rgba(14, 16, 32, 0.05), 0 4px 12px rgba(14, 16, 32, 0.05);
-  --shadow-md: 0 2px 6px rgba(14, 16, 32, 0.06), 0 18px 40px -12px rgba(14, 16, 32, 0.14);
-  --shadow-lg: 0 8px 24px rgba(14, 16, 32, 0.08), 0 40px 80px -24px rgba(23, 26, 90, 0.22);
-  --shadow-iris: 0 12px 34px -10px rgba(58, 61, 224, 0.45);
+  /* ── shadows (neutral-warm; a blue-tinted shadow on a warm
+        ground is the classic "two palettes fighting" tell) ─── */
+  --shadow-sm: 0 1px 2px rgba(16, 15, 13, 0.05), 0 4px 12px rgba(16, 15, 13, 0.05);
+  --shadow-md: 0 2px 6px rgba(16, 15, 13, 0.06), 0 18px 40px -12px rgba(16, 15, 13, 0.14);
+  --shadow-lg: 0 8px 24px rgba(16, 15, 13, 0.08), 0 40px 80px -24px rgba(16, 15, 13, 0.20);
+  --shadow-iris: 0 12px 34px -10px color-mix(in oklab, var(--pl-violet-600) 40%, transparent);
 
-  /* ── motion ───────────────────────────────── */
-  --d-micro: 160ms;
-  --d-std:   320ms;
-  --d-sig:   620ms;
-  --ease-out:    cubic-bezier(0.22, 0.68, 0.31, 1);
-  --ease-spring: cubic-bezier(0.34, 1.45, 0.5, 1);
+  /* ── motion ───────────────────────────────────────────────────
+     Durations sit in Harvey's register (their dominant value is
+     150ms). Four curves, no overshoot — bounce reads as consumer
+     and undercuts a product asking a CHRO to trust a hiring
+     decision. --ease-spring is retained as an ALIAS so the ~34
+     existing call sites lose the bounce without any component
+     edit; it is deprecated and should not be used in new code. */
+  --d-micro: 150ms;   /* hover, focus, press — the default   */
+  --d-std:   240ms;   /* dropdowns, popovers, tooltips       */
+  --d-sig:   400ms;   /* modals, drawers, sheets             */
+  --d-reveal: 600ms;  /* scroll-triggered section entry      */
+  --d-narrate: 900ms; /* narrative sequence beats ONLY       */
+  --stagger: 60ms;    /* between siblings in a group         */
+
+  --ease-out:    cubic-bezier(0, 0.7, 0.3, 1);      /* entering / responding */
+  --ease-in-out: cubic-bezier(0.7, 0, 0.3, 1);      /* state → state         */
+  --ease-in:     cubic-bezier(0.7, 0, 1, 1);        /* exiting               */
+  --ease-soft:   cubic-bezier(0.3, 0.3, 0.3, 1);    /* long / ambient        */
+  --ease-spring: var(--ease-out);                   /* DEPRECATED alias      */
+
+  /* ── fluid spacing ───────────────────────────────────────────
+     Harvey makes spacing fluid, not just type — every step
+     carries a responsive range. This is where the "breathing
+     room" comes from; it is a token, not a per-section call. */
+  --space-xs:  clamp(0.4375rem, 0.40rem + 0.15vw, 0.625rem);
+  --space-sm:  clamp(0.875rem,  0.80rem + 0.30vw, 1.25rem);
+  --space-md:  clamp(1.75rem,   1.50rem + 1.00vw, 2.5rem);
+  --space-lg:  clamp(3.5rem,    3.00rem + 2.00vw, 5rem);
+  --space-xl:  clamp(7rem,      6.00rem + 4.00vw, 10rem);   /* section rhythm */
+  --space-2xl: clamp(8.75rem,   7.50rem + 5.00vw, 12.5rem);
 
   /* ── geometry ─────────────────────────────── */
   --r-card: 24px;
@@ -69,9 +138,37 @@
   --max:    1180px;
 
   /* ── fonts (wired via next/font) ──────────── */
-  --font-display: var(--font-sora), "Segoe UI", system-ui, sans-serif;
-  --font-body:    var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-geist), "Segoe UI", system-ui, sans-serif;
+  --font-body:    var(--font-geist), system-ui, sans-serif;
+  /* NB: the next/font variable is --font-serif-src, deliberately a different
+     name. Writing `--font-serif: var(--font-serif), …` here would be a
+     self-reference (:root IS <html>, where next/font sets it) and would
+     silently collapse to the Georgia fallback. */
+  --font-serif:   var(--font-serif-src), Georgia, "Times New Roman", serif;
   --font-mono:    ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+
+  /* ── type scale ──────────────────────────────────────────────
+     Fluid from --text-xl up. The negative tracking on display
+     sizes is not optional: type set at 7rem with default
+     tracking is the most common reason a hero reads amateur. */
+  --text-xs:   0.8125rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   clamp(1.25rem,  1.15rem + 0.5vw, 1.5rem);
+  --text-2xl:  clamp(1.5rem,   1.30rem + 1.0vw, 2rem);
+  --text-3xl:  clamp(1.875rem, 1.50rem + 1.9vw, 2.75rem);
+  --text-4xl:  clamp(2.25rem,  1.60rem + 3.2vw, 4rem);
+  --text-hero: clamp(2.75rem,  1.20rem + 7.6vw, 7rem);
+
+  --leading-tight:  1.08;   /* hero / display */
+  --leading-snug:   1.25;   /* headings       */
+  --leading-normal: 1.55;   /* body           */
+
+  --tracking-hero:  -0.035em;
+  --tracking-head:  -0.022em;
+  --tracking-body:   0;
+  --tracking-label:  0.06em;   /* uppercase eyebrows only */
 
   /* ── z-scale ──────────────────────────────── */
   --z-bg: 0;
@@ -84,16 +181,105 @@
   --z-peak: 70;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   DARK THEME
+   Only the semantic layer is re-pointed — the primitives and all
+   242 components stay untouched. That is the whole reason for the
+   two-tier split.
+
+   Contrast verified on #0C0B09: ink 17.54 · body 9.81 · mute 4.98
+   · accent-text 8.99 · white-on-accent 4.72. All AA.
+
+   Resolution order: an explicit data-theme always wins over the OS
+   preference, in both directions.
+   ══════════════════════════════════════════════════════════════ */
+:root {
+  /* dark primitives — always defined, only referenced by the dark theme */
+  --pl-dark-bg:     #0C0B09;
+  --pl-dark-bg-2:   #151411;
+  --pl-dark-line:   #272624;
+  --pl-dark-line-2: #3C3A37;
+  --pl-dark-mute:   #81807C;
+  --pl-dark-body:   #B8B7B4;
+  --pl-dark-ink:    #F2F2EF;
+
+  /* page wash stops — tokenized so the body ground swaps with the theme */
+  --wash-1: #FFFFFF;
+  --wash-2: var(--pl-violet-50);
+  --wash-3: var(--pl-paper);
+
+  /* hero atmosphere. These MUST be semantic (not primitives): the hero
+     background components paint full-viewport gradients, so a hardcoded
+     light value here leaves dark mode with light-on-light text. */
+  --hero-glow: #E7E2FF;          /* bright centre of the aurora */
+  --hero-veil: var(--pl-paper);  /* soft veil over the hero art */
+}
+
+/* DARK MODE — explicit opt-in ONLY, deliberately not wired to
+   prefers-color-scheme yet.
+
+   The token layer below is correct and contrast-verified, but the
+   surface layer is not: ~10 background components (SignalField,
+   HeroAurora, PlasmaVeil, AuroraFlow, AuroraMesh, FrostField,
+   SectionAurora, SignalConfluence, MotionBackground, BeamsField)
+   paint light gradients independently of the theme, and the glass
+   primitive assumes a light ground. Auto-enabling on OS preference
+   therefore ships light-on-light text on every card.
+
+   Until those components are audited, dark mode is reachable only
+   via <html data-theme="dark"> so nobody lands on a broken page.
+   Tracked in docs/DESIGN-SYSTEM-V3.md. */
+
+/* Explicit opt-in mirrors the media block, so the toggle wins over the OS. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --porcelain:   var(--pl-dark-bg);
+  --porcelain-2: var(--pl-dark-bg-2);
+  --mist:        var(--pl-dark-line);
+  --white:       var(--pl-dark-bg-2);
+
+  --ink:   var(--pl-dark-ink);
+  --ink-2: var(--pl-dark-body);
+  --ink-3: var(--pl-dark-mute);
+
+  --iris:      var(--pl-violet-500);
+  --iris-soft: var(--pl-violet-400);
+  --iris-ink:  var(--pl-violet-300);
+  --iris-lift: var(--pl-violet-200);
+
+  --specimen:      #17150F;
+  --specimen-line: #2A2620;
+
+  --glass:         rgba(255, 255, 255, 0.04);
+  --glass-hi:      rgba(255, 255, 255, 0.07);
+  --glass-line:    rgba(255, 255, 255, 0.09);
+  --glass-line-hi: rgba(255, 255, 255, 0.14);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.5), 0 18px 40px -12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.55), 0 40px 80px -24px rgba(0, 0, 0, 0.7);
+
+  --wash-1: #1A1815;
+  --wash-2: color-mix(in oklab, var(--pl-violet-600) 22%, transparent);
+  --wash-3: var(--pl-dark-bg-2);
+  --hero-glow: #221C3A;
+  --hero-veil: var(--pl-dark-bg-2);
+}
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
   min-height: 100dvh;
+  /* Warm-neutral ground with one restrained violet breath at top-right.
+     The old version stacked two blue washes against a blue-tinted
+     porcelain — three cool tints competing, none of them the brand. */
   background:
-    radial-gradient(1200px 700px at 12% -8%, #FFFFFF 0%, transparent 55%),
-    radial-gradient(1000px 620px at 92% 0%, #E9ECFF 0%, transparent 58%),
-    radial-gradient(900px 900px at 50% 118%, #EAF3FF 0%, transparent 60%),
+    radial-gradient(1200px 700px at 12% -8%, var(--wash-1) 0%, transparent 55%),
+    radial-gradient(1000px 620px at 92% 0%, var(--wash-2) 0%, transparent 58%),
+    radial-gradient(900px 900px at 50% 118%, var(--wash-3) 0%, transparent 60%),
     var(--porcelain);
   background-attachment: fixed;
   color: var(--ink);
@@ -114,14 +300,44 @@ body {
   a { color: inherit; text-decoration: none; }
 }
 
+/* Optical tracking: larger type needs tighter tracking, smaller type needs
+   less. A single letter-spacing across h1–h4 is why headings used to read
+   loose at 18px and cramped at 96px.
+   NOTE: this block is deliberately unlayered, so its `color` beats Tailwind
+   text-* utilities on headings. That is a known trap (see the `a` rule
+   above) — moving it into @layer base is correct but changes colour
+   resolution across 242 components, so it is tracked separately. */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.04;
   margin: 0;
   color: var(--ink);
+  text-wrap: balance;
 }
+
+h1 { letter-spacing: var(--tracking-hero); line-height: var(--leading-tight); }
+h2 { letter-spacing: var(--tracking-head); line-height: var(--leading-tight); }
+h3 { letter-spacing: -0.015em;             line-height: var(--leading-snug); }
+h4 { letter-spacing: -0.01em;              line-height: var(--leading-snug); }
+
+/* Editorial serif accent — pull quotes, eyebrows, the occasional headline
+   word. Harvey's quietest and most-copied-wrong move: used sparingly it
+   reads "considered"; used everywhere it reads like a different product. */
+.serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Section rhythm. --space-xl is 7rem → 10rem fluid; this is the single
+   biggest contributor to the "breathing room" gap against the references. */
+.section-rhythm    { padding-block: var(--space-xl); }
+.section-rhythm-sm { padding-block: var(--space-lg); }
 
 /* ══════════════ shared utility layer ══════════════ */
 
@@ -172,7 +388,7 @@ h1, h2, h3, h4 {
 
 /* gradient accent text */
 .grad-iris {
-  background: linear-gradient(100deg, var(--iris) 0%, var(--iris-soft) 58%, #B79BFF 100%);
+  background: linear-gradient(100deg, var(--iris) 0%, var(--iris-soft) 58%, var(--iris-lift) 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
 }
@@ -183,7 +399,7 @@ h1, h2, h3, h4 {
     100deg,
     var(--iris) 0%,
     var(--iris-soft) 34%,
-    #E7DBFF 50%,
+    var(--pl-violet-200) 50%,
     var(--iris-soft) 66%,
     var(--iris) 100%
   );
@@ -212,10 +428,14 @@ h1, h2, h3, h4 {
   top: 0.06em; bottom: 0.02em;
   z-index: 0;
   border-radius: 0.28em;
-  background: linear-gradient(100deg, rgba(154,107,255,0.42), rgba(120,74,240,0.5));
+  background: linear-gradient(
+    100deg,
+    color-mix(in oklab, var(--pl-violet-400) 42%, transparent),
+    color-mix(in oklab, var(--pl-violet-500) 50%, transparent)
+  );
   transform: scaleX(var(--hl, 0));
   transform-origin: left center;
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform var(--d-reveal) var(--ease-out);
 }
 .hl-marker.lit::before { --hl: 1; }
 
@@ -226,7 +446,20 @@ h1, h2, h3, h4 {
   border-radius: 6px;
 }
 
+/* Reduced motion is collapsed at the TOKEN level first, so any component
+   that spends var(--d-*) is correct without knowing this rule exists —
+   including ones nobody remembered to audit. The blanket !important
+   sweep below is the backstop for hardcoded durations. */
 @media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-micro: 1ms;
+    --d-std: 1ms;
+    --d-sig: 1ms;
+    --d-reveal: 1ms;
+    --d-narrate: 1ms;
+    --stagger: 0ms;
+  }
+
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;

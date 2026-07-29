@@ -53,7 +53,7 @@ function Waveform() {
         <motion.span
           key={i}
           className="w-[3.5px] rounded-full"
-          style={{ height: h, background: "linear-gradient(180deg,#8B54FF,#B79BFF)" }}
+          style={{ height: h, background: "linear-gradient(180deg,var(--iris-soft),var(--iris-lift))" }}
           animate={{ scaleY: [0.5, 1, 0.6, 1, 0.5] }}
           transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: i * 0.12 }}
         />
@@ -95,7 +95,7 @@ function PassportCard() {
             <span className="text-[12.5px] font-semibold text-[var(--ink-3)]"><span className="text-[var(--iris-ink)]">Strong</span> · 71–88%</span>
           </div>
           <span className="mt-2 block h-2.5 w-full overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
-            <motion.span className="block h-full rounded-full" style={{ background: "linear-gradient(90deg,#8B54FF,var(--iris))", transformOrigin: "left" }} initial={{ scaleX: 0 }} whileInView={{ scaleX: 0.82 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.2, ease: EASE }} />
+            <motion.span className="block h-full rounded-full" style={{ background: "linear-gradient(90deg,var(--iris-soft),var(--iris))", transformOrigin: "left" }} initial={{ scaleX: 0 }} whileInView={{ scaleX: 0.82 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.2, ease: EASE }} />
           </span>
         </div>
         <figure className="rounded-[14px] border p-3.5" style={{ background: "var(--iris-ghost)", borderColor: "var(--iris-line)" }}>
@@ -177,7 +177,7 @@ export function FeaturedSurfaces() {
   const resetTilt = () => { px.set(0); py.set(0); };
 
   return (
-    <section className="relative py-20 md:py-28" aria-label="How Placedon works">
+    <section className="relative section-rhythm" aria-label="How Placedon works">
       <div className="shell relative z-[1]">
         <div className="mb-10 max-w-2xl">
           <p className="eyebrow">See it in motion</p>
@@ -210,7 +210,7 @@ export function FeaturedSurfaces() {
                     style={{ background: isActive ? "var(--glass-hi)" : "transparent", border: `1px solid ${isActive ? "var(--iris-line)" : "transparent"}`, boxShadow: isActive ? "var(--shadow-sm)" : "none" }}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[12px] border transition-colors" style={{ background: isActive ? "rgba(105,34,245,0.10)" : "rgba(105,34,245,0.05)", borderColor: isActive ? "var(--iris)" : "var(--iris-line)", color: "var(--iris-ink)" }}>
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[12px] border transition-colors" style={{ background: isActive ? "color-mix(in oklab, var(--iris) 10%, transparent)" : "color-mix(in oklab, var(--iris) 5%, transparent)", borderColor: isActive ? "var(--iris)" : "var(--iris-line)", color: "var(--iris-ink)" }}>
                         <Icon size={18} strokeWidth={1.75} />
                       </span>
                       <div className="min-w-0">

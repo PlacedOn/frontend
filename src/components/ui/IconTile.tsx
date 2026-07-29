@@ -13,7 +13,7 @@ type Size = "sm" | "md" | "lg";
  */
 const TONE: Record<Tone, { fg: string; bg: string; border: string }> = {
   ink: { fg: "var(--ink-2)", bg: "var(--glass-hi)", border: "var(--glass-line-hi)" },
-  iris: { fg: "var(--iris-ink)", bg: "rgba(105,34,245,0.06)", border: "var(--iris-line)" },
+  iris: { fg: "var(--iris-ink)", bg: "color-mix(in oklab, var(--iris) 6%, transparent)", border: "var(--iris-line)" },
   green: { fg: "#047857", bg: "rgba(16,185,129,0.07)", border: "rgba(16,185,129,0.22)" },
   amber: { fg: "#B45309", bg: "rgba(245,134,11,0.08)", border: "rgba(245,134,11,0.24)" },
 };

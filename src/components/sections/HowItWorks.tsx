@@ -96,7 +96,7 @@ export function HowItWorks() {
   );
 
   return (
-    <section id="how" className="relative overflow-hidden py-20 md:py-28">
+    <section id="how" className="relative overflow-hidden section-rhythm">
       <SectionAurora />
       <div
         ref={root}
@@ -154,7 +154,7 @@ export function HowItWorks() {
                     <div className="flex items-center justify-between">
                       <span
                         className="grid h-12 w-12 place-items-center rounded-[14px] border"
-                        style={{ background: "rgba(105,34,245,0.06)", borderColor: "var(--iris-line)", color: "var(--iris-ink)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.7)" }}
+                        style={{ background: "color-mix(in oklab, var(--iris) 6%, transparent)", borderColor: "var(--iris-line)", color: "var(--iris-ink)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.7)" }}
                       >
                         <Icon size={22} />
                       </span>

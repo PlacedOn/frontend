@@ -65,7 +65,7 @@ function TopHairline() {
     <span
       aria-hidden
       className="absolute left-0 top-0 h-[3px] w-12 rounded-full transition-all duration-[var(--d-std)] group-hover:w-full"
-      style={{ background: "linear-gradient(90deg, #8B54FF, #B79BFF)" }}
+      style={{ background: "linear-gradient(90deg, var(--iris-soft), var(--iris-lift))" }}
     />
   );
 }
@@ -100,7 +100,7 @@ function FloatChip({ className, delay = 0, duration = 7.5, icon: Icon, label }: 
         className,
       )}
       style={{
-        background: "linear-gradient(158deg, rgba(255,255,255,0.94), rgba(244,242,255,0.74))",
+        background: "linear-gradient(158deg, rgba(255,255,255,0.94), rgba(244,244,254,0.74))",
         border: "1px solid rgba(255,255,255,0.85)",
         boxShadow: "0 14px 30px -16px rgba(60,35,140,0.38)",
         backdropFilter: "blur(10px)",
@@ -234,14 +234,14 @@ export function PreInterviewBody() {
               aria-hidden
               className="absolute inset-[6%] rounded-full"
               style={{
-                background: "linear-gradient(160deg, rgba(255,255,255,0.66), rgba(244,242,255,0.28) 70%)",
+                background: "linear-gradient(160deg, rgba(255,255,255,0.66), rgba(244,244,254,0.28) 70%)",
                 border: "1px solid rgba(255,255,255,0.78)",
                 boxShadow: "0 44px 90px -42px rgba(90,58,180,0.5), inset 0 1px 0 rgba(255,255,255,0.9)",
                 backdropFilter: "blur(10px)",
                 WebkitBackdropFilter: "blur(10px)",
               }}
             />
-            <div aria-hidden className="absolute inset-[15%] rounded-full" style={{ border: "1px solid rgba(139,84,255,0.14)" }} />
+            <div aria-hidden className="absolute inset-[15%] rounded-full" style={{ border: "1px solid color-mix(in oklab, var(--iris-soft) 14%, transparent)" }} />
             <CalmField />
 
             {/* one interview → the roles it opens */}
@@ -297,7 +297,7 @@ export function PreInterviewBody() {
             style={{
               ...glassCard,
               background:
-                "linear-gradient(158deg, rgba(246,242,255,0.95), rgba(235,228,255,0.62) 74%)",
+                "linear-gradient(158deg, rgba(244,244,254,0.95), rgba(230,229,253,0.62) 74%)",
             }}
           >
             <TopHairline />
@@ -347,7 +347,7 @@ export function PreInterviewBody() {
             <span
               aria-hidden
               className="pointer-events-none absolute -bottom-7 -right-5 select-none"
-              style={{ color: "rgba(105,34,245,0.055)" }}
+              style={{ color: "color-mix(in oklab, var(--iris) 5.5%, transparent)" }}
             >
               <Accessibility size={140} />
             </span>
@@ -364,7 +364,7 @@ export function PreInterviewBody() {
       </section>
 
       {/* What happens next — four calm steps with ghost numerals */}
-      <section id="expect" className="shell scroll-mt-28 py-20 md:py-28">
+      <section id="expect" className="shell scroll-mt-28 section-rhythm">
         <motion.p {...rise(0)} className="eyebrow mb-10">
           What happens next
         </motion.p>
@@ -385,7 +385,7 @@ export function PreInterviewBody() {
                 <span
                   aria-hidden
                   className="pointer-events-none absolute -top-6 left-8 select-none text-[76px] font-semibold leading-none"
-                  style={{ ...mono, color: "rgba(105,34,245,0.07)" }}
+                  style={{ ...mono, color: "color-mix(in oklab, var(--iris) 7%, transparent)" }}
                 >
                   {`0${i + 1}`}
                 </span>
@@ -393,7 +393,7 @@ export function PreInterviewBody() {
                   className="relative z-[1] grid h-12 w-12 place-items-center rounded-full text-white"
                   style={{
                     background: "linear-gradient(135deg, #9A6BFF, #7C48F1)",
-                    boxShadow: "0 12px 28px -12px rgba(120,74,240,0.6)",
+                    boxShadow: "0 12px 28px -12px color-mix(in oklab, var(--iris) 60%, transparent)",
                   }}
                 >
                   <Icon size={20} />
@@ -427,7 +427,7 @@ export function PreInterviewBody() {
             aria-hidden
             className="absolute -right-24 -top-28 h-80 w-80 rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(154,107,255,0.35), transparent 65%)",
+              background: "radial-gradient(circle, rgba(141,132,224,0.35), transparent 65%)",
               filter: "blur(30px)",
             }}
             animate={{ scale: [1, 1.16, 1], opacity: [0.55, 0.9, 0.55] }}
@@ -437,7 +437,7 @@ export function PreInterviewBody() {
             aria-hidden
             className="absolute -bottom-32 -left-20 h-72 w-72 rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(183,155,255,0.3), transparent 65%)",
+              background: "radial-gradient(circle, rgba(173,168,237,0.3), transparent 65%)",
               filter: "blur(28px)",
             }}
             animate={{ scale: [1.14, 1, 1.14], opacity: [0.5, 0.75, 0.5] }}

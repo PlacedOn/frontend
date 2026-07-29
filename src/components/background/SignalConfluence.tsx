@@ -241,7 +241,7 @@ export function SignalConfluence({ className }: { className?: string }) {
           ctx.globalCompositeOperation = "lighter";
           const glow = ctx.createRadialGradient(x, y, 0, x, y, 8);
           glow.addColorStop(0, `rgba(255,255,255,${(0.7 * heat).toFixed(3)})`);
-          glow.addColorStop(1, "rgba(183,155,255,0)");
+          glow.addColorStop(1, "rgba(173,168,237,0)");
           ctx.fillStyle = glow;
           ctx.beginPath();
           ctx.arc(x, y, 8, 0, Math.PI * 2);
@@ -277,7 +277,7 @@ export function SignalConfluence({ className }: { className?: string }) {
       const glow = ctx.createRadialGradient(fx, fy, 0, fx, fy, glowR);
       glow.addColorStop(0, "rgba(255,255,255,0.6)");
       glow.addColorStop(0.3, `rgba(${LILAC[0]},${LILAC[1]},${LILAC[2]},0.32)`);
-      glow.addColorStop(1, "rgba(183,155,255,0)");
+      glow.addColorStop(1, "rgba(173,168,237,0)");
       ctx.fillStyle = glow;
       ctx.beginPath();
       ctx.arc(fx, fy, glowR, 0, Math.PI * 2);

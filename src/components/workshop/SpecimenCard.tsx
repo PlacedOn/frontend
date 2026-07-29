@@ -33,7 +33,7 @@ export function SpecimenCard({ exNo, title, kind, sealed, respect, graft }: Spec
         {sealed ? (
           <span
             className="grid size-[26px] place-items-center rounded-full text-white"
-            style={{ background: "radial-gradient(circle at 32% 30%, var(--iris-soft), var(--iris) 70%)", boxShadow: "inset 0 1px 2px rgba(255,255,255,.4), 0 2px 5px rgba(105,34,245,.4)" }}
+            style={{ background: "radial-gradient(circle at 32% 30%, var(--iris-soft), var(--iris) 70%)", boxShadow: "inset 0 1px 2px rgba(255,255,255,.4), 0 2px 5px color-mix(in oklab, var(--iris) 40%, transparent)" }}
             title="Sealed — verified evidence"
           >
             <ShieldCheck size={13} aria-hidden />

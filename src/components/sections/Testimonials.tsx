@@ -41,7 +41,7 @@ const ease = [0.22, 0.68, 0.31, 1] as const;
 
 export function Testimonials({ className }: { className?: string }) {
   return (
-    <section aria-label="Testimonials" className={cn("relative overflow-hidden py-20 md:py-28", className)}>
+    <section aria-label="Testimonials" className={cn("relative overflow-hidden section-rhythm", className)}>
       <SectionAurora />
       <div className="shell relative z-[1]">
         <motion.div

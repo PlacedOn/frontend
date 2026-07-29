@@ -96,7 +96,7 @@ export function AuthAside() {
               className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
               style={{
                 background:
-                  "linear-gradient(150deg, rgba(255,255,255,0.9), rgba(105,34,245,0.07))",
+                  "linear-gradient(150deg, rgba(255,255,255,0.9), color-mix(in oklab, var(--iris) 7%, transparent))",
                 border: "1px solid var(--iris-line)",
                 color: "var(--iris)",
                 boxShadow: "var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.8)",
@@ -122,7 +122,7 @@ export function AuthAside() {
           className="absolute inset-x-0 top-0 h-px"
           style={{
             background:
-              "linear-gradient(90deg, transparent, var(--iris-line) 30%, rgba(105,34,245,0.45) 50%, var(--iris-line) 70%, transparent)",
+              "linear-gradient(90deg, transparent, var(--iris-line) 30%, color-mix(in oklab, var(--iris) 45%, transparent) 50%, var(--iris-line) 70%, transparent)",
           }}
         />
         <p
@@ -142,7 +142,7 @@ export function AuthAside() {
                     className="absolute bottom-0 left-[13px] top-8 w-px"
                     style={{
                       background:
-                        "linear-gradient(180deg, var(--iris-line), rgba(105,34,245,0.06))",
+                        "linear-gradient(180deg, var(--iris-line), color-mix(in oklab, var(--iris) 6%, transparent))",
                     }}
                   />
                 )}

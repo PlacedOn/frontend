@@ -58,7 +58,7 @@ function Row({ reverse }: { reverse?: boolean }) {
 
 export function VerifiedCompanies() {
   return (
-    <section aria-labelledby="verified-heading" className="relative overflow-hidden py-20 md:py-24">
+    <section aria-labelledby="verified-heading" className="relative overflow-hidden section-rhythm">
       <div className="shell relative z-[1]">
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">

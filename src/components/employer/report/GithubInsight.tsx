@@ -30,7 +30,7 @@ const LANG_COLOR: Record<string, string> = {
 const langColor = (l: string) => LANG_COLOR[l] ?? "var(--iris)";
 
 // 5-step intensity ramp for the contribution grid.
-const CELL = ["var(--mist)", "rgba(139,84,255,0.30)", "rgba(139,84,255,0.52)", "rgba(105,34,245,0.72)", "var(--iris-ink)"];
+const CELL = ["var(--mist)", "color-mix(in oklab, var(--iris-soft) 30%, transparent)", "color-mix(in oklab, var(--iris-soft) 52%, transparent)", "color-mix(in oklab, var(--iris) 72%, transparent)", "var(--iris-ink)"];
 
 function dayIntensity(weekVal: number, week: number, day: number): number {
   // deterministic per-day variation around the week's base level

@@ -34,7 +34,7 @@ type Mode = "voice" | "text";
 
 const BAR_COUNT = 56;
 const TONE_DEEP = [124, 72, 241] as const; // #7C48F1
-const TONE_PALE = [183, 155, 255] as const; // #B79BFF
+const TONE_PALE = [183, 155, 255] as const; // #ADA8ED
 
 /** Per-bar colour, deep violet at the edges melting to pale in the middle. */
 const BAR_RGB: readonly string[] = Array.from({ length: BAR_COUNT }, (_, i) => {
@@ -97,8 +97,8 @@ export function VoiceTextCaption() {
     <div
       className="flex flex-wrap items-center justify-between gap-x-5 gap-y-2 px-7 py-3.5 md:px-8"
       style={{
-        background: "rgba(154,107,255,0.06)",
-        borderTop: "1px solid rgba(154,107,255,0.16)",
+        background: "rgba(141,132,224,0.06)",
+        borderTop: "1px solid rgba(141,132,224,0.16)",
       }}
     >
       <p className="flex items-center text-[13px] text-[var(--iris-ink)]" style={mono}>
@@ -181,13 +181,13 @@ export function VoiceTextMorph({ className }: { className?: string }) {
       const glowAlpha = (0.08 + 0.1 * env) * (1 - m) + 0.09 * m;
       const glowR = height * 0.62;
       const grad = ctx.createRadialGradient(glowX, cy, 0, glowX, cy, glowR);
-      grad.addColorStop(0, `rgba(154,107,255,${glowAlpha.toFixed(3)})`);
-      grad.addColorStop(1, "rgba(154,107,255,0)");
+      grad.addColorStop(0, `rgba(141,132,224,${glowAlpha.toFixed(3)})`);
+      grad.addColorStop(1, "rgba(141,132,224,0)");
       ctx.fillStyle = grad;
       ctx.fillRect(glowX - glowR, cy - glowR, glowR * 2, glowR * 2);
 
       // Baseline — the shared spine both states live on.
-      ctx.strokeStyle = "rgba(139,84,255,0.14)";
+      ctx.strokeStyle = "rgba(116,98,213,0.14)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(x0, cy);
@@ -242,7 +242,7 @@ export function VoiceTextMorph({ className }: { className?: string }) {
         // Caret — solid while typing, blinking once the line is complete.
         const done = typedUnits >= TOTAL_UNITS - 0.01;
         const blink = done ? (Math.sin(t * Math.PI * 1.9) > 0 ? 1 : 0.12) : 1;
-        ctx.fillStyle = `rgba(105,34,245,${(0.85 * m * blink).toFixed(3)})`;
+        ctx.fillStyle = `rgba(94,70,191,${(0.85 * m * blink).toFixed(3)})`;
         ctx.beginPath();
         ctx.roundRect(caretX, cy - height * 0.105, 2, height * 0.21, 1);
         ctx.fill();
@@ -272,7 +272,7 @@ export function VoiceTextMorph({ className }: { className?: string }) {
             className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.18em]"
             style={{
               background: "rgba(255,255,255,0.88)",
-              border: "1px solid rgba(139,84,255,0.18)",
+              border: "1px solid rgba(116,98,213,0.18)",
               boxShadow: "0 8px 20px -12px rgba(60,35,140,0.4)",
               color: "var(--iris-ink)",
               fontFamily: "var(--font-mono)",

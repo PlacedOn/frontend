@@ -1,19 +1,26 @@
 import type { Metadata } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Geist, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { DemoDialogProvider } from "@/components/demo/DemoDialogProvider";
 
-const sora = Sora({
-  variable: "--font-sora",
+/**
+ * Two families, matching the reference set (Harvey ships a sans + a serif;
+ * Scale ships one sans). Geist is variable, so a single file covers display
+ * and body weights — Sora + Inter was two families doing one family's job.
+ * Instrument Serif is the editorial accent: pull quotes and eyebrows only.
+ */
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
-  weight: ["300", "400", "600", "700", "800"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-serif-src",
   subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -33,7 +40,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sora.variable} ${inter.variable}`}>
+    <html lang="en" className={`${geist.variable} ${instrumentSerif.variable}`}>
       <body>
         <AuthProvider>
           <DemoDialogProvider>{children}</DemoDialogProvider>

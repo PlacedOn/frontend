@@ -158,7 +158,7 @@ export function OnboardingPeak({ isOpen, onClose, onAccept, traits }: Props) {
                 type="button"
                 onClick={onAccept}
                 className="inline-flex items-center gap-2 rounded-[13px] px-4 py-2.5 text-[13.5px] font-bold text-white transition-transform active:scale-[0.97]"
-                style={{ background: "var(--iris)", boxShadow: "0 8px 22px -8px rgba(105,34,245,.6)" }}
+                style={{ background: "var(--iris)", boxShadow: "0 8px 22px -8px color-mix(in oklab, var(--iris) 60%, transparent)" }}
               >
                 Put it on my ring →
               </button>

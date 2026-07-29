@@ -70,7 +70,7 @@ export function TeamJourneySteps() {
               >
                 <span
                   className="grid h-11 w-11 shrink-0 place-items-center rounded-[13px] border"
-                  style={{ background: "rgba(105,34,245,0.06)", borderColor: "var(--iris-line)", color: "var(--iris-ink)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.7)" }}
+                  style={{ background: "color-mix(in oklab, var(--iris) 6%, transparent)", borderColor: "var(--iris-line)", color: "var(--iris-ink)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.7)" }}
                 >
                   <Icon size={20} animateOnView animateOnHover />
                 </span>

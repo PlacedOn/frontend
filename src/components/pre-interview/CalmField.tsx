@@ -53,8 +53,8 @@ const RINGS: readonly Ring[] = [
   { radius: 0.88, count: 46, size: 1.2, speed: 0.013, tone: 0.92 },
 ];
 
-const TONE_DEEP = [139, 84, 255] as const; // #8B54FF
-const TONE_PALE = [183, 155, 255] as const; // #B79BFF
+const TONE_DEEP = [139, 84, 255] as const; // #7462D5
+const TONE_PALE = [183, 155, 255] as const; // #ADA8ED
 
 const RING_RGB: readonly string[] = RINGS.map((ring) => {
   const mix = (a: number, b: number) => Math.round(a + (b - a) * ring.tone);
@@ -134,9 +134,9 @@ export function CalmField({ className }: { className?: string }) {
       // Soft breathing core glow.
       const glowR = R * (0.42 + 0.1 * b);
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowR);
-      grad.addColorStop(0, `rgba(154,107,255,${(0.2 + 0.13 * b).toFixed(3)})`);
-      grad.addColorStop(0.55, `rgba(154,107,255,${(0.1 + 0.08 * b).toFixed(3)})`);
-      grad.addColorStop(1, "rgba(154,107,255,0)");
+      grad.addColorStop(0, `rgba(141,132,224,${(0.2 + 0.13 * b).toFixed(3)})`);
+      grad.addColorStop(0.55, `rgba(141,132,224,${(0.1 + 0.08 * b).toFixed(3)})`);
+      grad.addColorStop(1, "rgba(141,132,224,0)");
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(cx, cy, glowR, 0, Math.PI * 2);
@@ -166,13 +166,13 @@ export function CalmField({ className }: { className?: string }) {
       const arcR = R * 0.985;
       ctx.lineCap = "round";
       ctx.lineWidth = 1.25;
-      ctx.strokeStyle = "rgba(139,84,255,0.14)";
+      ctx.strokeStyle = "rgba(116,98,213,0.14)";
       ctx.beginPath();
       ctx.arc(cx, cy, arcR, 0, Math.PI * 2);
       ctx.stroke();
       if (b > 0.004) {
         ctx.lineWidth = 1.75;
-        ctx.strokeStyle = "rgba(139,84,255,0.55)";
+        ctx.strokeStyle = "rgba(116,98,213,0.55)";
         ctx.beginPath();
         ctx.arc(cx, cy, arcR, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * b);
         ctx.stroke();

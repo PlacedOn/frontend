@@ -74,7 +74,7 @@ export function HrCommandDeck() {
       <div aria-hidden className="pointer-events-none absolute inset-x-0 -top-16 h-[460px] overflow-hidden">
         <div
           className="absolute left-1/2 top-0 h-[560px] w-[960px] -translate-x-1/2 rounded-full"
-          style={{ background: "radial-gradient(circle at 50% 0%, rgba(139,84,255,0.26) 0%, rgba(105,34,245,0.13) 22%, transparent 62%)", filter: "blur(26px)" }}
+          style={{ background: "radial-gradient(circle at 50% 0%, color-mix(in oklab, var(--iris-soft) 26%, transparent) 0%, color-mix(in oklab, var(--iris) 13%, transparent) 22%, transparent 62%)", filter: "blur(26px)" }}
         />
       </div>
 

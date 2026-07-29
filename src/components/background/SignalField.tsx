@@ -131,12 +131,16 @@ export function SignalField() {
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden" style={{ zIndex: 0 }}>
-      {/* gentle ambient aurora wash (always-on colour) */}
+      {/* Ambient wash — ONE hue, kept below the attention threshold.
+          Previously this stacked violet + blue + orange at 0.22/0.14/0.08
+          and covered the full viewport, which put violet at ~100% coverage
+          against the ≤5% budget and left nothing to read as an accent.
+          Single-hue and faint is what makes the ground feel expensive. */}
       <div
         className="sf-aurora absolute inset-[-45%]"
         style={{
           background:
-            "linear-gradient(120deg, rgba(139,84,255,0.22), rgba(120,178,255,0.14) 34%, rgba(255,196,132,0.08) 55%, rgba(105,34,245,0.20) 78%, rgba(139,84,255,0.22))",
+            "linear-gradient(120deg, rgba(116,98,213,0.05), rgba(94,70,191,0.07) 45%, rgba(116,98,213,0.04) 100%)",
           filter: "blur(64px)",
           willChange: "transform",
         }}

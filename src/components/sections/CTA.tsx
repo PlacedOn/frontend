@@ -15,7 +15,7 @@ export function CTA() {
   const { open } = useDemoDialog();
 
   return (
-    <section id="trust" className="relative py-20 md:py-28">
+    <section id="trust" className="relative section-rhythm">
       <div className="shell">
         <Reveal>
           <div

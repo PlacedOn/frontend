@@ -158,7 +158,7 @@ export function CandidateOnboarding({ firstName }: { firstName?: string }) {
                 style={{
                   background: selected ? "var(--iris-ghost)" : "var(--glass-hi)",
                   borderColor: selected ? "var(--iris)" : "var(--glass-line)",
-                  boxShadow: selected ? "0 8px 22px -12px rgba(105,34,245,.5)" : "var(--shadow-sm)",
+                  boxShadow: selected ? "0 8px 22px -12px color-mix(in oklab, var(--iris) 50%, transparent)" : "var(--shadow-sm)",
                 }}
               >
                 <span

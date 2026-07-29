@@ -13,9 +13,9 @@ import { gsap } from "@/lib/motion/gsap";
 
 // Fixed (deterministic — no Math.random) beam + meteor configs.
 const BEAMS = [
-  { top: "-25%", left: "6%", w: 200, color: "rgba(139,84,255,0.40)", dur: 5.5, delay: 0 },
+  { top: "-25%", left: "6%", w: 200, color: "color-mix(in oklab, var(--iris-soft) 40%, transparent)", dur: 5.5, delay: 0 },
   { top: "-25%", left: "34%", w: 160, color: "rgba(120,178,255,0.34)", dur: 6.5, delay: 1.8 },
-  { top: "-25%", left: "62%", w: 240, color: "rgba(105,34,245,0.38)", dur: 6, delay: 3.4 },
+  { top: "-25%", left: "62%", w: 240, color: "color-mix(in oklab, var(--iris) 38%, transparent)", dur: 6, delay: 3.4 },
 ];
 
 const METEORS = [
@@ -87,7 +87,7 @@ export function MotionBackground() {
         className="mb-aurora absolute inset-[-20%]"
         style={{
           background:
-            "linear-gradient(115deg, rgba(139,84,255,0.30), rgba(120,178,255,0.20) 28%, rgba(255,196,132,0.14) 50%, rgba(105,34,245,0.28) 72%, rgba(139,84,255,0.30))",
+            "linear-gradient(115deg, color-mix(in oklab, var(--iris-soft) 30%, transparent), rgba(120,178,255,0.20) 28%, rgba(255,196,132,0.14) 50%, color-mix(in oklab, var(--iris) 28%, transparent) 72%, color-mix(in oklab, var(--iris-soft) 30%, transparent))",
           backgroundSize: "200% 200%",
           filter: "blur(60px)",
           willChange: "background-position",
@@ -119,8 +119,8 @@ export function MotionBackground() {
           style={{
             top: m.top,
             left: m.left,
-            background: "linear-gradient(90deg, #ffffff, rgba(139,84,255,0.9) 26%, transparent)",
-            boxShadow: "0 0 14px rgba(139,84,255,0.85)",
+            background: "linear-gradient(90deg, #ffffff, color-mix(in oklab, var(--iris-soft) 90%, transparent) 26%, transparent)",
+            boxShadow: "0 0 14px color-mix(in oklab, var(--iris-soft) 85%, transparent)",
             willChange: "transform, opacity",
           }}
         />

@@ -87,13 +87,13 @@ export function GlobalReach() {
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{ background: "radial-gradient(circle, rgba(139,84,255,0.28), transparent 62%)", filter: "blur(30px)" }}
+        style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--iris-soft) 28%, transparent), transparent 62%)", filter: "blur(30px)" }}
       />
 
       {/* Centered header (flex — bulletproof centering) */}
       <div className="relative z-[1] mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
         <Reveal className="flex flex-col items-center">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.22em]" style={{ fontFamily: "var(--font-mono)", color: "rgba(179,163,255,0.9)" }}>
+          <p className="text-[12px] font-semibold uppercase tracking-[0.22em]" style={{ fontFamily: "var(--font-mono)", color: "rgba(173,168,237,0.9)" }}>
             Remote-first by design
           </p>
           <h2
@@ -101,7 +101,7 @@ export function GlobalReach() {
             style={{ color: "#fff" }}
           >
             Interview anyone,{" "}
-            <span style={{ background: "linear-gradient(90deg,#b3a3ff,#8b54ff)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
+            <span style={{ background: "linear-gradient(90deg,#b3a3ff,var(--iris-soft))", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
               anywhere
             </span>
             .
@@ -120,7 +120,7 @@ export function GlobalReach() {
           <span
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-1/2 h-[106%] w-[106%] -translate-x-1/2 -translate-y-1/2 rounded-full"
-            style={{ border: "1px solid rgba(179,163,255,0.16)", boxShadow: "inset 0 0 70px rgba(139,84,255,0.14)" }}
+            style={{ border: "1px solid rgba(173,168,237,0.16)", boxShadow: "inset 0 0 70px color-mix(in oklab, var(--iris-soft) 14%, transparent)" }}
           />
           <Globe config={DARK_GLOBE} />
 

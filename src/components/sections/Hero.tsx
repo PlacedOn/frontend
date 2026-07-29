@@ -76,7 +76,7 @@ export function Hero() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(56% 48% at 50% 46%, rgba(247,249,254,0.85) 0%, rgba(247,249,254,0.35) 52%, rgba(247,249,254,0) 80%)",
+            "radial-gradient(56% 48% at 50% 46%, color-mix(in oklab, var(--hero-veil) 85%, transparent) 0%, color-mix(in oklab, var(--hero-veil) 35%, transparent) 52%, transparent 80%)",
         }}
       />
 

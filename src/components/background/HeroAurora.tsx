@@ -251,7 +251,7 @@ export function HeroAurora({ className = "" }: { className?: string }) {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 22%, #E7E2FF 0%, rgba(231,226,255,0) 55%), radial-gradient(90% 70% at 78% 30%, rgba(139,84,255,0.28), transparent 60%), radial-gradient(80% 70% at 20% 40%, rgba(105,34,245,0.20), transparent 60%), var(--porcelain)",
+            "radial-gradient(120% 90% at 50% 22%, var(--hero-glow) 0%, transparent 55%), radial-gradient(90% 70% at 78% 30%, color-mix(in oklab, var(--iris-soft) 28%, transparent), transparent 60%), radial-gradient(80% 70% at 20% 40%, color-mix(in oklab, var(--iris) 20%, transparent), transparent 60%), var(--porcelain)",
         }}
       />
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />

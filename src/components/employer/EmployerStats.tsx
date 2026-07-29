@@ -36,7 +36,7 @@ export function EmployerStats() {
       <div
         className="relative flex flex-col overflow-hidden rounded-[var(--r-card)] p-6 md:col-span-2 lg:col-span-3"
         style={{
-          background: "linear-gradient(135deg, rgba(139,84,255,0.10), rgba(105,34,245,0.04))",
+          background: "linear-gradient(135deg, color-mix(in oklab, var(--iris-soft) 10%, transparent), color-mix(in oklab, var(--iris) 4%, transparent))",
           border: "1px solid var(--iris-line)",
           boxShadow: "var(--shadow-md)",
         }}
@@ -44,7 +44,7 @@ export function EmployerStats() {
         <span
           aria-hidden
           className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(139,84,255,0.20), transparent 68%)", filter: "blur(8px)" }}
+          style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--iris-soft) 20%, transparent), transparent 68%)", filter: "blur(8px)" }}
         />
         <p className="text-[12px] font-semibold uppercase tracking-wider text-[var(--iris-ink)]" style={{ fontFamily: "var(--font-mono)" }}>
           Pipeline

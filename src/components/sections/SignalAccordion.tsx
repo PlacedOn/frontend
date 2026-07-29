@@ -18,11 +18,11 @@ type Art = "wave" | "quote" | "fair" | "control" | "skill";
 type Panel = { icon: LucideIcon; art: Art; title: string; stat: string; body: string; grad: string };
 
 const PANELS: Panel[] = [
-  { icon: Mic, art: "wave", title: "One honest interview", stat: "30 min", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,#8B54FF,#6922F5)" },
-  { icon: Quote, art: "quote", title: "Evidence, not keywords", stat: "1 quote / trait", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,#6922F5,#4311a8)" },
+  { icon: Mic, art: "wave", title: "One honest interview", stat: "30 min", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,var(--iris-soft),var(--iris))" },
+  { icon: Quote, art: "quote", title: "Evidence, not keywords", stat: "1 quote / trait", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,var(--iris),#4311a8)" },
   { icon: Scale, art: "fair", title: "Fair by design", stat: "9 never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,#7C3AED,#9333EA)" },
   { icon: ShieldCheck, art: "control", title: "You stay in control", stat: "0 shared", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,#5B21B6,#7C3AED)" },
-  { icon: Sparkles, art: "skill", title: "Real skill over resumes", stat: "0 resumes", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#6D28D9,#8B54FF)" },
+  { icon: Sparkles, art: "skill", title: "Real skill over resumes", stat: "0 resumes", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#6D28D9,var(--iris-soft))" },
 ];
 
 /** Honest, on-brand mini-illustrations — white-on-gradient SVG, no stock imagery. */
@@ -89,7 +89,7 @@ export function SignalAccordion() {
   const [active, setActive] = useState(0);
 
   return (
-    <section className="relative py-20 md:py-28">
+    <section className="relative section-rhythm">
       <div className="shell grid items-center gap-12 lg:grid-cols-[0.82fr_1.18fr]">
         {/* Left — the pitch */}
         <div>
@@ -129,7 +129,7 @@ export function SignalAccordion() {
                   flexGrow: isActive ? 1 : 0,
                   flexBasis: 66,
                   flexShrink: 1,
-                  transition: "flex-grow 0.62s cubic-bezier(0.22,0.68,0.31,1), box-shadow 0.4s",
+                  transition: "flex-grow 0.62s var(--ease-out), box-shadow 0.4s",
                   background: p.grad,
                   boxShadow: isActive ? "0 30px 70px -20px rgba(58,20,140,0.55)" : "0 10px 30px -14px rgba(58,20,140,0.4)",
                 }}

@@ -124,7 +124,7 @@ function InControl() {
 
 function FinalCta() {
   return (
-    <section className="relative py-20 md:py-28">
+    <section className="relative section-rhythm">
       <div className="shell">
         <div
           className="relative overflow-hidden rounded-[calc(var(--r-card)+10px)] px-8 py-14 text-center md:px-16 md:py-20"
