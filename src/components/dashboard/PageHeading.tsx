@@ -15,10 +15,19 @@ export function PageHeading({
   intro?: string;
 }) {
   return (
-    <header className="mb-8 md:mb-10">
+    // A dashboard page title is a label, not a headline. At the old
+    // clamp(...,3rem) it outweighed the actual work on the page — the reader
+    // arrived and the loudest thing was the word "Overview" rather than what
+    // needed doing. Marketing pages set their own headline sizes; this is
+    // deliberately quiet so content leads.
+    <header className="mb-7 md:mb-9">
       <p className="eyebrow">{eyebrow}</p>
-      <h1 className="mt-3 max-w-3xl text-[clamp(1.9rem,1.3rem+2.2vw,3rem)]">{title}</h1>
-      {intro && <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-[var(--ink-2)]">{intro}</p>}
+      <h1 className="mt-2 max-w-3xl text-[clamp(1.375rem,1.15rem+0.8vw,1.75rem)] tracking-[-0.02em]">
+        {title}
+      </h1>
+      {intro && (
+        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[var(--ink-2)]">{intro}</p>
+      )}
     </header>
   );
 }

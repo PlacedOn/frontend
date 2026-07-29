@@ -11,14 +11,16 @@ export const metadata: Metadata = {
 export default function EmployerPage() {
   return (
     <>
+      {/* No sales pitch here. This page is behind a login — the reader has
+          already bought the premise, and "Hire on evidence, not resumes" is a
+          landing-page line. What they need on arrival is orientation: whose
+          desk this is, and what is waiting. The specific, personal call to
+          action lives in TeamOperate below and is now the strongest thing on
+          the page rather than the second-loudest. */}
       <PageHeading
-        eyebrow="For teams · hiring"
-        title={
-          <>
-            Hire on <span className="grad-iris">evidence</span>, not resumes.
-          </>
-        }
-        intro="Every candidate here has interviewed. You see the signals they approved and the one worth exploring — never the raw transcript."
+        eyebrow="Hiring"
+        title="Overview"
+        intro="Everyone here has already interviewed. You see what they approved you to see — never the raw transcript."
       />
       <EmployerStats />
       <EmployerDashboard />
