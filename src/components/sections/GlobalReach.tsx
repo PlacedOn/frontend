@@ -52,9 +52,9 @@ function Chip({ icon: Icon, k, v }: { icon: typeof GlobeIcon; k: string; v: stri
   return (
     <div
       className="flex items-center gap-3 rounded-2xl px-4 py-3 backdrop-blur-md"
-      style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 12px 40px rgba(8,6,15,0.4)" }}
+      style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 12px 40px rgba(11,10,9,0.45)" }}
     >
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[11px] border" style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.14)", color: "#c9bcff" }}>
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[11px] border" style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.14)", color: "#CDCCF8" }}>
         <Icon size={17} />
       </span>
       <span className="flex flex-col">
@@ -81,13 +81,13 @@ export function GlobalReach() {
       <div
         aria-hidden
         className="absolute inset-0"
-        style={{ background: "radial-gradient(120% 90% at 50% 6%, #1a1740 0%, #100c26 44%, #08060f 100%)" }}
+        style={{ background: "radial-gradient(120% 90% at 50% 6%, #211F1C 0%, #131210 44%, #0B0A09 100%)" }}
       />
       {/* violet nebula */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{ background: "radial-gradient(circle, rgba(139,84,255,0.28), transparent 62%)", filter: "blur(30px)" }}
+        style={{ background: "radial-gradient(circle, rgba(116,98,213,0.14), transparent 62%)", filter: "blur(30px)" }}
       />
 
       {/* Centered header (flex — bulletproof centering) */}
@@ -101,7 +101,7 @@ export function GlobalReach() {
             style={{ color: "#fff" }}
           >
             Interview anyone,{" "}
-            <span style={{ background: "linear-gradient(90deg,#b3a3ff,#8b54ff)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
+            <span style={{ background: "linear-gradient(90deg,#CDCCF8,#8D84E0)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
               anywhere
             </span>
             .

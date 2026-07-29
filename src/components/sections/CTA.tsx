@@ -22,7 +22,7 @@ export function CTA() {
             className="relative overflow-hidden rounded-[calc(var(--r-card)+12px)] px-8 py-14 md:px-16 md:py-20"
             style={{
               background:
-                "linear-gradient(118deg, #8f61f7 0%, #7c48f1 46%, #6b38e6 108%)",
+                "radial-gradient(130% 100% at 22% 0%, #211F1C 0%, #131210 46%, #0B0A09 100%)",
               boxShadow: "0 34px 80px -34px rgba(110,60,230,0.55)",
             }}
           >
@@ -47,7 +47,7 @@ export function CTA() {
               className="pointer-events-none absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(680px circle at 16% -12%, rgba(255,255,255,0.30), transparent 55%)",
+                  "radial-gradient(680px circle at 16% -12%, rgba(116,98,213,0.16), transparent 55%)",
               }}
             />
 
