@@ -118,40 +118,29 @@ export function TeamOperate() {
         <p className="mb-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>
           Process quality · not candidate quality
         </p>
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <StatCard
-            {...reveal(2)}
-            icon={Clock3}
-            label="Response SLA"
-            value={fmtRate(sla)}
-            sub={fmtInterval(sla)}
-            tone={sla.sufficient && (sla.point ?? 0) >= 0.9 ? "good" : "neutral"}
-          />
-          <StatCard
-            {...reveal(3)}
-            icon={CheckCircle2}
-            label="Candidate closure"
-            value={fmtRate(closure)}
-            sub={fmtInterval(closure)}
-            tone={closure.sufficient && (closure.point ?? 0) >= 0.8 ? "good" : "neutral"}
-          />
-          <StatCard
-            {...reveal(4)}
-            icon={GitCompareArrows}
-            label="Decisions ↔ evidence"
+        {/* One panel, four cells — not four cards. These are related readings
+            of the same thing (how the process is behaving), so they belong on
+            one surface. The gated cell renders muted rather than at full
+            weight: "not enough data yet" is worth saying, but it should not
+            occupy the same visual space as a number you can act on. */}
+        <motion.div
+          {...reveal(2)}
+          className="grid grid-cols-2 gap-px overflow-hidden rounded-[var(--r-card)] border xl:grid-cols-4"
+          style={{ borderColor: "var(--mist)", background: "var(--mist)" }}
+        >
+          <StatCell icon={Clock3} label="Response SLA" value={fmtRate(sla)} sub={fmtInterval(sla)}
+            tone={sla.sufficient && (sla.point ?? 0) >= 0.9 ? "good" : "neutral"} />
+          <StatCell icon={CheckCircle2} label="Candidate closure" value={fmtRate(closure)} sub={fmtInterval(closure)}
+            tone={closure.sufficient && (closure.point ?? 0) >= 0.8 ? "good" : "neutral"} />
+          <StatCell icon={GitCompareArrows} label="Decisions ↔ evidence"
             value={alignOk ? `${m.alignmentPct}%` : "Not enough data yet"}
             sub={alignOk ? "decisions track the evidence" : `${m.alignmentPairs} of ${ALIGNMENT_MIN_PAIRS} decided pairs`}
-            tone={alignOk ? "good" : "gated"}
-          />
-          <StatCard
-            {...reveal(5)}
-            icon={RotateCcw}
-            label="Re-interview burden"
+            tone={alignOk ? "good" : "gated"} />
+          <StatCell icon={RotateCcw} label="Re-interview burden"
             value={`${m.supplementalRounds} / ${m.activeCandidates}`}
             sub={burden <= 0.2 ? "low — not over-extractive" : "watch: may be over-extractive"}
-            tone={burden <= 0.2 ? "good" : "warn"}
-          />
-        </div>
+            tone={burden <= 0.2 ? "good" : "warn"} />
+        </motion.div>
         <p className="mt-3 text-[12px] leading-relaxed text-[var(--ink-3)]">
           Sample — illustrative. Every rate shows its counts and a 95% interval; a sample too small to trust says so
           rather than guessing. No candidate is ranked or scored here.
@@ -227,28 +216,37 @@ const TONE_FG: Record<Tone, string> = {
   gated: "var(--ink-3)",
 };
 
-function StatCard({
+function StatCell({
   icon: Icon,
   label,
   value,
   sub,
   tone,
-  ...motionProps
 }: {
   icon: LucideIcon;
   label: string;
   value: string;
   sub: string;
   tone: Tone;
-} & Record<string, unknown>) {
+}) {
+  const gated = tone === "gated";
   return (
-    <motion.div {...motionProps} className="glass rounded-[var(--r-card)] p-4">
+    <div className="bg-[var(--porcelain-2)] p-4">
       <div className="flex items-center gap-2">
-        <Icon size={15} style={{ color: TONE_FG[tone] }} aria-hidden />
+        <Icon size={15} style={{ color: gated ? "var(--ink-3)" : TONE_FG[tone] }} aria-hidden />
         <span className="text-[12px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">{label}</span>
       </div>
-      <p className="mt-2 text-[18px] font-extrabold tracking-tight text-[var(--ink)] tabular-nums">{value}</p>
+      <p
+        className={
+          "mt-2 tracking-tight tabular-nums " +
+          (gated
+            ? "text-[13.5px] font-medium text-[var(--ink-3)]"
+            : "text-[18px] font-extrabold text-[var(--ink)]")
+        }
+      >
+        {value}
+      </p>
       <p className="mt-0.5 text-[12px] text-[var(--ink-3)]">{sub}</p>
-    </motion.div>
+    </div>
   );
 }
