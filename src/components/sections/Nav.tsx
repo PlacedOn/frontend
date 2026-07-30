@@ -45,7 +45,7 @@ export function Nav() {
           scrolled ? "glass" : "border border-transparent",
         )}
         style={
-          scrolled ? undefined : { background: "rgba(255,255,255,.35)", backdropFilter: "blur(8px)" }
+          scrolled ? undefined : { background: "rgba(255,255,255,.35)", }
         }
       >
         <Link href="/" aria-label="Placedon home">

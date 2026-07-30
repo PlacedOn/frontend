@@ -300,7 +300,7 @@ function MatchReasonDrawer({ match, onClose }: { match: RoleMatch | null; onClos
             aria-label="Close"
             onClick={onClose}
             className="absolute inset-0 cursor-default"
-            style={{ background: "rgba(14,16,32,0.42)", backdropFilter: "blur(6px)" }}
+            style={{ background: "rgba(14,16,32,0.42)", }}
             tabIndex={-1}
           />
           <motion.aside

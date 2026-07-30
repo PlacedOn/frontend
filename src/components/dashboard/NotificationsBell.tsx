@@ -78,7 +78,7 @@ export function NotificationsBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-11 z-[var(--z-drawer)] w-72 rounded-[var(--r-card)] p-2 shadow-[var(--shadow-md)]" style={{ background: "var(--glass-hi)", border: "1px solid var(--glass-line)", backdropFilter: "blur(12px)" }}>
+        <div className="absolute right-0 top-11 z-[var(--z-drawer)] w-72 rounded-[var(--r-card)] p-2 shadow-[var(--shadow-md)]" style={{ background: "var(--glass-hi)", border: "1px solid var(--glass-line)", }}>
           <p className="px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-[var(--ink-3)]">Activity</p>
           {items.length === 0 ? (
             <p className="px-2 py-6 text-center text-[12.5px] text-[var(--ink-3)]">Nothing new yet.</p>

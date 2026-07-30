@@ -51,7 +51,7 @@ export function CompaniesHero() {
             <a
               href="/employer"
               className="inline-flex cursor-pointer items-center rounded-[var(--r-btn)] px-6 py-3 text-[15px] font-semibold text-[var(--ink)]"
-              style={{ background: "var(--glass-hi)", border: "1px solid var(--glass-line-hi)", backdropFilter: "blur(12px)", boxShadow: "var(--shadow-sm)" }}
+              style={{ background: "var(--glass-hi)", border: "1px solid var(--glass-line-hi)", boxShadow: "var(--shadow-sm)" }}
             >
               See the dashboard
             </a>

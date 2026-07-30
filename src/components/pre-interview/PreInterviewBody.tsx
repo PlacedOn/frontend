@@ -103,8 +103,6 @@ function FloatChip({ className, delay = 0, duration = 7.5, icon: Icon, label }: 
         background: "linear-gradient(158deg, rgba(255,255,255,0.94), rgba(244,242,255,0.74))",
         border: "1px solid rgba(255,255,255,0.85)",
         boxShadow: "0 14px 30px -16px rgba(60,35,140,0.38)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
         ...mono,
       }}
       animate={{ y: [-5, 5, -5] }}
@@ -188,8 +186,6 @@ export function PreInterviewBody() {
             style={{
               background: "var(--glass-hi)",
               border: "1px solid var(--glass-line)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
             }}
           >
             {FACTS.map((fact, i) => (
@@ -237,8 +233,6 @@ export function PreInterviewBody() {
                 background: "linear-gradient(160deg, rgba(255,255,255,0.66), rgba(244,242,255,0.28) 70%)",
                 border: "1px solid rgba(255,255,255,0.78)",
                 boxShadow: "0 44px 90px -42px rgba(90,58,180,0.5), inset 0 1px 0 rgba(255,255,255,0.9)",
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
               }}
             />
             <div aria-hidden className="absolute inset-[15%] rounded-full" style={{ border: "1px solid rgba(139,84,255,0.14)" }} />

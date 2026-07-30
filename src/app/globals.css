@@ -9,13 +9,13 @@
 
 :root {
   /* ── surfaces ─────────────────────────────── */
-  --porcelain:   #EEF1FA;          /* page ground */
-  --porcelain-2: #F7F9FE;          /* raised ground */
-  --mist:        #E4E9F6;          /* muted fill */
+  --porcelain:   #FFFFFF;          /* page ground — plain white */
+  --porcelain-2: #FAFAFA;          /* raised ground */
+  --mist:        #EAEAEA;          /* hairline / muted fill */
   --white:       #FFFFFF;
 
   /* ── ink ──────────────────────────────────── */
-  --ink:    #0E1020;               /* primary text */
+  --ink:    #12100E;               /* primary text — near-black, neutral */
   --ink-2:  #474D63;               /* secondary text */
   --ink-3:  #7B8299;               /* tertiary / labels */
 
@@ -45,14 +45,14 @@
   /* ── glass primitive ──────────────────────── */
   --glass:      rgba(255, 255, 255, 0.62);
   --glass-hi:   rgba(255, 255, 255, 0.82);
-  --glass-line: rgba(14, 16, 32, 0.09);
-  --glass-line-hi: rgba(14, 16, 32, 0.14);
+  --glass-line: #EAEAEA;
+  --glass-line-hi: #DCDCDC;
   --blur: 26px;
 
   /* ── shadows (soft, layered, light-world) ─── */
-  --shadow-sm: 0 1px 2px rgba(14, 16, 32, 0.05), 0 4px 12px rgba(14, 16, 32, 0.05);
-  --shadow-md: 0 2px 6px rgba(14, 16, 32, 0.06), 0 18px 40px -12px rgba(14, 16, 32, 0.14);
-  --shadow-lg: 0 8px 24px rgba(14, 16, 32, 0.08), 0 40px 80px -24px rgba(23, 26, 90, 0.22);
+  --shadow-sm: 0 1px 2px rgba(16, 15, 13, 0.04);
+  --shadow-md: 0 1px 3px rgba(16, 15, 13, 0.06), 0 8px 24px -12px rgba(16, 15, 13, 0.10);
+  --shadow-lg: 0 2px 8px rgba(16, 15, 13, 0.06), 0 24px 56px -20px rgba(16, 15, 13, 0.14);
   --shadow-iris: 0 12px 34px -10px rgba(58, 61, 224, 0.45);
 
   /* ── motion ───────────────────────────────── */
@@ -69,7 +69,7 @@
   --max:    1180px;
 
   /* ── fonts (wired via next/font) ──────────── */
-  --font-display: var(--font-sora), "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-inter), "Segoe UI", system-ui, sans-serif;
   --font-body:    var(--font-inter), system-ui, sans-serif;
   --font-mono:    ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
 
@@ -90,12 +90,9 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   min-height: 100dvh;
-  background:
-    radial-gradient(1200px 700px at 12% -8%, #FFFFFF 0%, transparent 55%),
-    radial-gradient(1000px 620px at 92% 0%, #E9ECFF 0%, transparent 58%),
-    radial-gradient(900px 900px at 50% 118%, #EAF3FF 0%, transparent 60%),
-    var(--porcelain);
-  background-attachment: fixed;
+  /* Plain white. The three stacked radial washes are gone — they tinted the
+     whole page lilac and were the reason every surface read as "themed". */
+  background: #FFFFFF;
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 16px;
@@ -114,11 +111,14 @@ body {
   a { color: inherit; text-decoration: none; }
 }
 
+/* One family, weight does the work — the "Minimal Swiss" pairing. Sora is a
+   geometric with real personality, which fought the neutral enterprise read;
+   Inter at 600 with tight tracking is the reference register. */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.06;
   margin: 0;
   color: var(--ink);
 }
@@ -139,22 +139,21 @@ h1, h2, h3, h4 {
 }
 
 /* glass primitive ─ high opacity for light-mode legibility */
+/* Flat white card. Was a frosted-glass gradient with a 26px backdrop blur and
+   an inset highlight. Redefining the primitive rather than editing the 95 files
+   that use it — that is what the class is for. No blur, no gradient, no sheen. */
 .glass {
-  background: linear-gradient(158deg, var(--glass-hi), var(--glass) 72%);
-  border: 1px solid var(--glass-line);
-  backdrop-filter: blur(var(--blur)) saturate(160%);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
-  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  background: #FFFFFF;
+  border: 1px solid var(--mist);
+  box-shadow: 0 1px 2px rgba(16, 15, 13, 0.04);
 }
 
 .chip {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 7px 14px; border-radius: var(--r-chip);
-  background: var(--glass-hi);
-  border: 1px solid var(--glass-line);
-  backdrop-filter: blur(12px);
+  background: #FFFFFF;
+  border: 1px solid var(--mist);
   font-size: 13px; font-weight: 500; color: var(--ink-2);
-  box-shadow: var(--shadow-sm);
 }
 
 /* live dot — the one place --signal is allowed */
@@ -171,10 +170,13 @@ h1, h2, h3, h4 {
 }
 
 /* gradient accent text */
+/* Violet no longer runs through the middle of sentences. The class is kept so
+   the 43 call sites keep working, but it now resolves to plain ink — a headline
+   should be one colour. Violet lives on actions, not inside prose. */
 .grad-iris {
-  background: linear-gradient(100deg, var(--iris) 0%, var(--iris-soft) 58%, #B79BFF 100%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
+  background: none;
+  -webkit-text-fill-color: var(--ink);
+  color: var(--ink);
 }
 
 /* animated shimmer accent — a live sheen travels across the gradient text */
@@ -187,10 +189,11 @@ h1, h2, h3, h4 {
     var(--iris-soft) 66%,
     var(--iris) 100%
   );
-  background-size: 220% 100%;
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
-  animation: irisShimmer 6.5s linear infinite;
+  background: none;
+  background-size: auto;
+  -webkit-text-fill-color: var(--ink);
+  color: var(--ink);
+  animation: none;
 }
 @keyframes irisShimmer {
   0%   { background-position: 140% 0; }

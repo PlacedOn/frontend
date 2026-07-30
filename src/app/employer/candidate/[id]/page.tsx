@@ -95,7 +95,7 @@ export default function CandidateReportPage() {
         <AnimatePresence>
           {introOpen && (
             <motion.div className="fixed inset-0 z-[75] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-              <button aria-label="Close" onClick={() => setIntroOpen(false)} className="absolute inset-0 cursor-default" style={{ background: "rgba(14,16,32,0.42)", backdropFilter: "blur(6px)" }} tabIndex={-1} />
+              <button aria-label="Close" onClick={() => setIntroOpen(false)} className="absolute inset-0 cursor-default" style={{ background: "rgba(14,16,32,0.42)", }} tabIndex={-1} />
               <motion.div role="dialog" aria-modal="true" className="glass relative w-full max-w-[420px] rounded-[var(--r-card)] p-7" initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduce ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.98 }} transition={{ duration: 0.26, ease: EASE }}>
                 <p className="eyebrow">Request intro</p>
                 <h2 className="mt-2 text-[1.35rem]">Ask {r.initials} for an intro?</h2>

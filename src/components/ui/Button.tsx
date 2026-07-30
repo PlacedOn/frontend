@@ -65,8 +65,6 @@ export function Button({
           background:
             "linear-gradient(158deg, rgba(255,255,255,0.80), rgba(244,242,255,0.56) 72%)",
           border: "1px solid rgba(255,255,255,0.72)",
-          backdropFilter: "blur(16px) saturate(1.3)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.3)",
           boxShadow:
             "0 10px 26px -14px rgba(30,24,70,0.28), inset 0 1px 0 rgba(255,255,255,0.85)",
         };

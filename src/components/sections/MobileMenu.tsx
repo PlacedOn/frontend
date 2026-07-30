@@ -76,7 +76,7 @@ export function MobileMenu({ links, isSignedIn, dashboardHref, onBookDemo }: Pro
               aria-label="Close menu"
               onClick={close}
               className="absolute inset-0 h-full w-full cursor-default"
-              style={{ background: "rgba(14,16,32,0.36)", backdropFilter: "blur(4px)" }}
+              style={{ background: "rgba(14,16,32,0.36)", }}
             />
 
             {/* panel */}

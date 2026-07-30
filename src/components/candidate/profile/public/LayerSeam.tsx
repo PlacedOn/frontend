@@ -32,7 +32,7 @@ export function LayerSeam() {
         />
         <motion.span
           className="inline-flex shrink-0 items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/85"
-          style={{ fontFamily: "var(--font-mono)", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(139,84,255,0.3)", backdropFilter: "blur(6px)" }}
+          style={{ fontFamily: "var(--font-mono)", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(139,84,255,0.3)", }}
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-20%" }}

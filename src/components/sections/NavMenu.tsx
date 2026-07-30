@@ -110,8 +110,6 @@ export function NavMenu() {
                     style={{
                       background: "var(--glass-hi)",
                       borderColor: "var(--glass-line-hi)",
-                      backdropFilter: "blur(22px) saturate(1.4)",
-                      WebkitBackdropFilter: "blur(22px) saturate(1.4)",
                       boxShadow: "0 24px 60px -24px rgba(40,26,120,0.4), inset 0 1px 0 rgba(255,255,255,0.7)",
                     }}
                   >

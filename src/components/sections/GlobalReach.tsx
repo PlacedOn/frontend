@@ -51,7 +51,7 @@ const DARK_GLOBE: COBEOptions = {
 function Chip({ icon: Icon, k, v }: { icon: typeof GlobeIcon; k: string; v: string }) {
   return (
     <div
-      className="flex items-center gap-3 rounded-2xl px-4 py-3 backdrop-blur-md"
+      className="flex items-center gap-3 rounded-2xl px-4 py-3"
       style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 12px 40px rgba(8,6,15,0.4)" }}
     >
       <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[11px] border" style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.14)", color: "#c9bcff" }}>
@@ -101,7 +101,7 @@ export function GlobalReach() {
             style={{ color: "#fff" }}
           >
             Interview anyone,{" "}
-            <span style={{ background: "linear-gradient(90deg,#b3a3ff,#8b54ff)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
+            <span style={{ background: "linear-gradient(90deg,#b3a3ff,#8b54ff)", color: "var(--ink)" }}>
               anywhere
             </span>
             .

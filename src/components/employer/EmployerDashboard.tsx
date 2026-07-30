@@ -244,7 +244,7 @@ function CreateRoleDialog({ onClose, onSave, reduce }: { onClose: () => void; on
   return (
     <Portal>
       <div className="fixed inset-0 z-[75] grid place-items-center p-4">
-        <button aria-label="Close" onClick={onClose} className="absolute inset-0 cursor-default" style={{ background: "rgba(14,16,32,0.42)", backdropFilter: "blur(6px)" }} tabIndex={-1} />
+        <button aria-label="Close" onClick={onClose} className="absolute inset-0 cursor-default" style={{ background: "rgba(14,16,32,0.42)", }} tabIndex={-1} />
         <motion.div role="dialog" aria-modal="true" className="glass relative w-full max-w-[460px] rounded-[var(--r-card)] p-7" initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.26, ease: EASE }}>
           <button onClick={onClose} aria-label="Close" className="absolute right-4 top-4 grid h-8 w-8 cursor-pointer place-items-center rounded-full text-[var(--ink-3)] transition-colors hover:bg-white/70 hover:text-[var(--ink)]"><X size={17} /></button>
           <p className="eyebrow">New role</p>

@@ -107,10 +107,8 @@ export function VerifiedCompanies() {
           gap: 0.5rem;
           padding: 0.6rem 1rem;
           border-radius: var(--r-chip);
-          background: var(--glass-hi);
-          border: 1px solid var(--glass-line);
-          box-shadow: var(--shadow-sm);
-          backdrop-filter: blur(10px);
+          background: #FFFFFF;
+          border: 1px solid var(--mist);
         }
         @keyframes verified-scroll {
           from { transform: translate3d(0, 0, 0); }

@@ -215,7 +215,7 @@ function Selector({ label, value, options, onChange }: { label: string; value: s
       {open && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute bottom-full left-0 z-20 mb-2 min-w-[130px] rounded-[12px] border p-1" style={{ background: "var(--glass-hi)", borderColor: "var(--glass-line-hi)", backdropFilter: "blur(16px)", boxShadow: "0 18px 40px -18px rgba(40,26,120,0.4)" }}>
+          <div className="absolute bottom-full left-0 z-20 mb-2 min-w-[130px] rounded-[12px] border p-1" style={{ background: "var(--glass-hi)", borderColor: "var(--glass-line-hi)", boxShadow: "0 18px 40px -18px rgba(40,26,120,0.4)" }}>
             {options.map((o) => (
               <button key={o} type="button" onClick={() => { onChange(o); setOpen(false); }} className="flex w-full items-center justify-between rounded-[8px] px-2.5 py-1.5 text-left text-[13px] font-medium transition-colors hover:bg-[var(--iris-ghost)]" style={{ color: o === value ? "var(--iris-ink)" : "var(--ink-2)" }}>
                 {o} {o === value && <Check size={13} />}

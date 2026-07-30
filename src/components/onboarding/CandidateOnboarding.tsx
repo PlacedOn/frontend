@@ -103,7 +103,6 @@ export function CandidateOnboarding({ firstName }: { firstName?: string }) {
               background: "radial-gradient(circle at 38% 30%, var(--glass-hi), var(--glass) 76%)",
               border: "1px solid var(--glass-line)",
               boxShadow: "var(--shadow-lg)",
-              backdropFilter: "blur(var(--blur))",
             }}
           />
           <motion.div

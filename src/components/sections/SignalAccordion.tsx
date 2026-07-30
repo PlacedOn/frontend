@@ -18,10 +18,10 @@ type Art = "wave" | "quote" | "fair" | "control" | "skill";
 type Panel = { art: Art; title: string; stat: string; body: string; grad: string };
 
 const PANELS: Panel[] = [
-  { art: "wave", title: "One honest interview", stat: "30 min", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,#8B54FF,#6922F5)" },
-  { art: "quote", title: "Evidence, not keywords", stat: "1 quote / trait", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,#6922F5,#4311a8)" },
-  { art: "fair", title: "Fair by design", stat: "9 never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,#7C3AED,#9333EA)" },
-  { art: "control", title: "You stay in control", stat: "0 shared", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,#5B21B6,#7C3AED)" },
+  { art: "wave", title: "One honest interview", stat: "30 min", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,#3A3631,#1E1B18)" },
+  { art: "quote", title: "Evidence, not keywords", stat: "1 quote / trait", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,#2E2B27,#17150F)" },
+  { art: "fair", title: "Fair by design", stat: "9 never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,#413C36,#22201C)" },
+  { art: "control", title: "You stay in control", stat: "0 shared", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,#26231F,#12100E)" },
   { art: "skill", title: "Real skill over resumes", stat: "0 resumes", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#6D28D9,#8B54FF)" },
 ];
 
@@ -168,7 +168,7 @@ export function SignalAccordion() {
         <div className="flex flex-col gap-3 md:hidden">
           {PANELS.map((p) => {
             return (
-              <div key={p.title} className="relative overflow-hidden rounded-[22px] p-5" style={{ background: p.grad, boxShadow: "0 14px 34px -18px rgba(58,20,140,0.5)" }}>
+              <div key={p.title} className="relative overflow-hidden rounded-[22px] p-5" style={{ background: p.grad, boxShadow: "0 14px 34px -18px rgba(16,15,13,0.35)" }}>
                 <span aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(120% 80% at 15% 0%, rgba(255,255,255,0.22), transparent 55%)" }} />
                 <div className="relative flex items-start gap-3.5">
                   <div>

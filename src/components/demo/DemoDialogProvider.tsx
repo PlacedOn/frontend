@@ -98,7 +98,7 @@ export function DemoDialogProvider({ children }: { children: ReactNode }) {
               aria-label="Close dialog"
               onClick={close}
               className="absolute inset-0 cursor-default"
-              style={{ background: "rgba(14,16,32,0.42)", backdropFilter: "blur(6px)" }}
+              style={{ background: "rgba(14,16,32,0.42)", }}
               tabIndex={-1}
             />
             <motion.div
