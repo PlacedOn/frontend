@@ -178,7 +178,11 @@ function FinalCta() {
 
 export default function CandidatesPage() {
   return (
-    <>
+    /* Candidate register: every CTA on this page points a candidate at their
+       own interview. `display: contents` keeps the wrapper out of the box
+       tree — BeamsField is fixed-position — while still passing the tokens
+       down. */
+    <div data-audience="candidate" className="contents">
       <BeamsField />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
@@ -202,6 +206,6 @@ export default function CandidatesPage() {
         <FinalCta />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

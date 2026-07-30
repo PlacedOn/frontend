@@ -137,7 +137,10 @@ function FinalCta() {
 
 export default function CompaniesPage() {
   return (
-    <>
+    /* Employer register: this page's CTAs send a hiring team into /employer.
+       `display: contents` keeps the wrapper out of the box tree — PlasmaVeil
+       is fixed-position — while still passing the tokens down. */
+    <div data-audience="employer" className="contents">
       <PlasmaVeil />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
@@ -160,6 +163,6 @@ export default function CompaniesPage() {
         <FinalCta />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

@@ -20,8 +20,17 @@ export async function DashboardShell({
   } = await supabase.auth.getUser();
 
   return (
-    <DashboardShellClient role={role} email={user?.email ?? null}>
-      {children}
-    </DashboardShellClient>
+    /* The audience register for every logged-in surface. `role` is already
+       "candidate" | "employer", the exact two values [data-audience] is keyed
+       on in globals.css, so the shell is the one place the switch belongs.
+       `display: contents` — the wrapper must not generate a box: the shell
+       below owns fixed-position chrome, and a real box here would be a new
+       containing block waiting to happen. Custom properties still inherit
+       through it. */
+    <div data-audience={role} className="contents">
+      <DashboardShellClient role={role} email={user?.email ?? null}>
+        {children}
+      </DashboardShellClient>
+    </div>
   );
 }
