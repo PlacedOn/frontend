@@ -25,7 +25,62 @@ _(none)_
 
 ## Ready
 
-- [ ] **TOK-01** — Per-audience accent tokens defined in `src/app/globals.css`. (owner: **ui-designer**) — CHANGES REQUESTED 2026-07-30 by code-reviewer on `fc09115` (two text edits; **the colour is correct and settled — do not touch any CSS value**)
+- [ ] **TOK-02** — Apply the audience scope at the three entry points that already know the audience. (owner: ui-designer) — depends on: TOK-01 ✅ **UNBLOCKED 2026-07-30** — TOK-01 approved on `53b53b6`; the token layer is settled and inert. **Do not touch any `--v-*` value or the `[data-audience]` blocks; TOK-02 only sets the attribute.**
+  — **DoD:**
+  1. `data-audience` is set in exactly three places, all of which already carry the distinction: `src/components/dashboard/DashboardShell.tsx` (has `role: DashboardRole`, consumed by `src/app/candidate/layout.tsx` and `src/app/employer/layout.tsx`), `src/app/candidates/page.tsx`, `src/app/companies/page.tsx`.
+  2. ~~Mechanical check (qa-tester): computed `color` of a `var(--iris-ink)` element on `/candidate` ≠ on `/employer`, and both resolved values are members of the ramp set in `scripts/color-lint.mjs:18-22`.~~ **AMENDED 2026-07-30 by code-reviewer — see clause 2′.**
+  2′. **(replaces clause 2)** Mechanical check (qa-tester), **three parts, all required**:
+      **(a) Inequality + membership** — as before: computed `color` of a `var(--iris-ink)` element on `/candidate` ≠ on `/employer`, both members of `scripts/color-lint.mjs:18-22`.
+      **(b) Adjacency — the part that was missing.** Employer's resolved `--accent-ink` must be the ramp step **immediately** below employer's resolved `--accent`, exactly as candidate's is (`v-600` → `v-700`). Today that is `v-700` → `v-800`.
+      **(c) Paired-state parity.** Employer's Button rest→hover ΔL\* must be within **±25%** of candidate's. Today: candidate **8.19**, employer **8.04**, ratio **0.98**.
+      *Why this amendment exists:* clause 2 as originally written is a **mechanism** test with no **fitness** test, and it is what produced this task's only real defect. `--v-900` satisfied it perfectly — v-900 ≠ v-700 and v-900 is in `RAMP_HEX` — while making employer's hover **2.39×** candidate's, and the entry at `TOK-01` even records that v-900 was chosen *"because that is what makes TOK-02's `--iris-ink` inequality check pass."* **The DoD steered the defect.** Clauses (b) and (c) each reject v-900 on their own, and (b) needs no colorimetry.
+  3. `/` and `/trust/*` are unchanged — computed accent there still equals `--v-600`.
+  4. `node scripts/color-lint.mjs` exits 0; `pnpm build` succeeds **with zero warnings** — not merely exit 0. (Cycle 3 of TOK-01 lost a round to a "clean build" that still emitted two CSS warnings, and TOK-03's whole DoD is reading build output.)
+  5. No `.tsx` file gains a hex value.
+  6. **NEW — the register-blind inventory is recorded, not silently left behind.** The scope reaches only alias-layer reads (`--accent*` / `--iris*`, 785 occurrences). **45 sites across 18 files read the ramp layer directly** — 25 `var(--v-NNN)` and 20 hardcoded on-ramp hexes — and will **not** switch. `color-lint` permits them because it enforces ramp membership, not token indirection, so nothing in the toolchain will ever flag them. Two are inside this task's own entry points: `src/app/candidates/page.tsx:132` and `src/app/companies/page.tsx:91` both paint their hero gradient from `var(--v-400)`/`var(--v-500)` and will look **identical** on both audiences after this lands. `src/components/employer/skillIcons.ts:51` hardcodes `#5E1EDC` — *candidate's* accent — inside the employer product. **TOK-02 does not have to fix these** — that is a separate follow-up for `planner` ("re-point ramp-layer reads onto the alias layer, or document each as deliberately register-blind") — but it must (i) enumerate them in its completion note and (ii) not claim "employer surfaces read one step deeper" without the exception list, because that claim is measurably false for those 45 sites.
+
+- [ ] **TOK-03** — Collapse the two competing motion scales in `globals.css` into one by re-pointing the legacy names. (owner: ui-designer)
+  — **DoD:**
+  1. Verified problem: two independent scales ship today with *different* values — SYSTEM v1 `--dur-fast/normal/slow/reveal` = 150/240/400/600ms (globals.css:107) and legacy `--d-micro/std/sig` = 160/320/620ms (globals.css:165-167), plus two easing sets (`--ease-in-out-sys`/`--ease-in-sys`/`--ease-soft` at :109-111 vs `--ease-out`/`--ease-spring` at :168-169). Usage is inverted from intent: `--d-micro` 32 sites, `--d-std` 13, vs `--dur-fast` 2 and `--dur-normal`/`--dur-slow`/`--dur-reveal` 0.
+  2. After the change, `--d-micro`, `--d-std`, `--d-sig`, `--ease-out`, `--ease-spring` contain **only** `var(--dur-*)` / `var(--ease-*)` references — grep for a bare `ms` or `cubic-bezier(` inside the legacy block returns nothing.
+  3. Exactly one set of duration literals and one set of easing literals remains in `globals.css`.
+  4. Zero `.tsx` files edited — the 45 existing `duration-[var(--d…)]` call sites keep working untouched. `git diff --stat` touches `globals.css` only.
+  5. The `prefers-reduced-motion` block (globals.css:345-356) still neutralizes every duration token by name, including the re-pointed legacy ones.
+  6. `pnpm build` succeeds.
+
+- [ ] **TOK-04** — Give scores and stats one tabular-numeral mechanism instead of three. (owner: ui-designer)
+  — **DoD:**
+  1. Verified problem: 11 call sites use three different mechanisms — Tailwind `tabular-nums` class, inline `style={{ fontVariantNumeric: "tabular-nums" }}`, and `fontFamily: "var(--font-mono)"` layered on top (e.g. `src/components/employer/EmployerStats.tsx:53`, `src/components/fit/FitCheckCard.tsx:74`, `src/components/ui/CountUp.tsx:46`).
+  2. `globals.css` gains one utility (e.g. `.num`) in the shared utility layer that sets `font-variant-numeric: tabular-nums` + `font-feature-settings` and nothing else — it must not set colour, size, or weight.
+  3. All 11 existing sites use it; grep for `fontVariantNumeric` and the bare `tabular-nums` class in `src/` returns 0 outside `globals.css`.
+  4. No visual regression: qa-tester confirms the score digits on `/employer` and `/candidate` render at the same size/weight/colour as before.
+  5. `pnpm build` succeeds.
+
+## Blocked
+
+- [ ] **TOK-05** — Reconcile FRONTEND_PLAN §2.3 (spacing + radius) with the scale actually shipping — blocked by: **the plan contradicts the codebase and only a human can pick.** Flagging rather than silently accommodating, per planner.md.
+  - *Spacing:* §2.3 mandates a fixed px scale `4/8/12/16/24/32/48/64/96`. `globals.css:22-27` ships a **fluid `clamp()`** scale (`--space-2xs … --space-xl`) with `--space-xl` documented as "THE section padding". These are not reconcilable — one is fixed, one is viewport-responsive. Separately, the shipped scale is barely adopted: **4 call sites total** across all of `src/`, so almost every padding/margin in the app is a raw Tailwind value bypassing tokens either way. Adopting §2.3 literally means discarding the fluid scale *and* rewriting hundreds of call sites — far beyond a design-token task and far beyond this proving run.
+  - *Radius:* §2.3 mandates `6 / 12 / 20px`. `globals.css:114` ships `--r-sm/md/lg = 8/12/16px` and `globals.css:172-174` ships legacy `--r-card 24px / --r-btn 14px / --r-chip 999px`. So there are **six** radius values, not three. But usage is entirely on the legacy names (`--r-card` 178 sites, `--r-btn` 149, `--r-chip` 13) versus `--r-sm` 0, `--r-md` 1, `--r-lg` 0. Collapsing is a one-file re-point like TOK-03 — but only *after* someone decides whether the target is the plan's 6/12/20 or the shipped 8/12/16, and whether `--r-card`'s 24px look survives being re-pointed to 16px across 178 components. Recommendation: keep the shipped 8/12/16, treat `--r-chip: 999px` as a documented pill exception, and amend §2.3 — a 2px difference is not worth re-rendering 340 call sites.
+  - Unblock by: a decision on each of the two bullets above, then this splits into TOK-05a (radius re-point, ~TOK-03 shape) and TOK-05b (spacing adoption, its own multi-task epic).
+
+## Done
+
+_Closed on verification, not completed by this loop — recorded here so the loop does not
+re-schedule work that already shipped. A reviewer should confirm before trusting these._
+
+- [x] **TOK-00a** — One violet ramp + build-time enforcement — verified 2026-07-30.
+  `--v-50 … --v-900`, `--brand-mark`, `--ok/--warn/--bad` + `-bg` tints all exist at `src/app/globals.css:65-88`. `scripts/color-lint.mjs` derives every violet-ish value in `src/` from scratch and checks ramp membership; it is wired as `prebuild` in `package.json:10`, so an off-ramp violet fails the build. This is FRONTEND_PLAN §2.1 and build-order step 1, already done.
+- [x] **TOK-00b** — Single icon source — verified 2026-07-30, **no migration needed.**
+  `lucide-react` is the only icon dependency in `package.json`; there is no `react-icons`, `@heroicons`, `@tabler`, phosphor, or feather anywhere. 84 files import from `lucide-react`; the 43 components in `src/components/ui/icons/` are `motion/react` animation wrappers over lucide's own 24×24 geometry, not a second icon set. FRONTEND_PLAN build-order step 2 ("icon migration to lucide-react only") is closed. **Residual, deliberately not scheduled this run:** stroke width is *not* unified — 8 distinct values ship (`strokeWidth={2}` ×43, `{3}` ×9, `{1.75}` ×6, `{1}` ×3, `{1.5}` ×2, `{1.8}`, `{1.4}`, `{0.6}`) against §2.5's "one stroke width, 1.5". That is real and worth doing, but it touches ~65 call sites plus the `IconWrapper` default at `src/components/ui/icons/icon.tsx:213` — too large for a proving run. Schedule it first in the next cycle.
+- [x] **TOK-00c** — Dark `#0B0C0E` / `#6C8CFF` / `#33D6C0` palette — **rejected, do not build** — recorded 2026-07-30.
+  FRONTEND_PLAN §2.1 was rewritten to reject it explicitly. Ground stays light (`--paper #FFFFFF`), the brand violet is kept, and per-audience accents derive from the existing ramp. Any future task proposing that palette should be refused, not planned.
+- [x] **TOK-01** — Per-audience accent tokens defined in `src/app/globals.css` — **APPROVED 2026-07-30** by code-reviewer on `53b53b6` (third review).
+  Ships `--v-800: #340F82` — a *generated* ramp step, not the `--v-900` ground — plus `[data-audience="candidate"]` / `[data-audience="employer"]` scopes that redeclare the **entire** `--accent*`/`--iris*` alias chain; employer runs one step deeper (`700 / 800 / 100 / 500 / 300`). **Re-verified independently, from a clean tree, not on report:** `python3 scripts/ramp.py` reproduces all eight original steps byte-for-byte and emits `#340F82` (13.67:1 on white); my own CIELAB transform gives Button rest→hover ΔL\* **8.19** candidate / **8.04** employer (ratio **0.98**, was 2.39 under v-900); `rm -rf .next && pnpm build` → `Compiled successfully`, **zero** warnings of any kind; `node scripts/color-lint.mjs` → exit 0 (`clean — 298 files`); `data-audience` still has **zero** consumers in `src/`, so no page renders differently. **The value is settled — do not re-derive it.**
+  — **Both cycle-3 blockers closed.** The tie-break prose was removed rather than corrected — three cycles produced three false sentences, all in prose, while the code was right from cycle 2 — and `globals.css:256-261` now points at `scripts/ramp.py`, which is **tracked** and carries the shipped parameters at `scripts/ramp.py:35`, so the deletion lost no information and left nothing that can go stale. Every number still in the block was recomputed and is true (`11.5`, `~8`, `19.6`, `8.2`, `2.4x`, `8.0`, `8.2`, and the `(0,1,0)` specificity claim). The `Delim` build warnings are genuinely gone, and the *class* is closed, not just the three instances: a repo-wide scan finds no other Tailwind-scannable arbitrary-value string containing a non-ident character in any tracked markdown.
+  — **⚠️ Handoff finding for TOK-02 — not a TOK-01 defect.** The audience switch only reaches consumers that read the **alias** layer (`--accent*` / `--iris*`, 785 occurrences in `src/`). **45 sites across 18 files are register-blind by construction:** 25 direct `var(--v-NNN)` ramp-layer reads and 20 hardcoded on-ramp hexes, all of which `scripts/color-lint.mjs` legitimately permits because it enforces *ramp membership*, not *token indirection*. Two sit inside TOK-02's own entry points — `src/app/candidates/page.tsx:132` and `src/app/companies/page.tsx:91` each paint their hero gradient from `var(--v-400)`/`var(--v-500)` and will render **byte-identically** after the scope lands. `src/components/employer/skillIcons.ts:51` hardcodes `#5E1EDC`, *candidate's* accent, inside the employer product. TOK-02 DoD clause 2 cannot see any of this — see the amendment recorded on TOK-02.
+
+  <details><summary>Three-cycle review history (all findings resolved — kept for provenance)</summary>
+
 
   — ❌ **CHANGES REQUESTED — 2026-07-30 (code-reviewer), on `fc09115`.**
   **My original objection is resolved. `#340F82` is right, ships, and is not to be re-derived
@@ -383,49 +438,8 @@ _(none)_
 
   </details>
 
-- [ ] **TOK-02** — Apply the audience scope at the three entry points that already know the audience. (owner: ui-designer) — depends on: TOK-01
-  — **DoD:**
-  1. `data-audience` is set in exactly three places, all of which already carry the distinction: `src/components/dashboard/DashboardShell.tsx` (has `role: DashboardRole`, consumed by `src/app/candidate/layout.tsx` and `src/app/employer/layout.tsx`), `src/app/candidates/page.tsx`, `src/app/companies/page.tsx`.
-  2. Mechanical check (qa-tester): computed `color` of a `var(--iris-ink)` element on `/candidate` ≠ on `/employer`, and both resolved values are members of the ramp set in `scripts/color-lint.mjs:18-22`.
-  3. `/` and `/trust/*` are unchanged — computed accent there still equals `--v-600`.
-  4. `node scripts/color-lint.mjs` exits 0; `pnpm build` succeeds.
-  5. No `.tsx` file gains a hex value.
+  </details>
 
-- [ ] **TOK-03** — Collapse the two competing motion scales in `globals.css` into one by re-pointing the legacy names. (owner: ui-designer)
-  — **DoD:**
-  1. Verified problem: two independent scales ship today with *different* values — SYSTEM v1 `--dur-fast/normal/slow/reveal` = 150/240/400/600ms (globals.css:107) and legacy `--d-micro/std/sig` = 160/320/620ms (globals.css:165-167), plus two easing sets (`--ease-in-out-sys`/`--ease-in-sys`/`--ease-soft` at :109-111 vs `--ease-out`/`--ease-spring` at :168-169). Usage is inverted from intent: `--d-micro` 32 sites, `--d-std` 13, vs `--dur-fast` 2 and `--dur-normal`/`--dur-slow`/`--dur-reveal` 0.
-  2. After the change, `--d-micro`, `--d-std`, `--d-sig`, `--ease-out`, `--ease-spring` contain **only** `var(--dur-*)` / `var(--ease-*)` references — grep for a bare `ms` or `cubic-bezier(` inside the legacy block returns nothing.
-  3. Exactly one set of duration literals and one set of easing literals remains in `globals.css`.
-  4. Zero `.tsx` files edited — the 45 existing `duration-[var(--d…)]` call sites keep working untouched. `git diff --stat` touches `globals.css` only.
-  5. The `prefers-reduced-motion` block (globals.css:345-356) still neutralizes every duration token by name, including the re-pointed legacy ones.
-  6. `pnpm build` succeeds.
-
-- [ ] **TOK-04** — Give scores and stats one tabular-numeral mechanism instead of three. (owner: ui-designer)
-  — **DoD:**
-  1. Verified problem: 11 call sites use three different mechanisms — Tailwind `tabular-nums` class, inline `style={{ fontVariantNumeric: "tabular-nums" }}`, and `fontFamily: "var(--font-mono)"` layered on top (e.g. `src/components/employer/EmployerStats.tsx:53`, `src/components/fit/FitCheckCard.tsx:74`, `src/components/ui/CountUp.tsx:46`).
-  2. `globals.css` gains one utility (e.g. `.num`) in the shared utility layer that sets `font-variant-numeric: tabular-nums` + `font-feature-settings` and nothing else — it must not set colour, size, or weight.
-  3. All 11 existing sites use it; grep for `fontVariantNumeric` and the bare `tabular-nums` class in `src/` returns 0 outside `globals.css`.
-  4. No visual regression: qa-tester confirms the score digits on `/employer` and `/candidate` render at the same size/weight/colour as before.
-  5. `pnpm build` succeeds.
-
-## Blocked
-
-- [ ] **TOK-05** — Reconcile FRONTEND_PLAN §2.3 (spacing + radius) with the scale actually shipping — blocked by: **the plan contradicts the codebase and only a human can pick.** Flagging rather than silently accommodating, per planner.md.
-  - *Spacing:* §2.3 mandates a fixed px scale `4/8/12/16/24/32/48/64/96`. `globals.css:22-27` ships a **fluid `clamp()`** scale (`--space-2xs … --space-xl`) with `--space-xl` documented as "THE section padding". These are not reconcilable — one is fixed, one is viewport-responsive. Separately, the shipped scale is barely adopted: **4 call sites total** across all of `src/`, so almost every padding/margin in the app is a raw Tailwind value bypassing tokens either way. Adopting §2.3 literally means discarding the fluid scale *and* rewriting hundreds of call sites — far beyond a design-token task and far beyond this proving run.
-  - *Radius:* §2.3 mandates `6 / 12 / 20px`. `globals.css:114` ships `--r-sm/md/lg = 8/12/16px` and `globals.css:172-174` ships legacy `--r-card 24px / --r-btn 14px / --r-chip 999px`. So there are **six** radius values, not three. But usage is entirely on the legacy names (`--r-card` 178 sites, `--r-btn` 149, `--r-chip` 13) versus `--r-sm` 0, `--r-md` 1, `--r-lg` 0. Collapsing is a one-file re-point like TOK-03 — but only *after* someone decides whether the target is the plan's 6/12/20 or the shipped 8/12/16, and whether `--r-card`'s 24px look survives being re-pointed to 16px across 178 components. Recommendation: keep the shipped 8/12/16, treat `--r-chip: 999px` as a documented pill exception, and amend §2.3 — a 2px difference is not worth re-rendering 340 call sites.
-  - Unblock by: a decision on each of the two bullets above, then this splits into TOK-05a (radius re-point, ~TOK-03 shape) and TOK-05b (spacing adoption, its own multi-task epic).
-
-## Done
-
-_Closed on verification, not completed by this loop — recorded here so the loop does not
-re-schedule work that already shipped. A reviewer should confirm before trusting these._
-
-- [x] **TOK-00a** — One violet ramp + build-time enforcement — verified 2026-07-30.
-  `--v-50 … --v-900`, `--brand-mark`, `--ok/--warn/--bad` + `-bg` tints all exist at `src/app/globals.css:65-88`. `scripts/color-lint.mjs` derives every violet-ish value in `src/` from scratch and checks ramp membership; it is wired as `prebuild` in `package.json:10`, so an off-ramp violet fails the build. This is FRONTEND_PLAN §2.1 and build-order step 1, already done.
-- [x] **TOK-00b** — Single icon source — verified 2026-07-30, **no migration needed.**
-  `lucide-react` is the only icon dependency in `package.json`; there is no `react-icons`, `@heroicons`, `@tabler`, phosphor, or feather anywhere. 84 files import from `lucide-react`; the 43 components in `src/components/ui/icons/` are `motion/react` animation wrappers over lucide's own 24×24 geometry, not a second icon set. FRONTEND_PLAN build-order step 2 ("icon migration to lucide-react only") is closed. **Residual, deliberately not scheduled this run:** stroke width is *not* unified — 8 distinct values ship (`strokeWidth={2}` ×43, `{3}` ×9, `{1.75}` ×6, `{1}` ×3, `{1.5}` ×2, `{1.8}`, `{1.4}`, `{0.6}`) against §2.5's "one stroke width, 1.5". That is real and worth doing, but it touches ~65 call sites plus the `IconWrapper` default at `src/components/ui/icons/icon.tsx:213` — too large for a proving run. Schedule it first in the next cycle.
-- [x] **TOK-00c** — Dark `#0B0C0E` / `#6C8CFF` / `#33D6C0` palette — **rejected, do not build** — recorded 2026-07-30.
-  FRONTEND_PLAN §2.1 was rewritten to reject it explicitly. Ground stays light (`--paper #FFFFFF`), the brand violet is kept, and per-audience accents derive from the existing ramp. Any future task proposing that palette should be refused, not planned.
 
 ---
 
