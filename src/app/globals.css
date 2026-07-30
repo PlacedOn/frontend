@@ -91,6 +91,17 @@
   --accent-ink:  var(--v-700);
   --accent-weak: var(--v-50);
 
+  /* ── per-audience accents ──────────────────────────────────────
+     One hue, two registers. Candidate keeps the house accent (v-600);
+     employer runs one ramp step deeper (v-700) so the two products
+     read as different rooms of the same building. Both are ramp steps
+     picked by role, not new colours — there is no third accent, and
+     there is never a second hue. These two names are the only thing
+     a future audience is allowed to add; the scopes below consume
+     them. See the [data-audience] block after :root. */
+  --accent-candidate: var(--v-600);
+  --accent-employer:  var(--v-700);
+
   /* type */
   --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-base: 1rem; --text-lg: 1.125rem;
   --text-xl:   clamp(1.25rem,  1.15rem + 0.50vw, 1.5rem);
@@ -188,6 +199,68 @@
      everyday porcelain register IS the wayfinding, so nothing may sit on top */
   --z-register: 60;
   --z-peak: 70;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PER-AUDIENCE ACCENT SCOPES
+
+   Definition only — nothing sets [data-audience] yet, so every page
+   still resolves through :root and renders byte-identically. The
+   three entry points get wired separately.
+
+   ── WHY THE WHOLE ALIAS CHAIN IS REPEATED. DO NOT "SIMPLIFY". ──
+   A custom property's computed value has its var()s substituted at
+   the element where it is DECLARED, and then inherits downward
+   ALREADY RESOLVED. `--iris: var(--accent)` is declared up in :root,
+   so --iris computes to :root's --accent (#5E1EDC) once, and every
+   descendant inherits that frozen colour — not a live reference.
+
+   So re-declaring only --accent on a scope below would change
+   nothing visible: it would move the ~34 call sites that read
+   --accent*, and none of the ~759 that read --iris*. Each scope has
+   to re-declare EVERY link of the chain, on the scope element
+   itself. Deleting any line below silently reverts that token to the
+   house accent, with no error and no failing lint.
+
+   Corollary: adding any new --iris- or --accent- alias to :root means
+   adding it to BOTH blocks here as well, or it will not switch.
+
+   Specificity is deliberate: [data-audience="…"] is (0,1,0), the
+   same as :root, so these win only by coming later in the source.
+   Keep them after the :root block — including if data-audience ever
+   lands on <html> itself, where both selectors match one element.
+
+   Values are the ramp shifted one step. No new hex, no new hue:
+     accent / ink / weak / soft / line
+     candidate  600 / 700 /  50 / 400 / 200   (identical to :root)
+     employer   700 / 900 / 100 / 500 / 300
+   Employer's --accent-ink is v-900 because v-700 is already the
+   ramp's strongest text step and ink must stay distinguishable from
+   accent for pressed and hover; v-900 is the only step beneath it.
+   ══════════════════════════════════════════════════════════════ */
+
+[data-audience="candidate"] {
+  --accent:      var(--accent-candidate);
+  --accent-ink:  var(--v-700);
+  --accent-weak: var(--v-50);
+
+  --iris:        var(--accent);
+  --iris-soft:   var(--v-400);
+  --iris-ink:    var(--accent-ink);
+  --iris-ghost:  var(--v-50);
+  --iris-line:   var(--v-200);
+}
+
+[data-audience="employer"] {
+  --accent:      var(--accent-employer);
+  --accent-ink:  var(--v-900);
+  --accent-weak: var(--v-100);
+
+  --iris:        var(--accent);
+  --iris-soft:   var(--v-500);
+  --iris-ink:    var(--accent-ink);
+  --iris-ghost:  var(--v-100);
+  --iris-line:   var(--v-300);
 }
 
 * { box-sizing: border-box; }
