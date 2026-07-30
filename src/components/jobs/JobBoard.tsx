@@ -1,0 +1,274 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { API_BASE_URL, isLiveBackend } from "@/lib/api";
+import type { JobDetail, SignalKind } from "@/lib/v1";
+
+/**
+ * /jobs — the candidate's entrance to the product.
+ *
+ * This route did not exist. Every /jobs/ path in the app lived under
+ * /employer/, and /employer/search searches *candidates*. A person looking for
+ * work could not see a single role on PlacedOn, which made the "I'm looking for
+ * work" tab on the homepage a door into an interview rather than into the
+ * product.
+ *
+ * Two deliberate departures from how job boards normally work:
+ *
+ * 1. **Public.** No login to browse. A cold candidate will not spend 22 minutes
+ *    on a promise; they will spend thirty seconds deciding whether there is
+ *    anything here worth their time. Asking them to sign up first loses them.
+ *
+ * 2. **Signals, not requirements.** Each card leads with the problem the role
+ *    exists to solve and the two or three things it actually needs — the
+ *    role-DNA the employer defined. A requirements wall is the thing job boards
+ *    are worst at: it tells you what to claim, not whether you fit.
+ *
+ * The interview is asked for at the point of desire — on the role page, once
+ * someone has found something they want — never before.
+ */
+
+const SIGNAL_LABEL: Record<SignalKind, string> = {
+  success_signal: "What good looks like",
+  must_have: "Needs",
+  nice_to_have: "Bonus",
+};
+
+type State =
+  | { kind: "loading" }
+  | { kind: "ready"; jobs: JobDetail[] }
+  | { kind: "offline" } // backend not configured for this environment
+  | { kind: "error"; message: string };
+
+export function JobBoard() {
+  const params = useSearchParams();
+  const [state, setState] = useState<State>({ kind: "loading" });
+  // Seeded from ?q= so the hero handoff carries the candidate's words through.
+  // Without this the search on the homepage would silently throw them away.
+  const [q, setQ] = useState(() => params.get("q") ?? "");
+
+  useEffect(() => {
+    if (!isLiveBackend()) {
+      setState({ kind: "offline" });
+      return;
+    }
+    let alive = true;
+    // Public browse — deliberately not authFetch. Requiring a session to look
+    // at open roles is the thing this route exists to fix.
+    fetch(`${API_BASE_URL}/v1/jobs/public`, { headers: { Accept: "application/json" } })
+      .then(async (r) => {
+        if (!r.ok) throw new Error(`${r.status}`);
+        return (await r.json()) as JobDetail[];
+      })
+      .then((jobs) => alive && setState({ kind: "ready", jobs }))
+      .catch((e) => alive && setState({ kind: "error", message: String(e.message ?? e) }));
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const jobs = state.kind === "ready" ? state.jobs : [];
+  const filtered = useMemo(() => {
+    const needle = q.trim().toLowerCase();
+    if (!needle) return jobs;
+    return jobs.filter(
+      (j) =>
+        j.title.toLowerCase().includes(needle) ||
+        (j.level ?? "").toLowerCase().includes(needle) ||
+        j.signals.some((s) => s.signal.toLowerCase().includes(needle)),
+    );
+  }, [jobs, q]);
+
+  return (
+    <div className="mx-auto w-full max-w-[1100px] px-5 py-12 md:px-8 md:py-16">
+      <h1
+        className="text-[clamp(1.875rem,1.5rem+1.9vw,2.75rem)] font-semibold tracking-[-0.022em]"
+        style={{ color: "var(--ink)" }}
+      >
+        Open roles
+      </h1>
+      <p className="mt-4 max-w-[58ch] text-[16px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+        Every company here is verified before a role goes up. Find one worth
+        wanting — you only interview once, and it counts for all of them.
+      </p>
+
+      <label htmlFor="job-q" className="sr-only">
+        Search roles
+      </label>
+      <input
+        id="job-q"
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        placeholder="Search roles, levels, or skills…"
+        className="mt-7 w-full max-w-[520px] rounded-full px-5 py-3 text-[15px] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
+        style={{ border: "1px solid var(--line-2)", color: "var(--ink)", outlineColor: "var(--accent)" }}
+      />
+
+      <div className="mt-8">
+        {state.kind === "loading" && <Skeletons />}
+
+        {state.kind === "ready" && filtered.length > 0 && (
+          <>
+            <p className="mb-4 text-[13px]" style={{ color: "var(--ink-3)" }}>
+              {filtered.length} {filtered.length === 1 ? "role" : "roles"}
+              {q && " matching your search"}
+            </p>
+            <div className="flex flex-col gap-4">
+              {filtered.map((j) => (
+                <JobCard key={j.id} job={j} />
+              ))}
+            </div>
+          </>
+        )}
+
+        {state.kind === "ready" && filtered.length === 0 && jobs.length > 0 && (
+          <Empty
+            title="Nothing matches that yet."
+            body="Try a broader search — or take the interview now and we'll match you to roles as they open."
+          />
+        )}
+
+        {/* No roles at all. Say why, plainly. A job board that pretends to have
+            listings it does not have is worse than one that admits it. */}
+        {state.kind === "ready" && jobs.length === 0 && (
+          <Empty
+            title="No roles are open right now."
+            body="We verify every company before its roles go up, so this list grows slowly on purpose. Take the interview now and you'll be matched the moment something fits."
+          />
+        )}
+
+        {state.kind === "offline" && (
+          <Empty
+            title="Roles aren't loading in this environment."
+            body="This build isn't pointed at a live backend, so there's nothing to list. The interview still works."
+          />
+        )}
+
+        {state.kind === "error" && (
+          <Empty
+            title="We couldn't load roles just now."
+            body="That's on us, not you. Try again in a moment — or take the interview and we'll match you when it's back."
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function JobCard({ job }: { job: JobDetail }) {
+  // Lead with what the role is for, then the two or three things it needs.
+  // Ordered so success signals come first — they are the ones a candidate can
+  // actually judge themselves against.
+  const signals = [...job.signals]
+    .sort((a, b) => rank(a.kind) - rank(b.kind))
+    .slice(0, 3);
+
+  return (
+    <article
+      className="rounded-[var(--r-card,20px)] bg-[var(--paper)] p-5 transition-shadow duration-[var(--dur-fast,150ms)] hover:shadow-[0_2px_8px_rgba(16,15,13,0.06),0_12px_28px_-14px_rgba(16,15,13,0.10)] md:p-6"
+      style={{ border: "1px solid var(--line)" }}
+    >
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h2 className="text-[18px] font-semibold" style={{ color: "var(--ink)" }}>
+            {job.title}
+          </h2>
+          {job.level && (
+            <p className="mt-1 text-[13.5px]" style={{ color: "var(--ink-3)" }}>
+              {job.level}
+            </p>
+          )}
+        </div>
+        {job.is_search_ready && (
+          <span
+            className="shrink-0 rounded-full px-2.5 py-1 text-[11.5px] font-semibold"
+            style={{ background: "var(--accent-weak)", color: "var(--accent-ink)" }}
+          >
+            Accepting interviews
+          </span>
+        )}
+      </div>
+
+      {job.business_problem && (
+        <p className="mt-3.5 max-w-[62ch] text-[14.5px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+          {job.business_problem}
+        </p>
+      )}
+
+      {signals.length > 0 && (
+        <dl className="mt-4 flex flex-col gap-2">
+          {signals.map((s, i) => (
+            <div key={`${s.signal}-${i}`} className="flex flex-wrap items-baseline gap-x-2.5">
+              <dt
+                className="text-[11.5px] uppercase tracking-[0.1em]"
+                style={{ color: "var(--ink-3)" }}
+              >
+                {SIGNAL_LABEL[s.kind]}
+              </dt>
+              <dd className="text-[14px]" style={{ color: "var(--ink-2)" }}>
+                {s.signal}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+
+      <div className="mt-5">
+        <Link
+          href={`/jobs/${job.id}`}
+          className="inline-flex items-center rounded-full px-5 py-2.5 text-[14px] font-semibold transition-colors duration-[var(--dur-fast,150ms)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          style={{ background: "var(--accent)", color: "#fff", outlineColor: "var(--accent)" }}
+        >
+          See the role
+        </Link>
+      </div>
+    </article>
+  );
+}
+
+function rank(k: SignalKind) {
+  return k === "success_signal" ? 0 : k === "must_have" ? 1 : 2;
+}
+
+function Empty({ title, body }: { title: string; body: string }) {
+  return (
+    <div
+      className="rounded-[var(--r-card,20px)] px-6 py-10 text-center"
+      style={{ border: "1px solid var(--line)", background: "var(--paper-2)" }}
+    >
+      <p className="text-[17px] font-semibold" style={{ color: "var(--ink)" }}>
+        {title}
+      </p>
+      <p className="mx-auto mt-2.5 max-w-[46ch] text-[14.5px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+        {body}
+      </p>
+      <Link
+        href="/pre-interview"
+        className="mt-6 inline-flex items-center rounded-full px-6 py-3 text-[14.5px] font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+        style={{ background: "var(--accent)", color: "#fff", outlineColor: "var(--accent)" }}
+      >
+        Take the interview
+      </Link>
+    </div>
+  );
+}
+
+function Skeletons() {
+  return (
+    <div className="flex flex-col gap-4" aria-busy="true" aria-label="Loading roles">
+      {[0, 1, 2].map((i) => (
+        <div
+          key={i}
+          className="rounded-[var(--r-card,20px)] p-6"
+          style={{ border: "1px solid var(--line)", background: "var(--paper-2)" }}
+        >
+          <div className="h-5 w-52 rounded" style={{ background: "var(--line)" }} />
+          <div className="mt-3 h-4 w-full max-w-[38rem] rounded" style={{ background: "var(--line)" }} />
+          <div className="mt-2 h-4 w-full max-w-[26rem] rounded" style={{ background: "var(--line)" }} />
+        </div>
+      ))}
+    </div>
+  );
+}

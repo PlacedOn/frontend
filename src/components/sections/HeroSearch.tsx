@@ -18,7 +18,12 @@ import { useRouter } from "next/navigation";
  * something real with the text:
  *
  *   hire  -> /employer/jobs/new?seed=…   role description, prefilled
- *   work  -> /pre-interview?focus=…      what you want to be interviewed on
+ *   work  -> /jobs?q=…                   open roles matching what they typed
+ *
+ * The work route used to go straight to /pre-interview, which asked a stranger
+ * for 22 minutes before showing them a single job. That is asking for the sale
+ * before showing the product. It goes to the board now; the interview is asked
+ * for on the role page, once they have found something worth wanting.
  *
  * Keyboard: the tabs are a real tablist — arrow keys move between them, Home
  * and End jump to the ends, and only the selected tab is in the tab order, so
@@ -34,7 +39,7 @@ const TABS: { id: Side; label: string }[] = [
 
 const PLACEHOLDER: Record<Side, string> = {
   hire: "Describe the role you're hiring for…",
-  work: "Describe the work you want to be judged on…",
+  work: "Search roles — backend, design, data…",
 };
 
 /** One tap instead of typing. Same destination as the input. */
@@ -52,7 +57,7 @@ export function HeroSearch() {
   const destination = (text: string) =>
     side === "hire"
       ? `/employer/jobs/new${text ? `?seed=${encodeURIComponent(text)}` : ""}`
-      : `/pre-interview${text ? `?focus=${encodeURIComponent(text)}` : ""}`;
+      : `/jobs${text ? `?q=${encodeURIComponent(text)}` : ""}`;
 
   const go = (text: string) => router.push(destination(text.trim()));
 
@@ -102,7 +107,7 @@ export function HeroSearch() {
         className="mt-3.5 flex items-center gap-2 rounded-full bg-white p-1.5 pl-5 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.7)]"
       >
         <label htmlFor="hero-search" className="sr-only">
-          {side === "hire" ? "Describe the role you're hiring for" : "Describe the work you want to be judged on"}
+          {side === "hire" ? "Describe the role you're hiring for" : "Search open roles"}
         </label>
         <input
           id="hero-search"
@@ -115,7 +120,7 @@ export function HeroSearch() {
           type="submit"
           className="shrink-0 cursor-pointer rounded-full bg-[#12100E] px-6 py-3 text-[14.5px] font-semibold text-white transition-colors duration-200 hover:bg-[#2A2621] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
-          {side === "hire" ? "Find people" : "Get started"}
+          {side === "hire" ? "Find people" : "Find roles"}
         </button>
       </form>
 
