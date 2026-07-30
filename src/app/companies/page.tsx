@@ -6,7 +6,7 @@ import { Nav } from "@/components/sections/Nav";
 import { Footer } from "@/components/sections/Footer";
 import { Testimonials } from "@/components/sections/Testimonials";
 
-import { CompaniesHero } from "@/components/companies/CompaniesHero";
+import { PageHero } from "@/components/sections/PageHero";
 import { ResumeTriage } from "@/components/companies/ResumeTriage";
 import { EvidencePanel } from "@/components/companies/EvidencePanel";
 import { TeamJourneySteps } from "@/components/companies/TeamJourneySteps";
@@ -141,7 +141,14 @@ export default function CompaniesPage() {
       <PlasmaVeil />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
-        <CompaniesHero />
+        <PageHero
+          eyebrow="For teams"
+          title="Hire on evidence, not resumes."
+          intro="Every candidate arrives already interviewed. You see what they approved you to see, with every score tied back to a moment in the transcript."
+          cta={{ label: "Book a demo", href: "/employer" }}
+          secondary={{ label: "See the hiring view", href: "/employer" }}
+          note="Bias-audited. LL144 and EU AI Act aligned."
+        />
         <TrustStrip />
         <ResumeTriage />
         <EvidencePanel />

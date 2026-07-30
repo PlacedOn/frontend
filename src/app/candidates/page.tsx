@@ -6,7 +6,7 @@ import { Nav } from "@/components/sections/Nav";
 import { Footer } from "@/components/sections/Footer";
 import { Testimonials } from "@/components/sections/Testimonials";
 
-import { CandidatesHero } from "@/components/candidates/CandidatesHero";
+import { PageHero } from "@/components/sections/PageHero";
 import { ApplicationInbox } from "@/components/candidates/ApplicationInbox";
 import { SampleScorecard } from "@/components/candidates/SampleScorecard";
 import { JourneySteps } from "@/components/candidates/JourneySteps";
@@ -182,7 +182,14 @@ export default function CandidatesPage() {
       <BeamsField />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
-        <CandidatesHero />
+        <PageHero
+          eyebrow="For candidates"
+          title="Skip the resume pile."
+          intro="Prove your skills in one honest conversation, then decide exactly what employers see. No resume roulette, no ghosting, no mystery score."
+          cta={{ label: "Take your interview, free", href: "/pre-interview" }}
+          secondary={{ label: "See a sample profile", href: "#sample" }}
+          note="You approve everything before any employer sees it."
+        />
         <TrustStrip />
         <ApplicationInbox />
         <ResumesVsProven />
