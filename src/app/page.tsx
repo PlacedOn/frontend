@@ -3,6 +3,7 @@ import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { KineticMarquee } from "@/components/motion/KineticMarquee";
 import { VisionReel } from "@/components/sections/VisionReel";
+import { Problem } from "@/components/sections/Problem";
 import { VerifiedCompanies } from "@/components/sections/VerifiedCompanies";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FeaturedSurfaces } from "@/components/sections/FeaturedSurfaces";
@@ -20,6 +21,7 @@ export default function Home() {
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <Hero />
+        <Problem />
         <VerifiedCompanies />
         <SignalAccordion />
         <KineticMarquee />

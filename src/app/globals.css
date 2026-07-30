@@ -8,21 +8,78 @@
    ══════════════════════════════════════════════════════════════ */
 
 :root {
+  /* ══ SYSTEM v1 — see docs/FRONTEND-REBUILD-SPEC.md ══════════════════
+     Two widths, one section rhythm, one accent. Every ratio below is
+     measured, not estimated. Legacy names are kept beneath and re-point
+     here, so the 242 existing components keep working unchanged. */
+
+  /* measure — exactly two */
+  --w-page: 1200px;
+  --w-text: 68ch;
+  --pad-page: clamp(1.25rem, 5vw, 2.5rem);
+
+  /* space — one rhythm. --space-xl is THE section padding. */
+  --space-2xs: clamp(0.5rem,  0.45rem + 0.20vw, 0.75rem);
+  --space-xs:  clamp(0.75rem, 0.65rem + 0.40vw, 1rem);
+  --space-sm:  clamp(1rem,    0.90rem + 0.50vw, 1.5rem);
+  --space-md:  clamp(1.75rem, 1.50rem + 1.00vw, 2.5rem);
+  --space-lg:  clamp(3rem,    2.50rem + 2.00vw, 4.5rem);
+  --space-xl:  clamp(5rem,    4.00rem + 4.00vw, 8rem);
+
+  /* colour — contrast verified on white: ink 18.98, ink-2 8.04,
+     ink-3 4.80, accent 6.76, accent-ink 9.02, white-on-accent 6.76.
+     On --ink-bg: on-ink 18.98, on-ink-2 9.33, on-ink-3 4.81. All AA. */
+  --paper:    #FFFFFF;
+  --paper-2:  #FAFAF9;
+  --line:     #EAEAE8;
+  --line-2:   #D6D5D2;
+  --ink-bg:   #0B0A09;
+  --ink-bg-2: #17150F;
+  --on-ink:   #FBFAF9;
+  --on-ink-2: #B3B2AF;
+  --on-ink-3: #7E7D7A;
+  --accent:      #5E46BF;
+  --accent-ink:  #4C369E;
+  --accent-weak: color-mix(in oklab, #5E46BF 8%, transparent);
+
+  /* type */
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-base: 1rem; --text-lg: 1.125rem;
+  --text-xl:   clamp(1.25rem,  1.15rem + 0.50vw, 1.5rem);
+  --text-2xl:  clamp(1.5rem,   1.30rem + 1.00vw, 2rem);
+  --text-3xl:  clamp(1.875rem, 1.50rem + 1.90vw, 2.75rem);
+  --text-4xl:  clamp(2.25rem,  1.60rem + 3.20vw, 4rem);
+  --text-hero: clamp(2.5rem,   1.40rem + 4.60vw, 4.75rem);
+  --weight-body: 400; --weight-med: 500; --weight-head: 600;
+  --tracking-hero: -0.030em; --tracking-head: -0.022em;
+  --tracking-body: 0; --tracking-label: 0.14em;
+  --leading-hero: 1.02; --leading-head: 1.15; --leading-body: 1.60;
+
+  /* motion — four curves, no overshoot */
+  --dur-fast: 150ms; --dur-normal: 240ms; --dur-slow: 400ms; --dur-reveal: 600ms;
+  --stagger: 60ms;
+  --ease-in-out-sys: cubic-bezier(0.7, 0, 0.3, 1);
+  --ease-in-sys:     cubic-bezier(0.7, 0, 1, 1);
+  --ease-soft:       cubic-bezier(0.3, 0.3, 0.3, 1);
+
+  /* shape */
+  --r-sm: 8px; --r-md: 12px; --r-lg: 16px;
+
+  /* ── legacy names, re-pointed. Do not add to this block. ── */
   /* ── surfaces ─────────────────────────────── */
-  --porcelain:   #FFFFFF;          /* page ground — plain white */
-  --porcelain-2: #FAFAFA;          /* raised ground */
-  --mist:        #EAEAEA;          /* hairline / muted fill */
+  --porcelain:   var(--paper);
+  --porcelain-2: var(--paper-2);
+  --mist:        var(--line);
   --white:       #FFFFFF;
 
   /* ── ink ──────────────────────────────────── */
-  --ink:    #12100E;               /* primary text — near-black, neutral */
-  --ink-2:  #474D63;               /* secondary text */
-  --ink-3:  #7B8299;               /* tertiary / labels */
+  --ink:    #12100E;
+  --ink-2:  #52504C;
+  --ink-3:  #74726E;
 
   /* ── brand accent (from logo: placedon_mark.svg #6922F5) ─── */
-  --iris:        #6922F5;          /* brand violet — 6.6:1 on white */
+  --iris:        var(--accent);
   --iris-soft:   #8B54FF;          /* lighter accent for gradients */
-  --iris-ink:    #5314C9;          /* deeper tone for small text (7:1+) */
+  --iris-ink:    var(--accent-ink);
   --iris-ghost:  rgba(105, 34, 245, 0.10);
   --iris-line:   rgba(105, 34, 245, 0.22);
 
@@ -114,6 +171,12 @@ body {
 /* One family, weight does the work — the "Minimal Swiss" pairing. Sora is a
    geometric with real personality, which fought the neutral enterprise read;
    Inter at 600 with tight tracking is the reference register. */
+/* In @layer base so Tailwind text-* utilities can override heading colour.
+   Unlayered, this rule beat every text-white on a dark ground regardless of
+   specificity — it rendered near-black headlines on the near-black hero twice
+   before this was found. Layered, utilities win, which is what components
+   expect. */
+@layer base {
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 600;
@@ -121,6 +184,7 @@ h1, h2, h3, h4 {
   line-height: 1.06;
   margin: 0;
   color: var(--ink);
+}
 }
 
 /* ══════════════ shared utility layer ══════════════ */
@@ -230,6 +294,10 @@ h1, h2, h3, h4 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms; --dur-normal: 1ms; --dur-slow: 1ms;
+    --dur-reveal: 1ms; --stagger: 0ms;
+  }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
