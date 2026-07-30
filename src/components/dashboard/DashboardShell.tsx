@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { AudienceRegister } from "@/components/audience/AudienceRegister";
 import { DashboardShellClient } from "./DashboardShellClient";
 import type { DashboardRole } from "@/lib/dashboardNav";
 
@@ -28,6 +29,7 @@ export async function DashboardShell({
        containing block waiting to happen. Custom properties still inherit
        through it. */
     <div data-audience={role} className="contents">
+      <AudienceRegister audience={role} />
       <DashboardShellClient role={role} email={user?.email ?? null}>
         {children}
       </DashboardShellClient>

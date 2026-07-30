@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AudienceRegister } from "@/components/audience/AudienceRegister";
 import { AnimateIcon, ArrowRight, ShieldCheck, ScrollText, Scale, Gavel, Eye, Lock, Undo2, X, Check } from "@/components/ui/icons";
 
 import { BeamsField } from "@/components/background/BeamsField";
@@ -183,6 +184,7 @@ export default function CandidatesPage() {
        tree — BeamsField is fixed-position — while still passing the tokens
        down. */
     <div data-audience="candidate" className="contents">
+      <AudienceRegister audience="candidate" />
       <BeamsField />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>

@@ -211,9 +211,15 @@
 /* ══════════════════════════════════════════════════════════════
    PER-AUDIENCE ACCENT SCOPES
 
-   Definition only — nothing sets [data-audience] yet, so every page
-   still resolves through :root and renders byte-identically. The
-   three entry points get wired separately.
+   Live. Set at three entry points — DashboardShell (from `role`),
+   /candidates, /companies — each of which also renders
+   <AudienceRegister>, which mirrors the value onto <html>. The mirror
+   is not redundant: portals mount on document.body, OUTSIDE the
+   wrapper, and custom properties inherit down the DOM, so without it a
+   portaled dialog on /employer painted the CANDIDATE register while
+   the page behind it painted the employer one. The wrapper keeps SSR
+   correct before the effect runs; <html> closes the portal class.
+   Unscoped routes (/, /trust/*, /jobs) still resolve through :root.
 
    ── WHY THE WHOLE ALIAS CHAIN IS REPEATED. DO NOT "SIMPLIFY". ──
    A custom property's computed value has its var()s substituted at

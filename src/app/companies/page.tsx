@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AudienceRegister } from "@/components/audience/AudienceRegister";
 import { AnimateIcon, ArrowRight, ScrollText, Scale, Gavel, ShieldCheck } from "@/components/ui/icons";
 
 import { PlasmaVeil } from "@/components/background/PlasmaVeil";
@@ -141,6 +142,7 @@ export default function CompaniesPage() {
        `display: contents` keeps the wrapper out of the box tree — PlasmaVeil
        is fixed-position — while still passing the tokens down. */
     <div data-audience="employer" className="contents">
+      <AudienceRegister audience="employer" />
       <PlasmaVeil />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
