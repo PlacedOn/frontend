@@ -12,17 +12,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mic, Quote, Scale, ShieldCheck, Sparkles, ArrowRight, type LucideIcon } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 
 type Art = "wave" | "quote" | "fair" | "control" | "skill";
-type Panel = { icon: LucideIcon; art: Art; title: string; stat: string; body: string; grad: string };
+type Panel = { art: Art; title: string; stat: string; body: string; grad: string };
 
 const PANELS: Panel[] = [
-  { icon: Mic, art: "wave", title: "One honest interview", stat: "30 min", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,#8B54FF,#6922F5)" },
-  { icon: Quote, art: "quote", title: "Evidence, not keywords", stat: "1 quote / trait", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,#6922F5,#4311a8)" },
-  { icon: Scale, art: "fair", title: "Fair by design", stat: "9 never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,#7C3AED,#9333EA)" },
-  { icon: ShieldCheck, art: "control", title: "You stay in control", stat: "0 shared", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,#5B21B6,#7C3AED)" },
-  { icon: Sparkles, art: "skill", title: "Real skill over resumes", stat: "0 resumes", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#6D28D9,#8B54FF)" },
+  { art: "wave", title: "One honest interview", stat: "30 min", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,#8B54FF,#6922F5)" },
+  { art: "quote", title: "Evidence, not keywords", stat: "1 quote / trait", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,#6922F5,#4311a8)" },
+  { art: "fair", title: "Fair by design", stat: "9 never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,#7C3AED,#9333EA)" },
+  { art: "control", title: "You stay in control", stat: "0 shared", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,#5B21B6,#7C3AED)" },
+  { art: "skill", title: "Real skill over resumes", stat: "0 resumes", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#6D28D9,#8B54FF)" },
 ];
 
 /** Honest, on-brand mini-illustrations — white-on-gradient SVG, no stock imagery. */
@@ -114,7 +114,6 @@ export function SignalAccordion() {
         <div className="hidden gap-3 md:flex" style={{ height: 452 }}>
           {PANELS.map((p, i) => {
             const isActive = i === active;
-            const Icon = p.icon;
             return (
               <button
                 key={p.title}
@@ -151,10 +150,7 @@ export function SignalAccordion() {
                   className="absolute inset-0 flex flex-col justify-between p-6 transition-opacity duration-300"
                   style={{ opacity: isActive ? 1 : 0 }}
                 >
-                  <span className="flex items-start justify-between">
-                    <span className="grid h-11 w-11 place-items-center rounded-2xl" style={{ background: "rgba(255,255,255,0.16)", backdropFilter: "blur(6px)" }}>
-                      <Icon size={20} className="text-white" />
-                    </span>
+                  <span className="flex items-start justify-end">
                     {isActive && <PanelArt art={p.art} />}
                   </span>
                   <span className="flex flex-col">
@@ -171,14 +167,10 @@ export function SignalAccordion() {
         {/* Right — stacked cards (mobile) */}
         <div className="flex flex-col gap-3 md:hidden">
           {PANELS.map((p) => {
-            const Icon = p.icon;
             return (
               <div key={p.title} className="relative overflow-hidden rounded-[22px] p-5" style={{ background: p.grad, boxShadow: "0 14px 34px -18px rgba(58,20,140,0.5)" }}>
                 <span aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(120% 80% at 15% 0%, rgba(255,255,255,0.22), transparent 55%)" }} />
                 <div className="relative flex items-start gap-3.5">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: "rgba(255,255,255,0.16)" }}>
-                    <Icon size={18} className="text-white" />
-                  </span>
                   <div>
                     <p className="text-[20px] font-extrabold leading-none text-white" style={{ fontFamily: "var(--font-mono)" }}>{p.stat}</p>
                     <p className="mt-1.5 text-[15px] font-bold text-white">{p.title}</p>

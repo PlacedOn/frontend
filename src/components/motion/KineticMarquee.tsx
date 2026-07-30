@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { Asterisk } from "@/components/ui/icons";
 import { gsap } from "@/lib/motion/gsap";
 
 /** Our own principles — not fabricated customer logos. */
@@ -66,13 +65,12 @@ export function KineticMarquee() {
             >
               {item}
             </span>
-            <Asterisk
-              animateOnView
-              loop
-              loopDelay={900}
-              className="shrink-0 text-[var(--iris)]"
-              style={{ width: "clamp(1.1rem,0.6rem+1.4vw,1.9rem)", height: "auto" }}
+            {/* Separator is a typographic rule, not an icon. It does the same
+                job — space the phrases — without adding a glyph to read. */}
+            <span
               aria-hidden="true"
+              className="h-px w-8 shrink-0 md:w-12"
+              style={{ background: "var(--glass-line-hi)" }}
             />
           </div>
         ))}
