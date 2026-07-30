@@ -10,7 +10,6 @@
  * VERIFIED_TILES once they exist.
  */
 
-import { ShieldCheck } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 
 // Illustrative range of verified employer types — NOT claimed customers.
@@ -30,7 +29,6 @@ const VERIFIED_TILES = [
 function Tile({ label }: { label: string }) {
   return (
     <span className="verified-tile">
-      <ShieldCheck size={15} className="shrink-0 text-[var(--iris)]" aria-hidden />
       <span className="whitespace-nowrap text-[14px] font-semibold tracking-[-0.01em] text-[var(--ink-2)]">
         {label}
       </span>

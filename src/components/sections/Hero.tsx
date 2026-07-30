@@ -8,7 +8,7 @@ import {
   useSpring,
 } from "motion/react";
 import {
-  ShieldCheck, Sparkles, BadgeCheck, Quote, type LucideProps,
+  BadgeCheck, Quote, type LucideProps,
 } from "lucide-react";
 import { AnimateIcon, ArrowRight } from "@/components/ui/icons";
 import { Button } from "@/components/ui/Button";
@@ -94,7 +94,6 @@ export function Hero() {
           href="/trust"
           className="chip transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
         >
-          <ShieldCheck size={14} className="text-[var(--iris)]" aria-hidden />
           LL144 &amp; EU AI Act aligned
         </motion.a>
 
@@ -117,7 +116,7 @@ export function Hero() {
         <motion.div {...rise(0.32)} className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
           <AnimateIcon animateOnHover>
             <Button href="/pre-interview" className="!px-7 !py-4 text-[15.5px]">
-              <Sparkles size={17} aria-hidden /> Start your interview
+              Start your interview
               <ArrowRight size={17} />
             </Button>
           </AnimateIcon>
@@ -237,7 +236,6 @@ function CardBody({ card }: { card: Card }) {
     return (
       <div className="flex items-center gap-2.5">
         <span className="grid size-8 shrink-0 place-items-center rounded-full" style={{ background: "rgba(16,185,129,0.14)", color: "#047857" }}>
-          <ShieldCheck size={16} />
         </span>
         <div className="whitespace-nowrap pr-1">
           <p className="text-[13px] font-bold leading-tight" style={{ color: "#047857" }}>{card.label}</p>

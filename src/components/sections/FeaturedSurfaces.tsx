@@ -15,7 +15,7 @@ import {
   motion, useReducedMotion, useMotionValue, useSpring, useTransform,
 } from "motion/react";
 import {
-  MessageSquareText, BadgeCheck, ScanSearch, ArrowRight, ShieldCheck, Quote, type LucideIcon,
+  MessageSquareText, BadgeCheck, ScanSearch, ArrowRight, type LucideIcon,
 } from "lucide-react";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -86,7 +86,7 @@ function PassportCard() {
       <div className="flex h-full flex-col justify-center gap-4">
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-bold" style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}>
-            <ShieldCheck size={12} /> Verified via interview
+            Verified via interview
           </span>
         </div>
         <div>
@@ -99,7 +99,6 @@ function PassportCard() {
           </span>
         </div>
         <figure className="rounded-[14px] border p-3.5" style={{ background: "var(--iris-ghost)", borderColor: "var(--iris-line)" }}>
-          <Quote size={13} className="text-[var(--iris)]" aria-hidden />
           <blockquote className="mt-1 text-[12.5px] leading-relaxed text-[var(--ink-2)]">“I'd cache the read path and measure before touching the write side.”</blockquote>
           <figcaption className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold text-[var(--iris-ink)]"><span className="livedot" /> Traceable to transcript · 08:41</figcaption>
         </figure>
