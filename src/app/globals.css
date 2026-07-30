@@ -74,9 +74,10 @@
   --v-700: #4914AF;
   --v-800: #340F82;
   /* dark violet ground, for register-switch sections (was 5 near-identical values).
-     NOT a ramp step: at L* 7.2 it sits 11 below 800, where the ramp's own
-     interior spacing is 8-13 — it is a ground, and reading it as "the step
-     after 700" is arithmetic on names, not on the perceptual scale. */
+     NOT a ramp step. The dark end of the ramp settles to a steady ~8 L* taper
+     (500->600 8.56, 600->700 8.19, 700->800 8.04); v-900 sits 11.54 below
+     v-800, roughly 1.4x that local step. It is a ground, and reading it as
+     "the step after 700" is arithmetic on names, not on the perceptual scale. */
   --v-900: #1A0B3D;
   /* The mark keeps the exact brand hex. It is the one place a raw value is
      correct — a logo is an asset, not a UI colour. */
@@ -236,7 +237,8 @@
    Keep them after the :root block — including if data-audience ever
    lands on <html> itself, where both selectors match one element.
 
-   Values are the ramp shifted one step. No new hex, no new hue:
+   Values are the ramp shifted one step. No new hue; one new step
+   (--v-800) was generated for employer ink, see below:
      accent / ink / weak / soft / line
      candidate  600 / 700 /  50 / 400 / 200   (identical to :root)
      employer   700 / 800 / 100 / 500 / 300
@@ -248,10 +250,17 @@
    step: it sits 11.5 L* below v-800 where the interior spacing is ~8.
    That made employer's rest->hover dL* 19.6 against candidate's 8.2 —
    2.4x the same interaction on the sibling audience, on one product.
-   With v-800 the two are 8.0 and 8.2. Generated, never hand-picked:
-   the same method reproduces all eight original steps byte-for-byte,
-   and a hand-typed near-miss (#340C82 vs #340F82) is exactly the drift
-   this ramp exists to stop.
+   With v-800 the two are 8.0 and 8.2. Generated, never hand-picked —
+   the method reproduces all eight original steps byte-for-byte before
+   it is trusted to emit a ninth (see scripts/ramp.py).
+   Two defensible derivations exist and disagree in the last digit:
+   L 0.320 / chroma x0.62 -> #340F82 (shipped, dL* 8.04), and mean
+   OKLab L-step 0.0765 with a constant C/Cmax fraction -> #340C82
+   (dL* 8.19). Both are principled; #340F82 was kept because its
+   two-decimal chroma scalar matches the table above and its delta sits
+   closest to candidate's. Recording this so nobody 'corrects' one to
+   the other, and because an earlier comment here wrongly called the
+   alternative a typo.
    ══════════════════════════════════════════════════════════════ */
 
 [data-audience="candidate"] {

@@ -65,6 +65,7 @@ if (violations.length) {
     "\nPick a ramp step by role instead:\n" +
       "  --v-50/100 tint bg · --v-200/300 accent on dark · --v-400 accent on dark\n" +
       "  --v-500 primary fill · --v-600 accent text on light · --v-700 pressed\n" +
+      "  --v-800 deepest ink (employer accent-ink)\n" +
       "  --v-900 dark ground · --brand-mark logo only\n"
   );
   process.exit(1);
