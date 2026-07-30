@@ -70,6 +70,10 @@ export function JobBoard() {
   }, []);
 
   const jobs = state.kind === "ready" ? state.jobs : [];
+  // A search box above nothing to search is a dead control in the most
+  // prominent position on the page. It stays up during loading so the layout
+  // does not jump, and disappears only once we know there is no list.
+  const hasList = state.kind === "loading" || jobs.length > 0;
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
     if (!needle) return jobs;
@@ -82,7 +86,7 @@ export function JobBoard() {
   }, [jobs, q]);
 
   return (
-    <div className="mx-auto w-full max-w-[1100px] px-5 py-12 md:px-8 md:py-16">
+    <div className="mx-auto w-full max-w-[1100px] px-5 pb-20 pt-8 md:px-8 md:pb-24 md:pt-10">
       <h1
         className="text-[clamp(1.875rem,1.5rem+1.9vw,2.75rem)] font-semibold tracking-[-0.022em]"
         style={{ color: "var(--ink)" }}
@@ -90,23 +94,27 @@ export function JobBoard() {
         Open roles
       </h1>
       <p className="mt-4 max-w-[58ch] text-[16px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
-        Every company here is verified before a role goes up. Find one worth
-        wanting — you only interview once, and it counts for all of them.
+        Every company is verified before its roles go up. Browse as long as you
+        like — no account needed.
       </p>
 
-      <label htmlFor="job-q" className="sr-only">
-        Search roles
-      </label>
-      <input
-        id="job-q"
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder="Search roles, levels, or skills…"
-        className="mt-7 w-full max-w-[520px] rounded-full px-5 py-3 text-[15px] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
-        style={{ border: "1px solid var(--line-2)", color: "var(--ink)", outlineColor: "var(--accent)" }}
-      />
+      {hasList && (
+        <>
+          <label htmlFor="job-q" className="sr-only">
+            Search roles
+          </label>
+          <input
+            id="job-q"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search roles, levels, or skills…"
+            className="mt-6 w-full max-w-[480px] rounded-full px-5 py-3 text-[15px] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
+            style={{ border: "1px solid var(--line-2)", color: "var(--ink)", outlineColor: "var(--accent)" }}
+          />
+        </>
+      )}
 
-      <div className="mt-8">
+      <div className="mt-10">
         {state.kind === "loading" && <Skeletons />}
 
         {state.kind === "ready" && filtered.length > 0 && (
@@ -123,34 +131,30 @@ export function JobBoard() {
           </>
         )}
 
+        {/* A mistyped search is not a moment to re-pitch the product. Keep it to
+            one line and get out of the way. */}
         {state.kind === "ready" && filtered.length === 0 && jobs.length > 0 && (
-          <Empty
-            title="Nothing matches that yet."
-            body="Try a broader search — or take the interview now and we'll match you to roles as they open."
-          />
+          <p className="text-[15px]" style={{ color: "var(--ink-2)" }}>
+            Nothing matches <span style={{ color: "var(--ink)" }}>&ldquo;{q.trim()}&rdquo;</span>.
+            Try a broader word — or clear the search to see all {jobs.length}{" "}
+            {jobs.length === 1 ? "role" : "roles"}.
+          </p>
         )}
 
-        {/* No roles at all. Say why, plainly. A job board that pretends to have
-            listings it does not have is worse than one that admits it. */}
+        {/* No roles at all. Say why, plainly, in a quiet line — then use the
+            space for the thing this page is actually here to explain. A job
+            board that pretends to have listings it does not have is worse than
+            one that admits it. */}
         {state.kind === "ready" && jobs.length === 0 && (
-          <Empty
-            title="No roles are open right now."
-            body="We verify every company before its roles go up, so this list grows slowly on purpose. Take the interview now and you'll be matched the moment something fits."
-          />
+          <Empty status="No roles are listed yet — we verify every company before its roles go up." />
         )}
 
         {state.kind === "offline" && (
-          <Empty
-            title="Roles aren't loading in this environment."
-            body="This build isn't pointed at a live backend, so there's nothing to list. The interview still works."
-          />
+          <Empty status="Roles aren't loading here — this build isn't pointed at a live backend." />
         )}
 
         {state.kind === "error" && (
-          <Empty
-            title="We couldn't load roles just now."
-            body="That's on us, not you. Try again in a moment — or take the interview and we'll match you when it's back."
-          />
+          <Empty status="We couldn't load roles just now. That's on us — try again in a moment." />
         )}
       </div>
     </div>
@@ -232,25 +236,123 @@ function rank(k: SignalKind) {
   return k === "success_signal" ? 0 : k === "must_have" ? 1 : 2;
 }
 
-function Empty({ title, body }: { title: string; body: string }) {
+/**
+ * The zero state.
+ *
+ * An apology in a grey box is not a design. When there are no roles, this page
+ * still has a job: explain the model and show what a role looks like here, so
+ * someone can decide whether the interview is worth their time. That is the
+ * conversion this screen exists for, and it works better with no listings than a
+ * wall of listings would.
+ *
+ * The sample card is explicitly labelled as an example. It is not a fake
+ * listing — it shows the *format*, which is the thing that differs from every
+ * other job board.
+ */
+function Empty({ status }: { status: string }) {
   return (
-    <div
-      className="rounded-[var(--r-card,20px)] px-6 py-10 text-center"
-      style={{ border: "1px solid var(--line)", background: "var(--paper-2)" }}
-    >
-      <p className="text-[17px] font-semibold" style={{ color: "var(--ink)" }}>
-        {title}
-      </p>
-      <p className="mx-auto mt-2.5 max-w-[46ch] text-[14.5px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
-        {body}
-      </p>
-      <Link
-        href="/pre-interview"
-        className="mt-6 inline-flex items-center rounded-full px-6 py-3 text-[14.5px] font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-        style={{ background: "var(--accent)", color: "#fff", outlineColor: "var(--accent)" }}
-      >
-        Take the interview
-      </Link>
+    <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start lg:gap-14">
+      <div>
+        {/* The status is true and it is stated first — but it is a status, not a
+            headline. Set as an h2 it became the largest thing on the page after
+            the page title, which made an empty list read as a broken product
+            rather than a young one. */}
+        <p className="flex items-start gap-2.5 text-[13.5px] leading-relaxed" style={{ color: "var(--ink-3)" }}>
+          <span
+            aria-hidden="true"
+            className="mt-[6px] size-1.5 shrink-0 rounded-full"
+            style={{ background: "var(--line-2)" }}
+          />
+          {status}
+        </p>
+
+        <h2 className="mt-4 max-w-[22ch] text-[clamp(1.5rem,1.25rem+1.1vw,2.125rem)] font-semibold tracking-[-0.022em]" style={{ color: "var(--ink)" }}>
+          One interview. Every role you&rsquo;re matched to.
+        </h2>
+        <p className="mt-3.5 max-w-[46ch] text-[15px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+          Applying again for every job is the part that wastes your time. Do the
+          interview once and it counts for everything that opens after it.
+        </p>
+
+        <ol className="mt-7 flex flex-col gap-4">
+          {[
+            ["Interview once", "One 22-minute conversation. Voice or text, in the browser."],
+            ["We read it, you approve it", "Every trait points back to something you said. You decide what an employer sees."],
+            ["Matched from then on", "No applying, no re-interviewing. New roles get matched to the evidence you already have."],
+          ].map(([h, b], i) => (
+            <li key={h} className="flex gap-3.5">
+              <span
+                className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full text-[12px] font-semibold"
+                style={{ background: "var(--accent-weak)", color: "var(--accent-ink)" }}
+              >
+                {i + 1}
+              </span>
+              <span>
+                <span className="block text-[14.5px] font-semibold" style={{ color: "var(--ink)" }}>{h}</span>
+                <span className="mt-0.5 block text-[13.5px] leading-relaxed" style={{ color: "var(--ink-2)" }}>{b}</span>
+              </span>
+            </li>
+          ))}
+        </ol>
+
+        <Link
+          href="/pre-interview"
+          className="mt-8 inline-flex items-center rounded-full px-6 py-3 text-[14.5px] font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          style={{ background: "var(--accent)", color: "#fff", outlineColor: "var(--accent)" }}
+        >
+          Take the interview
+        </Link>
+        <p className="mt-3 text-[12.5px]" style={{ color: "var(--ink-3)" }}>
+          Free, and nothing is shared until you approve it.
+        </p>
+      </div>
+
+      {/* what a role looks like here — the format, not a fake listing */}
+      <div>
+        <p className="text-[11.5px] uppercase tracking-[0.14em]" style={{ color: "var(--ink-3)" }}>
+          What a role looks like here
+        </p>
+        <article
+          className="mt-3 rounded-[var(--r-card,20px)] p-5 md:p-6"
+          style={{ border: "1px solid var(--line)", background: "var(--paper)" }}
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="text-[17px] font-semibold" style={{ color: "var(--ink)" }}>Backend Engineer</h3>
+              <p className="mt-1 text-[13px]" style={{ color: "var(--ink-3)" }}>Senior</p>
+            </div>
+            <span
+              className="shrink-0 rounded-full px-2.5 py-1 text-[11.5px] font-semibold"
+              style={{ background: "var(--paper-2)", color: "var(--ink-3)" }}
+            >
+              Example
+            </span>
+          </div>
+
+          <p className="mt-3.5 text-[14.5px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+            Checkout times went from 200ms to 2s over six months and nobody knows
+            which change did it. We need someone who can find out.
+          </p>
+
+          <dl className="mt-4 flex flex-col gap-2">
+            {[
+              ["What good looks like", "Finds the cause before proposing the fix"],
+              ["Needs", "Has debugged something under real load"],
+              ["Bonus", "Has owned a migration end to end"],
+            ].map(([k, v]) => (
+              <div key={k} className="flex flex-wrap items-baseline gap-x-2.5">
+                <dt className="text-[11.5px] uppercase tracking-[0.1em]" style={{ color: "var(--ink-3)" }}>{k}</dt>
+                <dd className="text-[14px]" style={{ color: "var(--ink-2)" }}>{v}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <p className="mt-5 border-t pt-4 text-[13px] leading-relaxed" style={{ borderColor: "var(--line)", color: "var(--ink-3)" }}>
+            No requirements wall — just the problem and what it actually takes.
+            You can tell in five seconds whether that&rsquo;s you.
+          </p>
+        </article>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
-import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 type Variant = "primary" | "ghost";
@@ -15,7 +14,21 @@ type Props = {
   ariaLabel?: string;
 };
 
-/** Magnetic button — translates toward the cursor, springs back on leave. */
+/**
+ * The one button.
+ *
+ * This used to be a magnetic glass button: a three-stop violet gradient, a 36px
+ * violet bloom, two inset highlights, and a spring that pulled the button
+ * toward the cursor. On white it read as a neon pill floating off the page, and
+ * because every primary action in the app routes through here, that one glow was
+ * the single loudest violet on the site — the "high violet impact" that kept
+ * surviving every repaint of the sections around it.
+ *
+ * Flat now. One accent fill, one real shadow in the neutral ramp, colour on
+ * hover. The motion that remains is the motion that means something: the
+ * pressed state. A cursor-following drift told the user nothing about what the
+ * button does.
+ */
 export function Button({
   children,
   href,
@@ -24,66 +37,29 @@ export function Button({
   onClick,
   ariaLabel,
 }: Props) {
-  const reduce = useReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const x = useSpring(mx, { stiffness: 260, damping: 18 });
-  const y = useSpring(my, { stiffness: 260, damping: 18 });
-
-  const handleMove = (e: React.MouseEvent) => {
-    if (reduce || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - (r.left + r.width / 2)) * 0.16);
-    my.set((e.clientY - (r.top + r.height / 2)) * 0.16);
-  };
-  const reset = () => {
-    mx.set(0);
-    my.set(0);
-  };
-
   const base =
-    "relative inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] px-6 py-3 text-[15px] font-semibold cursor-pointer select-none transition-shadow duration-[var(--d-std)] will-change-transform";
+    "relative inline-flex cursor-pointer select-none items-center justify-center gap-2 rounded-[var(--r-btn)] px-6 py-3 text-[15px] font-semibold transition-[background-color,border-color,box-shadow,transform] duration-[var(--dur-fast,150ms)] active:scale-[0.985] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
+
   const styles: Record<Variant, string> = {
-    primary: "text-white",
-    ghost: "text-[var(--ink)]",
+    primary:
+      "bg-[var(--accent)] text-white shadow-[0_1px_2px_rgba(16,15,13,0.10)] outline-[var(--accent)] hover:bg-[var(--accent-ink)]",
+    ghost:
+      "border border-[var(--line-2)] bg-[var(--paper)] text-[var(--ink)] shadow-[var(--shadow-sm)] outline-[var(--accent)] hover:bg-[var(--paper-2)] hover:border-[var(--ink-3)]",
   };
 
-  const inline: React.CSSProperties =
-    variant === "primary"
-      ? {
-          // Vibrant appealing violet with a glossy glass sheen — clean and
-          // saturated, not muddy. Bright inset top highlight reads as glass.
-          background:
-            "linear-gradient(135deg, #9a6bff 0%, #7d47f0 55%, #6b36e6 120%)",
-          border: "1px solid rgba(255,255,255,0.26)",
-          boxShadow:
-            "0 16px 36px -12px rgba(123,69,240,0.62), inset 0 1.5px 0 rgba(255,255,255,0.55), inset 0 -12px 24px -14px rgba(70,30,160,0.55)",
-        }
-      : {
-          // Frosted clear glass for secondary actions.
-          background:
-            "linear-gradient(158deg, rgba(255,255,255,0.80), rgba(244,242,255,0.56) 72%)",
-          border: "1px solid rgba(255,255,255,0.72)",
-          boxShadow:
-            "0 10px 26px -14px rgba(30,24,70,0.28), inset 0 1px 0 rgba(255,255,255,0.85)",
-        };
+  const cls = cn(base, styles[variant], className);
 
-  const Tag = (href ? motion.a : motion.button) as typeof motion.a;
+  if (href) {
+    return (
+      <a href={href} aria-label={ariaLabel} className={cls}>
+        {children}
+      </a>
+    );
+  }
 
   return (
-    <Tag
-      ref={ref as never}
-      href={href}
-      onClick={onClick}
-      aria-label={ariaLabel}
-      onMouseMove={handleMove}
-      onMouseLeave={reset}
-      style={{ x, y, ...inline }}
-      whileTap={{ scale: 0.97 }}
-      className={cn(base, styles[variant], className)}
-    >
+    <button type="button" onClick={onClick} aria-label={ariaLabel} className={cls}>
       {children}
-    </Tag>
+    </button>
   );
 }
