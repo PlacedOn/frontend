@@ -25,7 +25,77 @@ _(none)_
 
 ## Ready
 
-- [ ] **TOK-01** — Per-audience accent tokens defined in `src/app/globals.css`. (owner: **ui-designer**) — QA FAIL on re-implementation 2026-07-30 (comment accuracy only; the value is correct)
+- [ ] **TOK-01** — Per-audience accent tokens defined in `src/app/globals.css`. (owner: **ui-designer**) — CHANGES REQUESTED 2026-07-30 by code-reviewer on `fc09115` (two text edits; **the colour is correct and settled — do not touch any CSS value**)
+
+  — ❌ **CHANGES REQUESTED — 2026-07-30 (code-reviewer), on `fc09115`.**
+  **My original objection is resolved. `#340F82` is right, ships, and is not to be re-derived
+  again by anyone.** Two blocking defects remain, both one-line text edits, both of the same class
+  this task has now been bounced for twice: *a claim in the repo that is not true.*
+
+  **Verified independently — recomputed from scratch with my own colorimetry, not QA's numbers and
+  not the implementer's script:**
+  - `python3 scripts/ramp.py` runs and emits `#F3F2FF #E3DFFF #CBC1FF #AB95FF #8E64FF #7336FF
+    #5E1EDC #4914AF` — **all eight shipped steps byte-for-byte** — then `--v-800: #340F82`,
+    13.67 on white. The derivation is now executable and checkable. This was the right remediation.
+  - L\* ladder, my own transform: 95.91 / 90.01 / 80.77 / 67.56 / 54.12 / 43.51 / 34.95 / 26.77 /
+    **18.73** / 7.19. Dark-end taper **8.56 / 8.19 / 8.04**; v-900 sits **11.54** below v-800,
+    **1.435×** the local step. `globals.css:76-80` and `:250` are now both true and now agree.
+  - **The original objection, closed on two independent paired states, not one.** `Button.tsx:45`
+    is the one I raised: rest→hover ΔL\* candidate **8.19** / employer **8.04** — ratio **0.98**,
+    was 2.39. `active:` is `scale` only, so there is no second colour delta to check on Button.
+    I then checked the pattern that actually dominates the token's ~253 call sites — ghost chip,
+    `background: --iris-ghost; color: --iris-ink`: candidate `#4914AF` on `#F3F2FF` = **9.47:1**,
+    employer `#340F82` on `#E3DFFF` = **10.58:1** (ratio 1.12; under v-900 it was 14.03, ratio
+    1.48). Both paired states now read as one product in two modes — PLAN.md:108 holds.
+  - Scope is clean: `git diff --stat ca9788b~1..HEAD` → `BACKLOG.md`, `scripts/color-lint.mjs`,
+    `scripts/ramp.py`, `src/app/globals.css`. **Zero `.tsx`.** Working tree clean. `color-lint`
+    exit 0 (`clean — 298 files`). Both `RAMP_HEX` and `RAMP_RGB` carry the step; the failure help
+    text now lists `--v-800`.
+
+  **BLOCKER 1 — `globals.css:259` prints a false number, and that number inverts the paragraph's
+  own conclusion.** The comment reads `#340C82 (dL* 8.19)`. Measured, `#340C82` is L\* 18.386, so
+  its rest→hover delta from v-700 is **8.38** — and `ramp800.py`, the script cited as that value's
+  provenance, **prints `dL* 8.4` itself**. `8.19` is *candidate's* delta (v-600→v-700 = 8.186),
+  transcribed off the wrong row. The damage is not cosmetic: `:259-261` then says `#340F82` was
+  kept *"because … its delta sits closest to candidate's."* With `8.19` on the page, the **rejected**
+  value is exactly candidate's and the shipped one is farther away — so the paragraph as written
+  argues the reader should switch to `#340C82`, which is the precise "correction" the paragraph
+  exists to prevent. With the true numbers the tie-break survives, narrowly: |8.04−8.19| = 0.146
+  vs |8.38−8.19| = 0.197. **Fix: `globals.css:259`, `8.19` → `8.38`. Nothing else in that
+  paragraph changes.** (Third instance in this task of a comment whose arithmetic refutes its own
+  conclusion — and it is inside the sentence written to fix the first instance. The bar does not
+  get lower because we are three cycles in.)
+
+  **BLOCKER 2 — the `BACKLOG.md` escape does not work, and `fc09115`'s message says it does.**
+  `rm -rf .next && pnpm build` from clean, just now: **still 2 warnings.** They did not go away —
+  they changed identity, `Delim('*')` → `Delim('<')`:
+  `.duration-\[var\(--d-\<name\>\)\] { --tw-duration: var(--d-<name>) }` … `^-- Unexpected token
+  Delim('<')`. Tailwind v4 still lifts the string into a real generated class; `<` is no more a
+  valid CSS ident character than `*` was. The fix I specified last cycle — `--d-…` with the
+  ellipsis — works because U+2026 *is* a valid ident character; `<name>` was substituted for it and
+  is not. Live at **`BACKLOG.md:288`, `:311`, `:329`**. **Fix: use `…`, or split the token across
+  backticks so it is not a scannable candidate. Re-run a clean build and confirm zero warnings
+  before handing back — do not assert it.**
+  - **My previous build-warning ruling is hereby withdrawn, not reaffirmed.** It said "does not
+    block" and rested *explicitly* on `BACKLOG.md` being untracked and invisible to CI. `git
+    ls-files` now returns it. The warnings ship to every clone and every CI build, and TOK-03's
+    entire DoD is "read the build output." It blocks now — and it would have blocked as a bare
+    regression even without the false claim in the commit message.
+
+  **Non-blocking, fold into the same edit:**
+  - `globals.css:260` — *"its two-decimal chroma scalar matches the table above"*: there is no
+    chroma table above it in `globals.css`. The scalar table (`.16 .34 .55 .78 .95 1.00 .92 .78
+    .62`) lives in `scripts/ramp.py`. Point the reference at the file.
+  - `globals.css:256` — *"disagree in the last digit"*: `0C` vs `0F` is the 4th of 6 hex digits.
+  - Nothing keeps `scripts/ramp.py` in sync with the `--v-*` declarations; it can drift silently
+    and would then "prove" a ramp we do not ship. Making the generator's output diff against
+    `globals.css` in `prebuild` would turn the derivation from self-asserting into self-verifying.
+    **New backlog item for `planner`, not part of TOK-01.**
+
+  **Settled, will not be re-litigated on the next pass:** the value `#340F82`, the generation
+  method, `scripts/ramp.py` landing in `scripts/`, both `color-lint` sets, the help text, the
+  alias-chain repetition, the specificity argument, and the freeze property. Re-review is limited
+  to `globals.css:259` (+ the two nits) and the three `BACKLOG.md` lines. **Next: `ui-designer`.**
 
   — ❌ **QA FAIL — 2026-07-30, re-implementation `ca9788b`.** First independent pass (the
   implementing agent was killed by a session limit and did no self-check, so nothing here was
@@ -285,7 +355,7 @@ _(none)_
   **not** caused by `globals.css` — confirmed both ways: with TOK-01 stashed the warnings still
   appear; with `BACKLOG.md` moved out of the tree the build is warning-free. So the source really is
   Tailwind v4 auto-content-detection scanning this markdown file and lifting the literal
-  `` `duration-[var(--d-<name>)]` `` out of TOK-03's DoD text (lines 23 and 41) into a real generated
+  `` `duration-[var(--d…)]` `` out of TOK-03's DoD text (lines 23 and 41) into a real generated
   class. **But "pre-existing" is inaccurate** — `BACKLOG.md` is untracked and was created by this
   loop, so these warnings are new to the repo as of this run and will fire on every build until
   TOK-03 lands or the string is escaped. Not a TOK-01 defect; flagging to `planner` as a
@@ -308,7 +378,7 @@ _(none)_
 
   — **What changed:** `+73 lines, one file.` `:root` gains `--accent-candidate: var(--v-600)` / `--accent-employer: var(--v-700)`; two new scope blocks `[data-audience="candidate"]` and `[data-audience="employer"]` sit immediately after `:root` and each redeclare the *entire* alias chain (`--accent`, `--accent-ink`, `--accent-weak`, `--iris`, `--iris-soft`, `--iris-ink`, `--iris-ghost`, `--iris-line`), with a long comment explaining that a custom property's `var()`s are substituted where the property is *declared*, so overriding `--accent` alone would move only the 34 `--accent*` reads and none of the 759 `--iris*` ones.
   — **Values (all existing ramp steps, no new hex):** candidate = 600/700/50/400/200 — byte-identical to `:root`, so candidate surfaces will look unchanged; employer = 700/900/100/500/300, i.e. the same chain shifted one step deeper. Employer's `--accent-ink` is `--v-900` because `--v-700` is already the ramp's strongest text step and ink must stay distinguishable from accent for pressed/hover — this is also what makes TOK-02's `--iris-ink` inequality check pass.
-  — **How to verify:** `node scripts/color-lint.mjs` → exit 0 (observed: `clean — 298 files`). `pnpm build` → exit 0 (observed; the two `Delim('*')` CSS warnings are pre-existing and come from Tailwind v4 scanning the literal `duration-[var(--d-<name>)]` string in this file's TOK-03 entry, not from `globals.css`). `git diff --stat` → `src/app/globals.css | 73 +` and nothing else. Visually: **no page may change**, because nothing sets `data-audience` yet — that is TOK-02. To eyeball the scopes early, add `data-audience="employer"` to any wrapper in devtools and confirm accented elements deepen from `#5E1EDC` to `#4914AF`.
+  — **How to verify:** `node scripts/color-lint.mjs` → exit 0 (observed: `clean — 298 files`). `pnpm build` → exit 0 (observed; the two `Delim('*')` CSS warnings are pre-existing and come from Tailwind v4 scanning the literal `duration-[var(--d…)]` string in this file's TOK-03 entry, not from `globals.css`). `git diff --stat` → `src/app/globals.css | 73 +` and nothing else. Visually: **no page may change**, because nothing sets `data-audience` yet — that is TOK-02. To eyeball the scopes early, add `data-audience="employer"` to any wrapper in devtools and confirm accented elements deepen from `#5E1EDC` to `#4914AF`.
   — **Reviewer note:** the repetition in the two scope blocks is load-bearing, not redundancy. Collapsing them to a single `--accent` override compiles, lints and builds clean while silently doing nothing.
 
   </details>
@@ -326,7 +396,7 @@ _(none)_
   1. Verified problem: two independent scales ship today with *different* values — SYSTEM v1 `--dur-fast/normal/slow/reveal` = 150/240/400/600ms (globals.css:107) and legacy `--d-micro/std/sig` = 160/320/620ms (globals.css:165-167), plus two easing sets (`--ease-in-out-sys`/`--ease-in-sys`/`--ease-soft` at :109-111 vs `--ease-out`/`--ease-spring` at :168-169). Usage is inverted from intent: `--d-micro` 32 sites, `--d-std` 13, vs `--dur-fast` 2 and `--dur-normal`/`--dur-slow`/`--dur-reveal` 0.
   2. After the change, `--d-micro`, `--d-std`, `--d-sig`, `--ease-out`, `--ease-spring` contain **only** `var(--dur-*)` / `var(--ease-*)` references — grep for a bare `ms` or `cubic-bezier(` inside the legacy block returns nothing.
   3. Exactly one set of duration literals and one set of easing literals remains in `globals.css`.
-  4. Zero `.tsx` files edited — the 45 existing `duration-[var(--d-<name>)]` call sites keep working untouched. `git diff --stat` touches `globals.css` only.
+  4. Zero `.tsx` files edited — the 45 existing `duration-[var(--d…)]` call sites keep working untouched. `git diff --stat` touches `globals.css` only.
   5. The `prefers-reduced-motion` block (globals.css:345-356) still neutralizes every duration token by name, including the re-pointed legacy ones.
   6. `pnpm build` succeeds.
 

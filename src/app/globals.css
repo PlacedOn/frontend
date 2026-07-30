@@ -253,14 +253,12 @@
    With v-800 the two are 8.0 and 8.2. Generated, never hand-picked —
    the method reproduces all eight original steps byte-for-byte before
    it is trusted to emit a ninth (see scripts/ramp.py).
-   Two defensible derivations exist and disagree in the last digit:
-   L 0.320 / chroma x0.62 -> #340F82 (shipped, dL* 8.04), and mean
-   OKLab L-step 0.0765 with a constant C/Cmax fraction -> #340C82
-   (dL* 8.19). Both are principled; #340F82 was kept because its
-   two-decimal chroma scalar matches the table above and its delta sits
-   closest to candidate's. Recording this so nobody 'corrects' one to
-   the other, and because an earlier comment here wrongly called the
-   alternative a typo.
+   Two derivations of this step exist and disagree at the 4th hex
+   digit: #340F82 (shipped) and #340C82. Both are principled; run
+   scripts/ramp.py for the shipped one. Do not "correct" either into
+   the other. An earlier version of this comment argued the tie-break
+   with numbers, twice got a number wrong, and twice inverted its own
+   conclusion — the script is the argument.
    ══════════════════════════════════════════════════════════════ */
 
 [data-audience="candidate"] {
