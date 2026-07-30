@@ -54,7 +54,7 @@ function Chip({ icon: Icon, k, v }: { icon: typeof GlobeIcon; k: string; v: stri
       className="flex items-center gap-3 rounded-2xl px-4 py-3"
       style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 12px 40px rgba(8,6,15,0.4)" }}
     >
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[11px] border" style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.14)", color: "#c9bcff" }}>
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[11px] border" style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.14)", color: "var(--v-200)" }}>
         <Icon size={17} />
       </span>
       <span className="flex flex-col">
@@ -81,19 +81,19 @@ export function GlobalReach() {
       <div
         aria-hidden
         className="absolute inset-0"
-        style={{ background: "radial-gradient(120% 90% at 50% 6%, #1a1740 0%, #100c26 44%, #08060f 100%)" }}
+        style={{ background: "radial-gradient(120% 90% at 50% 6%, #1A0B3D 0%, #100c26 44%, #08060f 100%)" }}
       />
       {/* violet nebula */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{ background: "radial-gradient(circle, rgba(139,84,255,0.28), transparent 62%)", filter: "blur(30px)" }}
+        style={{ background: "radial-gradient(circle, rgba(142, 100, 255,0.28), transparent 62%)", filter: "blur(30px)" }}
       />
 
       {/* Centered header (flex — bulletproof centering) */}
       <div className="relative z-[1] mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
         <Reveal className="flex flex-col items-center">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.22em]" style={{ fontFamily: "var(--font-mono)", color: "rgba(179,163,255,0.9)" }}>
+          <p className="text-[12px] font-semibold uppercase tracking-[0.22em]" style={{ fontFamily: "var(--font-mono)", color: "rgba(171, 149, 255, 0.9)" }}>
             Remote-first by design
           </p>
           <h2
@@ -101,7 +101,7 @@ export function GlobalReach() {
             style={{ color: "#fff" }}
           >
             Interview anyone,{" "}
-            <span style={{ background: "linear-gradient(90deg,#b3a3ff,#8b54ff)", color: "var(--ink)" }}>
+            <span style={{ background: "linear-gradient(90deg,#AB95FF,#8E64FF)", color: "var(--ink)" }}>
               anywhere
             </span>
             .
@@ -120,7 +120,7 @@ export function GlobalReach() {
           <span
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-1/2 h-[106%] w-[106%] -translate-x-1/2 -translate-y-1/2 rounded-full"
-            style={{ border: "1px solid rgba(179,163,255,0.16)", boxShadow: "inset 0 0 70px rgba(139,84,255,0.14)" }}
+            style={{ border: "1px solid rgba(171, 149, 255, 0.16)", boxShadow: "inset 0 0 70px rgba(142, 100, 255,0.14)" }}
           />
           <Globe config={DARK_GLOBE} />
 

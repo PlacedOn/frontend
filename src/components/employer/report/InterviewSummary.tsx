@@ -15,7 +15,7 @@ export function InterviewSummary({ interview }: { interview: CandidateReport["in
     { icon: <Clock size={13} className="text-[var(--ink-3)]" />, label: `${interview.durationMin} min` },
     { icon: <Sparkles size={13} className="text-[var(--iris-ink)]" />, label: interview.adaptive ? "Adaptive interview" : "Fixed script" },
     { icon: <ShieldCheck size={13} className="text-[var(--iris-ink)]" />, label: integrityLabel(interview.trustScore, interview.anomaly) },
-    ...(!interview.anomaly ? [{ icon: <Check size={13} className="text-[#047857]" />, label: "No anomalies flagged" }] : []),
+    ...(!interview.anomaly ? [{ icon: <Check size={13} className="text-[var(--ok)]" />, label: "No anomalies flagged" }] : []),
   ];
 
   return (

@@ -120,7 +120,7 @@ export function Whiteboard({ onEvidence }: { onEvidence?: (e: WhiteboardEvidence
         <button type="button" aria-label="Undo" onClick={undo} className="grid h-9 w-9 place-items-center rounded-[var(--r-btn)] border text-[var(--ink-3)] hover:text-[var(--ink)]" style={{ borderColor: "var(--glass-line-hi)" }}>
           <Undo2 size={16} />
         </button>
-        <button type="button" aria-label="Clear" onClick={clear} className="grid h-9 w-9 place-items-center rounded-[var(--r-btn)] border text-[var(--ink-3)] hover:text-[#b91c1c]" style={{ borderColor: "var(--glass-line-hi)" }}>
+        <button type="button" aria-label="Clear" onClick={clear} className="grid h-9 w-9 place-items-center rounded-[var(--r-btn)] border text-[var(--ink-3)] hover:text-[var(--bad)]" style={{ borderColor: "var(--glass-line-hi)" }}>
           <Trash2 size={16} />
         </button>
         <span className="ml-auto text-[11.5px] text-[var(--ink-3)]">Optional — your work, your choice</span>

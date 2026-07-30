@@ -71,14 +71,14 @@ export function PassportVerify() {
         {busy ? <Loader2 size={15} className="animate-spin" /> : <ShieldCheck size={16} />} Verify authenticity
       </button>
 
-      {err && <p className="text-[13.5px] font-semibold text-[#b91c1c]">{err}</p>}
+      {err && <p className="text-[13.5px] font-semibold text-[var(--bad)]">{err}</p>}
 
       {result && (
         <div
           className="rounded-[var(--r-card)] p-5"
           style={{ background: result.valid ? "rgba(5,150,105,0.10)" : "rgba(185,28,28,0.08)", border: `1px solid ${result.valid ? "rgba(5,150,105,0.3)" : "rgba(185,28,28,0.3)"}` }}
         >
-          <p className="flex items-center gap-2 text-[15px] font-bold" style={{ color: result.valid ? "#047857" : "#b91c1c" }}>
+          <p className="flex items-center gap-2 text-[15px] font-bold" style={{ color: result.valid ? "var(--ok)" : "var(--bad)" }}>
             {result.valid ? <CircleCheck size={18} /> : <CircleX size={18} />}
             {result.valid ? "Authentic & unaltered" : "Not authentic / altered"}
           </p>

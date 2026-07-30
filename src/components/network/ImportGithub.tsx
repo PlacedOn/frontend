@@ -111,7 +111,7 @@ export function ImportGithub({ live, onImported }: Props) {
                 <ShieldCheck size={14} aria-hidden /> {state.message}
               </motion.p>
             ) : state.kind === "error" ? (
-              <motion.p key="err" className="text-[12.5px] font-semibold text-[#b45309]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <motion.p key="err" className="text-[12.5px] font-semibold text-[var(--warn)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 {state.message}
               </motion.p>
             ) : (

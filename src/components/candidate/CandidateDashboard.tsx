@@ -54,8 +54,8 @@ const MODE_LABEL: Record<CandidateDashboardMode, string> = {
 type Tone = "purple" | "green" | "amber" | "ink";
 const TONE: Record<Tone, { bg: string; fg: string; border: string }> = {
   purple: { bg: "var(--iris-ghost)", fg: "var(--iris-ink)", border: "var(--iris-line)" },
-  green: { bg: "rgba(16,185,129,0.12)", fg: "#047857", border: "rgba(16,185,129,0.22)" },
-  amber: { bg: "rgba(245,134,11,0.12)", fg: "#B45309", border: "rgba(245,134,11,0.25)" },
+  green: { bg: "rgba(16,185,129,0.12)", fg: "var(--ok)", border: "rgba(16,185,129,0.22)" },
+  amber: { bg: "rgba(245,134,11,0.12)", fg: "var(--warn)", border: "rgba(245,134,11,0.25)" },
   ink: { bg: "var(--mist)", fg: "var(--ink-2)", border: "var(--glass-line-hi)" },
 };
 
@@ -336,8 +336,8 @@ export function CandidateDashboard({ mode }: { mode: CandidateDashboardMode }) {
                           className="h-full rounded-full"
                           style={
                             m.confidence === "high"
-                              ? { width: "100%", background: "linear-gradient(90deg,#10b981,#047857)" }
-                              : { width: "62%", background: "#B45309" }
+                              ? { width: "100%", background: "linear-gradient(90deg,#10b981,var(--ok))" }
+                              : { width: "62%", background: "var(--warn)" }
                           }
                         />
                       </div>

@@ -153,7 +153,7 @@ export function JobSetup({ jobId }: { jobId: string }) {
       </div>
     );
   }
-  if (loadError) return <p className="text-[14px] font-semibold text-[#b91c1c]">{loadError}</p>;
+  if (loadError) return <p className="text-[14px] font-semibold text-[var(--bad)]">{loadError}</p>;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
@@ -195,7 +195,7 @@ export function JobSetup({ jobId }: { jobId: string }) {
                 <p className="text-[var(--ink-2)]">{genInfo.note}</p>
                 {genInfo.stripped.length > 0 && (
                   <div className="mt-2 rounded-[var(--r-btn)] px-3 py-2" style={{ background: "rgba(180,120,10,0.12)" }}>
-                    <p className="font-semibold" style={{ color: "#B45309" }}>Removed — pedigree / protected, never assessed:</p>
+                    <p className="font-semibold" style={{ color: "var(--warn)" }}>Removed — pedigree / protected, never assessed:</p>
                     <ul className="mt-1 list-disc pl-4 text-[var(--ink-2)]">
                       {genInfo.stripped.map((s, i) => (
                         <li key={i}>{s}</li>
@@ -231,7 +231,7 @@ export function JobSetup({ jobId }: { jobId: string }) {
                       <option key={k} value={k}>{KIND_LABEL[k]}</option>
                     ))}
                   </select>
-                  <button type="button" onClick={() => setSignals((p) => p.filter((_, idx) => idx !== i))} className="ml-auto cursor-pointer text-[var(--ink-3)] hover:text-[#b91c1c]" aria-label="Remove signal">
+                  <button type="button" onClick={() => setSignals((p) => p.filter((_, idx) => idx !== i))} className="ml-auto cursor-pointer text-[var(--ink-3)] hover:text-[var(--bad)]" aria-label="Remove signal">
                     <Trash2 size={15} />
                   </button>
                 </div>

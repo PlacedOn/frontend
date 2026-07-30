@@ -49,7 +49,7 @@ export function HcvDimensionRow({ dim, index, onToggle, delay = 0 }: Props) {
         className="mt-4 inline-flex w-fit cursor-pointer items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-semibold transition-opacity hover:opacity-75"
         style={
           dim.employerVisible
-            ? { background: "rgba(16,185,129,0.10)", color: "#047857" }
+            ? { background: "rgba(16,185,129,0.10)", color: "var(--ok)" }
             : { background: "var(--mist)", color: "var(--ink-3)" }
         }
       >

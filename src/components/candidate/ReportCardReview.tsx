@@ -15,9 +15,9 @@ import {
 import { MOCK_REPORT_CARD } from "@/lib/mock/reportCard";
 
 const BAND_STYLE: Record<Band, { label: string; bg: string; fg: string }> = {
-  supported: { label: "Supported", bg: "rgba(5,150,105,0.12)", fg: "#047857" },
+  supported: { label: "Supported", bg: "rgba(5,150,105,0.12)", fg: "var(--ok)" },
   emerging: { label: "Emerging", bg: "var(--iris-ghost)", fg: "var(--iris-ink)" },
-  needs_more_evidence: { label: "Needs more evidence", bg: "rgba(180,120,10,0.12)", fg: "#B45309" },
+  needs_more_evidence: { label: "Needs more evidence", bg: "rgba(180,120,10,0.12)", fg: "var(--warn)" },
 };
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -92,7 +92,7 @@ export function ReportCardReview({ sessionId }: { sessionId: string }) {
   };
 
   if (!loaded) return <p className="text-[14px] text-[var(--ink-3)]">Loading your evidence…</p>;
-  if (error) return <p className="text-[14px] font-semibold text-[#b91c1c]">{error}</p>;
+  if (error) return <p className="text-[14px] font-semibold text-[var(--bad)]">{error}</p>;
   if (!card) return null;
 
   const items = card.items;
@@ -173,7 +173,7 @@ export function ReportCardReview({ sessionId }: { sessionId: string }) {
         <motion.div {...reveal(items.length + 1)} className="glass rounded-[var(--r-card)] p-5">
           {approved ? (
             <div className="flex items-start gap-2.5">
-              <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full text-white" style={{ background: "#047857" }}>
+              <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full text-white" style={{ background: "var(--ok)" }}>
                 <Check size={14} aria-hidden />
               </span>
               <div>

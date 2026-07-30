@@ -32,7 +32,7 @@ const rise = (delay = 0) => ({
 const glassCard: CSSProperties = {
   background: "linear-gradient(158deg, var(--glass-hi), var(--glass) 74%)",
   border: "1px solid var(--glass-line)",
-  boxShadow: "0 18px 44px -28px rgba(30,24,70,0.5)",
+  boxShadow: "0 18px 44px -28px rgba(16, 15, 13,0.5)",
 };
 
 const mono: CSSProperties = { fontFamily: "var(--font-mono)" };
@@ -65,7 +65,7 @@ function TopHairline() {
     <span
       aria-hidden
       className="absolute left-0 top-0 h-[3px] w-12 rounded-full transition-all duration-[var(--d-std)] group-hover:w-full"
-      style={{ background: "linear-gradient(90deg, #8B54FF, #B79BFF)" }}
+      style={{ background: "linear-gradient(90deg, var(--v-400), var(--v-300))" }}
     />
   );
 }
@@ -102,7 +102,7 @@ function FloatChip({ className, delay = 0, duration = 7.5, icon: Icon, label }: 
       style={{
         background: "linear-gradient(158deg, rgba(255,255,255,0.94), rgba(244,242,255,0.74))",
         border: "1px solid rgba(255,255,255,0.85)",
-        boxShadow: "0 14px 30px -16px rgba(60,35,140,0.38)",
+        boxShadow: "0 14px 30px -16px rgba(73, 20, 175,0.38)",
         ...mono,
       }}
       animate={{ y: [-5, 5, -5] }}
@@ -127,7 +127,7 @@ function OrbRole({ className, z, role, fit, delay = 0, reduce }: { className?: s
       animate={reduce ? undefined : { y: [-6, 6, -6] }}
       transition={reduce ? undefined : { duration: 7.5 + z / 24, repeat: Infinity, ease: "easeInOut", delay }}
     >
-      <div className="flex items-center gap-2 whitespace-nowrap rounded-[14px] border px-3 py-2" style={{ background: "rgba(255,255,255,0.96)", borderColor: "var(--iris-line)", boxShadow: "0 16px 34px -16px rgba(60,35,140,0.45)" }}>
+      <div className="flex items-center gap-2 whitespace-nowrap rounded-[14px] border px-3 py-2" style={{ background: "rgba(255,255,255,0.96)", borderColor: "var(--iris-line)", boxShadow: "0 16px 34px -16px rgba(73, 20, 175,0.45)" }}>
         <span className="grid size-7 place-items-center rounded-[9px]" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
           <BriefcaseBusiness size={14} strokeWidth={1.75} />
         </span>
@@ -232,10 +232,10 @@ export function PreInterviewBody() {
               style={{
                 background: "linear-gradient(160deg, rgba(255,255,255,0.66), rgba(244,242,255,0.28) 70%)",
                 border: "1px solid rgba(255,255,255,0.78)",
-                boxShadow: "0 44px 90px -42px rgba(90,58,180,0.5), inset 0 1px 0 rgba(255,255,255,0.9)",
+                boxShadow: "0 44px 90px -42px rgba(94, 30, 220,0.5), inset 0 1px 0 rgba(255,255,255,0.9)",
               }}
             />
-            <div aria-hidden className="absolute inset-[15%] rounded-full" style={{ border: "1px solid rgba(139,84,255,0.14)" }} />
+            <div aria-hidden className="absolute inset-[15%] rounded-full" style={{ border: "1px solid rgba(142, 100, 255,0.14)" }} />
             <CalmField />
 
             {/* one interview → the roles it opens */}
@@ -341,7 +341,7 @@ export function PreInterviewBody() {
             <span
               aria-hidden
               className="pointer-events-none absolute -bottom-7 -right-5 select-none"
-              style={{ color: "rgba(105,34,245,0.055)" }}
+              style={{ color: "rgba(115, 54, 255,0.055)" }}
             >
               <Accessibility size={140} />
             </span>
@@ -379,15 +379,15 @@ export function PreInterviewBody() {
                 <span
                   aria-hidden
                   className="pointer-events-none absolute -top-6 left-8 select-none text-[76px] font-semibold leading-none"
-                  style={{ ...mono, color: "rgba(105,34,245,0.07)" }}
+                  style={{ ...mono, color: "rgba(115, 54, 255,0.07)" }}
                 >
                   {`0${i + 1}`}
                 </span>
                 <span
                   className="relative z-[1] grid h-12 w-12 place-items-center rounded-full text-white"
                   style={{
-                    background: "linear-gradient(135deg, #9A6BFF, #7C48F1)",
-                    boxShadow: "0 12px 28px -12px rgba(120,74,240,0.6)",
+                    background: "linear-gradient(135deg, #8E64FF, var(--v-500))",
+                    boxShadow: "0 12px 28px -12px rgba(115, 54, 255,0.6)",
                   }}
                 >
                   <Icon size={20} />
@@ -414,14 +414,14 @@ export function PreInterviewBody() {
           className="relative overflow-hidden rounded-[calc(var(--r-card)+10px)] p-8 md:p-12"
           style={{
             ...glassCard,
-            boxShadow: "0 28px 70px -32px rgba(30,24,70,0.55)",
+            boxShadow: "0 28px 70px -32px rgba(16, 15, 13,0.55)",
           }}
         >
           <motion.span
             aria-hidden
             className="absolute -right-24 -top-28 h-80 w-80 rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(154,107,255,0.35), transparent 65%)",
+              background: "radial-gradient(circle, rgba(142, 100, 255,0.35), transparent 65%)",
               filter: "blur(30px)",
             }}
             animate={{ scale: [1, 1.16, 1], opacity: [0.55, 0.9, 0.55] }}
@@ -431,7 +431,7 @@ export function PreInterviewBody() {
             aria-hidden
             className="absolute -bottom-32 -left-20 h-72 w-72 rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(183,155,255,0.3), transparent 65%)",
+              background: "radial-gradient(circle, rgba(171, 149, 255,0.3), transparent 65%)",
               filter: "blur(28px)",
             }}
             animate={{ scale: [1.14, 1, 1.14], opacity: [0.5, 0.75, 0.5] }}

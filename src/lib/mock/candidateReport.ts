@@ -24,8 +24,8 @@ export interface ScoreDial {
 export type EvidenceBand = "supported" | "emerging" | "needs_more_evidence";
 
 export const BAND_META: Record<EvidenceBand, { label: string; fg: string; fill: number }> = {
-  supported: { label: "Supported", fg: "#047857", fill: 1.0 },
-  emerging: { label: "Emerging", fg: "#B45309", fill: 0.6 },
+  supported: { label: "Supported", fg: "var(--ok)", fill: 1.0 },
+  emerging: { label: "Emerging", fg: "var(--warn)", fill: 0.6 },
   needs_more_evidence: { label: "Needs more evidence", fg: "var(--ink-3)", fill: 0.32 },
 };
 

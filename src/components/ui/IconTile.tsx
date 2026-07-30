@@ -13,9 +13,9 @@ type Size = "sm" | "md" | "lg";
  */
 const TONE: Record<Tone, { fg: string; bg: string; border: string }> = {
   ink: { fg: "var(--ink-2)", bg: "var(--glass-hi)", border: "var(--glass-line-hi)" },
-  iris: { fg: "var(--iris-ink)", bg: "rgba(105,34,245,0.06)", border: "var(--iris-line)" },
-  green: { fg: "#047857", bg: "rgba(16,185,129,0.07)", border: "rgba(16,185,129,0.22)" },
-  amber: { fg: "#B45309", bg: "rgba(245,134,11,0.08)", border: "rgba(245,134,11,0.24)" },
+  iris: { fg: "var(--iris-ink)", bg: "rgba(115, 54, 255,0.06)", border: "var(--iris-line)" },
+  green: { fg: "var(--ok)", bg: "rgba(16,185,129,0.07)", border: "rgba(16,185,129,0.22)" },
+  amber: { fg: "var(--warn)", bg: "rgba(245,134,11,0.08)", border: "rgba(245,134,11,0.24)" },
 };
 
 const SIZE: Record<Size, { box: string; icon: number }> = {

@@ -129,8 +129,8 @@ function FinalCta() {
         <div
           className="relative overflow-hidden rounded-[calc(var(--r-card)+10px)] px-8 py-14 text-center md:px-16 md:py-20"
           style={{
-            background: "linear-gradient(118deg, #8f61f7 0%, #7c48f1 46%, #6b38e6 108%)",
-            boxShadow: "0 34px 80px -34px rgba(110,60,230,0.55)",
+            background: "linear-gradient(118deg, var(--v-400) 0%, var(--v-500) 46%, var(--v-500) 108%)",
+            boxShadow: "0 34px 80px -34px rgba(115, 54, 255,0.55)",
           }}
         >
           <span

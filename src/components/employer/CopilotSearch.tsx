@@ -14,9 +14,9 @@ import {
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const BAND_FG: Record<Band, string> = {
-  supported: "#047857",
+  supported: "var(--ok)",
   emerging: "var(--iris-ink)",
-  needs_more_evidence: "#B45309",
+  needs_more_evidence: "var(--warn)",
 };
 const BAND_LABEL: Record<Band, string> = {
   supported: "Strong evidence",
@@ -199,7 +199,7 @@ export function CopilotSearch() {
           className="rounded-[var(--r-card)] p-5"
           style={{ background: "rgba(220,38,38,0.08)", border: "1px solid rgba(220,38,38,0.25)" }}
         >
-          <p className="flex items-start gap-2 text-[14px] font-semibold text-[#b91c1c]">
+          <p className="flex items-start gap-2 text-[14px] font-semibold text-[var(--bad)]">
             <ShieldAlert size={18} className="mt-0.5 shrink-0" /> {res.refused}
           </p>
         </motion.div>

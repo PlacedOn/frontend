@@ -23,7 +23,7 @@ export function CTA() {
             style={{
               background:
                 "radial-gradient(130% 100% at 20% 0%, #26231F 0%, #17150F 48%, #12100E 100%)",
-              boxShadow: "0 34px 80px -34px rgba(110,60,230,0.55)",
+              boxShadow: "0 34px 80px -34px rgba(115, 54, 255,0.55)",
             }}
           >
             {/* rotating globe motion graphic, behind the copy on the right */}

@@ -110,7 +110,7 @@ export function NavMenu() {
                     style={{
                       background: "var(--glass-hi)",
                       borderColor: "var(--glass-line-hi)",
-                      boxShadow: "0 24px 60px -24px rgba(40,26,120,0.4), inset 0 1px 0 rgba(255,255,255,0.7)",
+                      boxShadow: "0 24px 60px -24px rgba(16, 15, 13,0.4), inset 0 1px 0 rgba(255,255,255,0.7)",
                     }}
                   >
                     {item.menu.map(({ label, href, desc, Icon }) => (

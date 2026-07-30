@@ -95,7 +95,7 @@ export function ProofStream({ artifacts, progress, hasWork, onPosted }: Props) {
             Post <CornerDownLeft size={14} aria-hidden />
           </button>
         </div>
-        {error && <p className="mt-2 px-1 text-[12.5px] font-semibold text-[#b45309]">{error}</p>}
+        {error && <p className="mt-2 px-1 text-[12.5px] font-semibold text-[var(--warn)]">{error}</p>}
       </form>
 
       {/* the rail */}

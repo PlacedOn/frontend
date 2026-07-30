@@ -19,7 +19,7 @@ export function EdgeStrip({ edges }: { edges: GrowthEdge[] }) {
           <figure
             className="group relative h-full overflow-hidden rounded-[var(--r-card)] p-6 text-white"
             style={{
-              background: "linear-gradient(148deg, #1A0B3D 0%, #2B1168 52%, var(--iris-ink) 100%)",
+              background: "linear-gradient(148deg, #1A0B3D 0%, #1A0B3D 52%, var(--iris-ink) 100%)",
               boxShadow: "var(--shadow-iris)",
             }}
           >

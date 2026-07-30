@@ -14,14 +14,14 @@ import { v1, V1Error, isLiveBackend, type PipelineBoard, type PipelineStage } fr
 const STAGES: { key: PipelineStage; label: string; fg: string; settable: boolean }[] = [
   { key: "new", label: "New", fg: "var(--ink-3)", settable: true },
   { key: "reviewing", label: "Reviewing", fg: "var(--iris-ink)", settable: true },
-  { key: "intro", label: "Intro", fg: "#047857", settable: false },
-  { key: "hired", label: "Hired", fg: "#047857", settable: false },
-  { key: "passed", label: "Passed", fg: "#B45309", settable: true },
+  { key: "intro", label: "Intro", fg: "var(--ok)", settable: false },
+  { key: "hired", label: "Hired", fg: "var(--ok)", settable: false },
+  { key: "passed", label: "Passed", fg: "var(--warn)", settable: true },
 ];
 const TIER: Record<string, { label: string; fg: string }> = {
-  strong: { label: "Strong", fg: "#047857" },
+  strong: { label: "Strong", fg: "var(--ok)" },
   worth_a_look: { label: "Worth a look", fg: "var(--iris-ink)" },
-  gaps: { label: "Gaps", fg: "#B45309" },
+  gaps: { label: "Gaps", fg: "var(--warn)" },
 };
 const SETTABLE: PipelineStage[] = ["new", "reviewing", "passed"];
 
@@ -70,7 +70,7 @@ export function PipelineBoardView({ jobId }: { jobId: string }) {
 
   return (
     <div className="flex flex-col gap-4">
-      {error && <p className="text-[13.5px] font-semibold text-[#b91c1c]">{error}</p>}
+      {error && <p className="text-[13.5px] font-semibold text-[var(--bad)]">{error}</p>}
       {!live && <p className="text-[12.5px] text-[var(--ink-3)]">Sample board — connect the backend to manage your real pipeline.</p>}
 
       <div className="flex gap-4 overflow-x-auto pb-2">
@@ -92,7 +92,7 @@ export function PipelineBoardView({ jobId }: { jobId: string }) {
                         <span className="rounded-full px-2 py-0.5 text-[10.5px] font-bold" style={{ background: "var(--mist)", color: t.fg }}>{t.label}</span>
                       </div>
                       <div className="mt-2 flex items-center gap-2.5 text-[11.5px] font-semibold">
-                        <span className="inline-flex items-center gap-1" style={{ color: "#047857" }}><CircleCheck size={12} /> {c.supported}</span>
+                        <span className="inline-flex items-center gap-1" style={{ color: "var(--ok)" }}><CircleCheck size={12} /> {c.supported}</span>
                         <span className="inline-flex items-center gap-1" style={{ color: "var(--iris-ink)" }}><CircleDot size={12} /> {c.emerging}</span>
                         <span className="inline-flex items-center gap-1 text-[var(--ink-3)]"><CircleDashed size={12} /> {c.missing}</span>
                       </div>

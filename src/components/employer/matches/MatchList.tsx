@@ -25,17 +25,17 @@ import { RequestIntroButton } from "@/components/intros/RequestIntroButton";
 import { FitCheckCard } from "@/components/fit/FitCheckCard";
 
 const DIM_STYLE: Record<DimensionStatus, { label: string; bg: string; fg: string; icon: typeof CircleCheck }> = {
-  supported: { label: "Supported", bg: "rgba(5,150,105,0.12)", fg: "#047857", icon: CircleCheck },
+  supported: { label: "Supported", bg: "rgba(5,150,105,0.12)", fg: "var(--ok)", icon: CircleCheck },
   emerging: { label: "Emerging", bg: "var(--iris-ghost)", fg: "var(--iris-ink)", icon: CircleDot },
-  missing: { label: "Missing", bg: "rgba(180,120,10,0.12)", fg: "#B45309", icon: CircleDashed },
+  missing: { label: "Missing", bg: "rgba(180,120,10,0.12)", fg: "var(--warn)", icon: CircleDashed },
 };
 
 // Coverage tier — qualitative, never a number. Ranking + gaps come from the
 // shared coverage engine via GET /v1/jobs/{id}/recommendations.
 const TIER_STYLE: Record<CoverageTier, { label: string; bg: string; fg: string }> = {
-  strong: { label: "Strong coverage", bg: "rgba(5,150,105,0.12)", fg: "#047857" },
+  strong: { label: "Strong coverage", bg: "rgba(5,150,105,0.12)", fg: "var(--ok)" },
   worth_a_look: { label: "Worth a look", bg: "var(--iris-ghost)", fg: "var(--iris-ink)" },
-  gaps: { label: "Has gaps", bg: "rgba(180,120,10,0.12)", fg: "#B45309" },
+  gaps: { label: "Has gaps", bg: "rgba(180,120,10,0.12)", fg: "var(--warn)" },
 };
 
 const SALARY_COPY: Record<SalaryFitStatus, string> = {
@@ -133,7 +133,7 @@ export function MatchList({ jobId }: { jobId: string }) {
         </button>
       </div>
 
-      {error && <p className="text-[13.5px] font-semibold text-[#b91c1c]">{error}</p>}
+      {error && <p className="text-[13.5px] font-semibold text-[var(--bad)]">{error}</p>}
 
       {matches.length === 0 && !error && (
         <div className="glass rounded-[var(--r-card)] p-10 text-center">
@@ -200,7 +200,7 @@ function MatchCard({ match, jobId, rec }: { match: Match; jobId: string; rec?: J
         <div className="mt-3 flex flex-col gap-1.5 rounded-[var(--r-btn)] px-3.5 py-2.5" style={{ background: "var(--glass)" }}>
           {gaps.length > 0 && (
             <p className="text-[12.5px] text-[var(--ink-2)]">
-              <span className="font-semibold" style={{ color: "#B45309" }}>Gaps to explore:</span> {gaps.join(", ")}
+              <span className="font-semibold" style={{ color: "var(--warn)" }}>Gaps to explore:</span> {gaps.join(", ")}
             </p>
           )}
           {clarify.length > 0 && (

@@ -32,8 +32,8 @@ const KIND_ICON: Record<ActionKind, LucideIcon> = {
 };
 
 const ROLE_STATE: Record<RoleState, { label: string; fg: string; bg: string }> = {
-  search_ready: { label: "Search-ready", fg: "#047857", bg: "rgba(16,185,129,0.12)" },
-  needs_calibration: { label: "Needs calibration", fg: "#B45309", bg: "rgba(245,134,11,0.12)" },
+  search_ready: { label: "Search-ready", fg: "var(--ok)", bg: "rgba(16,185,129,0.12)" },
+  needs_calibration: { label: "Needs calibration", fg: "var(--warn)", bg: "rgba(245,134,11,0.12)" },
   active: { label: "Active", fg: "var(--ink-2)", bg: "var(--mist)" },
 };
 
@@ -149,7 +149,7 @@ function ActionRow({ a }: { a: ActionItem }) {
     <li className="flex items-center gap-3 p-3">
       <span
         className="grid size-9 shrink-0 place-items-center rounded-[11px]"
-        style={{ background: overdue ? "rgba(245,134,11,0.14)" : "var(--iris-ghost)", color: overdue ? "#B45309" : "var(--iris-ink)" }}
+        style={{ background: overdue ? "rgba(245,134,11,0.14)" : "var(--iris-ghost)", color: overdue ? "var(--warn)" : "var(--iris-ink)" }}
       >
         <Icon size={16} aria-hidden />
       </span>
@@ -161,7 +161,7 @@ function ActionRow({ a }: { a: ActionItem }) {
       </div>
       <span
         className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold"
-        style={overdue ? { background: "rgba(245,134,11,0.14)", color: "#B45309" } : { background: "var(--mist)", color: "var(--ink-3)" }}
+        style={overdue ? { background: "rgba(245,134,11,0.14)", color: "var(--warn)" } : { background: "var(--mist)", color: "var(--ink-3)" }}
       >
         {a.due}
       </span>
@@ -171,9 +171,9 @@ function ActionRow({ a }: { a: ActionItem }) {
 
 type Tone = "good" | "neutral" | "warn" | "gated";
 const TONE_FG: Record<Tone, string> = {
-  good: "#047857",
+  good: "var(--ok)",
   neutral: "var(--iris-ink)",
-  warn: "#B45309",
+  warn: "var(--warn)",
   gated: "var(--ink-3)",
 };
 

@@ -14,9 +14,9 @@ import { v1, isLiveBackend, type RoleAnalytics } from "@/lib/v1";
 const TIER_LABEL: Record<string, string> = { strong: "Strong", worth_a_look: "Worth a look", gaps: "Gaps" };
 
 function alignColor(a: number): string {
-  if (a >= 0.75) return "#047857";
-  if (a >= 0.5) return "#B45309";
-  return "#b91c1c";
+  if (a >= 0.75) return "var(--ok)";
+  if (a >= 0.5) return "var(--warn)";
+  return "var(--bad)";
 }
 
 const SAMPLE: RoleAnalytics = {
@@ -99,7 +99,7 @@ export function RoleAnalyticsPanel({ jobId }: { jobId: string }) {
           ))}
         </div>
         {a.is_sufficient && !a.monotonic && a.decided > 0 && (
-          <p className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold" style={{ color: "#B45309" }}>
+          <p className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold" style={{ color: "var(--warn)" }}>
             <TrendingUp size={13} /> Advancement isn&rsquo;t tracking evidence tier — worth a review.
           </p>
         )}

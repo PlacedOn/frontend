@@ -32,7 +32,7 @@ function Screen({ label, children }: { label: string; children: React.ReactNode 
         // near-opaque so stacked cards don't bleed through each other
         background: "linear-gradient(158deg, #ffffff, #f7f5fe 82%)",
         border: "1px solid var(--glass-line-hi)",
-        boxShadow: "0 34px 80px -38px rgba(30,24,70,0.55), inset 0 1px 0 rgba(255,255,255,0.9)",
+        boxShadow: "0 34px 80px -38px rgba(16, 15, 13,0.55), inset 0 1px 0 rgba(255,255,255,0.9)",
       }}
     >
       <div className="mb-4 flex items-center gap-2">
@@ -53,7 +53,7 @@ function Waveform() {
         <motion.span
           key={i}
           className="w-[3.5px] rounded-full"
-          style={{ height: h, background: "linear-gradient(180deg,#8B54FF,#B79BFF)" }}
+          style={{ height: h, background: "linear-gradient(180deg,#8E64FF,#AB95FF)" }}
           animate={{ scaleY: [0.5, 1, 0.6, 1, 0.5] }}
           transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: i * 0.12 }}
         />
@@ -85,7 +85,7 @@ function PassportCard() {
     <Screen label="The Trust Passport">
       <div className="flex h-full flex-col justify-center gap-4">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-bold" style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}>
+          <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-bold" style={{ background: "rgba(16,185,129,0.12)", color: "var(--ok)" }}>
             Verified via interview
           </span>
         </div>
@@ -95,7 +95,7 @@ function PassportCard() {
             <span className="text-[12.5px] font-semibold text-[var(--ink-3)]"><span className="text-[var(--iris-ink)]">Strong</span> · 71–88%</span>
           </div>
           <span className="mt-2 block h-2.5 w-full overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
-            <motion.span className="block h-full rounded-full" style={{ background: "linear-gradient(90deg,#8B54FF,var(--iris))", transformOrigin: "left" }} initial={{ scaleX: 0 }} whileInView={{ scaleX: 0.82 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.2, ease: EASE }} />
+            <motion.span className="block h-full rounded-full" style={{ background: "linear-gradient(90deg,#8E64FF,var(--iris))", transformOrigin: "left" }} initial={{ scaleX: 0 }} whileInView={{ scaleX: 0.82 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.2, ease: EASE }} />
           </span>
         </div>
         <figure className="rounded-[14px] border p-3.5" style={{ background: "var(--iris-ghost)", borderColor: "var(--iris-line)" }}>
@@ -128,7 +128,7 @@ function EmployerCard() {
                   <span key={s} className="rounded-full px-2 py-0.5 text-[10.5px] font-semibold" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>{s}</span>
                 ))}
               </div>
-              <span className="shrink-0 text-[11px] font-bold" style={{ color: r.top ? "#047857" : "var(--ink-3)" }}>{r.tag}</span>
+              <span className="shrink-0 text-[11px] font-bold" style={{ color: r.top ? "var(--ok)" : "var(--ink-3)" }}>{r.tag}</span>
             </div>
           </div>
         ))}
@@ -209,7 +209,7 @@ export function FeaturedSurfaces() {
                     style={{ background: isActive ? "var(--glass-hi)" : "transparent", border: `1px solid ${isActive ? "var(--iris-line)" : "transparent"}`, boxShadow: isActive ? "var(--shadow-sm)" : "none" }}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[12px] border transition-colors" style={{ background: isActive ? "rgba(105,34,245,0.10)" : "rgba(105,34,245,0.05)", borderColor: isActive ? "var(--iris)" : "var(--iris-line)", color: "var(--iris-ink)" }}>
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[12px] border transition-colors" style={{ background: isActive ? "rgba(115, 54, 255,0.10)" : "rgba(115, 54, 255,0.05)", borderColor: isActive ? "var(--iris)" : "var(--iris-line)", color: "var(--iris-ink)" }}>
                         <Icon size={18} strokeWidth={1.75} />
                       </span>
                       <div className="min-w-0">

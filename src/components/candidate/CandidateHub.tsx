@@ -165,7 +165,7 @@ function RoleCard({ role, index, reduce, interviewDone }: { role: OpenRole; inde
           </div>
         </div>
         {role.fresh && (
-          <span className="shrink-0 rounded-full px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-[0.06em]" style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}>
+          <span className="shrink-0 rounded-full px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-[0.06em]" style={{ background: "rgba(16,185,129,0.12)", color: "var(--ok)" }}>
             New
           </span>
         )}

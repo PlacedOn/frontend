@@ -13,9 +13,9 @@ import { Plus, ArrowRight, Wand2, CircleCheck, CircleDashed } from "lucide-react
 import { v1, V1Error, type JobSummary } from "@/lib/v1";
 
 const STATUS_STYLE: Record<string, { bg: string; fg: string }> = {
-  active: { bg: "rgba(16,185,129,0.12)", fg: "#047857" },
+  active: { bg: "rgba(16,185,129,0.12)", fg: "var(--ok)" },
   draft: { bg: "var(--mist)", fg: "var(--ink-3)" },
-  paused: { bg: "rgba(180,120,10,0.12)", fg: "#B45309" },
+  paused: { bg: "rgba(180,120,10,0.12)", fg: "var(--warn)" },
   closed: { bg: "var(--mist)", fg: "var(--ink-3)" },
 };
 
@@ -125,7 +125,7 @@ export function LiveEmployerBoard() {
                     </span>
                     <span
                       className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold"
-                      style={{ color: job.is_search_ready ? "#047857" : "var(--ink-3)" }}
+                      style={{ color: job.is_search_ready ? "var(--ok)" : "var(--ink-3)" }}
                     >
                       {job.is_search_ready ? <CircleCheck size={14} /> : <CircleDashed size={14} />}
                       {job.is_search_ready ? "Search-ready" : "Setup incomplete"}

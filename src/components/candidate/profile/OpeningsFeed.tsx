@@ -92,7 +92,7 @@ export function OpeningsFeed() {
               {fit.top_gap && (
                 <p
                   className="mt-3.5 inline-flex items-center gap-1.5 self-start rounded-full border px-3 py-1.5 text-[12px] font-bold"
-                  style={{ borderColor: "rgba(245,134,11,0.25)", background: "rgba(245,134,11,0.10)", color: "#B45309" }}
+                  style={{ borderColor: "rgba(245,134,11,0.25)", background: "rgba(245,134,11,0.10)", color: "var(--warn)" }}
                 >
                   <Wrench className="h-3 w-3 shrink-0" aria-hidden />
                   Close first: {fit.top_gap}

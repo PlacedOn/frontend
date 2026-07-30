@@ -12,7 +12,7 @@ export const FIT_BAND_LABEL: Record<FitBand, string> = {
 
 const FIT_BAND_STYLE: Record<FitBand, { bg: string; fg: string }> = {
   strong_fit: { bg: "var(--iris-ghost)", fg: "var(--iris-ink)" },
-  developing_fit: { bg: "rgba(139,84,255,0.10)", fg: "var(--iris-ink)" },
+  developing_fit: { bg: "rgba(142, 100, 255,0.10)", fg: "var(--iris-ink)" },
   stretch: { bg: "var(--mist)", fg: "var(--ink-3)" },
 };
 
@@ -29,7 +29,7 @@ export function FitBandChip({ band }: { band: FitBand }) {
 }
 
 const SEVERITY_STYLE: Record<GapSeverity, { label: string; bg: string; fg: string }> = {
-  critical: { label: "Unlocks the most", bg: "rgba(180,120,10,0.12)", fg: "#B45309" },
+  critical: { label: "Unlocks the most", bg: "rgba(180,120,10,0.12)", fg: "var(--warn)" },
   important: { label: "Important", bg: "var(--iris-ghost)", fg: "var(--iris-ink)" },
   nice_to_have: { label: "Nice to have", bg: "var(--mist)", fg: "var(--ink-3)" },
 };

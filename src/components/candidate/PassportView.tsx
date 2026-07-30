@@ -13,8 +13,8 @@ import { ShieldCheck, Copy, Check, Loader2, BadgeCheck, ArrowRight } from "lucid
 import { v1, V1Error, isLiveBackend, type IssuedPassport, type Band } from "@/lib/v1";
 
 const BAND: Record<Band, { label: string; fg: string }> = {
-  supported: { label: "Supported", fg: "#047857" },
-  emerging: { label: "Emerging", fg: "#B45309" },
+  supported: { label: "Supported", fg: "var(--ok)" },
+  emerging: { label: "Emerging", fg: "var(--warn)" },
   needs_more_evidence: { label: "Needs more evidence", fg: "var(--ink-3)" },
 };
 
@@ -83,7 +83,7 @@ export function PassportView() {
         <article className="glass rounded-[var(--r-card)] p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-bold" style={{ background: "rgba(5,150,105,0.12)", color: "#047857" }}>
+              <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-bold" style={{ background: "rgba(5,150,105,0.12)", color: "var(--ok)" }}>
                 <BadgeCheck size={13} /> Signed by Placedon
               </span>
               <p className="mt-2 text-[12.5px] text-[var(--ink-3)]">
@@ -123,7 +123,7 @@ export function PassportView() {
         </article>
       )}
 
-      {err && <p className="text-[13px] font-semibold text-[#b91c1c]">{err}</p>}
+      {err && <p className="text-[13px] font-semibold text-[var(--bad)]">{err}</p>}
     </div>
   );
 }

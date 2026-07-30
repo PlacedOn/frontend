@@ -37,7 +37,7 @@ export function FrostField() {
           left: "-8%",
           top: "-10%",
           background:
-            "radial-gradient(circle, rgba(139,84,255,.42), transparent 62%)",
+            "radial-gradient(circle, rgba(142, 100, 255,.42), transparent 62%)",
         })}
         {orb(2, 36, {
           width: "38vw",

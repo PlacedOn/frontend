@@ -22,7 +22,7 @@ const PANELS: Panel[] = [
   { art: "quote", title: "Evidence, not keywords", stat: "1 quote / trait", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,#2E2B27,#17150F)" },
   { art: "fair", title: "Fair by design", stat: "9 never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,#413C36,#22201C)" },
   { art: "control", title: "You stay in control", stat: "0 shared", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,#26231F,#12100E)" },
-  { art: "skill", title: "Real skill over resumes", stat: "0 resumes", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#6D28D9,#8B54FF)" },
+  { art: "skill", title: "Real skill over resumes", stat: "0 resumes", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#5E1EDC,var(--v-400))" },
 ];
 
 /** Honest, on-brand mini-illustrations — white-on-gradient SVG, no stock imagery. */
@@ -130,12 +130,12 @@ export function SignalAccordion() {
                   flexShrink: 1,
                   transition: "flex-grow 0.62s cubic-bezier(0.22,0.68,0.31,1), box-shadow 0.4s",
                   background: p.grad,
-                  boxShadow: isActive ? "0 30px 70px -20px rgba(58,20,140,0.55)" : "0 10px 30px -14px rgba(58,20,140,0.4)",
+                  boxShadow: isActive ? "0 30px 70px -20px rgba(73, 20, 175,0.55)" : "0 10px 30px -14px rgba(73, 20, 175,0.4)",
                 }}
               >
                 {/* glossy 3D sheen */}
                 <span aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(120% 80% at 20% 0%, rgba(255,255,255,0.28), transparent 55%)" }} />
-                <span aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 40%, rgba(20,8,50,0.5))" }} />
+                <span aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 40%, rgba(26, 11, 61,0.5))" }} />
 
                 {/* collapsed: vertical label */}
                 <span

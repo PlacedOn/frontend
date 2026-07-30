@@ -38,9 +38,58 @@
   --on-ink:   #FBFAF9;
   --on-ink-2: #B3B2AF;
   --on-ink-3: #7E7D7A;
-  --accent:      #5E46BF;
-  --accent-ink:  #4C369E;
-  --accent-weak: color-mix(in oklab, #5E46BF 8%, transparent);
+  /* ── the violet ramp ───────────────────────────────────────────
+     ONE scale, generated from the brand mark's own hue (#6922F5 →
+     OKLCH h=-73.1deg), evenly spaced in perceptual lightness with chroma
+     tapered at both ends so the light steps don't go neon and the dark
+     steps don't go muddy.
+
+     This exists because TWENTY-SIX different violets were shipping across
+     hex, lowercase hex and rgba() forms — several near-duplicates of each
+     other (8B54FF/8F61F7/9A6BFF sat within a few percent of one lightness)
+     — while the actual token was among the least used. That is what "the
+     colours don't match" was: not a hue choice, twenty-six hue choices.
+     The count came from deriving every violet-ish value in src from
+     scratch; a hand-kept list of "the bad hexes" missed a third of them.
+
+     Contrast, computed not estimated:
+       v-500 fill + white text  5.67  AA      v-600 text on white  7.79  AA
+       v-600 fill + white text  7.79  AA      v-700 text on white 10.49  AA
+       v-300 text on --ink-bg   7.98  AA      v-200 on --ink-bg   11.88  AA
+
+     Pick by ROLE, never by taste:
+       50/100  tint backgrounds        400  accent on dark grounds
+       200/300 accent text on dark     500  primary fill
+       600     accent text on light    700  pressed / strongest
+     Adding a violet outside this ramp is the bug this ramp fixes. */
+  --v-50:  #F3F2FF;
+  --v-100: #E3DFFF;
+  --v-200: #CBC1FF;
+  --v-300: #AB95FF;
+  --v-400: #8E64FF;
+  --v-500: #7336FF;
+  --v-600: #5E1EDC;
+  --v-700: #4914AF;
+  /* dark violet ground, for register-switch sections (was 5 near-identical values) */
+  --v-900: #1A0B3D;
+  /* The mark keeps the exact brand hex. It is the one place a raw value is
+     correct — a logo is an asset, not a UI colour. */
+  --brand-mark: #6922F5;
+
+  /* ── semantic status ──────────────────────────────────────────
+     107 hardcoded #047857 / #B45309 / #B91C1C across 30+ files. Status is
+     meaning, so it gets names: a reader should never have to know that
+     "amber" means "waiting". */
+  --ok:      #047857;
+  --ok-bg:   #ECFDF5;
+  --warn:    #B45309;
+  --warn-bg: #FFFBEB;
+  --bad:     #B91C1C;
+  --bad-bg:  #FEF2F2;
+
+  --accent:      var(--v-600);
+  --accent-ink:  var(--v-700);
+  --accent-weak: var(--v-50);
 
   /* type */
   --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-base: 1rem; --text-lg: 1.125rem;
@@ -78,10 +127,10 @@
 
   /* ── brand accent (from logo: placedon_mark.svg #6922F5) ─── */
   --iris:        var(--accent);
-  --iris-soft:   #8B54FF;          /* lighter accent for gradients */
+  --iris-soft:   var(--v-400);
   --iris-ink:    var(--accent-ink);
-  --iris-ghost:  rgba(105, 34, 245, 0.10);
-  --iris-line:   rgba(105, 34, 245, 0.22);
+  --iris-ghost:  var(--v-50);
+  --iris-line:   var(--v-200);
 
   /* ── scarce warm signal / "ember" (live proof moments only) ─ */
   --signal:      #F5860B;
@@ -279,7 +328,7 @@ h1, h2, h3, h4 {
   top: 0.06em; bottom: 0.02em;
   z-index: 0;
   border-radius: 0.28em;
-  background: linear-gradient(100deg, rgba(154,107,255,0.42), rgba(120,74,240,0.5));
+  background: linear-gradient(100deg, rgba(142, 100, 255,0.42), rgba(120,74,240,0.5));
   transform: scaleX(var(--hl, 0));
   transform-origin: left center;
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);

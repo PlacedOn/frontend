@@ -211,7 +211,7 @@ export function InterviewSurface({
       </div>
 
       {reconnecting && (
-        <div role="status" aria-live="polite" className="flex items-center gap-2.5 rounded-[var(--r-card)] px-4 py-3 text-[13px] font-medium" style={{ background: "rgba(245,134,11,0.12)", color: "#B45309" }}>
+        <div role="status" aria-live="polite" className="flex items-center gap-2.5 rounded-[var(--r-card)] px-4 py-3 text-[13px] font-medium" style={{ background: "rgba(245,134,11,0.12)", color: "var(--warn)" }}>
           <RefreshCw size={15} className={reduce ? "" : "animate-spin"} />
           Reconnecting… your answer is saved — nothing is lost.
         </div>
@@ -364,7 +364,7 @@ export function InterviewSurface({
         </div>
 
         {speech.error && (
-          <p className="mt-1.5 px-1 text-[12px] font-medium text-[#b45309]" aria-live="polite">
+          <p className="mt-1.5 px-1 text-[12px] font-medium text-[var(--warn)]" aria-live="polite">
             {speech.error}
           </p>
         )}

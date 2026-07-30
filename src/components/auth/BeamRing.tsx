@@ -43,7 +43,7 @@ export function BeamRing({ radius = "var(--r-card)" }: Props) {
             inset: "-75%",
             willChange: "transform",
             background:
-              "conic-gradient(from 0deg, transparent 0deg, rgba(105,34,245,0.5) 52deg, rgba(139,84,255,0.26) 84deg, transparent 128deg, transparent 214deg, rgba(139,84,255,0.22) 262deg, transparent 306deg)",
+              "conic-gradient(from 0deg, transparent 0deg, rgba(115, 54, 255,0.5) 52deg, rgba(142, 100, 255,0.26) 84deg, transparent 128deg, transparent 214deg, rgba(142, 100, 255,0.22) 262deg, transparent 306deg)",
           }}
           animate={{ rotate: 360 }}
           transition={{ duration: 14, repeat: Infinity, ease: "linear" }}

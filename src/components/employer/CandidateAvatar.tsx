@@ -9,7 +9,7 @@
 
 const SKIN = ["#F6D3B4", "#EDC098", "#DBA875", "#C08A5A", "#9A6A42"];
 const HAIR = ["#26262E", "#4A3526", "#7A4A2A", "#C2472A", "#B4B2BC", "#161620"];
-const SHIRT = ["#6922F5", "#3B82F6", "#0FA3A0", "#F59E0B", "#334155", "#8B54FF"];
+const SHIRT = ["#7336FF", "#3B82F6", "#0FA3A0", "#F59E0B", "#334155", "#8E64FF"];
 const BG = ["#E1F4EA", "#EAE9FC", "#FCEBDD", "#E4F0FB"];
 
 function hash(seed: string): number {

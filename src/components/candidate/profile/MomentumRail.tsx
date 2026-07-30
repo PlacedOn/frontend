@@ -30,7 +30,7 @@ function SaveChip({ saveState, fromBackend }: { saveState: SaveState; fromBacken
   }
   if (saveState === "saved") {
     return (
-      <span className="inline-flex items-center gap-1.5 text-[11.5px] font-bold" style={{ color: "#047857", fontFamily: "var(--font-mono)" }}>
+      <span className="inline-flex items-center gap-1.5 text-[11.5px] font-bold" style={{ color: "var(--ok)", fontFamily: "var(--font-mono)" }}>
         <Check className="h-3 w-3" aria-hidden /> {fromBackend ? "Saved" : "Saved on this device"}
       </span>
     );

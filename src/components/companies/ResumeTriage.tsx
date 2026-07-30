@@ -20,7 +20,7 @@ const STATS = [
 ];
 
 const FATE: Record<Pile["fate"], { bg: string; color: string; label: string }> = {
-  reject: { bg: "rgba(220,38,38,.1)", color: "#b91c1c", label: "Filtered" },
+  reject: { bg: "rgba(220,38,38,.1)", color: "var(--bad)", label: "Filtered" },
   maybe: { bg: "var(--mist)", color: "var(--ink-3)", label: "Skimmed" },
   buried: { bg: "var(--iris-ghost)", color: "var(--iris-ink)", label: "Buried" },
 };
@@ -65,7 +65,7 @@ export function ResumeTriage() {
         >
           <div className="flex items-center justify-between border-b px-5 py-4" style={{ borderColor: "var(--glass-line)" }}>
             <p className="font-[var(--font-display)] text-[15px] font-semibold text-[var(--ink)]">Your resume pile</p>
-            <span className="rounded-full px-3 py-1 text-[12px] font-bold" style={{ background: "rgba(220,38,38,.1)", color: "#b91c1c" }}>
+            <span className="rounded-full px-3 py-1 text-[12px] font-bold" style={{ background: "rgba(220,38,38,.1)", color: "var(--bad)" }}>
               312 · unread
             </span>
           </div>

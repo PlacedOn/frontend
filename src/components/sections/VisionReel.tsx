@@ -16,8 +16,8 @@ const TAG_LABEL: Record<Tag, string> = {
 const TAG_STYLE: Record<Tag, { fg: string; bg: string }> = {
   building: { fg: "var(--iris-ink)", bg: "var(--iris-ghost)" },
   research: { fg: "#1D4ED8", bg: "rgba(37,99,235,0.10)" },
-  solve: { fg: "#B45309", bg: "rgba(245,134,11,0.12)" },
-  principle: { fg: "#047857", bg: "rgba(16,185,129,0.12)" },
+  solve: { fg: "var(--warn)", bg: "rgba(245,134,11,0.12)" },
+  principle: { fg: "var(--ok)", bg: "rgba(16,185,129,0.12)" },
 };
 
 // The company's vision + roadmap, told as a reel. "Building" cards are honestly

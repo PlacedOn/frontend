@@ -64,7 +64,7 @@ export function IntroInbox() {
     );
   }
   if (!loaded) return <p className="text-[14px] text-[var(--ink-3)]">Loading…</p>;
-  if (error) return <p className="text-[14px] font-semibold text-[#b91c1c]">{error}</p>;
+  if (error) return <p className="text-[14px] font-semibold text-[var(--bad)]">{error}</p>;
   if (intros.length === 0) {
     return <p className="text-[14px] text-[var(--ink-2)]">No introductions yet. When there&rsquo;s mutual interest, it shows up here — and nowhere else.</p>;
   }
@@ -112,8 +112,8 @@ export function IntroInbox() {
 
 function StatusChip({ status }: { status: Intro["status"] }) {
   const map = {
-    pending: { label: "Pending", bg: "rgba(180,120,10,0.12)", fg: "#B45309" },
-    approved: { label: "Connected", bg: "rgba(5,150,105,0.12)", fg: "#047857" },
+    pending: { label: "Pending", bg: "rgba(180,120,10,0.12)", fg: "var(--warn)" },
+    approved: { label: "Connected", bg: "rgba(5,150,105,0.12)", fg: "var(--ok)" },
     declined: { label: "Declined", bg: "var(--mist)", fg: "var(--ink-3)" },
   }[status];
   return <span className="rounded-full px-3 py-1 text-[12px] font-semibold" style={{ background: map.bg, color: map.fg }}>{map.label}</span>;

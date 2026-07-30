@@ -124,7 +124,7 @@ export function ResumeIngest({
               <Upload className="h-4 w-4" /> Upload .txt
             </button>
           </div>
-          {error && <p className="mt-3 text-[13px] font-semibold text-[#b45309]">{error}</p>}
+          {error && <p className="mt-3 text-[13px] font-semibold text-[var(--warn)]">{error}</p>}
         </>
       ) : (
         <div className="flex flex-col gap-5">
@@ -163,7 +163,7 @@ export function ResumeIngest({
 
           {/* What we kept — claims to verify */}
           <div>
-            <p className="mb-3 inline-flex items-center gap-2 text-[13px] font-bold text-[#047857]">
+            <p className="mb-3 inline-flex items-center gap-2 text-[13px] font-bold text-[var(--ok)]">
               <Check className="h-4 w-4" /> Added {added} {added === 1 ? "item" : "items"} to your profile as claims to verify
             </p>
             <ul className="flex flex-col gap-2">

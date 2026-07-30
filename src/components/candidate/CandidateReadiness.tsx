@@ -95,7 +95,7 @@ export function CandidateReadiness() {
             <li key={s.key} className="flex items-center gap-2.5">
               <span
                 className="grid h-5 w-5 shrink-0 place-items-center rounded-full"
-                style={s.done ? { background: "#047857", color: "#fff" } : { border: "1.5px solid var(--glass-line-hi)", color: "transparent" }}
+                style={s.done ? { background: "var(--ok)", color: "#fff" } : { border: "1.5px solid var(--glass-line-hi)", color: "transparent" }}
               >
                 <Check size={12} strokeWidth={3} />
               </span>

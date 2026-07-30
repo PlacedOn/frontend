@@ -45,7 +45,7 @@ export function GrowthReportView() {
       });
   }, [report]);
 
-  if (error) return <p className="text-[14px] font-semibold text-[#b91c1c]">{error}</p>;
+  if (error) return <p className="text-[14px] font-semibold text-[var(--bad)]">{error}</p>;
   if (!report) return <p className="text-[14px] text-[var(--ink-3)]">Building your report…</p>;
 
   const topFit = report.role_fits[0];

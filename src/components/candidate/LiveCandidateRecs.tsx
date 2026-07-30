@@ -16,9 +16,9 @@ import { v1, V1Error, type CandidateOpeningRec, type MutualFitTier } from "@/lib
 import { FitCheckCard } from "@/components/fit/FitCheckCard";
 
 const TIER: Record<MutualFitTier, { label: string; bg: string; fg: string }> = {
-  strong_fit: { label: "Strong fit", bg: "rgba(5,150,105,0.12)", fg: "#047857" },
+  strong_fit: { label: "Strong fit", bg: "rgba(5,150,105,0.12)", fg: "var(--ok)" },
   worth_a_look: { label: "Worth a look", bg: "var(--iris-ghost)", fg: "var(--iris-ink)" },
-  stretch: { label: "Stretch", bg: "rgba(180,120,10,0.12)", fg: "#B45309" },
+  stretch: { label: "Stretch", bg: "rgba(180,120,10,0.12)", fg: "var(--warn)" },
 };
 
 export function LiveCandidateRecs() {

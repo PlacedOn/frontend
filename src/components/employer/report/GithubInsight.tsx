@@ -21,7 +21,7 @@ const LANG_COLOR: Record<string, string> = {
   Rust: "#DEA584",
   Go: "#00ADD8",
   Scala: "#C22D40",
-  HCL: "#844FBA",
+  HCL: "var(--v-600)",
   Shell: "#89E051",
   Jupyter: "#DA5B0B",
   SQL: "#E38C00",
@@ -30,7 +30,7 @@ const LANG_COLOR: Record<string, string> = {
 const langColor = (l: string) => LANG_COLOR[l] ?? "var(--iris)";
 
 // 5-step intensity ramp for the contribution grid.
-const CELL = ["var(--mist)", "rgba(139,84,255,0.30)", "rgba(139,84,255,0.52)", "rgba(105,34,245,0.72)", "var(--iris-ink)"];
+const CELL = ["var(--mist)", "rgba(142, 100, 255,0.30)", "rgba(142, 100, 255,0.52)", "rgba(115, 54, 255,0.72)", "var(--iris-ink)"];
 
 function dayIntensity(weekVal: number, week: number, day: number): number {
   // deterministic per-day variation around the week's base level

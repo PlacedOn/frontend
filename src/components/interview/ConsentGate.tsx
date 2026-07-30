@@ -122,7 +122,7 @@ export function ConsentGate({
         </p>
       )}
 
-      {error && <p className="mt-4 text-[13px] font-semibold text-[#b91c1c]">{error}</p>}
+      {error && <p className="mt-4 text-[13px] font-semibold text-[var(--bad)]">{error}</p>}
 
       <button
         type="button"

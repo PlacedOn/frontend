@@ -33,13 +33,13 @@ export type PublicProfileData = {
 };
 
 const BAND_LIGHT: Record<Band, { label: string; fg: string; bg: string }> = {
-  high: { label: "Strong", fg: "#047857", bg: "rgba(16,185,129,0.14)" },
+  high: { label: "Strong", fg: "var(--ok)", bg: "rgba(16,185,129,0.14)" },
   emerging: { label: "Emerging", fg: "var(--iris-ink)", bg: "var(--iris-ghost)" },
-  needs_review: { label: "Needs more", fg: "#B45309", bg: "rgba(245,134,11,0.14)" },
+  needs_review: { label: "Needs more", fg: "var(--warn)", bg: "rgba(245,134,11,0.14)" },
 };
 const BAND_DARK: Record<Band, { label: string; fg: string; bg: string }> = {
   high: { label: "Strong", fg: "#5eead4", bg: "rgba(16,185,129,0.16)" },
-  emerging: { label: "Emerging", fg: "#c4b5ff", bg: "rgba(139,84,255,0.22)" },
+  emerging: { label: "Emerging", fg: "var(--v-200)", bg: "rgba(142, 100, 255,0.22)" },
   needs_review: { label: "Needs more", fg: "#fcd34d", bg: "rgba(245,158,11,0.16)" },
 };
 
@@ -124,7 +124,7 @@ export function PublicProfileShell({ data, preview = false }: { data: PublicProf
                 rotateY: reduce ? 0 : rotY,
                 background: "linear-gradient(160deg, #ffffff, #f6f4fe 82%)",
                 borderColor: "var(--glass-line-hi)",
-                boxShadow: "0 40px 90px -40px rgba(40,26,120,0.5), inset 0 1px 0 rgba(255,255,255,0.9)",
+                boxShadow: "0 40px 90px -40px rgba(16, 15, 13,0.5), inset 0 1px 0 rgba(255,255,255,0.9)",
               }}
             >
               <div className="flex items-center gap-2" style={{ transform: "translateZ(24px)" }}>
@@ -200,10 +200,10 @@ export function PublicProfileShell({ data, preview = false }: { data: PublicProf
                     <span className="text-[15px] font-bold" style={{ color: "#fff" }}>{t.label}</span>
                     <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold" style={{ background: b.bg, color: b.fg }}>{b.label}</span>
                   </div>
-                  <blockquote className="mt-3 border-l-2 pl-3 text-[13.5px] leading-relaxed text-white/70" style={{ borderColor: "rgba(139,84,255,0.6)" }}>
+                  <blockquote className="mt-3 border-l-2 pl-3 text-[13.5px] leading-relaxed text-white/70" style={{ borderColor: "rgba(142, 100, 255,0.6)" }}>
                     “{t.quote}”
                   </blockquote>
-                  <p className="mt-2.5 flex items-center gap-1.5 text-[11.5px] font-semibold" style={{ color: "#c4b5ff" }}>
+                  <p className="mt-2.5 flex items-center gap-1.5 text-[11.5px] font-semibold" style={{ color: "var(--v-200)" }}>
                     <span className="livedot" /> Traceable to transcript · {t.at}
                   </p>
                 </motion.article>

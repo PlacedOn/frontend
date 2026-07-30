@@ -25,8 +25,8 @@ type Node = {
   speed: number;
 };
 
-const IRIS = "#6922F5";
-const IRIS_SOFT = "#8B54FF";
+const IRIS = "#7336FF";
+const IRIS_SOFT = "#8E64FF";
 
 function hash(s: string): number {
   let h = 2166136261;
@@ -142,7 +142,7 @@ export function SkillConstellation({ evidenced, toDevelop }: Props) {
           }
         });
         if (best < 0) return;
-        ctx.strokeStyle = "rgba(105,34,245,0.14)";
+        ctx.strokeStyle = "rgba(115, 54, 255,0.14)";
         ctx.setLineDash([3, 5]);
         ctx.beginPath();
         ctx.moveTo(pts[i].x, pts[i].y);
@@ -155,7 +155,7 @@ export function SkillConstellation({ evidenced, toDevelop }: Props) {
         if (!a.lit) return;
         nodes.forEach((b, j) => {
           if (j <= i || !b.lit) return;
-          ctx.strokeStyle = "rgba(105,34,245,0.20)";
+          ctx.strokeStyle = "rgba(115, 54, 255,0.20)";
           ctx.beginPath();
           ctx.moveTo(pts[i].x, pts[i].y);
           ctx.lineTo(pts[j].x, pts[j].y);
@@ -168,8 +168,8 @@ export function SkillConstellation({ evidenced, toDevelop }: Props) {
         const r = 3 + 3.5 * node.z;
         if (node.lit) {
           const glow = ctx.createRadialGradient(x, y, 0, x, y, r * 6);
-          glow.addColorStop(0, "rgba(139,84,255,0.35)");
-          glow.addColorStop(1, "rgba(139,84,255,0)");
+          glow.addColorStop(0, "rgba(142, 100, 255,0.35)");
+          glow.addColorStop(1, "rgba(142, 100, 255,0)");
           ctx.fillStyle = glow;
           ctx.beginPath();
           ctx.arc(x, y, r * 6, 0, Math.PI * 2);

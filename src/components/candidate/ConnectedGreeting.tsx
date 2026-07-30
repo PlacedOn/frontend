@@ -24,8 +24,8 @@ function greeting(hour: number): string {
 
 type Tone = "green" | "amber" | "iris" | "ink";
 const TONE: Record<Tone, { fg: string; bg: string }> = {
-  green: { fg: "#047857", bg: "rgba(16,185,129,0.12)" },
-  amber: { fg: "#B45309", bg: "rgba(245,134,11,0.12)" },
+  green: { fg: "var(--ok)", bg: "rgba(16,185,129,0.12)" },
+  amber: { fg: "var(--warn)", bg: "rgba(245,134,11,0.12)" },
   iris: { fg: "var(--iris-ink)", bg: "var(--iris-ghost)" },
   ink: { fg: "var(--ink-2)", bg: "var(--mist)" },
 };

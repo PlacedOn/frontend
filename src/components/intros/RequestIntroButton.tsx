@@ -33,7 +33,7 @@ export function RequestIntroButton({ jobId, candidateId }: { jobId: string; cand
 
   if (phase === "sent") {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-semibold" style={{ background: "rgba(5,150,105,0.12)", color: "#047857" }}>
+      <span className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-semibold" style={{ background: "rgba(5,150,105,0.12)", color: "var(--ok)" }}>
         <Check size={14} /> Intro requested — awaiting their consent
       </span>
     );
@@ -79,7 +79,7 @@ export function RequestIntroButton({ jobId, candidateId }: { jobId: string; cand
         >
           Cancel
         </button>
-        {error && <p className="text-[12.5px] font-semibold text-[#b91c1c]">{error}</p>}
+        {error && <p className="text-[12.5px] font-semibold text-[var(--bad)]">{error}</p>}
       </div>
       <p className="mt-1.5 text-[12px] text-[var(--ink-3)]">
         Chat opens only if the candidate approves. Their identity stays hidden until then.

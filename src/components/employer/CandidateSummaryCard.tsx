@@ -151,7 +151,7 @@ export function CandidateSummaryCard({ c, status, busy, onSave, onPass }: Props)
         ) : (
           <span
             className="grid h-10 shrink-0 place-items-center rounded-[var(--r-btn)] px-3 text-[12px] font-semibold"
-            style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}
+            style={{ background: "rgba(16,185,129,0.12)", color: "var(--ok)" }}
           >
             {status === "intro" ? "Intro sent" : "Saved"}
           </span>

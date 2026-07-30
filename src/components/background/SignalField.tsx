@@ -136,7 +136,7 @@ export function SignalField() {
         className="sf-aurora absolute inset-[-45%]"
         style={{
           background:
-            "linear-gradient(120deg, rgba(139,84,255,0.22), rgba(120,178,255,0.14) 34%, rgba(255,196,132,0.08) 55%, rgba(105,34,245,0.20) 78%, rgba(139,84,255,0.22))",
+            "linear-gradient(120deg, rgba(142, 100, 255,0.22), rgba(120,178,255,0.14) 34%, rgba(255,196,132,0.08) 55%, rgba(115, 54, 255,0.20) 78%, rgba(142, 100, 255,0.22))",
           filter: "blur(64px)",
           willChange: "transform",
         }}

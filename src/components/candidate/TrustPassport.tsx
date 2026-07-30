@@ -119,7 +119,7 @@ export function TrustPassport() {
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full" style={{ background: "#059669", color: "#fff" }}>
               <Check size={18} strokeWidth={3} />
             </span>
-            <p className="text-[14px] font-semibold" style={{ color: "#047857" }}>
+            <p className="text-[14px] font-semibold" style={{ color: "var(--ok)" }}>
               Profile approved — matched employers can now see the {dims.length - hiddenCount} dimension
               {dims.length - hiddenCount === 1 ? "" : "s"} you left visible.
             </p>

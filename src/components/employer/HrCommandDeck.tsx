@@ -74,7 +74,7 @@ export function HrCommandDeck() {
       <div aria-hidden className="pointer-events-none absolute inset-x-0 -top-16 h-[460px] overflow-hidden">
         <div
           className="absolute left-1/2 top-0 h-[560px] w-[960px] -translate-x-1/2 rounded-full"
-          style={{ background: "radial-gradient(circle at 50% 0%, rgba(139,84,255,0.26) 0%, rgba(105,34,245,0.13) 22%, transparent 62%)", filter: "blur(26px)" }}
+          style={{ background: "radial-gradient(circle at 50% 0%, rgba(142, 100, 255,0.26) 0%, rgba(115, 54, 255,0.13) 22%, transparent 62%)", filter: "blur(26px)" }}
         />
       </div>
 
@@ -154,7 +154,7 @@ function PromptDeck({
         <div className="absolute -inset-[1.5px] rounded-[22px] opacity-70" style={{ background: "linear-gradient(135deg, var(--iris-line), transparent 60%)" }} aria-hidden />
         <div
           className="relative rounded-[22px] border bg-[var(--glass-hi)] p-2.5"
-          style={{ borderColor: "var(--glass-line-hi)", boxShadow: "0 24px 60px -30px rgba(40,26,120,0.4), inset 0 1px 0 rgba(255,255,255,0.75)" }}
+          style={{ borderColor: "var(--glass-line-hi)", boxShadow: "0 24px 60px -30px rgba(16, 15, 13,0.4), inset 0 1px 0 rgba(255,255,255,0.75)" }}
         >
           <textarea
             ref={taRef}
@@ -215,7 +215,7 @@ function Selector({ label, value, options, onChange }: { label: string; value: s
       {open && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute bottom-full left-0 z-20 mb-2 min-w-[130px] rounded-[12px] border p-1" style={{ background: "var(--glass-hi)", borderColor: "var(--glass-line-hi)", boxShadow: "0 18px 40px -18px rgba(40,26,120,0.4)" }}>
+          <div className="absolute bottom-full left-0 z-20 mb-2 min-w-[130px] rounded-[12px] border p-1" style={{ background: "var(--glass-hi)", borderColor: "var(--glass-line-hi)", boxShadow: "0 18px 40px -18px rgba(16, 15, 13,0.4)" }}>
             {options.map((o) => (
               <button key={o} type="button" onClick={() => { onChange(o); setOpen(false); }} className="flex w-full items-center justify-between rounded-[8px] px-2.5 py-1.5 text-left text-[13px] font-medium transition-colors hover:bg-[var(--iris-ghost)]" style={{ color: o === value ? "var(--iris-ink)" : "var(--ink-2)" }}>
                 {o} {o === value && <Check size={13} />}
@@ -245,7 +245,7 @@ function BuildLog({ stage, reduce }: { stage: number; reduce: boolean }) {
               className="flex items-center gap-2.5 text-[13.5px]"
             >
               {done ? (
-                <span className="grid size-5 place-items-center rounded-full" style={{ background: "rgba(16,185,129,0.14)", color: "#047857" }}><Check size={13} /></span>
+                <span className="grid size-5 place-items-center rounded-full" style={{ background: "rgba(16,185,129,0.14)", color: "var(--ok)" }}><Check size={13} /></span>
               ) : (
                 <Loader2 size={16} className={reduce ? "text-[var(--iris)]" : "animate-spin text-[var(--iris)]"} />
               )}
@@ -262,7 +262,7 @@ function Results({ result, reduce }: { result: HrCreateResult; reduce: boolean }
   if (result.refused) {
     return (
       <motion.div initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="rounded-[var(--r-card)] p-5" style={{ background: "rgba(220,38,38,0.08)", border: "1px solid rgba(220,38,38,0.25)" }}>
-        <p className="flex items-start gap-2 text-[14px] font-semibold text-[#b91c1c]"><ShieldAlert size={18} className="mt-0.5 shrink-0" /> {result.refused}</p>
+        <p className="flex items-start gap-2 text-[14px] font-semibold text-[var(--bad)]"><ShieldAlert size={18} className="mt-0.5 shrink-0" /> {result.refused}</p>
       </motion.div>
     );
   }

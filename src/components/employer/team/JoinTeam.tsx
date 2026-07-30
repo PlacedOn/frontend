@@ -63,7 +63,7 @@ export function JoinTeam() {
     return (
       <div className="glass max-w-xl rounded-[var(--r-card)] p-6">
         <p className="inline-flex items-center gap-2 text-[15px] font-bold text-[var(--ink)]">
-          <CircleCheck size={18} className="text-[#047857]" /> You&rsquo;ve joined {state.org.name}.
+          <CircleCheck size={18} className="text-[var(--ok)]" /> You&rsquo;ve joined {state.org.name}.
         </p>
         <p className="mt-1.5 text-[13.5px] text-[var(--ink-2)]">You&rsquo;re now a {state.org.my_role.replace("_", " ")}.</p>
         <Link

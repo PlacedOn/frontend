@@ -12,8 +12,8 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 const STAGE_TONE: Record<AppStageId, { bg: string; fg: string }> = {
   saved: { bg: "var(--mist)", fg: "var(--ink-3)" },
   applied: { bg: "var(--iris-ghost)", fg: "var(--iris-ink)" },
-  interview: { bg: "rgba(16,185,129,0.12)", fg: "#047857" },
-  offer: { bg: "rgba(245,134,11,0.12)", fg: "#B45309" },
+  interview: { bg: "rgba(16,185,129,0.12)", fg: "var(--ok)" },
+  offer: { bg: "rgba(245,134,11,0.12)", fg: "var(--warn)" },
 };
 
 export function CandidateApplications() {

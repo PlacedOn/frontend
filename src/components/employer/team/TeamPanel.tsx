@@ -176,7 +176,7 @@ function CreateOrg({ onCreated }: { onCreated: () => void }) {
           style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass)" }}
         />
       </label>
-      {err && <p className="mt-4 text-[13px] font-semibold text-[#b91c1c]">{err}</p>}
+      {err && <p className="mt-4 text-[13px] font-semibold text-[var(--bad)]">{err}</p>}
       <button
         type="submit"
         disabled={busy}
@@ -241,7 +241,7 @@ function InviteForm({ onInvited }: { onInvited: (inv: OrgInvite) => void }) {
           <UserPlus size={15} /> Invite
         </button>
       </div>
-      {err && <p className="mt-2 text-[13px] font-semibold text-[#b91c1c]">{err}</p>}
+      {err && <p className="mt-2 text-[13px] font-semibold text-[var(--bad)]">{err}</p>}
     </form>
   );
 }
@@ -285,7 +285,7 @@ function InviteRow({ inv, canRevoke, onRevoke }: { inv: OrgInvite; canRevoke: bo
             }}
             disabled={busy}
             aria-label="Revoke invite"
-            className="grid h-8 w-8 cursor-pointer place-items-center rounded-[var(--r-btn)] border text-[var(--ink-3)] transition-colors hover:text-[#b91c1c] disabled:opacity-50"
+            className="grid h-8 w-8 cursor-pointer place-items-center rounded-[var(--r-btn)] border text-[var(--ink-3)] transition-colors hover:text-[var(--bad)] disabled:opacity-50"
             style={{ borderColor: "var(--glass-line-hi)", background: "var(--glass-hi)" }}
           >
             <X size={14} />

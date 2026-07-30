@@ -11,7 +11,7 @@ import { getCandidateMatches, submitInterest, dismissMatch } from "@/lib/mock/ma
 
 const CONFIDENCE_STYLE: Record<Confidence, { bg: string; fg: string; label: string }> = {
   high: { bg: "var(--iris-ghost)", fg: "var(--iris-ink)", label: "High confidence" },
-  medium: { bg: "rgba(245,134,11,0.12)", fg: "#B45309", label: "Medium confidence" },
+  medium: { bg: "rgba(245,134,11,0.12)", fg: "var(--warn)", label: "Medium confidence" },
   low: { bg: "var(--mist)", fg: "var(--ink-3)", label: "Emerging signal" },
 };
 
@@ -364,7 +364,7 @@ function MatchReasonDrawer({ match, onClose }: { match: RoleMatch | null; onClos
                     <span
                       key={s}
                       className="rounded-full px-2.5 py-1 text-[12px] font-medium"
-                      style={{ background: "rgba(245,134,11,0.12)", color: "#B45309" }}
+                      style={{ background: "rgba(245,134,11,0.12)", color: "var(--warn)" }}
                     >
                       {s}
                     </span>

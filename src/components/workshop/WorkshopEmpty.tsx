@@ -65,7 +65,7 @@ export function WorkshopEmpty({ live, onChanged }: Props) {
           <Link
             href="/pre-interview"
             className="mt-6 inline-flex items-center gap-2 rounded-[13px] px-4 py-2.5 text-[13.5px] font-bold text-white transition-transform active:scale-[0.97]"
-            style={{ background: "var(--iris)", boxShadow: "0 8px 22px -8px rgba(105,34,245,.6)" }}
+            style={{ background: "var(--iris)", boxShadow: "0 8px 22px -8px rgba(115, 54, 255,.6)" }}
           >
             Take the trial interview <ArrowRight size={15} aria-hidden />
           </Link>

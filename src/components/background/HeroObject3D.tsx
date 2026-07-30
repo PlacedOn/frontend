@@ -50,7 +50,7 @@ function ParticleSphere({ reduce }: { reduce: boolean }) {
       </bufferGeometry>
       <pointsMaterial
         size={0.015}
-        color="#7a3cf0"
+        color="#7336FF"
         transparent
         opacity={0.85}
         sizeAttenuation

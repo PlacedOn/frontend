@@ -60,10 +60,10 @@ export function RolePicker({ value, onChange }: Props) {
               style={{
                 borderColor: selected ? "var(--iris)" : "var(--glass-line-hi)",
                 background: selected
-                  ? "linear-gradient(150deg, rgba(105,34,245,0.11) 0%, rgba(139,84,255,0.05) 55%, rgba(255,255,255,0.65) 100%)"
+                  ? "linear-gradient(150deg, rgba(115, 54, 255,0.11) 0%, rgba(142, 100, 255,0.05) 55%, rgba(255,255,255,0.65) 100%)"
                   : "rgba(255,255,255,0.62)",
                 boxShadow: selected
-                  ? "0 0 0 1px var(--iris), 0 14px 30px -14px rgba(105, 34, 245, 0.42)"
+                  ? "0 0 0 1px var(--iris), 0 14px 30px -14px rgba(115, 54, 255, 0.42)"
                   : "var(--shadow-sm)",
               }}
             >
@@ -74,7 +74,7 @@ export function RolePicker({ value, onChange }: Props) {
                     ? "linear-gradient(135deg, var(--iris-soft), var(--iris))"
                     : "var(--mist)",
                   color: selected ? "#fff" : "var(--ink-2)",
-                  boxShadow: selected ? "0 6px 14px -6px rgba(105, 34, 245, 0.55)" : "none",
+                  boxShadow: selected ? "0 6px 14px -6px rgba(115, 54, 255, 0.55)" : "none",
                 }}
               >
                 <Icon size={17} />
@@ -95,7 +95,7 @@ export function RolePicker({ value, onChange }: Props) {
                     className="absolute right-3 top-3 grid h-5 w-5 place-items-center rounded-full text-white"
                     style={{
                       background: "linear-gradient(135deg, var(--iris-soft), var(--iris))",
-                      boxShadow: "0 0 0 2px rgba(255,255,255,0.8), 0 4px 10px -3px rgba(105,34,245,0.5)",
+                      boxShadow: "0 0 0 2px rgba(255,255,255,0.8), 0 4px 10px -3px rgba(115, 54, 255,0.5)",
                     }}
                     aria-hidden="true"
                   >

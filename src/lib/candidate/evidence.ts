@@ -25,7 +25,7 @@ export const CANDIDATE_EVIDENCE: EvidenceTrait[] = [
 ];
 
 export const BAND_META: Record<Band, { label: string; fg: string; bg: string }> = {
-  high: { label: "Strong", fg: "#047857", bg: "rgba(16,185,129,0.14)" },
+  high: { label: "Strong", fg: "var(--ok)", bg: "rgba(16,185,129,0.14)" },
   emerging: { label: "Emerging", fg: "var(--iris-ink)", bg: "var(--iris-ghost)" },
-  needs_review: { label: "Needs more", fg: "#B45309", bg: "rgba(245,134,11,0.14)" },
+  needs_review: { label: "Needs more", fg: "var(--warn)", bg: "rgba(245,134,11,0.14)" },
 };

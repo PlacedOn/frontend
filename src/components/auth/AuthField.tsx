@@ -73,7 +73,7 @@ export function AuthField({
             background: focused ? "rgba(255,255,255,0.94)" : "rgba(255,255,255,0.72)",
             borderColor: error ? "var(--danger)" : focused ? "var(--iris)" : "var(--glass-line-hi)",
             boxShadow: focused
-              ? "0 0 0 4px var(--iris-ghost), 0 12px 28px -14px rgba(105, 34, 245, 0.45)"
+              ? "0 0 0 4px var(--iris-ghost), 0 12px 28px -14px rgba(115, 54, 255, 0.45)"
               : error
                 ? "0 0 0 4px rgba(229, 72, 77, 0.08), var(--shadow-sm)"
                 : "var(--shadow-sm)",

@@ -21,7 +21,7 @@ export function Logo({ size = 34, showWordmark = true, className }: Props) {
         width={Math.round(size * MARK_ASPECT)}
         height={size}
         viewBox="133 119 354 400"
-        fill="var(--iris)"
+        fill="var(--brand-mark)"
         className="transition-transform duration-300 ease-out group-hover:scale-105"
         aria-hidden="true"
       >

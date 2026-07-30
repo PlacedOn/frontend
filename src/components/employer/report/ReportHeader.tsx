@@ -86,7 +86,7 @@ export function ReportHeader({ report, status, onSave, onPass, onRequestIntro }:
               <Send size={15} /> Request intro
             </button>
           ) : (
-            <span className="inline-flex items-center gap-2 rounded-[var(--r-btn)] px-5 py-2.5 text-[14px] font-bold" style={{ background: "rgba(16,185,129,0.12)", color: "#047857" }}>
+            <span className="inline-flex items-center gap-2 rounded-[var(--r-btn)] px-5 py-2.5 text-[14px] font-bold" style={{ background: "rgba(16,185,129,0.12)", color: "var(--ok)" }}>
               <Check size={15} /> Intro requested
             </span>
           )}

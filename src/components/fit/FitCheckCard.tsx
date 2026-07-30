@@ -20,8 +20,8 @@ const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 type Tone = "light" | "dark";
 
 const BUCKET_FG: Record<Tone, Record<FitCheck["bucket"], string>> = {
-  light: { strong: "#047857", worth_discussing: "var(--iris-ink)", clarify: "#B45309", not_enough: "var(--ink-3)" },
-  dark: { strong: "#4FD69C", worth_discussing: "#B79BFF", clarify: "#F0B460", not_enough: "rgba(255,255,255,0.5)" },
+  light: { strong: "var(--ok)", worth_discussing: "var(--iris-ink)", clarify: "var(--warn)", not_enough: "var(--ink-3)" },
+  dark: { strong: "#4FD69C", worth_discussing: "var(--v-300)", clarify: "#F0B460", not_enough: "rgba(255,255,255,0.5)" },
 };
 
 const WORK_REALITY_LABEL: Record<FitCheck["work_reality"], string> = {

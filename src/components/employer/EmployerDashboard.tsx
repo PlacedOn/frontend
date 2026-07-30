@@ -129,14 +129,14 @@ function MockEmployerBoard() {
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {jobs.map((j) => {
-            const accent = j.status === "Active" ? "#047857" : "var(--ink-3)";
+            const accent = j.status === "Active" ? "var(--ok)" : "var(--ink-3)";
             return (
             <div key={j.id} className="glass relative flex flex-col overflow-hidden rounded-[var(--r-card)] p-5 transition-transform duration-[var(--d-std)] hover:-translate-y-1">
               <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: `linear-gradient(90deg, ${accent}, transparent)` }} />
               <div className="flex items-center justify-between">
                 <span
                   className="rounded-full px-2.5 py-1 text-[11.5px] font-semibold"
-                  style={j.status === "Active" ? { background: "rgba(16,185,129,0.12)", color: "#047857" } : { background: "var(--mist)", color: "var(--ink-3)" }}
+                  style={j.status === "Active" ? { background: "rgba(16,185,129,0.12)", color: "var(--ok)" } : { background: "var(--mist)", color: "var(--ink-3)" }}
                 >
                   {j.status}
                 </span>

@@ -74,7 +74,7 @@ export function ApplicationInbox() {
             <p className="font-[var(--font-display)] text-[15px] font-semibold text-[var(--ink)]">
               Your application inbox
             </p>
-            <span className="rounded-full px-3 py-1 text-[12px] font-bold" style={{ background: "rgba(220,38,38,.1)", color: "#b91c1c" }}>
+            <span className="rounded-full px-3 py-1 text-[12px] font-bold" style={{ background: "rgba(220,38,38,.1)", color: "var(--bad)" }}>
               0 / 148 read
             </span>
           </div>
@@ -111,7 +111,7 @@ export function ApplicationInbox() {
                   className="shrink-0 rounded-full px-2.5 py-1 text-[11.5px] font-semibold"
                   style={
                     r.status === "rejected"
-                      ? { background: "rgba(220,38,38,.1)", color: "#b91c1c" }
+                      ? { background: "rgba(220,38,38,.1)", color: "var(--bad)" }
                       : { background: "var(--mist)", color: "var(--ink-3)" }
                   }
                 >
