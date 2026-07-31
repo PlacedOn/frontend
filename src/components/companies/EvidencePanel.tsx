@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { BadgeCheck, Quote, Lock, EyeOff } from "@/components/ui/icons";
+import { EyeOff } from "@/components/ui/icons";
 
 type Signal = { trait: string; score: number; quote: string };
 
@@ -40,7 +40,6 @@ export function EvidencePanel() {
         {/* What you see */}
         <div className="glass rounded-[var(--r-card)] p-6">
           <div className="mb-5 flex items-center gap-2">
-            <BadgeCheck size={18} animateOnView style={{ color: "var(--iris-ink)" }} />
             <p className="font-[var(--font-display)] text-[15px] font-semibold text-[var(--ink)]">Candidate evidence, visible to you</p>
           </div>
           <div className="flex flex-col gap-3">
@@ -51,7 +50,6 @@ export function EvidencePanel() {
                   <span className="text-[14px] font-semibold text-[var(--ink)]">{s.trait}</span>
                 </div>
                 <p className="mt-2 flex gap-2 border-l-2 pl-3 text-[13px] italic leading-relaxed text-[var(--ink-2)]" style={{ borderColor: "var(--iris-soft)" }}>
-                  <Quote size={14} className="mt-0.5 shrink-0" style={{ color: "var(--iris-soft)" }} />
                   {s.quote}
                 </p>
               </div>
@@ -73,7 +71,7 @@ export function EvidencePanel() {
             </div>
             <div className="absolute inset-0 grid place-items-center">
               <span className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold" style={{ background: "var(--ink)", color: "#fff" }}>
-                <Lock size={15} animateOnView /> Raw transcript · sealed
+                Raw transcript · sealed
               </span>
             </div>
           </div>

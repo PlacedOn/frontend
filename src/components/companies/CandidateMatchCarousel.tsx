@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { ChevronLeft, ChevronRight, BadgeCheck } from "@/components/ui/icons";
+import { ChevronLeft, ChevronRight } from "@/components/ui/icons";
 
 type Candidate = {
   name: string;
@@ -103,7 +103,7 @@ export function CandidateMatchCarousel() {
 
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-                  <BadgeCheck size={13} /> Verified via interview
+                  Verified via interview
                 </span>
                 {c.strengths.map((s) => (
                   <span key={s} className="rounded-full px-3 py-1 text-[12.5px] font-medium text-[var(--ink-2)]" style={{ border: "1px solid var(--glass-line)" }}>{s}</span>

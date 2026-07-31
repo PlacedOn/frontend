@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AnimateIcon, ArrowRight, ShieldCheck, ScrollText, Scale, Gavel, Eye, Lock, Undo2, X, Check } from "@/components/ui/icons";
+import { AnimateIcon, ArrowRight, Undo2 } from "@/components/ui/icons";
 
 import { BeamsField } from "@/components/background/BeamsField";
 import { Nav } from "@/components/sections/Nav";
@@ -20,9 +20,9 @@ export const metadata: Metadata = {
 };
 
 const COMPLIANCE = [
-  { icon: ScrollText, label: "NYC Local Law 144" },
-  { icon: Scale, label: "EU AI Act aligned" },
-  { icon: Gavel, label: "Bias-audited & contestable" },
+  { label: "NYC Local Law 144" },
+  { label: "EU AI Act aligned" },
+  { label: "Bias-audited & contestable" },
 ];
 
 const CLAIMS = [
@@ -42,8 +42,8 @@ const PROVEN = [
 ];
 
 const CONTROL = [
-  { icon: Eye, title: "You approve every trait", body: "Nothing reaches an employer until you publish it. Hide anything, anytime." },
-  { icon: Lock, title: "Your transcript stays private", body: "Employers see approved evidence, never the raw interview. That never changes." },
+  { title: "You approve every trait", body: "Nothing reaches an employer until you publish it. Hide anything, anytime." },
+  { title: "Your transcript stays private", body: "Employers see approved evidence, never the raw interview. That never changes." },
   { icon: Undo2, title: "Contest anything", body: "Every score links to your own words, so you can challenge what doesn't feel right." },
 ];
 
@@ -52,9 +52,9 @@ function TrustStrip() {
     <section className="shell pb-6">
       <div className="glass flex flex-wrap items-center justify-center gap-x-8 gap-y-3 rounded-[var(--r-card)] px-6 py-4">
         <span className="text-[12.5px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">Built to be trusted</span>
-        {COMPLIANCE.map(({ icon: Icon, label }) => (
+        {COMPLIANCE.map(({ label }) => (
           <span key={label} className="inline-flex items-center gap-2 text-[13.5px] font-medium text-[var(--ink-2)]">
-            <Icon size={16} animateOnView style={{ color: "var(--iris-ink)" }} /> {label}
+            {label}
           </span>
         ))}
       </div>
@@ -77,7 +77,7 @@ function ResumesVsProven() {
           <ul className="flex flex-col gap-3">
             {CLAIMS.map((c) => (
               <li key={c} className="flex items-start gap-2.5 text-[14.5px] text-[var(--ink-2)]">
-                <X size={17} className="mt-0.5 shrink-0 text-[var(--ink-3)]" /> {c}
+                {c}
               </li>
             ))}
           </ul>
@@ -87,7 +87,7 @@ function ResumesVsProven() {
           <ul className="flex flex-col gap-3">
             {PROVEN.map((p) => (
               <li key={p} className="flex items-start gap-2.5 text-[14.5px] font-medium text-[var(--ink)]">
-                <Check size={17} animateOnView className="mt-0.5 shrink-0" style={{ color: "var(--iris-ink)" }} /> {p}
+                {p}
               </li>
             ))}
           </ul>
@@ -108,11 +108,8 @@ function InControl() {
         </p>
       </div>
       <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">
-        {CONTROL.map(({ icon: Icon, title, body }) => (
+        {CONTROL.map(({ title, body }) => (
           <div key={title} className="glass rounded-[var(--r-card)] p-6">
-            <span className="mb-4 inline-grid h-11 w-11 place-items-center rounded-[0.85rem]" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-              <Icon size={20} animateOnView animateOnHover />
-            </span>
             <h3 className="font-[var(--font-display)] text-[16.5px] font-semibold text-[var(--ink)]">{title}</h3>
             <p className="mt-2 text-[14px] leading-relaxed text-[var(--ink-2)]">{body}</p>
           </div>
@@ -167,7 +164,7 @@ function FinalCta() {
               </a>
             </div>
             <p className="mt-6 flex items-center justify-center gap-2 text-[13px]" style={{ color: "rgba(255,255,255,.6)" }}>
-              <ShieldCheck size={14} animateOnView /> You approve everything before any employer sees it.
+              You approve everything before any employer sees it.
             </p>
           </div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { AnimateIcon, ArrowRight, Lock } from "@/components/ui/icons";
+import { AnimateIcon, ArrowRight } from "@/components/ui/icons";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
 
 const ease = [0.22, 0.68, 0.31, 1] as const;
@@ -58,7 +58,7 @@ export function CompaniesHero() {
           </motion.div>
 
           <motion.p {...rise(0.44)} className="mt-6 flex items-center gap-2 text-[13px] text-[var(--ink-3)]">
-            <Lock size={15} animateOnView /> Bias-audited &amp; contestable · LL144 and EU AI Act aligned.
+            Bias-audited &amp; contestable · LL144 and EU AI Act aligned.
           </motion.p>
         </div>
 
