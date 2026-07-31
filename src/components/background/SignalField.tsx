@@ -131,16 +131,21 @@ export function SignalField() {
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden" style={{ zIndex: 0 }}>
-      {/* gentle ambient aurora wash (always-on colour) */}
-      <div
-        className="sf-aurora absolute inset-[-45%]"
-        style={{
-          background:
-            "linear-gradient(120deg, rgba(142, 100, 255,0.22), rgba(120,178,255,0.14) 34%, rgba(255,196,132,0.08) 55%, rgba(115, 54, 255,0.20) 78%, rgba(142, 100, 255,0.22))",
-          filter: "blur(64px)",
-          willChange: "transform",
-        }}
-      />
+      {/* The ambient aurora wash is gone.
+          It was a five-stop gradient — violet, then rgba(120,178,255) BLUE,
+          then rgba(255,196,132) PEACH, then violet again — blurred 64px across
+          a fixed inset-[-45%] layer, i.e. behind every section of every page.
+          That tinted wash sitting under white cards and a near-black hero is
+          what read as "the colours don't match": three unrelated grounds on one
+          screen. The palette was never the problem here; the ground was.
+
+          Note the blue and the peach survived the ramp cleanup untouched.
+          color-lint only flags violet-dominant values (b > r > g), so a blue
+          and an orange sat in the most-visible layer on the site and no check
+          could see them. Worth widening that filter.
+
+          The node network below is kept — the motion stays, the colour cast
+          goes. */}
 
       {/* live node network */}
       <canvas
@@ -153,13 +158,6 @@ export function SignalField() {
       />
 
       <style>{`
-        @keyframes sfAuroraShift {
-          0% { transform: translate3d(-5%, -3%, 0); }
-          50% { transform: translate3d(5%, 3%, 0); }
-          100% { transform: translate3d(-5%, -3%, 0); }
-        }
-        .sf-aurora { animation: sfAuroraShift 20s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce) { .sf-aurora { animation: none; } }
       `}</style>
     </div>
   );
