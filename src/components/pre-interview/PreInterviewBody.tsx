@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties, ComponentType } from "react";
+import { TopicPreview } from "@/components/pre-interview/TopicPreview";
 import { track } from "@/lib/track";
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "motion/react";
 import {
@@ -366,6 +367,7 @@ export function PreInterviewBody() {
 
       {/* What happens next — four calm steps with ghost numerals */}
       <section id="expect" className="shell scroll-mt-28 py-20 md:py-28">
+        <TopicPreview />
         <motion.p {...rise(0)} className="eyebrow mb-10">
           What happens next
         </motion.p>

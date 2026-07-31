@@ -33,7 +33,8 @@ export type ProductEvent =
   | "cta_fork_selected"
   | "quick_chip_clicked"
   | "search_submitted"
-  | "pre_interview_start";
+  | "pre_interview_start"
+  | "interview_topic_opened";
 
 /** Values allowed in props. Deliberately narrow — no nested objects, because
  *  nesting is how free text sneaks in. */
