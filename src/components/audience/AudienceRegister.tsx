@@ -27,6 +27,29 @@ export type Audience = "candidate" | "employer";
  * Cleanup restores the previous value rather than removing the attribute, so
  * nesting (an employer surface rendered inside a candidate one, or vice versa)
  * unwinds correctly instead of dropping the register on unmount.
+ *
+ * Verified behaviour (measured, not assumed — dev server + headless chromium):
+ *   nesting      a wrapper [data-audience] still wins inside its own subtree.
+ *                Both selectors are (0,1,0), but the wrapper is a descendant,
+ *                so <html> does NOT override a nested scope.
+ *   navigation   client-side <Link> hops carry the register:
+ *                /companies employer -> /candidates candidate -> back employer.
+ *   cleanup      leaving a scoped route for an unscoped one removes it; / does
+ *                not inherit a stale register from the page before it.
+ *
+ * KNOWN GAP — a pre-hydration window. `useEffect` runs after paint, so between
+ * first paint and hydration <html> carries no attribute and anything on
+ * document.body resolves through :root. Measured with JS delayed 1200ms: the
+ * body probe reads v-700 before hydration and v-800 after.
+ *
+ * It is currently unreachable, and the reason is worth stating so nobody
+ * assumes it stays that way: every createPortal consumer in this codebase
+ * renders closed and opens on a user action, which cannot happen before
+ * hydration. The gap becomes visible the day someone ships a portal that
+ * renders OPEN on mount. The fix at that point is the standard one — emit the
+ * attribute in the server HTML (a blocking inline script, as theme switchers
+ * do) rather than widening this effect. That needs a CSP nonce here, which is
+ * why it is not done pre-emptively.
  */
 export function AudienceRegister({ audience }: { audience: Audience }) {
   useEffect(() => {
