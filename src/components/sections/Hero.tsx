@@ -43,7 +43,7 @@ export function Hero() {
 
         <div className="relative flex min-h-[clamp(520px,70vh,720px)] max-w-[54rem] flex-col justify-center px-6 py-16 md:px-14 md:py-20 lg:px-20">
           <h1
-            className="max-w-[17ch] text-[clamp(2.4rem,1.4rem+4.4vw,4.6rem)] font-extrabold leading-[1.02] tracking-[-0.03em]"
+            className="max-w-[17ch] text-[clamp(2.4rem,1.4rem+4.4vw,4.6rem)] font-semibold leading-[1.05] tracking-[-0.015em]"
             /* Colour inline, not via a utility: globals.css carries an
                UNLAYERED `h1 { color: var(--ink) }`, and unlayered rules beat
                layered Tailwind utilities regardless of specificity — a class

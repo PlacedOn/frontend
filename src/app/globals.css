@@ -117,9 +117,15 @@
   --text-4xl:  clamp(2.25rem,  1.60rem + 3.20vw, 4rem);
   --text-hero: clamp(2.5rem,   1.40rem + 4.60vw, 4.75rem);
   --weight-body: 400; --weight-med: 500; --weight-head: 600;
-  --tracking-hero: -0.030em; --tracking-head: -0.022em;
+  /* Reference: the Upwork hero. Its display face is a neutral grotesque set
+     at a medium-to-semibold weight with only slight negative tracking — at
+     -0.030em the letters nearly touch at 74px, which reads as compression
+     rather than confidence. Loosened, and the hero dropped from extrabold
+     (800) to semibold (600): extrabold was the single biggest divergence
+     from the reference, and it closed the counters at display size. */
+  --tracking-hero: -0.015em; --tracking-head: -0.018em;
   --tracking-body: 0; --tracking-label: 0.14em;
-  --leading-hero: 1.02; --leading-head: 1.15; --leading-body: 1.60;
+  --leading-hero: 1.05; --leading-head: 1.15; --leading-body: 1.60;
 
   /* motion — four curves, no overshoot */
   --dur-fast: 150ms; --dur-normal: 240ms; --dur-slow: 400ms; --dur-reveal: 600ms;
