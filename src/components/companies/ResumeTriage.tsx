@@ -75,7 +75,6 @@ export function ResumeTriage() {
               return (
                 <li key={r.title} className="flex items-center gap-3 border-b py-3 last:border-b-0" style={{ borderColor: "var(--glass-line)" }}>
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[0.7rem]" style={{ background: "var(--mist)", color: "var(--ink-3)" }}>
-                    <FileText size={16} />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[14px] font-semibold text-[var(--ink)]">{r.title}</p>

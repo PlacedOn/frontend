@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { AnimateIcon, ArrowRight, ShieldCheck } from "@/components/ui/icons";
+import { AnimateIcon, ArrowRight } from "@/components/ui/icons";
 import { Button } from "@/components/ui/Button";
 
 const ease = [0.22, 0.68, 0.31, 1] as const;
@@ -41,7 +41,7 @@ export function CandidatesHero() {
           <motion.div {...rise(0.34)} className="mt-8 flex flex-wrap items-center gap-3">
             <AnimateIcon animateOnHover>
               <Button href="/pre-interview">
-                Take your interview, free <ArrowRight size={17} />
+                Take your interview, free
               </Button>
             </AnimateIcon>
             <Button href="#sample" variant="ghost">
@@ -50,7 +50,7 @@ export function CandidatesHero() {
           </motion.div>
 
           <motion.p {...rise(0.44)} className="mt-6 flex items-center gap-2 text-[13px] text-[var(--ink-3)]">
-            <ShieldCheck size={15} animateOnView /> You approve everything before any employer sees it.
+            You approve everything before any employer sees it.
           </motion.p>
         </div>
 

@@ -1,4 +1,5 @@
 import { SignalField } from "@/components/background/SignalField";
+import { TrackView } from "@/components/telemetry/TrackView";
 import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { VisionReel } from "@/components/sections/VisionReel";
@@ -16,6 +17,7 @@ export default function Home() {
   return (
     <>
       <SignalField />
+      <TrackView event="landing_view" />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <Hero />

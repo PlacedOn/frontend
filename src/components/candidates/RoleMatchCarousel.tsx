@@ -75,7 +75,7 @@ export function RoleMatchCarousel() {
           style={{ border: "1px solid var(--glass-line)", color: "var(--ink-2)" }}
           aria-label="Previous role"
         >
-          <ChevronLeft size={20} animateOnHover />
+
         </button>
 
         <div className="relative min-h-[290px] min-w-0 flex-1 sm:min-h-[250px]">
@@ -125,7 +125,7 @@ export function RoleMatchCarousel() {
           style={{ border: "1px solid var(--glass-line)", color: "var(--ink-2)" }}
           aria-label="Next role"
         >
-          <ChevronRight size={20} animateOnHover />
+
         </button>
       </div>
 

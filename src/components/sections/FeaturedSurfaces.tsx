@@ -209,9 +209,6 @@ export function FeaturedSurfaces() {
                     style={{ background: isActive ? "var(--glass-hi)" : "transparent", border: `1px solid ${isActive ? "var(--iris-line)" : "transparent"}`, boxShadow: isActive ? "var(--shadow-sm)" : "none" }}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[12px] border transition-colors" style={{ background: isActive ? "rgba(115, 54, 255,0.10)" : "rgba(115, 54, 255,0.05)", borderColor: isActive ? "var(--iris)" : "var(--iris-line)", color: "var(--iris-ink)" }}>
-                        <Icon size={18} strokeWidth={1.75} />
-                      </span>
                       <div className="min-w-0">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>{s.eyebrow}</p>
                         <p className="text-[15px] font-bold leading-tight text-[var(--ink)]">{s.title}</p>
@@ -230,7 +227,7 @@ export function FeaturedSurfaces() {
               );
             })}
             <Link href="/pre-interview" className="mt-1 inline-flex items-center gap-2 px-4 text-[14px] font-semibold transition-opacity hover:opacity-70" style={{ color: "var(--iris-ink)" }}>
-              Take a sample interview <ArrowRight size={15} />
+              Take a sample interview
             </Link>
           </ul>
 

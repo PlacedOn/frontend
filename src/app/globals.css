@@ -324,20 +324,21 @@ body {
   a { color: inherit; text-decoration: none; }
 }
 
-/* One family, weight does the work — the "Minimal Swiss" pairing. Sora is a
-   geometric with real personality, which fought the neutral enterprise read;
-   Inter at 600 with tight tracking is the reference register. */
-/* In @layer base so Tailwind text-* utilities can override heading colour.
-   Unlayered, this rule beat every text-white on a dark ground regardless of
-   specificity — it rendered near-black headlines on the near-black hero twice
-   before this was found. Layered, utilities win, which is what components
-   expect. */
+/* One family, weight does the work. In @layer base so Tailwind text-* utilities
+   can override heading colour — unlayered, this rule beat every text-white on a
+   dark ground regardless of specificity and rendered near-black headlines on
+   the near-black hero, twice.
+
+   Values tuned toward the reference (Upwork's display setting): a neutral
+   weight with only slight negative tracking. At display sizes, 700 with
+   -0.03em closes the counters — the bowls of o/e/a fill in — and the letters
+   nearly touch, which reads as compression rather than confidence. */
 @layer base {
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.06;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
   margin: 0;
   color: var(--ink);
 }

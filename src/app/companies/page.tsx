@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AudienceRegister } from "@/components/audience/AudienceRegister";
-import { AnimateIcon, ArrowRight, ScrollText, Scale, Gavel, ShieldCheck } from "@/components/ui/icons";
+import { AnimateIcon, ArrowRight, Gavel, Scale, ScrollText, ShieldCheck } from "@/components/ui/icons";
 
 import { PlasmaVeil } from "@/components/background/PlasmaVeil";
 import { Nav } from "@/components/sections/Nav";
@@ -21,15 +21,15 @@ export const metadata: Metadata = {
 };
 
 const COMPLIANCE = [
-  { icon: ScrollText, title: "NYC Local Law 144", body: "Automated employment decisions are bias-audited, as the law requires.", href: "/trust/ll144" },
-  { icon: Scale, title: "EU AI Act aligned", body: "Built for transparency and human oversight from the ground up.", href: "/trust/eu-ai-act" },
-  { icon: Gavel, title: "Contestable by design", body: "Every score is sourced and challengeable — no black-box decisions.", href: "/trust/contest" },
+  { title: "NYC Local Law 144", body: "Automated employment decisions are bias-audited, as the law requires.", href: "/trust/ll144" },
+  { title: "EU AI Act aligned", body: "Built for transparency and human oversight from the ground up.", href: "/trust/eu-ai-act" },
+  { title: "Contestable by design", body: "Every score is sourced and challengeable — no black-box decisions.", href: "/trust/contest" },
 ];
 
 const STRIP = [
-  { icon: ScrollText, label: "NYC Local Law 144" },
-  { icon: Scale, label: "EU AI Act aligned" },
-  { icon: Gavel, label: "Bias-audited & contestable" },
+  { label: "NYC Local Law 144" },
+  { label: "EU AI Act aligned" },
+  { label: "Bias-audited & contestable" },
 ];
 
 function TrustStrip() {
@@ -37,9 +37,9 @@ function TrustStrip() {
     <section className="shell pb-6">
       <div className="glass flex flex-wrap items-center justify-center gap-x-8 gap-y-3 rounded-[var(--r-card)] px-6 py-4">
         <span className="text-[12.5px] font-semibold uppercase tracking-wide text-[var(--ink-3)]">Defensible hiring</span>
-        {STRIP.map(({ icon: Icon, label }) => (
+        {STRIP.map(({ label }) => (
           <span key={label} className="inline-flex items-center gap-2 text-[13.5px] font-medium text-[var(--ink-2)]">
-            <Icon size={16} animateOnView style={{ color: "var(--iris-ink)" }} /> {label}
+            {label}
           </span>
         ))}
       </div>
@@ -61,19 +61,16 @@ function ComplianceBlock() {
         </p>
       </div>
       <div className="mx-auto grid max-w-4xl gap-4 md:grid-cols-3">
-        {COMPLIANCE.map(({ icon: Icon, title, body, href }) => (
+        {COMPLIANCE.map(({ title, body, href }) => (
           <a
             key={title}
             href={href}
             className="glass group rounded-[var(--r-card)] p-6 transition-shadow hover:shadow-[var(--shadow-md)]"
           >
-            <span className="mb-4 inline-grid h-11 w-11 place-items-center rounded-[0.85rem]" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-              <Icon size={20} animateOnView animateOnHover />
-            </span>
             <h3 className="font-[var(--font-display)] text-[16.5px] font-semibold text-[var(--ink)]">{title}</h3>
             <p className="mt-2 text-[14px] leading-relaxed text-[var(--ink-2)]">{body}</p>
             <span className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold" style={{ color: "var(--iris-ink)" }}>
-              Learn more <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+              Learn more
             </span>
           </a>
         ))}
@@ -115,7 +112,7 @@ function FinalCta() {
                   className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] bg-white px-6 py-3.5 text-[15px] font-semibold transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
                   style={{ color: "var(--iris-ink)", boxShadow: "0 12px 30px -10px rgba(0,0,0,.35)" }}
                 >
-                  Book a demo <ArrowRight size={17} />
+                  Book a demo
                 </a>
               </AnimateIcon>
               <a
@@ -127,7 +124,7 @@ function FinalCta() {
               </a>
             </div>
             <p className="mt-6 flex items-center justify-center gap-2 text-[13px]" style={{ color: "rgba(255,255,255,.6)" }}>
-              <ShieldCheck size={14} animateOnView /> Every score is bias-audited and contestable.
+              Every score is bias-audited and contestable.
             </p>
           </div>
         </div>

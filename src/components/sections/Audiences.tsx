@@ -64,7 +64,7 @@ export function Audiences() {
                       className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full"
                       style={{ background: "var(--iris)", color: "#fff" }}
                     >
-                      <Check size={13} strokeWidth={3} animateOnView delay={idx * 110} />
+
                     </span>
                     <span className="text-[15px] leading-relaxed text-[var(--ink-2)]">{pt}</span>
                   </li>
@@ -82,7 +82,7 @@ export function Audiences() {
                         className="inline-flex items-center gap-1.5 text-[14px] font-semibold transition-opacity hover:opacity-70"
                         style={{ color: "var(--iris-ink)" }}
                       >
-                        See the hiring view <ArrowRight size={15} />
+                        See the hiring view
                       </Link>
                     </AnimateIcon>
                   </>
@@ -97,7 +97,7 @@ export function Audiences() {
                         className="inline-flex items-center gap-1.5 text-[14px] font-semibold transition-opacity hover:opacity-70"
                         style={{ color: "var(--iris-ink)" }}
                       >
-                        Open your dashboard <ArrowRight size={15} />
+                        Open your dashboard
                       </Link>
                     </AnimateIcon>
                   </>
