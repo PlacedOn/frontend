@@ -99,8 +99,19 @@ export function Hero() {
 
         <motion.h1
           {...rise(0.12)}
-          className="mt-6 max-w-[16ch] text-balance text-[clamp(2.7rem,1rem+6.6vw,5.6rem)] leading-[0.98] tracking-[-0.035em] text-[var(--ink)]"
-          style={{ fontWeight: 680 }}
+          className="mt-6 max-w-[16ch] text-balance text-[clamp(2.7rem,1rem+6.6vw,5.6rem)] text-[var(--ink)]"
+          /* Weight, tracking and leading are set inline, NOT as leading-[…] /
+             tracking-[…] utilities, because globals.css:117 carries an
+             UNLAYERED `h1, h2, h3, h4 { letter-spacing: -0.03em; line-height:
+             1.04 }`. Unlayered rules beat layered Tailwind utilities regardless
+             of specificity, so the classes that used to be here (leading-[0.98]
+             tracking-[-0.035em]) were silently doing nothing — the browser
+             reported -0.030em / 1.040, the rule's values, not theirs.
+
+             Tuned toward the Upwork reference: at ~90px, weight 680 with
+             -0.03em tracking closes the counters and the letters nearly touch,
+             which reads as compression rather than confidence. */
+          style={{ fontWeight: 600, letterSpacing: "-0.015em", lineHeight: 1.05 }}
         >
           Defining the future with <span className="grad-iris">smart hiring</span>.
         </motion.h1>
