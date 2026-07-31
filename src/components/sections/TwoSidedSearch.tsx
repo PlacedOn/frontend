@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type KeyboardEvent } from "react";
+import { track } from "@/lib/track";
 import { useRouter } from "next/navigation";
 
 /**
@@ -59,7 +60,12 @@ export function TwoSidedSearch() {
       ? `/employer/jobs/new${text ? `?seed=${encodeURIComponent(text)}` : ""}`
       : `/pre-interview${text ? `?role=${encodeURIComponent(text)}` : ""}`;
 
-  const go = (text: string) => router.push(destination(text.trim()));
+  const go = (text: string) => {
+    // Length, not content: whether someone typed is the signal; what they typed
+    // is theirs. props is jsonb and free text is exactly what must not land there.
+    track("search_submitted", { side, has_text: text.trim().length > 0 });
+    router.push(destination(text.trim()));
+  };
 
   const onTabKey = (e: KeyboardEvent<HTMLButtonElement>, i: number) => {
     const last = TABS.length - 1;
@@ -88,7 +94,7 @@ export function TwoSidedSearch() {
               type="button"
               aria-selected={selected}
               tabIndex={selected ? 0 : -1}
-              onClick={() => setSide(t.id)}
+              onClick={() => { setSide(t.id); track("cta_fork_selected", { side: t.id }); }}
               onKeyDown={(e) => onTabKey(e, i)}
               className={
                 "flex-1 cursor-pointer rounded-full px-5 py-2.5 text-[14.5px] font-semibold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white " +
@@ -130,7 +136,7 @@ export function TwoSidedSearch() {
           <button
             key={label}
             type="button"
-            onClick={() => go(label)}
+            onClick={() => { track("quick_chip_clicked", { side, label }); go(label); }}
             className="cursor-pointer rounded-full border border-white/25 px-4 py-2 text-[13.5px] text-white/85 transition-colors duration-200 hover:border-white/50 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             {label}
