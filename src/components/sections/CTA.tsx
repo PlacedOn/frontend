@@ -1,10 +1,10 @@
 "use client";
 
 import { ArrowRight } from "@/components/ui/icons";
+import { TwoSidedSearch } from "@/components/sections/TwoSidedSearch";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { Globe } from "@/components/ui/globe";
-import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
 
 /*
  * Closing CTA. Appealing medium-violet card (no deep storm), with a slowly
@@ -12,7 +12,6 @@ import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
  * and the shared glass buttons for the actions.
  */
 export function CTA() {
-  const { open } = useDemoDialog();
 
   return (
     <section id="trust" className="relative py-20 md:py-28">
@@ -69,13 +68,12 @@ export function CTA() {
                 talk to?&rdquo; gets an honest answer.
               </p>
 
-              <div className="mt-9 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-                <Button onClick={() => open("employer")} className="!px-7 !py-3.5 text-[15px]">
-                  Book a demo
-                </Button>
-                <Button href="/pre-interview" variant="ghost" className="!px-6 !py-3.5 text-[15px]">
-                  Take an interview
-                </Button>
+              {/* Two equal-weight buttons made the visitor choose a side before
+                  they had decided anything, and neither said what they would get.
+                  The fork asks the one question that actually routes them, and the
+                  input is the CTA — the Marketplace pattern the reference uses. */}
+              <div className="mt-9 flex justify-center md:justify-start">
+                <TwoSidedSearch />
               </div>
 
               <p className="mt-6 text-[13px]" style={{ color: "rgba(255,255,255,.62)" }}>
