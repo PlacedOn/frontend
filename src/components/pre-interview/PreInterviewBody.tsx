@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties, ComponentType } from "react";
+import { track } from "@/lib/track";
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "motion/react";
 import {
   AnimateIcon,
@@ -207,7 +208,7 @@ export function PreInterviewBody() {
           </motion.div>
 
           <motion.div {...rise(0.34)} className="mt-9 flex flex-wrap items-center gap-3">
-            <Button href="/interview/consent" className="!px-7 !py-3.5">
+            <Button href="/interview/consent" onClick={() => track("pre_interview_start")} className="!px-7 !py-3.5">
               Begin interview <ArrowRight size={17} />
             </Button>
             <Button href="#expect" variant="ghost">
@@ -455,7 +456,7 @@ export function PreInterviewBody() {
               </p>
             </div>
             <div className="flex shrink-0 flex-col items-start gap-3 md:items-end">
-              <Button href="/interview/consent" className="!px-8 !py-4 text-[15.5px]">
+              <Button href="/interview/consent" onClick={() => track("pre_interview_start")} className="!px-8 !py-4 text-[15.5px]">
                 Begin interview <ArrowRight size={17} />
               </Button>
               <p
