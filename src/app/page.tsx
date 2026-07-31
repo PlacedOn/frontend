@@ -1,10 +1,8 @@
-import { SignalField } from "@/components/background/SignalField";
+import { QuietGround } from "@/components/background/QuietGround";
 import { TrackView } from "@/components/telemetry/TrackView";
 import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
-import { KineticMarquee } from "@/components/motion/KineticMarquee";
 import { VisionReel } from "@/components/sections/VisionReel";
-import { VerifiedCompanies } from "@/components/sections/VerifiedCompanies";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FeaturedSurfaces } from "@/components/sections/FeaturedSurfaces";
 import { GlobalReach } from "@/components/sections/GlobalReach";
@@ -17,14 +15,12 @@ import { Footer } from "@/components/sections/Footer";
 export default function Home() {
   return (
     <>
-      <SignalField />
+      <QuietGround />
       <TrackView event="landing_view" />
       <Nav />
       <main className="relative" style={{ zIndex: "var(--z-base)" }}>
         <Hero />
-        <VerifiedCompanies />
         <SignalAccordion />
-        <KineticMarquee />
         <VisionReel />
         <HowItWorks />
         <FeaturedSurfaces />

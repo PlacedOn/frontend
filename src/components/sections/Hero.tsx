@@ -13,7 +13,6 @@ import {
 import { AnimateIcon, ArrowRight } from "@/components/ui/icons";
 import { Button } from "@/components/ui/Button";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
-import { HeroAurora } from "@/components/background/HeroAurora";
 import { cn } from "@/lib/cn";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -67,9 +66,11 @@ export function Hero() {
       onMouseMove={onMove}
       className="relative flex min-h-[100svh] items-center justify-center overflow-hidden"
     >
-      <div aria-hidden className="absolute inset-0">
-        <HeroAurora />
-      </div>
+      {/* HeroAurora removed — an animated canvas behind the headline. Motion
+          should say where something came from or what changed; a drifting field
+          behind static copy does neither, and it competed with the words it sat
+          under. The radial legibility wash below already gives the hero its
+          centre of light, without a canvas in the paint path. */}
       {/* radial legibility wash — bright at the centre where the copy sits */}
       <div
         aria-hidden
