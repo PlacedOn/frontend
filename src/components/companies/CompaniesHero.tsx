@@ -45,7 +45,7 @@ export function CompaniesHero() {
                 className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] px-6 py-3 text-[15px] font-semibold text-white transition-shadow"
                 style={{ background: "linear-gradient(135deg, var(--iris-soft) 0%, var(--iris) 60%, var(--iris-ink) 130%)", boxShadow: "var(--shadow-iris)" }}
               >
-                Book a demo <ArrowRight size={17} />
+                Book a demo
               </button>
             </AnimateIcon>
             <a

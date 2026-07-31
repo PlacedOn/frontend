@@ -71,7 +71,7 @@ export function CTA() {
 
               <div className="mt-9 flex flex-wrap items-center justify-center gap-3 md:justify-start">
                 <Button onClick={() => open("employer")} className="!px-7 !py-3.5 text-[15px]">
-                  Book a demo <ArrowRight size={17} />
+                  Book a demo
                 </Button>
                 <Button href="/pre-interview" variant="ghost" className="!px-6 !py-3.5 text-[15px]">
                   Take an interview

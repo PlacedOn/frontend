@@ -71,7 +71,7 @@ export function CandidateMatchCarousel() {
           style={{ border: "1px solid var(--glass-line)", color: "var(--ink-2)" }}
           aria-label="Previous candidate"
         >
-          <ChevronLeft size={20} animateOnHover />
+
         </button>
 
         <div className="relative min-h-[300px] min-w-0 flex-1 sm:min-h-[260px]">
@@ -125,7 +125,7 @@ export function CandidateMatchCarousel() {
           style={{ border: "1px solid var(--glass-line)", color: "var(--ink-2)" }}
           aria-label="Next candidate"
         >
-          <ChevronRight size={20} animateOnHover />
+
         </button>
       </div>
 

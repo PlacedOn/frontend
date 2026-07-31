@@ -106,7 +106,7 @@ export function SignalAccordion() {
             className="mt-7 inline-flex items-center gap-2 text-[14.5px] font-semibold transition-opacity hover:opacity-70"
             style={{ color: "var(--iris-ink)" }}
           >
-            See how the signal is scored <ArrowRight size={15} />
+            See how the signal is scored
           </Link>
         </div>
 

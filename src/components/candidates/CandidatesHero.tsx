@@ -41,7 +41,7 @@ export function CandidatesHero() {
           <motion.div {...rise(0.34)} className="mt-8 flex flex-wrap items-center gap-3">
             <AnimateIcon animateOnHover>
               <Button href="/pre-interview">
-                Take your interview, free <ArrowRight size={17} />
+                Take your interview, free
               </Button>
             </AnimateIcon>
             <Button href="#sample" variant="ghost">

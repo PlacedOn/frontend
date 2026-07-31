@@ -80,10 +80,7 @@ export default function TrustPage() {
                 style={{ color: "var(--iris-ink)" }}
               >
                 {p.cta}
-                <ArrowRight
-                  size={15}
-                  className="transition-transform duration-[var(--d-micro)] group-hover:translate-x-0.5"
-                />
+
               </span>
             </Link>
           );

@@ -152,7 +152,7 @@ function FinalCta() {
                   className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] bg-white px-6 py-3.5 text-[15px] font-semibold transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
                   style={{ color: "var(--iris-ink)", boxShadow: "0 12px 30px -10px rgba(0,0,0,.35)" }}
                 >
-                  Take your interview, free <ArrowRight size={17} />
+                  Take your interview, free
                 </a>
               </AnimateIcon>
               <a

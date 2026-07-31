@@ -114,11 +114,21 @@ body {
   a { color: inherit; text-decoration: none; }
 }
 
+/* Every heading on the site. This rule is UNLAYERED, so it beats layered
+   Tailwind utilities regardless of specificity — several components carry
+   leading-[…] / tracking-[…] / font-bold classes that have never had any
+   effect. Changing the type therefore means changing it HERE; editing a
+   className does nothing.
+
+   Tuned toward the reference (Upwork's display setting): a neutral weight with
+   only slight negative tracking. At display sizes 700 with -0.03em closes the
+   counters — the bowls of o/e/a fill in — and the letters nearly touch, which
+   reads as compression rather than confidence. */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
   margin: 0;
   color: var(--ink);
 }

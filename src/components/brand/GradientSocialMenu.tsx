@@ -92,23 +92,19 @@ export function GradientSocialMenu() {
                 onMouseLeave={() => setHovered(null)}
                 onFocus={() => setHovered(i)}
                 onBlur={() => setHovered(null)}
-                className="relative flex h-11 items-center overflow-hidden rounded-full outline-none transition-[width,background,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:ring-2 focus-visible:ring-[var(--iris)]"
+                className="relative flex h-11 items-center overflow-hidden rounded-full outline-none transition-[background,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:ring-2 focus-visible:ring-[var(--iris)]"
                 style={{
-                  width: isOn ? 150 : 44,
                   background: isOn ? s.grad : "var(--glass-hi)",
                   border: `1px solid ${isOn ? "transparent" : "var(--glass-line)"}`,
                   boxShadow: isOn ? "var(--shadow-md)" : "var(--shadow-sm)",
                 }}
               >
+                {/* Text, not a glyph. These links were icon-only, so the mark
+                    could not simply be deleted — the name IS the label now, and
+                    the pill sizes to it instead of expanding on hover. */}
                 <span
-                  className="grid h-11 w-11 shrink-0 place-items-center transition-colors duration-300"
-                  style={{ color: isOn ? "#fff" : "var(--iris-ink)" }}
-                >
-                  {s.icon}
-                </span>
-                <span
-                  className="whitespace-nowrap text-[14px] font-bold text-white transition-opacity duration-300"
-                  style={{ opacity: isOn ? 1 : 0 }}
+                  className="whitespace-nowrap px-4 text-[14px] font-semibold transition-colors duration-300"
+                  style={{ color: isOn ? "#fff" : "var(--ink-2)" }}
                 >
                   {s.name}
                 </span>

@@ -69,7 +69,7 @@ function ComplianceBlock() {
             <h3 className="font-[var(--font-display)] text-[16.5px] font-semibold text-[var(--ink)]">{title}</h3>
             <p className="mt-2 text-[14px] leading-relaxed text-[var(--ink-2)]">{body}</p>
             <span className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold" style={{ color: "var(--iris-ink)" }}>
-              Learn more <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+              Learn more
             </span>
           </a>
         ))}
@@ -111,7 +111,7 @@ function FinalCta() {
                   className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--r-btn)] bg-white px-6 py-3.5 text-[15px] font-semibold transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
                   style={{ color: "var(--iris-ink)", boxShadow: "0 12px 30px -10px rgba(0,0,0,.35)" }}
                 >
-                  Book a demo <ArrowRight size={17} />
+                  Book a demo
                 </a>
               </AnimateIcon>
               <a

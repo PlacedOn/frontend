@@ -227,7 +227,7 @@ export function FeaturedSurfaces() {
               );
             })}
             <Link href="/pre-interview" className="mt-1 inline-flex items-center gap-2 px-4 text-[14px] font-semibold transition-opacity hover:opacity-70" style={{ color: "var(--iris-ink)" }}>
-              Take a sample interview <ArrowRight size={15} />
+              Take a sample interview
             </Link>
           </ul>
 

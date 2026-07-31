@@ -137,7 +137,7 @@ export function MobileMenu({ links, isSignedIn, dashboardHref, onBookDemo }: Pro
                   }}
                   className="w-full justify-center !py-3.5 text-[15px]"
                 >
-                  Book a demo <ArrowRight size={16} />
+                  Book a demo
                 </Button>
               </div>
             </motion.div>
