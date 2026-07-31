@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint:evidence": "node scripts/evidence-parity.mjs",
+    "prebuild": "node scripts/evidence-parity.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
