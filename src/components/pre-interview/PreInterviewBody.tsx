@@ -4,18 +4,7 @@ import type { CSSProperties, ComponentType } from "react";
 import { TopicPreview } from "@/components/pre-interview/TopicPreview";
 import { track } from "@/lib/track";
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "motion/react";
-import {
-  AnimateIcon,
-  Accessibility,
-  ArrowRight,
-  Check,
-  Clock,
-  Eye,
-  Lock,
-  MessageSquareText,
-  Mic,
-  ShieldCheck,
-} from "@/components/ui/icons";
+import { AnimateIcon, Accessibility, Eye, Lock, MessageSquareText, Mic, ShieldCheck } from "@/components/ui/icons";
 import { BriefcaseBusiness } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
@@ -79,7 +68,6 @@ function IconBadge({ icon: Icon }: { icon: IconType }) {
         className="grid h-12 w-12 place-items-center rounded-2xl"
         style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}
       >
-        <Icon size={22} />
       </span>
     </AnimateIcon>
   );
@@ -113,7 +101,6 @@ function FloatChip({ className, delay = 0, duration = 7.5, icon: Icon, label }: 
       transition={{ duration, repeat: Infinity, ease: "easeInOut", delay }}
     >
       <span className="grid place-items-center" style={{ color: "var(--iris)" }}>
-        <Icon size={14} />
       </span>
       {label}
     </motion.span>
@@ -133,7 +120,6 @@ function OrbRole({ className, z, role, fit, delay = 0, reduce }: { className?: s
     >
       <div className="flex items-center gap-2 whitespace-nowrap rounded-[14px] border px-3 py-2" style={{ background: "rgba(255,255,255,0.96)", borderColor: "var(--iris-line)", boxShadow: "0 16px 34px -16px rgba(60,35,140,0.45)" }}>
         <span className="grid size-7 place-items-center rounded-[9px]" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-          <BriefcaseBusiness size={14} strokeWidth={1.75} />
         </span>
         <span className="text-[12.5px] font-bold text-[var(--ink)]">{role}</span>
         <span className="text-[13px] font-extrabold" style={{ color: "var(--iris)", fontFamily: "var(--font-mono)" }}>{fit}%</span>
@@ -210,7 +196,7 @@ export function PreInterviewBody() {
 
           <motion.div {...rise(0.34)} className="mt-9 flex flex-wrap items-center gap-3">
             <Button href="/interview/consent" onClick={() => track("pre_interview_start")} className="!px-7 !py-3.5">
-              Begin interview <ArrowRight size={17} />
+              Begin interview
             </Button>
             <Button href="#expect" variant="ghost">
               What to expect
@@ -330,7 +316,6 @@ export function PreInterviewBody() {
                       color: "var(--iris)",
                     }}
                   >
-                    <Check size={11} />
                   </span>
                   {point}
                 </motion.li>
@@ -351,7 +336,6 @@ export function PreInterviewBody() {
               className="pointer-events-none absolute -bottom-7 -right-5 select-none"
               style={{ color: "rgba(105,34,245,0.055)" }}
             >
-              <Accessibility size={140} />
             </span>
             <div className="flex items-center gap-4">
               <IconBadge icon={Accessibility} />
@@ -399,7 +383,6 @@ export function PreInterviewBody() {
                     boxShadow: "0 12px 28px -12px rgba(120,74,240,0.6)",
                   }}
                 >
-                  <Icon size={20} />
                 </span>
                 <p
                   className="relative z-[1] mt-4 text-[12px] uppercase tracking-[0.16em] text-[var(--iris-ink)]"
@@ -459,7 +442,7 @@ export function PreInterviewBody() {
             </div>
             <div className="flex shrink-0 flex-col items-start gap-3 md:items-end">
               <Button href="/interview/consent" onClick={() => track("pre_interview_start")} className="!px-8 !py-4 text-[15.5px]">
-                Begin interview <ArrowRight size={17} />
+                Begin interview
               </Button>
               <p
                 className="text-[11px] uppercase tracking-[0.18em] text-[var(--ink-2)] opacity-70"

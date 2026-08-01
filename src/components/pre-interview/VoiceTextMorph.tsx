@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { MessageSquareText, Mic } from "@/components/ui/icons";
+import {  } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
 
 /*
@@ -278,7 +278,7 @@ export function VoiceTextMorph({ className }: { className?: string }) {
               fontFamily: "var(--font-mono)",
             }}
           >
-            {mode === "voice" ? <Mic size={12} /> : <MessageSquareText size={12} />}
+            
             {mode === "voice" ? "Speaking" : "Typing"}
           </motion.span>
         </AnimatePresence>
