@@ -1,7 +1,7 @@
 "use client";
 
 import createGlobe, { type COBEOptions } from "cobe";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/cn";
 
 /*
@@ -43,26 +43,15 @@ const GLOBE_CONFIG: COBEOptions = {
 export function Globe({ className, config = GLOBE_CONFIG }: { className?: string; config?: COBEOptions }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const phiRef = useRef(0);
+  const thetaRef = useRef(config.theta ?? 0.3);
   const widthRef = useRef(0);
-  const pointerInteracting = useRef<number | null>(null);
-  const pointerMovement = useRef(0);
-  const dragRef = useRef(0);
-
-  const updateMovement = useCallback((clientX: number) => {
-    if (pointerInteracting.current !== null) {
-      const delta = clientX - pointerInteracting.current;
-      pointerMovement.current = delta;
-      dragRef.current = delta / 200;
-    }
-  }, []);
+  const pointerInteracting = useRef<{ x: number; y: number } | null>(null);
+  const dragStartRef = useRef<{ phi: number; theta: number }>({ phi: 0, theta: 0.3 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    // Ambient auto-spin plays regardless of the OS reduced-motion setting —
-    // it is slow and non-vestibular. (macOS "Reduce Motion" was otherwise
-    // leaving the globe motionless.)
-    const reduce = false;
+
     let globe: ReturnType<typeof createGlobe> | null = null;
     let raf = 0;
     let isVisible = false;
@@ -77,10 +66,12 @@ export function Globe({ className, config = GLOBE_CONFIG }: { className?: string
       });
       const animate = () => {
         if (!isVisible) return;
-        if (pointerInteracting.current === null && !reduce) phiRef.current += 0.004;
+        if (pointerInteracting.current === null) {
+          phiRef.current += 0.003;
+        }
         globe!.update({
-          phi: phiRef.current + dragRef.current,
-          theta: config.theta ?? 0.3,
+          phi: phiRef.current,
+          theta: thetaRef.current,
           width: widthRef.current * 2,
           height: widthRef.current * 2,
         });
@@ -119,25 +110,38 @@ export function Globe({ className, config = GLOBE_CONFIG }: { className?: string
     };
   }, [config]);
 
+  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    pointerInteracting.current = { x: e.clientX, y: e.clientY };
+    dragStartRef.current = { phi: phiRef.current, theta: thetaRef.current };
+    if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
+  };
+
+  const handlePointerUp = () => {
+    pointerInteracting.current = null;
+    if (canvasRef.current) canvasRef.current.style.cursor = "grab";
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (pointerInteracting.current !== null) {
+      const deltaX = e.clientX - pointerInteracting.current.x;
+      const deltaY = e.clientY - pointerInteracting.current.y;
+      phiRef.current = dragStartRef.current.phi + deltaX * 0.005;
+      const nextTheta = dragStartRef.current.theta - deltaY * 0.005;
+      // Clamp theta between -0.5 and 1.0 to allow full vertical tilt without inversion
+      thetaRef.current = Math.max(-0.5, Math.min(1.0, nextTheta));
+    }
+  };
+
   return (
     <div className={cn("absolute inset-0 mx-auto aspect-[1/1] w-full", className)}>
       <canvas
         ref={canvasRef}
         className="size-full opacity-0 transition-opacity duration-1000 [contain:layout_paint_size]"
         style={{ cursor: "grab", touchAction: "none" }}
-        onPointerDown={(e) => {
-          pointerInteracting.current = e.clientX - pointerMovement.current;
-          if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
-        }}
-        onPointerUp={() => {
-          pointerInteracting.current = null;
-          if (canvasRef.current) canvasRef.current.style.cursor = "grab";
-        }}
-        onPointerOut={() => {
-          pointerInteracting.current = null;
-          if (canvasRef.current) canvasRef.current.style.cursor = "grab";
-        }}
-        onPointerMove={(e) => updateMovement(e.clientX)}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerOut={handlePointerUp}
+        onPointerMove={handlePointerMove}
       />
     </div>
   );
