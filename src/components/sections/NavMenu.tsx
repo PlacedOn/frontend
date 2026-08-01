@@ -63,12 +63,12 @@ export function NavMenu({ scrolled = false }: { scrolled?: boolean }) {
   };
 
   const linkBtnClass = scrolled
-    ? "rounded-full px-2.5 py-1 text-[13px] font-medium text-[var(--ink-2)] transition-all duration-300 hover:bg-white/60 hover:text-[var(--ink)]"
-    : "rounded-full px-3.5 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-all duration-300 hover:bg-white/60 hover:text-[var(--ink)]";
+    ? "rounded-full px-3 py-1.5 text-[13.5px] font-medium whitespace-nowrap text-[var(--ink-2)] transition-all duration-300 hover:bg-white/60 hover:text-[var(--ink)]"
+    : "rounded-full px-3.5 py-2 text-[14px] font-medium whitespace-nowrap text-[var(--ink-2)] transition-all duration-300 hover:bg-white/60 hover:text-[var(--ink)]";
 
   const triggerBtnClass = scrolled
-    ? "flex items-center gap-1 rounded-full px-2.5 py-1 text-[13px] font-medium transition-all duration-300 hover:bg-white/60"
-    : "flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium transition-all duration-300 hover:bg-white/60";
+    ? "flex items-center gap-1 rounded-full px-3 py-1.5 text-[13.5px] font-medium whitespace-nowrap transition-all duration-300 hover:bg-white/60"
+    : "flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium whitespace-nowrap transition-all duration-300 hover:bg-white/60";
 
   return (
     <ul className={cn("hidden items-center md:flex transition-all duration-300", scrolled ? "gap-0" : "gap-0.5")} onMouseLeave={scheduleClose}>

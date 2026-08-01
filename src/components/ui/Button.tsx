@@ -43,7 +43,7 @@ export function Button({
   };
 
   const base =
-    "relative inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] px-6 py-3 text-[15px] font-semibold cursor-pointer select-none transition-shadow duration-[var(--d-std)] will-change-transform";
+    "relative inline-flex items-center justify-center gap-2 rounded-[var(--r-btn)] px-6 py-3 text-[15px] font-semibold cursor-pointer select-none transition-shadow duration-[var(--d-std)] will-change-transform whitespace-nowrap shrink-0";
   const styles: Record<Variant, string> = {
     primary: "text-white",
     ghost: "text-[var(--ink)]",
