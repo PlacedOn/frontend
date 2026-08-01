@@ -47,7 +47,7 @@ export type NavGroups = { primary: NavItem[]; secondary: NavItem[] };
 const CANDIDATE_NAV: NavGroups = {
   primary: [
     { label: "Home", href: "/candidate", icon: LayoutDashboard },
-    { label: "Assistant", href: "/candidate/assistant", icon: Sparkle },
+    { label: "Assistant", href: "/assistant", icon: Sparkle },
     { label: "Workshop", href: "/candidate/workshop", icon: Hexagon },
     { label: "Matches", href: "/candidate/matches", icon: BriefcaseBusiness },
     { label: "Passport", href: "/candidate/passport", icon: BadgeCheck },
@@ -64,6 +64,7 @@ const CANDIDATE_NAV: NavGroups = {
 const EMPLOYER_NAV: NavGroups = {
   primary: [
     { label: "Overview", href: "/employer", icon: LayoutDashboard },
+    { label: "Assistant", href: "/employer/assistant", icon: Sparkle },
     { label: "Search", href: "/employer/search", icon: Search },
     { label: "Team", href: "/employer/team", icon: Users },
     { label: "Introductions", href: "/intros", icon: MessagesSquare },
