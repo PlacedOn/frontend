@@ -77,12 +77,11 @@ type FloatChipProps = {
   className?: string;
   delay?: number;
   duration?: number;
-  icon: IconType;
   label: string;
 };
 
 /** Frosted chip that drifts gently around the breathing field. */
-function FloatChip({ className, delay = 0, duration = 7.5, icon: Icon, label }: FloatChipProps) {
+function FloatChip({ className, delay = 0, duration = 7.5, label }: FloatChipProps) {
   return (
     <motion.span
       className={cn(
@@ -100,8 +99,6 @@ function FloatChip({ className, delay = 0, duration = 7.5, icon: Icon, label }: 
       animate={{ y: [-5, 5, -5] }}
       transition={{ duration, repeat: Infinity, ease: "easeInOut", delay }}
     >
-      <span className="grid place-items-center" style={{ color: "var(--iris)" }}>
-      </span>
       {label}
     </motion.span>
   );
@@ -110,7 +107,22 @@ function FloatChip({ className, delay = 0, duration = 7.5, icon: Icon, label }: 
 /** A role-match card orbiting the breathing orb — "the roles this one
  *  conversation opens" (one interview → match many). Sits at a translateZ depth
  *  so the deck tilt reveals real parallax. */
-function OrbRole({ className, z, role, fit, delay = 0, reduce }: { className?: string; z: number; role: string; fit: number; delay?: number; reduce: boolean }) {
+/**
+ * A role this one conversation opens.
+ *
+ * Deliberately carries no match percentage. It used to render `{fit}%` — 88, 74,
+ * 69 — beside each role, three decimal places of certainty about a person who
+ * has not yet answered a single question. There is no data behind those numbers
+ * and there cannot be at this point in the flow, which made them invented
+ * metrics on the one screen whose job is to lower the stakes.
+ *
+ * The copy two columns to the left promises "No score staring back at you."
+ * A reader who saw both at once learned which of the two to believe.
+ *
+ * What carries the meaning instead is the set: three different roles, one
+ * conversation. That claim is true, and it is the actual product.
+ */
+function OrbRole({ className, z, role, delay = 0, reduce }: { className?: string; z: number; role: string; delay?: number; reduce: boolean }) {
   return (
     <motion.div
       className={cn("absolute z-[2]", className)}
@@ -118,11 +130,14 @@ function OrbRole({ className, z, role, fit, delay = 0, reduce }: { className?: s
       animate={reduce ? undefined : { y: [-6, 6, -6] }}
       transition={reduce ? undefined : { duration: 7.5 + z / 24, repeat: Infinity, ease: "easeInOut", delay }}
     >
-      <div className="flex items-center gap-2 whitespace-nowrap rounded-[14px] border px-3 py-2" style={{ background: "rgba(255,255,255,0.96)", borderColor: "var(--iris-line)", boxShadow: "0 16px 34px -16px rgba(60,35,140,0.45)" }}>
-        <span className="grid size-7 place-items-center rounded-[9px]" style={{ background: "var(--iris-ghost)", color: "var(--iris-ink)" }}>
-        </span>
-        <span className="text-[12.5px] font-bold text-[var(--ink)]">{role}</span>
-        <span className="text-[13px] font-extrabold" style={{ color: "var(--iris)", fontFamily: "var(--font-mono)" }}>{fit}%</span>
+      <div
+        className="flex items-center whitespace-nowrap rounded-[14px] border py-2 pl-3.5 pr-4"
+        style={{ background: "rgba(255,255,255,0.96)", borderColor: "var(--iris-line)", boxShadow: "0 16px 34px -16px rgba(60,35,140,0.45)" }}
+      >
+        {/* A rule, not an icon — it marks the pill as one of a set without
+            claiming to depict anything. */}
+        <span aria-hidden className="mr-3 h-3.5 w-px shrink-0" style={{ background: "var(--iris)" }} />
+        <span className="text-[13px] font-semibold tracking-[-0.005em] text-[var(--ink)]">{role}</span>
       </div>
     </motion.div>
   );
@@ -149,8 +164,8 @@ export function PreInterviewBody() {
       {/* Hero — big editorial reassurance + the breathing field */}
       <section className="shell grid items-center gap-12 pt-32 pb-20 md:pt-40 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
         <div>
-          <motion.p {...rise(0)} className="eyebrow inline-flex items-center gap-2">
-            <span className="livedot" /> Before you start
+          <motion.p {...rise(0)} className="eyebrow">
+            Before you start
           </motion.p>
 
           <motion.h1 {...rise(0.08)} className="mt-5">
@@ -233,13 +248,13 @@ export function PreInterviewBody() {
             <CalmField />
 
             {/* one interview → the roles it opens */}
-            <OrbRole className="right-[-10%] top-[11%]" z={72} role="Backend engineer" fit={88} reduce={!!reduce} />
-            <OrbRole className="left-[-13%] top-[45%]" z={52} role="Frontend" fit={74} delay={1.1} reduce={!!reduce} />
-            <OrbRole className="right-[-4%] bottom-[11%]" z={62} role="Data engineer" fit={69} delay={2} reduce={!!reduce} />
+            <OrbRole className="right-[-10%] top-[11%]" z={72} role="Backend engineer" reduce={!!reduce} />
+            <OrbRole className="left-[-13%] top-[45%]" z={52} role="Frontend" delay={1.1} reduce={!!reduce} />
+            <OrbRole className="right-[-4%] bottom-[11%]" z={62} role="Data engineer" delay={2} reduce={!!reduce} />
 
             {/* calm reassurance */}
-            <FloatChip className="left-[-2%] top-[74%]" icon={Mic} label="Voice or text" />
-            <FloatChip className="bottom-[-3%] left-[36%]" delay={2.2} duration={9.5} icon={ShieldCheck} label="You approve" />
+            <FloatChip className="left-[-2%] top-[74%]" label="Voice or text" />
+            <FloatChip className="bottom-[-3%] left-[36%]" delay={2.2} duration={9.5} label="You approve" />
           </motion.div>
         </div>
       </section>
