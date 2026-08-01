@@ -206,7 +206,7 @@ export function AuthPanel({ next }: { next?: string }) {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.28, ease: [0.22, 0.68, 0.31, 1] }}
-                className="overflow-hidden flex flex-col gap-4"
+                className="flex flex-col gap-4"
               >
                 <RolePicker value={role} onChange={setRole} />
                 <input type="hidden" name="role" value={role} />
