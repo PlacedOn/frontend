@@ -321,7 +321,7 @@ export function AuthPanel({ next }: { next?: string }) {
             .
           </p>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
