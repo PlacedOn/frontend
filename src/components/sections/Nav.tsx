@@ -37,16 +37,16 @@ export function Nav() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 flex justify-center px-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
-        scrolled ? "pt-2.5" : "pt-4 sm:pt-5"
+        scrolled ? "pt-2" : "pt-4 sm:pt-5"
       )}
       style={{ zIndex: "var(--z-nav)" }}
     >
       <nav
         aria-label="Main"
         className={cn(
-          "flex w-full items-center justify-between gap-3 md:grid md:grid-cols-[1fr_auto_1fr] rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          "flex w-full items-center justify-between gap-2 md:grid md:grid-cols-[1fr_auto_1fr] rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
           scrolled
-            ? "max-w-[850px] px-4 py-1.5 backdrop-blur-[24px]"
+            ? "max-w-[720px] px-3.5 py-1 backdrop-blur-[24px]"
             : "max-w-[1140px] px-6 py-2.5 backdrop-blur-[16px]"
         )}
         style={{
@@ -64,22 +64,25 @@ export function Nav() {
         {/* Left column: Logo */}
         <div className="flex items-center justify-start">
           <Link href="/" aria-label="Placedon home" className="flex items-center">
-            <Logo size={scrolled ? 24 : 26} />
+            <Logo size={scrolled ? 21 : 26} />
           </Link>
         </div>
 
         {/* Center column: Nav menu */}
         <div className="hidden items-center justify-center md:flex">
-          <NavMenu />
+          <NavMenu scrolled={scrolled} />
         </div>
 
         {/* Right column: Auth & CTA actions */}
-        <div className="flex items-center justify-end gap-2">
+        <div className="flex items-center justify-end gap-1.5">
           {user ? (
             <>
               <Link
                 href={dashboard}
-                className="hidden rounded-full px-4 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-colors hover:bg-[var(--iris-ghost)] hover:text-[var(--ink)] sm:block"
+                className={cn(
+                  "hidden rounded-full font-medium text-[var(--ink-2)] transition-all duration-300 hover:bg-[var(--iris-ghost)] hover:text-[var(--ink)] sm:block",
+                  scrolled ? "px-2.5 py-1 text-[13px]" : "px-4 py-2 text-[14px]"
+                )}
               >
                 Dashboard
               </Link>
@@ -88,13 +91,16 @@ export function Nav() {
           ) : (
             <div
               className={cn(
-                "flex items-center gap-2 transition-opacity duration-[var(--d-micro)]",
+                "flex items-center gap-1.5 transition-opacity duration-[var(--d-micro)]",
                 loading ? "opacity-0" : "opacity-100"
               )}
             >
               <Link
                 href="/login"
-                className="hidden rounded-full px-3.5 py-1.5 text-[14px] font-medium text-[var(--ink-2)] transition-colors hover:bg-[var(--iris-ghost)] hover:text-[var(--ink)] sm:block"
+                className={cn(
+                  "hidden rounded-full font-medium text-[var(--ink-2)] transition-all duration-300 hover:bg-[var(--iris-ghost)] hover:text-[var(--ink)] sm:block",
+                  scrolled ? "px-2.5 py-1 text-[13px]" : "px-3.5 py-1.5 text-[14px]"
+                )}
               >
                 Log in
               </Link>
@@ -103,7 +109,7 @@ export function Nav() {
                   onClick={() => open("employer")}
                   className={cn(
                     "transition-all duration-300",
-                    scrolled ? "!px-4 !py-1.5 text-[13.5px]" : "!px-5 !py-2 text-[14px]"
+                    scrolled ? "!px-3.5 !py-1 text-[13px]" : "!px-5 !py-2 text-[14px]"
                   )}
                 >
                   Book a demo

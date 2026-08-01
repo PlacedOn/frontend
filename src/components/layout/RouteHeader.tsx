@@ -27,7 +27,7 @@ export function RouteHeader() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 flex justify-center px-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
-        scrolled ? "pt-2.5" : "pt-4 sm:pt-5"
+        scrolled ? "pt-2" : "pt-4 sm:pt-5"
       )}
       style={{ zIndex: "var(--z-nav)" }}
     >
@@ -36,7 +36,7 @@ export function RouteHeader() {
         className={cn(
           "flex w-full items-center justify-between rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
           scrolled
-            ? "max-w-[850px] px-4 py-1.5 backdrop-blur-[24px]"
+            ? "max-w-[720px] px-3.5 py-1 backdrop-blur-[24px]"
             : "max-w-[1140px] px-6 py-2.5 backdrop-blur-[16px]"
         )}
         style={{
@@ -52,20 +52,23 @@ export function RouteHeader() {
         }}
       >
         <Link href="/" aria-label="Placedon home" className="flex items-center">
-          <Logo size={scrolled ? 24 : 26} />
+          <Logo size={scrolled ? 21 : 26} />
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <Link
             href="/"
-            className="hidden items-center gap-1.5 rounded-full px-4 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-colors hover:bg-[var(--iris-ghost)] hover:text-[var(--ink)] sm:flex"
+            className={cn(
+              "hidden items-center gap-1.5 rounded-full font-medium text-[var(--ink-2)] transition-all duration-300 hover:bg-[var(--iris-ghost)] hover:text-[var(--ink)] sm:flex",
+              scrolled ? "px-2.5 py-1 text-[13px]" : "px-4 py-2 text-[14px]"
+            )}
           >
-            <ArrowLeft size={15} /> Home
+            <ArrowLeft size={scrolled ? 13 : 15} /> Home
           </Link>
           <Button
             onClick={() => open("employer")}
             className={cn(
               "transition-all duration-300",
-              scrolled ? "!px-4 !py-1.5 text-[13.5px]" : "!px-5 !py-2 text-[14px]"
+              scrolled ? "!px-3.5 !py-1 text-[13px]" : "!px-5 !py-2 text-[14px]"
             )}
           >
             Book a demo

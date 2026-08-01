@@ -7,6 +7,7 @@ import {
   ChevronDown, Search, Scale, ShieldCheck, Mic, FileCheck2, TrendingUp,
   Landmark, Activity, MessageSquareWarning, type LucideIcon,
 } from "lucide-react";
+import { cn } from "@/lib/cn";
 
 type Sub = { label: string; href: string; desc: string; Icon: LucideIcon };
 type Item = { label: string; href?: string; menu?: Sub[] };
@@ -47,7 +48,7 @@ export const NAV_ITEMS: Item[] = [
 
 const CLOSE_DELAY = 120;
 
-export function NavMenu() {
+export function NavMenu({ scrolled = false }: { scrolled?: boolean }) {
   const reduce = useReducedMotion();
   const [open, setOpen] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -61,16 +62,21 @@ export function NavMenu() {
     closeTimer.current = setTimeout(() => setOpen(null), CLOSE_DELAY);
   };
 
+  const linkBtnClass = scrolled
+    ? "rounded-full px-2.5 py-1 text-[13px] font-medium text-[var(--ink-2)] transition-all duration-300 hover:bg-white/60 hover:text-[var(--ink)]"
+    : "rounded-full px-3.5 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-all duration-300 hover:bg-white/60 hover:text-[var(--ink)]";
+
+  const triggerBtnClass = scrolled
+    ? "flex items-center gap-1 rounded-full px-2.5 py-1 text-[13px] font-medium transition-all duration-300 hover:bg-white/60"
+    : "flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium transition-all duration-300 hover:bg-white/60";
+
   return (
-    <ul className="hidden items-center gap-0.5 md:flex" onMouseLeave={scheduleClose}>
+    <ul className={cn("hidden items-center md:flex transition-all duration-300", scrolled ? "gap-0" : "gap-0.5")} onMouseLeave={scheduleClose}>
       {NAV_ITEMS.map((item) => {
         if (!item.menu) {
           return (
             <li key={item.label} onMouseEnter={() => setOpen(null)}>
-              <a
-                href={item.href}
-                className="rounded-full px-3.5 py-2 text-[14px] font-medium text-[var(--ink-2)] transition-colors duration-[var(--d-micro)] hover:bg-white/60 hover:text-[var(--ink)]"
-              >
+              <a href={item.href} className={linkBtnClass}>
                 {item.label}
               </a>
             </li>
@@ -83,12 +89,12 @@ export function NavMenu() {
               type="button"
               aria-expanded={isOpen}
               onClick={() => setOpen(isOpen ? null : item.label)}
-              className="flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors duration-[var(--d-micro)] hover:bg-white/60"
+              className={triggerBtnClass}
               style={{ color: isOpen ? "var(--ink)" : "var(--ink-2)" }}
             >
               {item.label}
               <ChevronDown
-                size={14}
+                size={scrolled ? 12 : 14}
                 className="transition-transform duration-200"
                 style={{ transform: isOpen ? "rotate(180deg)" : "none", color: "var(--ink-3)" }}
               />
