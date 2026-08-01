@@ -33,6 +33,9 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   async headers() {
+    if (process.env.NODE_ENV !== "production") {
+      return [];
+    }
     return [{ source: "/:path*", headers: securityHeaders }];
   },
 };
