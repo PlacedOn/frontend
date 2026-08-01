@@ -114,11 +114,9 @@ export function NavMenu({ scrolled = false }: { scrolled?: boolean }) {
                   <div
                     className="w-[320px] rounded-[20px] border p-2"
                     style={{
-                      background: "var(--glass-hi)",
-                      borderColor: "var(--glass-line-hi)",
-                      backdropFilter: "blur(22px) saturate(1.4)",
-                      WebkitBackdropFilter: "blur(22px) saturate(1.4)",
-                      boxShadow: "0 24px 60px -24px rgba(40,26,120,0.4), inset 0 1px 0 rgba(255,255,255,0.7)",
+                      background: "#FFFFFF",
+                      borderColor: "rgba(124, 58, 237, 0.18)",
+                      boxShadow: "0 20px 50px -16px rgba(40,26,120,0.22), 0 4px 16px -4px rgba(14,16,32,0.08)",
                     }}
                   >
                     {item.menu.map(({ label, href, desc, Icon }) => (
