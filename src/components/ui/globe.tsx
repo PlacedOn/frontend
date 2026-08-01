@@ -126,7 +126,7 @@ export function Globe({ className, config = GLOBE_CONFIG }: { className?: string
       const deltaX = e.clientX - pointerInteracting.current.x;
       const deltaY = e.clientY - pointerInteracting.current.y;
       phiRef.current = dragStartRef.current.phi + deltaX * 0.005;
-      const nextTheta = dragStartRef.current.theta - deltaY * 0.005;
+      const nextTheta = dragStartRef.current.theta + deltaY * 0.005;
       // Clamp theta between -0.5 and 1.0 to allow full vertical tilt without inversion
       thetaRef.current = Math.max(-0.5, Math.min(1.0, nextTheta));
     }
