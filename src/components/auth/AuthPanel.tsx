@@ -2,7 +2,7 @@
 
 import { useState, useTransition, type FormEvent } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { AlertCircle, ArrowRight, Loader2, Lock, Mail, MailCheck, UserRound } from "lucide-react";
 import { signIn, signUp, type Role } from "@/app/login/actions";
 import { AuthField } from "./AuthField";
@@ -132,12 +132,30 @@ export function AuthPanel({ next }: { next?: string }) {
       {/* mode toggle */}
       <div
         aria-label="Sign in or create account"
-        className="relative mb-6 sm:mb-8 grid grid-cols-2 rounded-full p-1"
+        className="relative mb-6 sm:mb-8 grid grid-cols-2 rounded-full p-1 select-none"
         style={{
           background: "var(--mist)",
           border: "1px solid var(--glass-line)",
         }}
       >
+        {/* Continuous sliding pill background */}
+        <motion.div
+          className="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
+          style={{
+            border: "1px solid rgba(0,0,0,0.06)",
+          }}
+          initial={false}
+          animate={{
+            x: mode === "signin" ? "0%" : "100%",
+          }}
+          transition={
+            reduce
+              ? { duration: 0 }
+              : { type: "spring", stiffness: 400, damping: 30 }
+          }
+          aria-hidden="true"
+        />
+
         {MODES.map(({ id, label }) => {
           const active = mode === id;
           return (
@@ -147,63 +165,64 @@ export function AuthPanel({ next }: { next?: string }) {
               aria-pressed={active}
               onClick={() => switchMode(id)}
               className={cn(
-                "relative flex items-center justify-center py-2 px-4 rounded-full text-[13.5px] font-bold transition-colors duration-[var(--d-micro)]",
+                "relative z-10 flex items-center justify-center py-2 px-4 rounded-full text-[13.5px] font-bold transition-colors duration-200 cursor-pointer select-none",
                 active ? "text-[var(--ink)]" : "text-[var(--ink-3)] hover:text-[var(--ink-2)]",
               )}
             >
-              {active && (
-                <motion.span
-                  layoutId="auth-mode-pill"
-                  transition={
-                    reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 34 }
-                  }
-                  className="absolute inset-0 rounded-full"
-                  style={{
-                    background: "#FFFFFF",
-                    border: "1px solid rgba(0,0,0,0.06)",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
-                  }}
-                  aria-hidden="true"
-                />
-              )}
-              <span className="relative z-10">{label}</span>
+              {label}
             </button>
           );
         })}
       </div>
 
-      <motion.div
-        key={mode}
-        initial={reduce ? false : { opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.28, ease: [0.22, 0.68, 0.31, 1] }}
-      >
-        <h2 id="auth-heading" className="mt-2 text-[1.45rem] font-bold text-[var(--ink)]">
+      <div className="min-w-0">
+        <motion.h2
+          id="auth-heading"
+          key={isSignup ? "signup-title" : "signin-title"}
+          initial={reduce ? false : { opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="mt-2 text-[1.45rem] font-bold text-[var(--ink)]"
+        >
           {isSignup ? "Create your account." : "Welcome back."}
-        </h2>
-        <p className="mt-1.5 text-[14.5px] leading-relaxed text-[var(--ink-2)]">
+        </motion.h2>
+        <motion.p
+          key={isSignup ? "signup-desc" : "signin-desc"}
+          initial={reduce ? false : { opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="mt-1.5 text-[14.5px] leading-relaxed text-[var(--ink-2)]"
+        >
           {isSignup
             ? "Tell us who you are, and we'll set up the right side of the table."
             : "Sign in and we'll take you straight to your dashboard."}
-        </p>
+        </motion.p>
 
         <form onSubmit={handleSubmit} noValidate className="mt-6 flex min-w-0 flex-col gap-4">
-          {isSignup && (
-            <>
-              <RolePicker value={role} onChange={setRole} />
-              <input type="hidden" name="role" value={role} />
-              <AuthField
-                id="auth-name"
-                name="fullName"
-                label="Full name"
-                icon={UserRound}
-                autoComplete="name"
-                placeholder="Priya Sharma"
-                error={fieldErrors.fullName}
-                onValueChange={() => clearField("fullName")}
-              />
-            </>
-          )}
+          <AnimatePresence initial={false}>
+            {isSignup && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.28, ease: [0.22, 0.68, 0.31, 1] }}
+                className="overflow-hidden flex flex-col gap-4"
+              >
+                <RolePicker value={role} onChange={setRole} />
+                <input type="hidden" name="role" value={role} />
+                <AuthField
+                  id="auth-name"
+                  name="fullName"
+                  label="Full name"
+                  icon={UserRound}
+                  autoComplete="name"
+                  placeholder="Priya Sharma"
+                  error={fieldErrors.fullName}
+                  onValueChange={() => clearField("fullName")}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <AuthField
             id="auth-email"
