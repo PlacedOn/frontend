@@ -10,6 +10,14 @@
  * filters are repeated here, in the same removable grammar as the header bar,
  * with a single control that drops all of them.
  *
+ * ══ WHY IT IS GENERIC ══
+ * Phase 4 needed the same behaviour on the candidate's job browser and for the
+ * "you have not been interviewed yet" case. The reasoning above is not about
+ * candidates, it is about empty queries, so the component takes its nouns and
+ * its zero-filter copy as props rather than being cloned with the words
+ * changed. Every default is the directory's original wording, so the directory
+ * call site did not have to change.
+ *
  * ══ THE MINIMUM-FIGURE CAVEAT ══
  * When the empty result involves the minimum-figure facet, this says something
  * the generic copy cannot, and WHAT it says changed when the filter changed.
@@ -26,36 +34,50 @@
  * good enough", which is a conclusion the data does not support.
  */
 
+import type { ReactNode } from "react";
 import { ActiveFilterChips } from "./ActiveFilterChips";
 import type { ActiveFilter } from "@/lib/directory/filter";
 
-export interface EmptyStateProps {
-  filters: readonly ActiveFilter[];
-  onRemove: (filter: ActiveFilter) => void;
+export interface EmptyStateProps<F> {
+  filters: readonly ActiveFilter<F>[];
+  onRemove: (filter: ActiveFilter<F>) => void;
   onClearAll: () => void;
+  /** How many records exist in total, before any filter. */
+  totalCount: number;
+  /** What the rows are called, for the count sentence. */
+  subject?: { singular: string; plural: string };
+  /** Headline when a query is active and returned nothing. */
+  filteredTitle?: string;
+  /** Headline when there is genuinely nothing to show, filters or not. */
+  emptyTitle?: string;
+  /** Body for the same case — the honest reason the collection is empty. */
+  emptyBody?: ReactNode;
   /** True when the min-figure facet is part of the query. Adds the caveat. */
-  minFigureActive: boolean;
+  minFigureActive?: boolean;
   /** True when the recruiter opted into hiding no-reading records. */
   excludeNoReadingActive?: boolean;
   /** How many records the exclusion is currently removing. */
   hiddenNoReadingCount?: number;
   /** Undo just the exclusion, leaving the rest of the query intact. */
   onShowNoReading?: () => void;
-  /** How many records exist in total, before any filter. */
-  totalCount: number;
 }
 
-export function EmptyState({
+export function EmptyState<F>({
   filters,
   onRemove,
   onClearAll,
-  minFigureActive,
+  totalCount,
+  subject = { singular: "record", plural: "records" },
+  filteredTitle = "Nothing in the directory clears every one of these at once.",
+  emptyTitle = "The directory is empty.",
+  emptyBody = "No candidate records have been assessed yet. When the interview pipeline produces its first completed session, it will appear here.",
+  minFigureActive = false,
   excludeNoReadingActive = false,
   hiddenNoReadingCount = 0,
   onShowNoReading,
-  totalCount,
-}: EmptyStateProps) {
+}: EmptyStateProps<F>) {
   const hasFilters = filters.length > 0;
+  const noun = totalCount === 1 ? subject.singular : subject.plural;
 
   return (
     <div
@@ -66,17 +88,15 @@ export function EmptyState({
         border: "1px dashed var(--glass-line-hi)",
       }}
     >
-      <p className="eyebrow">No matches</p>
+      <p className="eyebrow">{hasFilters ? "No matches" : "Nothing yet"}</p>
 
       {/* Explicit color: the unlayered `h1-h4 { color: var(--ink) }` in
           globals.css beats any Tailwind text utility. */}
       <h2
-        className="mt-2.5 max-w-[28ch] text-[clamp(1.25rem,1rem+1vw,1.6rem)] font-semibold"
+        className="mt-2.5 max-w-[34ch] text-[clamp(1.25rem,1rem+1vw,1.6rem)] font-semibold"
         style={{ color: "var(--ink)" }}
       >
-        {hasFilters
-          ? "Nothing in the directory clears every one of these at once."
-          : "The directory is empty."}
+        {hasFilters ? filteredTitle : emptyTitle}
       </h2>
 
       {hasFilters ? (
@@ -89,7 +109,7 @@ export function EmptyState({
                 whitespace between an expression container and the text that
                 follows it on the same source line, which silently produced
                 "9 recordsexist" — a single template literal cannot drift. */}
-            {`${totalCount} ${totalCount === 1 ? "record" : "records"} exist. ` +
+            {`${totalCount} ${noun} exist. ` +
               `Take one constraint off and the list comes back — start with whichever of these matters least.`}
           </p>
 
@@ -166,13 +186,12 @@ export function EmptyState({
           </button>
         </>
       ) : (
-        <p
+        <div
           className="mt-3 max-w-[58ch] text-[13.5px] leading-relaxed"
           style={{ color: "var(--ink-2)" }}
         >
-          No candidate records have been assessed yet. When the interview pipeline produces its
-          first completed session, it will appear here.
-        </p>
+          {emptyBody}
+        </div>
       )}
     </div>
   );

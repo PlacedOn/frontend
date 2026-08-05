@@ -204,16 +204,20 @@ export function buildVocabulary(candidates: readonly DirectoryCandidate[]): Dire
  * One active filter, flattened for display and one-click removal.
  * `remove` returns the next filter state — it never mutates. (See the
  * immutability rule; every setter in this module returns a fresh object.)
+ *
+ * Generic over the filter state so `ActiveFilterChips` and `EmptyState` can be
+ * driven by the job browser's filters too. It defaults to `DirectoryFilters`,
+ * so every existing call site reads exactly as it did before.
  */
-export interface ActiveFilter {
+export interface ActiveFilter<F = DirectoryFilters> {
   /** Stable key for React and for tests. */
   id: string;
-  /** Facet name as the recruiter would say it. */
+  /** Facet name as the user would say it. */
   facet: string;
   /** The selected value, in plain language. */
   value: string;
   /** Filters with just this one cleared. */
-  remove: (current: DirectoryFilters) => DirectoryFilters;
+  remove: (current: F) => F;
 }
 
 /** Flatten the filter object into removable chips. Empty when nothing is set. */

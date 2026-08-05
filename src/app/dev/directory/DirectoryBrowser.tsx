@@ -50,6 +50,7 @@ import { AnimatePresence } from "motion/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { CandidateCard } from "@/components/directory/CandidateCard";
 import { FilterRail } from "@/components/directory/FilterRail";
+import { DirectoryFacets } from "@/components/directory/DirectoryFacets";
 import { EmptyState } from "@/components/directory/EmptyState";
 import { ActiveFilterChips } from "@/components/directory/ActiveFilterChips";
 import {
@@ -141,16 +142,21 @@ export function DirectoryBrowser() {
   return (
     <div className="mt-10 grid grid-cols-1 gap-7 md:grid-cols-[248px_minmax(0,1fr)] md:gap-8">
       <FilterRail
-        filters={filters}
-        vocabulary={vocabulary}
-        skillCounts={skillCounts}
-        locationCounts={locationCounts}
+        title="Narrow the list"
         activeCount={chips.length}
-        onChange={setFilters}
         onClearAll={clearAll}
         open={railOpen}
         onToggleOpen={() => setRailOpen((v) => !v)}
-      />
+        note="Filters describe the job. None of them rank a person, and there is no sort control for the same reason."
+      >
+        <DirectoryFacets
+          filters={filters}
+          vocabulary={vocabulary}
+          skillCounts={skillCounts}
+          locationCounts={locationCounts}
+          onChange={setFilters}
+        />
+      </FilterRail>
 
       {/* `min-w-0` is what actually prevents horizontal overflow: without it a
           grid item's min-content width wins and the whole page scrolls. */}

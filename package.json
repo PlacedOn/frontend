@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint:evidence": "node scripts/evidence-parity.mjs",
-    "prebuild": "node scripts/evidence-parity.mjs"
+    "prebuild": "node scripts/evidence-parity.mjs",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -34,6 +36,7 @@
     "puppeteer-core": "^25.3.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vercel": "^54.21.1"
+    "vercel": "^54.21.1",
+    "vitest": "^4.1.10"
   }
 }

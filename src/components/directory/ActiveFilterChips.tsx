@@ -16,20 +16,24 @@
 import { DUR_MS } from "@/lib/motion";
 import type { ActiveFilter } from "@/lib/directory/filter";
 
-export interface ActiveFilterChipsProps {
-  filters: readonly ActiveFilter[];
-  onRemove: (filter: ActiveFilter) => void;
+/**
+ * Generic over the filter state, so the job browser drives the same chips with
+ * its own filter object. `F` is inferred from the array at every call site.
+ */
+export interface ActiveFilterChipsProps<F> {
+  filters: readonly ActiveFilter<F>[];
+  onRemove: (filter: ActiveFilter<F>) => void;
   onClearAll: () => void;
   /** Hide the "Clear all" control when the caller renders its own. */
   showClearAll?: boolean;
 }
 
-export function ActiveFilterChips({
+export function ActiveFilterChips<F>({
   filters,
   onRemove,
   onClearAll,
   showClearAll = true,
-}: ActiveFilterChipsProps) {
+}: ActiveFilterChipsProps<F>) {
   if (filters.length === 0) return null;
 
   return (
