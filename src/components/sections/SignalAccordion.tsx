@@ -17,12 +17,19 @@ import { Sparkles, ArrowRight } from "lucide-react";
 type Art = "wave" | "quote" | "fair" | "control" | "skill";
 type Panel = { art: Art; title: string; stat: string; body: string; grad: string };
 
+/**
+ * Panel gradients are composed from the violet ramp in globals.css, not loose
+ * hex. Previously these were nine hardcoded values that drifted off-brand — two
+ * of them (#9333EA, #7C3AED) were Tailwind purples, a different hue family from
+ * the brand mark. Each panel now reads as a different DEPTH of the same violet
+ * rather than a different colour, which is what kept the set from cohering.
+ */
 const PANELS: Panel[] = [
-  { art: "wave", title: "One honest interview", stat: "One sitting", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,#8B54FF,#6922F5)" },
-  { art: "quote", title: "Evidence, not keywords", stat: "Always cited", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,#6922F5,#4311a8)" },
-  { art: "fair", title: "Fair by design", stat: "Never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,#7C3AED,#9333EA)" },
-  { art: "control", title: "You stay in control", stat: "Nothing by default", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,#5B21B6,#7C3AED)" },
-  { art: "skill", title: "Real skill over resumes", stat: "No resume", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#6D28D9,#8B54FF)" },
+  { art: "wave", title: "One honest interview", stat: "One sitting", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,var(--iris-400),var(--iris-500))" },
+  { art: "quote", title: "Evidence, not keywords", stat: "Always cited", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,var(--iris-500),var(--iris-700))" },
+  { art: "fair", title: "Fair by design", stat: "Never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,var(--iris-400),var(--iris-600))" },
+  { art: "control", title: "You stay in control", stat: "Nothing by default", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,var(--iris-700),var(--iris-500))" },
+  { art: "skill", title: "Real skill over resumes", stat: "No resume", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,var(--iris-600),var(--iris-300))" },
 ];
 
 /** Honest, on-brand mini-illustrations — white-on-gradient SVG, no stock imagery. */
@@ -128,7 +135,7 @@ export function SignalAccordion() {
                   flexGrow: isActive ? 1 : 0,
                   flexBasis: 66,
                   flexShrink: 1,
-                  transition: "flex-grow 0.62s cubic-bezier(0.22,0.68,0.31,1), box-shadow 0.4s",
+                  transition: "flex-grow var(--d-sig) var(--ease-out), box-shadow var(--d-std) var(--ease-out)",
                   background: p.grad,
                   boxShadow: isActive ? "0 30px 70px -20px rgba(58,20,140,0.55)" : "0 10px 30px -14px rgba(58,20,140,0.4)",
                 }}

@@ -29,7 +29,19 @@ export function ConfidenceBand({ score, uncertainty, delay = 0 }: Props) {
       className="relative h-2.5 w-full overflow-hidden rounded-full"
       style={{ background: "var(--mist)" }}
       role="img"
-      aria-label={`Score ${score} out of 100, ${Math.round((1 - uncertainty) * 100)} percent confidence`}
+      // Describes the RANGE, not a numeric confidence.
+      //
+      // This read "N percent confidence", computed as (1 - uncertainty) * 100.
+      // Nothing on screen shows that number — the product deliberately keeps
+      // model confidence qualitative — so a screen-reader user was the only
+      // person receiving it. That is the violation twice over: a forbidden
+      // numeric confidence, delivered exclusively to users who cannot check it
+      // against the visual.
+      //
+      // The band's meaning is the width of the interval, so the label now says
+      // what the picture says: where the estimate sits and how wide the range
+      // around it is.
+      aria-label={`Score ${score} out of 100, with a likely range of ${Math.round(lo)} to ${Math.round(hi)}`}
     >
       {/* filled portion up to the point estimate */}
       <motion.div

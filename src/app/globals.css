@@ -26,6 +26,19 @@
   --iris-ghost:  rgba(105, 34, 245, 0.10);
   --iris-line:   rgba(105, 34, 245, 0.22);
 
+  /* ── violet ramp ──────────────────────────────────────────
+     Numbered aliases for the violet stops the site already paints with, so
+     gradients can be composed from named steps instead of loose hex. These are
+     ALIASES, not new colours: 300/400/500/600 are the existing --iris-* tokens
+     under ramp names, and 700 names the deep floor that gradients were already
+     reaching for inline. Nothing is renumbered or removed — every existing
+     --iris/--iris-soft/--iris-ink reference keeps working unchanged. */
+  --iris-300: #B79BFF;            /* light tail — gradient highlights */
+  --iris-400: var(--iris-soft);   /* #8B54FF */
+  --iris-500: var(--iris);        /* #6922F5 — the brand mark */
+  --iris-600: var(--iris-ink);    /* #5314C9 — small text on light */
+  --iris-700: #4311A8;            /* deep floor — gradient shadows */
+
   /* ── scarce warm signal / "ember" (live proof moments only) ─ */
   --signal:      #F5860B;
   --signal-soft: #FFB454;
@@ -41,6 +54,26 @@
   --vitrine:         rgba(255, 255, 255, 0.05);  /* display-case fill for unrolled facets */
 
   --danger: #E5484D;
+  /* The red actually used at ~24 call sites for inline error copy. It is a
+     darker red than --danger because --danger is a FILL (badges, strokes) while
+     this is TEXT on porcelain and has to clear 4.5:1. Two tokens, two jobs. */
+  --danger-ink: #b91c1c;
+
+  /* ── evidence bands (semantic, never decorative) ───────────
+     The qualitative confidence vocabulary — supported / emerging /
+     needs_more_evidence. These are NOT a score and never render a number.
+     Each band gets an ink (text, ≥4.5:1 on porcelain) and a fill (badge/track
+     wash). Chosen to match what already ships at ~49 call sites rather than
+     inventing a new triad. Hue is a SECONDARY cue only: band geometry and
+     fill opacity carry the same information in greyscale. */
+  --band-supported-ink:  #047857;                 /* emerald-700 — 4.9:1 on porcelain */
+  --band-supported-fill: rgba(5, 150, 105, 0.12);
+  --band-emerging-ink:   #B45309;                 /* amber-700 — 4.6:1 on porcelain */
+  --band-emerging-fill:  rgba(245, 134, 11, 0.12);
+  --band-needs-ink:      var(--ink-3);            /* deliberately neutral: "we don't know yet"
+                                                     is an absence of evidence, not a failure —
+                                                     colouring it red would be a verdict */
+  --band-needs-fill:     rgba(123, 130, 153, 0.14);
 
   /* ── glass primitive ──────────────────────── */
   --glass:      rgba(255, 255, 255, 0.62);
@@ -56,16 +89,34 @@
   --shadow-iris: 0 12px 34px -10px rgba(58, 61, 224, 0.45);
 
   /* ── motion ───────────────────────────────── */
+  /* ONE duration scale. --d-* is canonical because it is what actually ships:
+     52 usages across src/ (36 micro, 15 std, 1 sig) versus zero for any other
+     naming. The v2 plan (01_DESIGN_SYSTEM.md §3) proposes --dur-fast/base/slow
+     at 150/250/400ms; those tokens did not exist in this file and adopting their
+     VALUES would have retimed every existing transition on the site. So the
+     plan's NAMES are honoured as aliases and the shipped VALUES win. New code
+     may use either spelling; they are the same three durations, not six. */
   --d-micro: 160ms;
   --d-std:   320ms;
   --d-sig:   620ms;
+  --dur-fast: var(--d-micro);   /* alias — plan §3 naming */
+  --dur-base: var(--d-std);     /* alias — plan §3 naming */
+  --dur-slow: var(--d-sig);     /* alias — plan §3 naming */
+
+  /* One easing curve for everything that is not a physical, momentum-carrying
+     gesture. --ease-spring overshoots and is reserved for score/band reveals. */
   --ease-out:    cubic-bezier(0.22, 0.68, 0.31, 1);
   --ease-spring: cubic-bezier(0.34, 1.45, 0.5, 1);
 
   /* ── geometry ─────────────────────────────── */
+  /* Three radii, per plan §3 — the shipped names are --r-*; --radius-* are
+     aliases so plan-named code compiles against the real values. */
   --r-card: 24px;
   --r-btn:  14px;
   --r-chip: 999px;
+  --radius-lg: var(--r-card);
+  --radius-md: var(--r-btn);
+  --radius-sm: 8px;
   --max:    1180px;
 
   /* ── fonts (wired via next/font) ──────────── */
@@ -244,11 +295,42 @@ h1, h2, h3, h4 {
   border-radius: 6px;
 }
 
+/* ══════════════ reduced motion ══════════════
+   The contract, in one sentence: reduced motion removes MOVEMENT, never
+   INFORMATION. Every surface must land on its complete final state — the same
+   state a full-motion user ends at — just without travelling there.
+
+   Two halves, because CSS alone cannot do it:
+
+   1. This block collapses CSS animations/transitions to ~0ms. Because a
+      transition's END value is the declared value, collapsing the duration
+      lands on the complete state for free. Looping animations are pinned to a
+      single iteration so nothing is caught mid-cycle.
+
+   2. JS motion (motion/react) is NOT covered by this block — inline styles it
+      writes ignore CSS entirely. Components must call `useReducedMotion()` and
+      render the finished state directly. See src/lib/motion.ts → `reveal()`,
+      which is the only sanctioned way to do it.
+
+   The trap this codebase must avoid: a value that DEFAULTS to its "before"
+   state (scaleX(0), opacity 0, translateY(20px)) and is only moved to its
+   "after" state by an animation. Kill the animation and the element is
+   permanently invisible — a degraded end state, not a static one. Always author
+   the finished state as the default and animate FROM a variant, never TO one. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Opacity is the one channel that survives: a cross-fade conveys "this
+     changed" without vestibular cost. Anything opting in gets a real, short
+     fade instead of the blanket 0ms above. */
+  .rm-fade, .rm-fade *::before, .rm-fade *::after {
+    transition-property: opacity !important;
+    transition-duration: 200ms !important;
+    transition-timing-function: var(--ease-out) !important;
   }
 }
