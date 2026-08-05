@@ -18,11 +18,11 @@ type Art = "wave" | "quote" | "fair" | "control" | "skill";
 type Panel = { art: Art; title: string; stat: string; body: string; grad: string };
 
 const PANELS: Panel[] = [
-  { art: "wave", title: "One honest interview", stat: "30 min", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,#8B54FF,#6922F5)" },
-  { art: "quote", title: "Evidence, not keywords", stat: "1 quote / trait", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,#6922F5,#4311a8)" },
-  { art: "fair", title: "Fair by design", stat: "9 never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,#7C3AED,#9333EA)" },
-  { art: "control", title: "You stay in control", stat: "0 shared", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,#5B21B6,#7C3AED)" },
-  { art: "skill", title: "Real skill over resumes", stat: "0 resumes", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#6D28D9,#8B54FF)" },
+  { art: "wave", title: "One honest interview", stat: "One sitting", body: "One adaptive conversation replaces the whole screening funnel.", grad: "linear-gradient(155deg,#8B54FF,#6922F5)" },
+  { art: "quote", title: "Evidence, not keywords", stat: "Always cited", body: "Every signal cited to a real transcript moment — and contestable.", grad: "linear-gradient(155deg,#6922F5,#4311a8)" },
+  { art: "fair", title: "Fair by design", stat: "Never used", body: "Caste, college, gender, age, name — blocked as inputs, always.", grad: "linear-gradient(155deg,#7C3AED,#9333EA)" },
+  { art: "control", title: "You stay in control", stat: "Nothing by default", body: "Nothing reaches an employer without the candidate’s yes.", grad: "linear-gradient(155deg,#5B21B6,#7C3AED)" },
+  { art: "skill", title: "Real skill over resumes", stat: "No resume", body: "Hired for how they think, not for what they wrote down.", grad: "linear-gradient(155deg,#6D28D9,#8B54FF)" },
 ];
 
 /** Honest, on-brand mini-illustrations — white-on-gradient SVG, no stock imagery. */

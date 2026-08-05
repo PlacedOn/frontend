@@ -7,7 +7,6 @@ import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FeaturedSurfaces } from "@/components/sections/FeaturedSurfaces";
 import { GlobalReach } from "@/components/sections/GlobalReach";
 import { SignalAccordion } from "@/components/sections/SignalAccordion";
-import { Testimonials } from "@/components/sections/Testimonials";
 import { Audiences } from "@/components/sections/Audiences";
 import { CTA } from "@/components/sections/CTA";
 import { Footer } from "@/components/sections/Footer";
@@ -25,7 +24,6 @@ export default function Home() {
         <HowItWorks />
         <FeaturedSurfaces />
         <GlobalReach />
-        <Testimonials />
         <Audiences />
         <CTA />
       </main>
