@@ -1,300 +1,390 @@
 "use client";
 
-import { useEffect, useRef, type ComponentType } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useMotionValue,
-  useSpring,
-} from "motion/react";
-import {
-  BadgeCheck, Quote, type LucideProps,
-} from "lucide-react";
-import { AnimateIcon, ArrowRight } from "@/components/ui/icons";
+/* ─────────────────────────────────────────────────────────────────────────────
+ * DIRECTION: Editorial broadsheet — type-as-hero, with ONE diagram.
+ *
+ * Chosen over the alternatives (cinematic full-bleed; dark constellation) for
+ * two reasons. Harvey's full-bleed hero rests on a licensed photograph and this
+ * hero may not use imagery. Anthropic's near-black ground would fight a fixed,
+ * white-glass <Nav> and the fixed <QuietGround> that every page sits on, so
+ * inverting only the hero would mean re-theming site chrome from a section
+ * component. What is portable from both is the discipline: typography carries
+ * the frame, a single visual idea sits beside it, and nothing is decorated.
+ *
+ * The one visual idea is THE NARROWING. Three hairlines of decreasing width,
+ * each stepped further right, each labelled: a whole conversation, the passage
+ * inside it, the single judgement that passage is allowed to support. It is the
+ * product's actual claim drawn as a diagram — evidence narrows, and the last
+ * rule is short because one judgement is a small thing to have earned. It is
+ * built from rules and type only, and it is explicitly captioned as a diagram.
+ *
+ * It sits on the "instrument" register — the dark evidence-world ground already
+ * defined in globals.css (--instrument / --instrument-ink / --instrument-line /
+ * --vitrine). That gives the light page real depth and layering without a
+ * gradient blob, without a card grid, and without inventing a palette: every
+ * value here is an existing token.
+ *
+ * WHY THIS REPLACED THE OLD HERO — the previous version floated nine glass
+ * cards carrying named candidates ("Aarav Rao — Backend engineer"), an
+ * evidenced-trait meter ("Systems thinking · Strong · 68% evidenced"), a
+ * verification badge ("Verified · 22-min conversation"), a fit line ("Fits 4 of
+ * 5 role signals") and a seven-bar "INTERVIEW ACTIVITY · last 7 days" chart.
+ * Measured against Supabase on 2026-08-01 the product has 0 interview_sessions,
+ * 0 report_card_items, 1 job and 5 users. Every name, percentage, duration and
+ * bar in that field was invented. A product whose entire claim is "no judgement
+ * without evidence" cannot open with fabricated evidence, so all of it is gone
+ * rather than restyled.
+ *
+ * Nothing below is invented. The headline is a position. The deck describes the
+ * method. The diagram is captioned as a diagram. The closing band states three
+ * product policies — rules the company holds, not measurements it has taken.
+ * No metric, no named person, no logo wall, no testimonial, no photograph.
+ *
+ * CASCADE NOTE: globals.css carries an UNLAYERED `h1,h2,h3,h4 { font-weight:
+ * 600; letter-spacing: -0.015em; line-height: 1.05; color: var(--ink) }`.
+ * Unlayered rules beat layered Tailwind utilities regardless of specificity, so
+ * `font-*`, `tracking-*`, `leading-*` and `text-white` on a heading are silently
+ * inert. Two consequences, both handled: the h1 display setting is applied
+ * inline on the element, and the dark instrument panel deliberately contains NO
+ * h1–h4 — its label is a <figcaption> and its rows are <li>, because a heading
+ * in there would inherit `color: var(--ink)` (#0E1020) on an #0E1020 ground and
+ * vanish. The accented word in the h1 is a child <span> with its own `color`,
+ * which is a direct declaration on that element and so is unaffected.
+ *
+ * CONTRAST on the instrument ground (#0E1020): --instrument-ink #A9A7C8 ≈ 8.2:1,
+ * --instrument-ink-2 #7F7DA0 ≈ 4.8:1, --white 18.6:1 — all pass AA for text.
+ * --iris (#6922F5) is only ≈2.8:1 there, so on the dark panel the brand colour
+ * is carried by --iris-soft (#8B54FF, ≈4.3:1) and used on a RULE, never on
+ * text — a rule is a non-text element, where the AA threshold is 3:1.
+ *
+ * MOTION: transform and opacity only. Rules wipe with scaleX from the left, so
+ * the narrowing animates as the drawing of itself; text lifts with translateY
+ * behind a fixed-size mask. No width, height, top, left, margin or font-size is
+ * ever animated. Under prefers-reduced-motion every element mounts at its
+ * finished state with zero duration — the complete composition, not a degraded
+ * one.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+import Link from "next/link";
+import { motion, useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/Button";
 import { useDemoDialog } from "@/components/demo/DemoDialogProvider";
-import { cn } from "@/lib/cn";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-/*
- * Floating-cards hero (after 21st.dev @ravikatiyar162/floating-icons-hero-section):
- * a centred headline inside a field of soft-shadowed cards that drift and repel
- * from the cursor on spring physics. The cards carry PlacedOn's real ecosystem —
- * candidates with roles, an evidenced trait, a verification, live activity — so
- * the field says what the product does at a glance instead of decorating.
+/**
+ * The one visual idea, as data. `width` is the static rendered length of each
+ * hairline — the narrowing itself. It is a layout value, never animated; the
+ * reveal animates scaleX from 0 to 1 against it.
  */
-type Person = { kind: "person"; initials: string; name: string; role: string; tone: string };
-type Trait = { kind: "trait"; label: string; value: string; sub: string; fill: number };
-type Verified = { kind: "verified"; label: string; sub: string };
-type Activity = { kind: "activity"; label: string; bars: number[] };
-type Badge = { kind: "badge"; Icon: ComponentType<LucideProps>; text: string };
-type Card = (Person | Trait | Verified | Activity | Badge) & { className: string; mobile?: boolean };
+const NARROWING = [
+  {
+    label: "One conversation",
+    note: "adaptive, same questions asked of no two people",
+    width: "100%",
+    indent: "0%",
+    accent: false,
+  },
+  {
+    label: "The passage inside it",
+    note: "the moment the candidate actually said the thing",
+    width: "58%",
+    indent: "14%",
+    accent: false,
+  },
+  {
+    label: "The one judgement it supports",
+    note: "and nothing beyond what the passage earned",
+    width: "30%",
+    indent: "32%",
+    accent: true,
+  },
+] as const;
 
-const CARDS: Card[] = [
-  { kind: "person", initials: "AR", name: "Aarav Rao", role: "Backend engineer", tone: "var(--iris)", className: "top-[12%] left-[6%]", mobile: true },
-  { kind: "person", initials: "MP", name: "Maya Patel", role: "Applied AI engineer", tone: "#EC4899", className: "top-[15%] right-[6%]", mobile: true },
-  { kind: "person", initials: "DK", name: "Diego Kim", role: "Data engineer", tone: "#10B981", className: "bottom-[15%] left-[7%]" },
-  { kind: "person", initials: "LC", name: "Lena Cho", role: "Frontend engineer", tone: "#3B82F6", className: "bottom-[14%] right-[7%]", mobile: true },
-  { kind: "verified", label: "Verified", sub: "22-min conversation", className: "top-[13%] left-[35%]" },
-  { kind: "trait", label: "Systems thinking", value: "Strong", sub: "71–88% evidenced", fill: 0.82, className: "top-[42%] left-[3%]" },
-  { kind: "activity", label: "Interview activity", bars: [8, 12, 7, 15, 11, 17, 13], className: "top-[45%] right-[3%]" },
-  { kind: "badge", Icon: BadgeCheck, text: "Fits 4 of 5 role signals", className: "bottom-[11%] right-[33%]", mobile: true },
-  { kind: "badge", Icon: Quote, text: "Traceable to transcript", className: "top-[56%] left-[4%]" },
-];
+/** Product policies. Each is a rule the company holds, not a measurement. */
+const POLICIES = [
+  "Free for candidates",
+  "Nothing reaches an employer without the candidate’s yes",
+  "Resume, name and college are never inputs",
+] as const;
 
 export function Hero() {
   const reduce = useReducedMotion();
   const { open } = useDemoDialog();
-  const mouseX = useRef(0);
-  const mouseY = useRef(0);
 
-  const onMove = (e: React.MouseEvent<HTMLElement>) => {
-    mouseX.current = e.clientX;
-    mouseY.current = e.clientY;
-  };
-
+  /** Lift-and-fade. Under reduced motion the element mounts already finished. */
   const rise = (delay: number) => ({
-    initial: reduce ? false : { opacity: 0, y: 20 },
+    initial: reduce ? false : { opacity: 0, y: 18 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.7, delay, ease: EASE },
+    transition: reduce ? { duration: 0 } : { duration: 0.75, delay, ease: EASE },
+  });
+
+  /** Hairline wipe from the left. */
+  const wipe = (delay: number, duration = 0.9) => ({
+    initial: reduce ? false : { scaleX: 0 },
+    animate: { scaleX: 1 },
+    transition: reduce ? { duration: 0 } : { duration, delay, ease: EASE },
   });
 
   return (
     <section
       id="top"
-      onMouseMove={onMove}
-      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden"
+      aria-labelledby="hero-heading"
+      /* Vertical rhythm is tuned against a 1440×900 laptop: measured, the
+         thesis, deck, CTA and the complete diagram all resolve by y=821, and
+         the closing policy band starts at y=870 — sitting on the fold, so it
+         is the first thing a scroll reveals rather than something missed. That
+         band is the honest replacement for the logo wall this product cannot
+         truthfully have, so it is placed to be found. */
+      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden pt-28 pb-16 md:pt-32 md:pb-20"
     >
-      {/* HeroAurora removed — an animated canvas behind the headline. Motion
-          should say where something came from or what changed; a drifting field
-          behind static copy does neither, and it competed with the words it sat
-          under. The radial legibility wash below already gives the hero its
-          centre of light, without a canvas in the paint path. */}
-      {/* radial legibility wash — bright at the centre where the copy sits */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(56% 48% at 50% 46%, rgba(247,249,254,0.85) 0%, rgba(247,249,254,0.35) 52%, rgba(247,249,254,0) 80%)",
-        }}
-      />
-
-      {/* floating card field — decorative, never blocks the CTAs */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        {CARDS.map((card, i) => (
-          <FloatCard key={i} card={card} index={i} mouseX={mouseX} mouseY={mouseY} reduce={!!reduce} />
-        ))}
-      </div>
-
-      {/* centred content */}
-      <div className="shell relative z-[1] flex flex-col items-center pt-28 pb-24 text-center md:pt-24">
-        <motion.a
-          {...rise(0.04)}
-          href="/trust"
-          className="chip transition-transform duration-[var(--d-micro)] hover:-translate-y-0.5"
-        >
-          LL144 &amp; EU AI Act aligned
-        </motion.a>
-
-        <motion.h1
-          {...rise(0.12)}
-          className="mt-6 max-w-[16ch] text-balance text-[clamp(2.7rem,1rem+6.6vw,5.6rem)] text-[var(--ink)]"
-          /* Weight, tracking and leading are set inline, NOT as leading-[…] /
-             tracking-[…] utilities, because globals.css:117 carries an
-             UNLAYERED `h1, h2, h3, h4 { letter-spacing: -0.03em; line-height:
-             1.04 }`. Unlayered rules beat layered Tailwind utilities regardless
-             of specificity, so the classes that used to be here (leading-[0.98]
-             tracking-[-0.035em]) were silently doing nothing — the browser
-             reported -0.030em / 1.040, the rule's values, not theirs.
-
-             Tuned toward the Upwork reference: at ~90px, weight 680 with
-             -0.03em tracking closes the counters and the letters nearly touch,
-             which reads as compression rather than confidence. */
-          style={{ fontWeight: 600, letterSpacing: "-0.015em", lineHeight: 1.05 }}
-        >
-          Defining the future with <span className="grad-iris">smart hiring</span>.
-        </motion.h1>
-
-        <motion.p
-          {...rise(0.22)}
-          className="mt-6 max-w-[52ch] text-[clamp(1.05rem,1rem+0.45vw,1.28rem)] leading-relaxed text-[var(--ink-2)]"
-        >
-          One honest, adaptive conversation shows how a candidate actually thinks, decides
-          and holds up under pressure — every trait traced back to something they said.
-        </motion.p>
-
-        <motion.div {...rise(0.32)} className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <AnimateIcon animateOnHover>
-            <Button href="/pre-interview" className="!px-7 !py-4 text-[15.5px]">
-              Start your interview
-              <ArrowRight size={17} />
-            </Button>
-          </AnimateIcon>
-          <Button onClick={() => open("employer")} variant="ghost" className="!px-6 !py-4 text-[15px]">
-            Book a demo
-          </Button>
-        </motion.div>
-
+      <div className="shell relative w-full">
+        {/* ── masthead band ────────────────────────────────────────────── */}
+        <Rule {...wipe(0.05)} />
         <motion.div
-          {...rise(0.44)}
-          className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] font-medium text-[var(--ink-3)]"
+          {...rise(0.1)}
+          className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 pt-3"
         >
-          <span className="flex items-center gap-1.5">
-            <span className="livedot" /> Free for candidates
-          </span>
-          <span className="hidden text-[var(--glass-line-hi)] sm:inline">·</span>
-          <span>Every score tied to a transcript moment</span>
-          <span className="hidden text-[var(--glass-line-hi)] sm:inline">·</span>
-          <span>Zero resume bias</span>
+          <p className="eyebrow">Evidence-based hiring</p>
+          <Link
+            href="/trust"
+            className="eyebrow group inline-flex items-center gap-2 transition-colors duration-[var(--d-micro)] hover:text-[var(--iris-ink)]"
+          >
+            <span className="border-b border-transparent pb-px transition-colors duration-[var(--d-micro)] group-hover:border-[var(--iris-line)]">
+              LL144 &amp; EU AI Act aligned
+            </span>
+          </Link>
         </motion.div>
+
+        {/* ── thesis: the type is the hero ─────────────────────────────── */}
+        <h1
+          id="hero-heading"
+          /* The min of the top clamp is deliberately generous: below `sm` the
+             masthead row wraps into two stacked eyebrows, and without it the
+             pair glues itself to the headline. */
+          className="mt-[clamp(2.75rem,1.5rem+2.6vw,3.5rem)] max-w-[17ch] text-[clamp(2rem,0.95rem+5.3vw,4.9rem)]"
+          /* Set inline: the unlayered h1 rule in globals.css would otherwise
+             override any Tailwind font/tracking/leading utility placed here. */
+          style={{ fontWeight: 600, letterSpacing: "-0.03em", lineHeight: 0.98 }}
+        >
+          <Line reduce={!!reduce} delay={0.18}>
+            A resume is a claim.
+          </Line>
+          <Line reduce={!!reduce} delay={0.3}>
+            A conversation is{" "}
+            <span style={{ color: "var(--iris)" }}>evidence</span>.
+          </Line>
+        </h1>
+
+        {/* ── deck + the diagram ───────────────────────────────────────── */}
+        <div className="mt-[clamp(2.25rem,1.5rem+2.2vw,3rem)] grid gap-x-12 gap-y-[clamp(2.5rem,1.5rem+3vw,4rem)] lg:grid-cols-12">
+          {/* Bottom-anchored on lg: the deck and CTA settle onto the diagram's
+              baseline (Harvey's copy-bottom-left move) instead of hanging from
+              the top of a much taller column. The space this frees collects
+              under the headline, where it reads as breathing room rather than
+              as a gap beside the CTA. */}
+          <div className="lg:col-span-5 lg:self-end">
+            <motion.p
+              {...rise(0.46)}
+              className="max-w-[42ch] text-[clamp(1.02rem,0.98rem+0.36vw,1.2rem)] leading-[1.62] text-[var(--ink-2)]"
+            >
+              PlacedOn replaces the resume screen with one adaptive conversation
+              — then ties every judgement back to the moment in the transcript
+              that earned it.
+            </motion.p>
+
+            <motion.div
+              {...rise(0.56)}
+              className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4"
+            >
+              <Button href="/pre-interview" className="!px-7 !py-4 text-[15.5px]">
+                Start your interview
+              </Button>
+              <button
+                type="button"
+                onClick={() => open("employer")}
+                className="cursor-pointer border-b border-[var(--glass-line-hi)] pb-1 text-[15px] font-medium text-[var(--ink-2)] transition-colors duration-[var(--d-micro)] hover:border-[var(--iris)] hover:text-[var(--iris-ink)]"
+              >
+                Book a demo for your team
+              </button>
+            </motion.div>
+          </div>
+
+          <motion.div {...rise(0.62)} className="lg:col-span-6 lg:col-start-7">
+            <NarrowingDiagram reduce={!!reduce} wipe={wipe} />
+          </motion.div>
+        </div>
+
+        {/* ── colophon: three policies, stated as policies ─────────────── */}
+        <div className="mt-[clamp(2.5rem,1.5rem+2.4vw,3rem)]">
+          <Rule {...wipe(1.05)} />
+          <motion.ul
+            {...rise(1.1)}
+            className="grid gap-x-12 gap-y-2 pt-4 sm:grid-cols-3"
+          >
+            {POLICIES.map((policy) => (
+              <li
+                key={policy}
+                className="text-[13px] leading-[1.5] text-[var(--ink-3)]"
+              >
+                {policy}
+              </li>
+            ))}
+          </motion.ul>
+        </div>
       </div>
     </section>
   );
 }
 
 /**
- * One floating card: staggered scale-in, continuous drift, and cursor repulsion
- * (spring). All motion is disabled under reduced-motion, where the card fades in
- * and holds still.
+ * THE NARROWING — the hero's single visual idea.
+ *
+ * Deliberately contains no h1–h4: see the CASCADE NOTE at the top of the file.
+ * The dark ground would render any heading in --ink on --instrument, invisible.
  */
-function FloatCard({
-  card, index, mouseX, mouseY, reduce,
+function NarrowingDiagram({
+  reduce,
+  wipe,
 }: {
-  card: Card;
-  index: number;
-  mouseX: React.MutableRefObject<number>;
-  mouseY: React.MutableRefObject<number>;
   reduce: boolean;
+  wipe: (delay: number, duration?: number) => Record<string, unknown>;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 300, damping: 20 });
-  const springY = useSpring(y, { stiffness: 300, damping: 20 });
-
-  useEffect(() => {
-    if (reduce) return;
-    const REACH = 160;
-    const onMove = () => {
-      const el = ref.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const dx = mouseX.current - (r.left + r.width / 2);
-      const dy = mouseY.current - (r.top + r.height / 2);
-      const dist = Math.hypot(dx, dy);
-      if (dist < REACH) {
-        const angle = Math.atan2(dy, dx);
-        const force = (1 - dist / REACH) * 42;
-        x.set(-Math.cos(angle) * force);
-        y.set(-Math.sin(angle) * force);
-      } else {
-        x.set(0);
-        y.set(0);
-      }
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [reduce, mouseX, mouseY, x, y]);
-
-  const dur = 6 + (index % 5); // deterministic (no SSR/CSR mismatch), still varied
-
   return (
-    <motion.div
-      ref={ref}
-      style={reduce ? undefined : { x: springX, y: springY }}
-      initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.7, y: 14 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ delay: reduce ? 0 : index * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={cn("absolute hidden md:block", card.className)}
+    <figure
+      /* <figure> itself carries the panel, so the <figcaption> can be a direct
+         child — nesting it in a wrapper div is invalid HTML. The caption is the
+         LAST child (also valid) because it is the disclaimer, and a disclaimer
+         belongs after the thing it disclaims. The top line is a plain <p>. */
+      className="relative m-0 overflow-hidden rounded-[var(--r-card)] px-[clamp(20px,4vw,38px)] pt-[clamp(22px,3vw,28px)] pb-[clamp(20px,3vw,24px)]"
+      style={{
+        background:
+          "linear-gradient(158deg, var(--instrument-2) 0%, var(--instrument) 68%)",
+        border: "1px solid var(--instrument-line)",
+        boxShadow: "var(--shadow-lg)",
+      }}
     >
-      <motion.div
-        className="rounded-[16px] border px-3.5 py-2.5"
+      {/* A single faint display-case wash so the panel is a surface, not a
+          rectangle of paint. Static; nothing here animates. */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
         style={{
-          background: "var(--glass-hi)",
-          borderColor: "var(--glass-line-hi)",
-          backdropFilter: "blur(16px) saturate(1.3)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.3)",
-          boxShadow: "0 18px 44px -20px rgba(40,26,120,0.42), inset 0 1px 0 rgba(255,255,255,0.75)",
+          background:
+            "radial-gradient(78% 58% at 8% 0%, var(--vitrine) 0%, transparent 72%)",
         }}
-        animate={reduce ? undefined : { y: [0, -8, 0, 8, 0], x: [0, 5, 0, -5, 0], rotate: [0, 3, 0, -3, 0] }}
-        transition={reduce ? undefined : { duration: dur, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+      />
+
+      <p
+        className="relative"
+        style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: 12,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          color: "var(--instrument-ink-2)",
+        }}
       >
-        <CardBody card={card} />
-      </motion.div>
-    </motion.div>
+        How one signal narrows
+      </p>
+
+      <ol className="relative mt-[clamp(20px,2.6vw,26px)] space-y-[clamp(18px,2.4vw,26px)]">
+        {NARROWING.map((stage, i) => (
+          <motion.li
+            key={stage.label}
+            initial={reduce ? false : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={
+              reduce
+                ? { duration: 0 }
+                : { duration: 0.55, delay: 0.74 + i * 0.14, ease: EASE }
+            }
+            /* Static indent. The step to the right is layout, not motion —
+               animating margin is forbidden and would also thrash layout. */
+            style={{ marginInlineStart: stage.indent }}
+          >
+            <p
+              className="text-[clamp(14px,0.86rem+0.16vw,15.5px)] leading-[1.35]"
+              style={{
+                color: stage.accent ? "var(--white)" : "var(--instrument-ink)",
+                fontWeight: stage.accent ? 600 : 500,
+              }}
+            >
+              {stage.label}
+            </p>
+            <p
+              className="mt-[5px] text-[12.5px] leading-[1.45]"
+              style={{ color: "var(--instrument-ink-2)" }}
+            >
+              {stage.note}
+            </p>
+            {/* The rule IS the narrowing. Width is static; only scaleX moves. */}
+            <motion.span
+              aria-hidden
+              {...wipe(0.86 + i * 0.14, 1.05)}
+              className="mt-3 block h-px origin-left"
+              style={{
+                width: stage.width,
+                /* --instrument-line (white @ 10%) is a border tone: at 1px on
+                   this ground it is too faint to compare lengths, and the
+                   comparison IS the idea. --instrument-ink-2 reads as a quiet
+                   hairline at ~4.8:1 — well past the 3:1 AA floor for non-text
+                   — while --iris-soft marks the terminus. */
+                background: stage.accent
+                  ? "var(--iris-soft)"
+                  : "var(--instrument-ink-2)",
+              }}
+            />
+          </motion.li>
+        ))}
+      </ol>
+
+      <figcaption
+        className="relative mt-[clamp(18px,2.2vw,22px)] max-w-[46ch] text-[12px] leading-[1.5]"
+        style={{ color: "var(--instrument-ink-2)" }}
+      >
+        A diagram of the method. Not a product screenshot, not a recording, and
+        not anybody’s results.
+      </figcaption>
+    </figure>
   );
 }
 
-function CardBody({ card }: { card: Card }) {
-  if (card.kind === "person") {
-    return (
-      <div className="flex items-center gap-2.5">
-        <span
-          className="grid size-9 shrink-0 place-items-center rounded-full text-[12px] font-bold text-white"
-          style={{ background: card.tone }}
-        >
-          {card.initials}
-        </span>
-        <div className="min-w-0 whitespace-nowrap pr-1">
-          <p className="text-[13px] font-bold leading-tight text-[var(--ink)]">{card.name}</p>
-          <p className="text-[11.5px] leading-tight text-[var(--ink-3)]">{card.role}</p>
-        </div>
-      </div>
-    );
-  }
-  if (card.kind === "verified") {
-    return (
-      <div className="flex items-center gap-2.5">
-        <span className="grid size-8 shrink-0 place-items-center rounded-full" style={{ background: "rgba(16,185,129,0.14)", color: "#047857" }}>
-        </span>
-        <div className="whitespace-nowrap pr-1">
-          <p className="text-[13px] font-bold leading-tight" style={{ color: "#047857" }}>{card.label}</p>
-          <p className="text-[11.5px] leading-tight text-[var(--ink-3)]">{card.sub}</p>
-        </div>
-      </div>
-    );
-  }
-  if (card.kind === "trait") {
-    return (
-      <div className="w-[168px]">
-        <div className="flex items-baseline justify-between gap-2">
-          <p className="text-[12.5px] font-bold text-[var(--ink)]">{card.label}</p>
-          <p className="text-[11.5px] font-semibold text-[var(--iris-ink)]">{card.value}</p>
-        </div>
-        <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full" style={{ background: "var(--mist)" }}>
-          <span className="block h-full rounded-full" style={{ width: `${card.fill * 100}%`, background: "linear-gradient(90deg,var(--iris-soft),var(--iris))" }} />
-        </div>
-        <p className="mt-1 text-[11px] text-[var(--ink-3)]">{card.sub}</p>
-      </div>
-    );
-  }
-  if (card.kind === "activity") {
-    const max = Math.max(...card.bars);
-    return (
-      <div className="w-[150px]">
-        <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-[var(--ink-3)]" style={{ fontFamily: "var(--font-mono)" }}>{card.label}</p>
-        <div className="mt-2 flex h-9 items-end gap-1">
-          {card.bars.map((b, i) => (
-            <span
-              key={i}
-              className="flex-1 rounded-[3px]"
-              style={{ height: `${(b / max) * 100}%`, background: i === card.bars.length - 1 ? "var(--iris)" : "var(--iris-line)" }}
-            />
-          ))}
-        </div>
-        <p className="mt-1 text-[11px] text-[var(--ink-3)]">last 7 days</p>
-      </div>
-    );
-  }
-  // badge
+/** A full-measure hairline that wipes in from the left. */
+function Rule(props: Record<string, unknown>) {
   return (
-    <div className="flex items-center gap-2 whitespace-nowrap pr-1">
-      <span className="grid size-6 shrink-0 place-items-center rounded-full" style={{ background: "var(--iris-ghost)", color: "var(--iris)" }}>
-        <card.Icon size={13} />
-      </span>
-      <p className="text-[12.5px] font-bold text-[var(--ink)]">{card.text}</p>
-    </div>
+    <motion.span
+      aria-hidden
+      {...props}
+      className="block h-px w-full origin-left"
+      style={{ background: "var(--glass-line-hi)" }}
+    />
+  );
+}
+
+/**
+ * One headline line, lifted in behind a mask. The mask is padded so the
+ * display setting's tight leading cannot clip letterforms.
+ */
+function Line({
+  children,
+  delay,
+  reduce,
+}: {
+  children: React.ReactNode;
+  delay: number;
+  reduce: boolean;
+}) {
+  return (
+    <span className="block overflow-hidden pb-[0.1em] -mb-[0.1em]">
+      <motion.span
+        className="block"
+        initial={reduce ? false : { y: "108%" }}
+        animate={{ y: "0%" }}
+        transition={reduce ? { duration: 0 } : { duration: 0.95, delay, ease: EASE }}
+      >
+        {children}
+      </motion.span>
+    </span>
   );
 }
