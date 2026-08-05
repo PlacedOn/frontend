@@ -38,12 +38,12 @@ function validate(formData: FormData, mode: Mode): FieldErrors {
 }
 
 /** Sign in / create account panel with the candidate–employer role fork. */
-export function AuthPanel({ next }: { next?: string }) {
+export function AuthPanel({ next, initialError }: { next?: string; initialError?: string }) {
   const reduce = useReducedMotion();
   const [mode, setMode] = useState<Mode>("signin");
   const [role, setRole] = useState<Role>("candidate");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(initialError ?? null);
   const [confirmEmail, setConfirmEmail] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 

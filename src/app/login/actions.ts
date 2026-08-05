@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -96,10 +97,18 @@ export async function signUp(formData: FormData): Promise<AuthResult> {
 
   const { email, password, fullName, role } = parsed.data;
   const supabase = await createClient();
+  // The confirmation link must return to our callback route (which exchanges the
+  // code for a session), not Supabase's default Site URL. Origin comes from the
+  // request so it's correct in every environment.
+  const hdrs = await headers();
+  const origin = hdrs.get("origin") ?? process.env.NEXT_PUBLIC_SITE_URL ?? "https://placedon.com";
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { role, full_name: fullName } },
+    options: {
+      data: { role, full_name: fullName },
+      emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(dashboardFor(role))}`,
+    },
   });
 
   if (error) {
