@@ -12,6 +12,7 @@
  */
 
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { DirectoryBrowser } from "./DirectoryBrowser";
 import { DIRECTORY_FIXTURE_NOTICE } from "@/mocks/directoryCandidates";
 
@@ -43,7 +44,8 @@ export default function DirectoryDevPage() {
         A browsable grid of assessed candidates with a persistent filter rail. Every card carries
         per-trait figures with their evidence bands and the trust status of the record. There is no
         overall candidate score anywhere on this page, and no sort control &mdash; filters describe a
-        job, ranking describes a person.
+        job, ranking describes a person. Filters live in the query string, so the address bar always
+        holds a link that reproduces exactly what you are looking at.
       </p>
 
       {/* The identity policy is stated on the page, not only in code comments.
@@ -98,7 +100,25 @@ export default function DirectoryDevPage() {
         </p>
       </div>
 
-      <DirectoryBrowser />
+      {/* `DirectoryBrowser` reads `useSearchParams()`, which forces the client
+          tree beneath it to be client-rendered. Without this boundary the
+          production build fails outright ("Missing Suspense boundary with
+          useSearchParams") — it is a build requirement, not a nicety.
+
+          The fallback is a plain reserved block rather than a shimmer: the real
+          content arrives on hydration, and an animated skeleton for something
+          measured in milliseconds is decoration pretending to be feedback. It
+          holds height so the page does not shift when the grid lands. */}
+      <Suspense
+        fallback={
+          <div
+            className="mt-10 rounded-[var(--r-card)]"
+            style={{ minHeight: 420, border: "1px dashed var(--glass-line)" }}
+          />
+        }
+      >
+        <DirectoryBrowser />
+      </Suspense>
     </main>
   );
 }

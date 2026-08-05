@@ -45,7 +45,9 @@
  * longer competing with the evidence for the decision — the decision is made.
  * So the shortlist action is the release point, and the card says so out loud
  * when you press it. (The reveal itself lives on the pipeline surface, not
- * here; this card never holds an identity to leak.)
+ * here — `/dev/pipeline`, via `releaseIdentity()`, which refuses to return
+ * anything for a candidate who is not on the shortlist. This card never holds
+ * an identity to leak: `DirectoryCandidate` has no field one could occupy.)
  *
  * ── Why not initials, and why not "photo after shortlist" ──
  * Initials were the obvious compromise and they fail on this market. In Indian
@@ -94,6 +96,15 @@ export interface CandidateCardProps {
   stagger?: number;
   /** Skills currently selected in the rail; matching pills are highlighted. */
   selectedSkills?: readonly string[];
+  /**
+   * Label of the trait the minimum-figure filter names, WHEN this candidate has
+   * no reading on it. Present ⇒ render the coverage-gap notice.
+   *
+   * The card is told the label rather than the filter, because the card must not
+   * be able to compute this differently from the filter that let the candidate
+   * through — see `hasReadingOn()` in lib/directory/filter.ts.
+   */
+  uncoveredTraitLabel?: string | null;
   shortlisted?: boolean;
   onShortlist?: (id: string) => void;
 }
@@ -112,6 +123,7 @@ export function CandidateCard({
   candidate,
   stagger = 0,
   selectedSkills = [],
+  uncoveredTraitLabel = null,
   shortlisted = false,
   onShortlist,
 }: CandidateCardProps) {
@@ -199,6 +211,35 @@ export function CandidateCard({
           second column and lose its association with the track. */}
       <div className="mt-5" style={{ borderTop: "1px solid var(--glass-line)" }}>
         <p className="eyebrow mt-4">Readings from one interview</p>
+
+        {/* ── coverage gap on the filtered trait ──
+            This candidate is in the results BECAUSE they have no reading on the
+            trait the recruiter set a floor on. That is a fact about our
+            interview, not about them, and the styling has to say so: the
+            neutral `needs` band (grey, the "we don't know yet" colour), never
+            the amber `emerging` or anything that reads as a warning. A red or
+            amber strip here would re-create by CSS exactly the equation the
+            filter change was made to break — missing evidence rendered as bad
+            news about the person.
+
+            No icon. A glyph in this slot would be doing tone rather than
+            meaning, and the tone it would do is "alert". */}
+        {uncoveredTraitLabel && (
+          <p
+            className="mt-3 rounded-[var(--r-btn)] px-3 py-2.5 text-[11.5px] leading-snug"
+            style={{
+              background: "var(--band-needs-fill)",
+              border: "1px solid var(--glass-line)",
+              color: "var(--ink-2)",
+            }}
+          >
+            <strong style={{ color: "var(--ink)", fontWeight: 600 }}>
+              No reading yet on {uncoveredTraitLabel}.
+            </strong>{" "}
+            The interview never asked. Kept in these results because that is a gap in our coverage,
+            not a low figure.
+          </p>
+        )}
 
         <ul className="mt-3 flex list-none flex-col gap-3.5 p-0">
           {candidate.traits.map((trait, i) => (
@@ -291,7 +332,7 @@ export function CandidateCard({
           style={{ color: "var(--ink-3)" }}
         >
           {shortlisted
-            ? "Name and contact details are released to your pipeline at this point — not before. (These fixtures carry no identity to release.)"
+            ? "Name and contact released — on the pipeline page, not here. This grid never shows one. (Fixture identity.)"
             : `Assessed ${formatAssessedAt(candidate.assessedAt)}. Identity stays sealed until you shortlist.`}
         </p>
       </div>

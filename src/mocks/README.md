@@ -25,6 +25,17 @@ pipeline produces anything.
    There is no `name`, `photo`, `email`, or `candidateId` pointing at anyone.
    A plausible-looking fake candidate is exactly what gets screenshotted into a
    deck and mistaken for a real result.
+
+   **The one exception, and its conditions.** `pipelineIdentities.ts` carries
+   names and contact handles, because the product releases identity at
+   shortlist and a pipeline surface that released nothing would be untestable
+   theatre. It is allowed only because it cannot be mistaken for a person:
+   the names are literally "Fixture Candidate One", and the addresses use the
+   RFC 2606 `.invalid` TLD, which can never resolve. There are still no
+   photographs — `photo` is banned at every stage, post-shortlist included, and
+   the ban is enforced by there being no such field. Identity is reachable only
+   through `releaseIdentity(id, shortlistedIds)`, which returns `null` for
+   anyone not shortlisted; the map itself is not exported.
 3. **No demographic fields**, in fixtures or anywhere else — school, college,
    employer prestige, age, gender, caste, region. See the invariants in
    `src/types/scoring.ts`.

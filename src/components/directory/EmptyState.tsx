@@ -12,10 +12,18 @@
  *
  * ══ THE MINIMUM-FIGURE CAVEAT ══
  * When the empty result involves the minimum-figure facet, this says something
- * the generic copy cannot: a candidate with no reading on that trait was
- * excluded, and that is an absence of evidence, not a low figure. A recruiter
- * who does not know that will read the empty grid as "nobody here is good
- * enough", which is a conclusion the data does not support.
+ * the generic copy cannot, and WHAT it says changed when the filter changed.
+ *
+ * The facet no longer drops candidates with no reading on the named trait —
+ * they stay in the results, marked. So the default caveat is no longer "people
+ * were silently excluded"; it is "everyone with a reading here came in under
+ * your floor, and that is a real reading of real evidence".
+ *
+ * But if the recruiter has ALSO ticked the explicit exclusion, the old warning
+ * becomes true again — and now it is attributable, so this names it and offers
+ * the specific undo rather than only "clear all filters". A recruiter who does
+ * not know an exclusion is running will read the empty grid as "nobody here is
+ * good enough", which is a conclusion the data does not support.
  */
 
 import { ActiveFilterChips } from "./ActiveFilterChips";
@@ -27,6 +35,12 @@ export interface EmptyStateProps {
   onClearAll: () => void;
   /** True when the min-figure facet is part of the query. Adds the caveat. */
   minFigureActive: boolean;
+  /** True when the recruiter opted into hiding no-reading records. */
+  excludeNoReadingActive?: boolean;
+  /** How many records the exclusion is currently removing. */
+  hiddenNoReadingCount?: number;
+  /** Undo just the exclusion, leaving the rest of the query intact. */
+  onShowNoReading?: () => void;
   /** How many records exist in total, before any filter. */
   totalCount: number;
 }
@@ -36,6 +50,9 @@ export function EmptyState({
   onRemove,
   onClearAll,
   minFigureActive,
+  excludeNoReadingActive = false,
+  hiddenNoReadingCount = 0,
+  onShowNoReading,
   totalCount,
 }: EmptyStateProps) {
   const hasFilters = filters.length > 0;
@@ -86,19 +103,53 @@ export function EmptyState({
           </div>
 
           {minFigureActive && (
-            <p
-              className="mt-5 max-w-[62ch] rounded-[var(--r-btn)] px-4 py-3 text-[12.5px] leading-relaxed"
+            <div
+              className="mt-5 max-w-[62ch] rounded-[var(--r-btn)] px-4 py-3.5"
               style={{
                 background: "var(--band-needs-fill)",
                 color: "var(--ink-2)",
                 border: "1px solid var(--glass-line)",
               }}
             >
-              A minimum-figure filter also excludes anyone with{" "}
-              <strong style={{ color: "var(--ink)", fontWeight: 600 }}>no reading</strong>
-              {" on that trait. Those people were not scored low — the interview never got to it. " +
-                "Clearing this filter is the only way to see them."}
-            </p>
+              {excludeNoReadingActive ? (
+                <>
+                  <p className="text-[12.5px] leading-relaxed">
+                    You also ticked{" "}
+                    <strong style={{ color: "var(--ink)", fontWeight: 600 }}>
+                      hide anyone with no reading
+                    </strong>{" "}
+                    {`on that trait. ${
+                      hiddenNoReadingCount > 0
+                        ? `That is removing ${hiddenNoReadingCount} ${
+                            hiddenNoReadingCount === 1 ? "record" : "records"
+                          } right now. Those people`
+                        : "Anyone it removes"
+                    } were not scored low — the interview never asked. That is a gap in our coverage.`}
+                  </p>
+                  {onShowNoReading && (
+                    <button
+                      type="button"
+                      onClick={onShowNoReading}
+                      className="mt-3 cursor-pointer rounded-[var(--r-btn)] px-3.5 py-2 text-[12.5px] font-semibold"
+                      style={{
+                        background: "var(--white)",
+                        color: "var(--iris-ink)",
+                        border: "1px solid var(--iris-line)",
+                      }}
+                    >
+                      Show them again
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p className="text-[12.5px] leading-relaxed">
+                  {"The minimum-figure filter applies only to candidates who HAVE a reading on that " +
+                    "trait. Anyone the interview never asked is still included and marked on their " +
+                    "card — so an empty grid here means everyone with a reading came in under your " +
+                    "floor, not that people were hidden."}
+                </p>
+              )}
+            </div>
           )}
 
           <button

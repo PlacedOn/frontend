@@ -302,6 +302,58 @@ export function FilterRail({
               opacity: filters.minFigure.traitKey ? 1 : 0.45,
             }}
           />
+
+          {/* ── the uncovered opt-in ──
+              A checkbox, not a pill, and not a default. The floor applies to
+              people who HAVE a reading; people the interview never asked stay
+              in the results and are marked on the card. This control is the
+              only way to drop them, and it is off until someone turns it on.
+
+              Why a checkbox where every other control here is a pill: pills in
+              this rail all mean "include things matching this". This one means
+              the opposite — it REMOVES records — and giving a subtractive
+              control the additive grammar is how you get someone excluding
+              people while believing they narrowed a category. The checkbox
+              carries its own "on/off" reading, which is the honest shape for a
+              switch that hides humans.
+
+              Disabled without a named trait, because there is nothing to be
+              uncovered ON. */}
+          <div className="mt-3.5">
+            <label
+              className="flex cursor-pointer items-start gap-2.5 text-[11.5px] leading-snug"
+              style={{
+                color: filters.minFigure.traitKey ? "var(--ink-2)" : "var(--ink-3)",
+                cursor: filters.minFigure.traitKey ? "pointer" : "not-allowed",
+                opacity: filters.minFigure.traitKey ? 1 : 0.55,
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={filters.minFigure.excludeNoReading}
+                disabled={!filters.minFigure.traitKey}
+                onChange={(e) =>
+                  onChange({
+                    ...filters,
+                    minFigure: { ...filters.minFigure, excludeNoReading: e.target.checked },
+                  })
+                }
+                // 16px box with the label as the rest of the target; the whole
+                // row is the hit area because the <label> wraps both.
+                className="mt-[2px] size-4 shrink-0"
+                style={{ accentColor: "var(--iris)" }}
+              />
+              <span>
+                <span style={{ fontWeight: 600, color: "var(--ink)" }}>
+                  Also hide anyone with no reading on this trait
+                </span>
+                <span className="mt-0.5 block" style={{ color: "var(--ink-3)" }}>
+                  They are shown by default. A missing reading means the interview never asked —
+                  it is not a low figure, and hiding it hides our gap, not theirs.
+                </span>
+              </span>
+            </label>
+          </div>
         </Facet>
 
         {/* ── work location ──

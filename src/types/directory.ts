@@ -123,8 +123,20 @@ export interface DirectoryFilters {
    *
    * `traitKey: null` means the facet is inactive. There is no default trait,
    * because a default would quietly become the composite by the back door.
+   *
+   * ══ `excludeNoReading` — OFF BY DEFAULT, AND THAT IS THE POINT ══
+   * A candidate the interview never asked about this trait has NO reading on
+   * it. That is an absence of evidence, not a low figure, and the two must not
+   * be collapsed — the distinction is this product's core claim. So the floor
+   * applies only to candidates who HAVE a reading; the rest stay in the results
+   * and are marked as uncovered on the card.
+   *
+   * HR can still choose to drop them, because "only show me people I can
+   * actually evaluate on this axis" is a legitimate thing to want. But it has to
+   * be *chosen*, with a labelled control and a visible chip, so the exclusion is
+   * attributable to the recruiter rather than silently performed by us.
    */
-  minFigure: { traitKey: string | null; min: number };
+  minFigure: { traitKey: string | null; min: number; excludeNoReading: boolean };
   /** Multi-select work locations. Empty = any. */
   locations: readonly string[];
   /** Single-select availability. `null` = any. */
@@ -140,7 +152,7 @@ export const EXPERIENCE_BOUNDS = { min: 0, max: 20 } as const;
 export const EMPTY_FILTERS: DirectoryFilters = {
   role: null,
   skills: [],
-  minFigure: { traitKey: null, min: 50 },
+  minFigure: { traitKey: null, min: 50, excludeNoReading: false },
   locations: [],
   availability: null,
   experience: { min: EXPERIENCE_BOUNDS.min, max: EXPERIENCE_BOUNDS.max },

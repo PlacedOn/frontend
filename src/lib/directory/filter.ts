@@ -24,15 +24,50 @@ function matchesSkills(candidate: DirectoryCandidate, skills: readonly string[])
 }
 
 /**
+ * Is there a reading on this trait at all? Exported because the CARD has to
+ * mark the uncovered case, and it must ask the same question the filter asks.
+ * Two implementations of "has a reading" would drift, and the drift would show
+ * up as a candidate the filter kept but the card did not explain.
+ */
+export function hasReadingOn(candidate: DirectoryCandidate, traitKey: string | null): boolean {
+  if (!traitKey) return true;
+  return candidate.traits.some((t) => t.traitKey === traitKey);
+}
+
+/** How many of these records carry no reading on the named trait. */
+export function countWithoutReading(
+  candidates: readonly DirectoryCandidate[],
+  traitKey: string | null,
+): number {
+  if (!traitKey) return 0;
+  return candidates.filter((c) => !hasReadingOn(c, traitKey)).length;
+}
+
+/**
  * Does this candidate clear the floor on the NAMED trait?
  *
- * A candidate with no reading on that trait does NOT pass. That is a
- * deliberate call and it cuts against the candidate: an absent reading is an
- * absence of evidence, not a low figure. But a filter that admitted unknowns
- * would return people the recruiter cannot evaluate on the axis they just said
- * mattered, and they would be rejected one screen later anyway — with the
- * rejection now attributed to the person rather than to a gap in our data.
- * Surfacing the gap in the EmptyState copy is the honest place to handle it.
+ * ══ CANDIDATES WITH NO READING STAY IN ══
+ * This used to exclude them, and that was wrong. A candidate the interview
+ * never asked about a trait is not scoring low on it — there is no score. The
+ * filter was quietly converting "we haven't asked yet" into "they failed", and
+ * the person who has never seen this screen was the one paying for it.
+ *
+ * The earlier argument for dropping them was that a recruiter cannot evaluate
+ * someone on an axis with no data, so they would be rejected a screen later
+ * anyway. That argument is doing something dishonest: it assumes the outcome
+ * and then hides the reason. If the recruiter is going to decide the gap
+ * disqualifies, they should decide it in front of the record, seeing that the
+ * gap is OURS. A missing reading is a hole in our interview coverage, and the
+ * cost of that hole should be visible to the party who can fix it.
+ *
+ * So: the floor applies to candidates who HAVE a reading. Candidates with no
+ * reading pass, and the card marks them as uncovered on that trait.
+ *
+ * `excludeNoReading` lets HR opt out of that, because "only show me people I
+ * can actually compare on this axis" is a real need and pretending otherwise
+ * just makes them do it by hand. It defaults to false, it has its own labelled
+ * control, and it produces its own removable chip — an exclusion that a human
+ * chose and can see is a different object from one we performed for them.
  */
 function matchesMinFigure(
   candidate: DirectoryCandidate,
@@ -40,7 +75,8 @@ function matchesMinFigure(
 ): boolean {
   if (!minFigure.traitKey) return true;
   const trait = candidate.traits.find((t) => t.traitKey === minFigure.traitKey);
-  return trait ? trait.point >= minFigure.min : false;
+  if (!trait) return !minFigure.excludeNoReading;
+  return trait.point >= minFigure.min;
 }
 
 /** Every predicate except one, so facet counts can be computed per-facet. */
@@ -213,8 +249,26 @@ export function activeFilters(
       id: "minFigure",
       facet: "Minimum figure",
       value: `${label} — ${filters.minFigure.min} or above`,
-      remove: (f) => ({ ...f, minFigure: { ...f.minFigure, traitKey: null } }),
+      // Clearing the trait clears the exclusion with it. The exclusion is
+      // meaningless without a named trait, and leaving it armed would ambush the
+      // next recruiter who picks one.
+      remove: (f) => ({
+        ...f,
+        minFigure: { ...f.minFigure, traitKey: null, excludeNoReading: false },
+      }),
     });
+
+    // Its own chip, not a footnote on the one above. An exclusion that removes
+    // people from the result set has to be as visible — and as removable — as
+    // any other constraint, or it is back to being invisible policy.
+    if (filters.minFigure.excludeNoReading) {
+      chips.push({
+        id: "minFigure:excludeNoReading",
+        facet: "Also hiding",
+        value: `anyone with no reading on ${label}`,
+        remove: (f) => ({ ...f, minFigure: { ...f.minFigure, excludeNoReading: false } }),
+      });
+    }
   }
 
   for (const location of filters.locations) {
